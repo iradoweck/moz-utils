@@ -3,7 +3,7 @@ plugins {
     id("maven-publish")
 }
 
-group = "mz.co.iradoweck"
+group = "com.edmilsonmuacigarro"
 version = "0.1.0"
 
 repositories {

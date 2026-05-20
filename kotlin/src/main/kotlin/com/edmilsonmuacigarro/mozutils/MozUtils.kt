@@ -1,4 +1,4 @@
-package mz.co.iradoweck.mozutils
+package com.edmilsonmuacigarro.mozutils
 
 import java.net.URLEncoder
 
