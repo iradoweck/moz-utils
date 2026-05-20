@@ -1,51 +1,34 @@
-# @iradoweck/moz-utils
+# 🇲🇿 Moz-Utils
 
-> Funções de utilidade para Moçambique — validação de NUIT, BI, documentos, e formatação de telefones.
+> **O Canivete Suíço Definitivo para Programadores em Moçambique.**
 
-## Instalação
+O `moz-utils` é uma coleção de funções de utilidade essenciais (Validação de NUIT, BI Nacional, formatação de telemóveis, listas geográficas, etc.) portado e mantido ativamente para os ecossistemas mais utilizados na construção de software em África.
 
-```bash
-pnpm add @iradoweck/moz-utils
-```
+## 🌍 Ecossistemas Suportados
 
-## Funções Disponíveis
+Escolha a sua plataforma e comece a construir:
 
-```typescript
-import {
-  isValidMozambicanPhone,
-  formatMozambicanPhone,
-  getMobileOperator,
-  isValidNUIT,
-  isValidBI,
-  formatMZN,
-  buildWhatsAppUrl,
-  mozambiqueProvinces
-} from '@iradoweck/moz-utils'
+| Linguagem / Ecossistema | Diretório | Gestor de Pacotes | Caso de Uso Principal |
+|-------------------------|-----------|-------------------|-----------------------|
+| **[TypeScript / JavaScript](./ts)** | `/ts` | NPM / PNPM | React, Next.js, Vue, Node.js, Express |
+| **[PHP](./php)** | `/php` | Composer | Laravel, Symfony, WordPress |
+| **[Dart](./dart)** | `/dart` | Pub | Flutter (Aplicações Mobile) |
+| **[Python](./python)** | `/python` | Pip | Django, Flask, Data Science |
+| **[Kotlin / Java](./kotlin)** | `/kotlin` | Gradle / Maven | Android Nativo, Spring Boot |
 
-// Validar NUIT e BI
-isValidNUIT('123456789')                 // true
-isValidBI('110101234567A')               // true
+## 🚀 Como Usar?
 
-// Validar número de telefone
-isValidMozambicanPhone('841234567')      // true
-isValidMozambicanPhone('911234567')      // false
+Entre na pasta correspondente à sua linguagem (ex: `cd ts`) e leia o `README.md` específico dessa linguagem para instruções de instalação e exemplos de código.
 
-// Formatar para internacional
-formatMozambicanPhone('841234567')       // "+258 84 123 4567"
+## 🤝 Contribuição
 
-// Identificar operadora
-getMobileOperator('841234567')           // "Vodacom"
+O `moz-utils` é Open Source! Se a sua linguagem favorita não está aqui, ou se encontrou um bug nas expressões regulares, sinta-se livre para abrir um **Pull Request**.
 
-// Formatar Meticais
-formatMZN(1500)                          // "1.500,00 MT"
+Para adicionar uma nova linguagem:
+1. Crie uma pasta com o nome da linguagem (ex: `rust`, `go`).
+2. Mantenha a mesma API e as mesmas assinaturas de funções que as outras linguagens.
+3. Adicione um `README.md` explicativo.
 
-// Gerar link WhatsApp
-buildWhatsAppUrl('841234567', 'Olá!')    // "https://wa.me/258841234567?text=Ol%C3%A1!"
+## 📄 Licença
 
-// Aceder a dados geográficos
-console.log(mozambiqueProvinces[0].name) // "Maputo Cidade"
-```
-
-## Licença
-
-AGPL-3.0-or-later — Consulte o ficheiro [LICENSE](./LICENSE) para mais detalhes.
+AGPL-3.0-or-later — Desenvolvido com ❤️ em Moçambique.
