@@ -16,7 +16,7 @@ object MozUtils {
     fun isValidMozambicanPhone(phone: String): Boolean {
         val cleaned = phone.replace(Regex("[\\s\\-\\(\\)\\+]"), "")
         val withoutCountryCode = if (cleaned.startsWith("258")) cleaned.substring(3) else cleaned
-        return withoutCountryCode.matches(Regex("^8[2-7]\\d{7}$"))
+        return withoutCountryCode.matches(Regex("^8[1-9]\\d{7}$"))
     }
 
     /**
@@ -48,10 +48,11 @@ object MozUtils {
         val operators = mapOf(
             "84" to "Vodacom",
             "85" to "Vodacom",
-            "86" to "Tmcel",
-            "87" to "Tmcel",
-            "82" to "Movitel",
-            "83" to "Movitel"
+            "82" to "Tmcel",
+            "83" to "Tmcel",
+            "86" to "Movitel",
+            "87" to "Movitel",
+            "88" to "Movitel"
         )
 
         return operators[prefix]

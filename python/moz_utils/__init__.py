@@ -13,7 +13,7 @@ def is_valid_mozambican_phone(phone: str) -> bool:
     """Valida um número de telefone moçambicano."""
     cleaned = re.sub(r'[\s\-\(\)\+]', '', phone)
     without_country_code = cleaned[3:] if cleaned.startswith('258') else cleaned
-    return bool(re.match(r'^8[2-7]\d{7}$', without_country_code))
+    return bool(re.match(r'^8[1-9]\d{7}$', without_country_code))
 
 def format_mozambican_phone(phone: str) -> str:
     """Formata um número de telefone moçambicano para o padrão internacional."""
@@ -41,10 +41,11 @@ def get_mobile_operator(phone: str) -> Optional[str]:
     operators = {
         '84': 'Vodacom',
         '85': 'Vodacom',
-        '86': 'Tmcel',
-        '87': 'Tmcel',
-        '82': 'Movitel',
-        '83': 'Movitel',
+        '82': 'Tmcel',
+        '83': 'Tmcel',
+        '86': 'Movitel',
+        '87': 'Movitel',
+        '88': 'Movitel',
     }
 
     return operators.get(prefix)

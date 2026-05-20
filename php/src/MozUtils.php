@@ -17,7 +17,7 @@ class MozUtils
     {
         $cleaned = preg_replace('/[\s\-\(\)\+]/', '', $phone);
         $withoutCountryCode = str_starts_with($cleaned, '258') ? substr($cleaned, 3) : $cleaned;
-        return preg_match('/^8[2-7]\d{7}$/', $withoutCountryCode) === 1;
+        return preg_match('/^8[1-9]\d{7}$/', $withoutCountryCode) === 1;
     }
 
     /**
@@ -55,10 +55,11 @@ class MozUtils
         $operators = [
             '84' => 'Vodacom',
             '85' => 'Vodacom',
-            '86' => 'Tmcel',
-            '87' => 'Tmcel',
-            '82' => 'Movitel',
-            '83' => 'Movitel',
+            '82' => 'Tmcel',
+            '83' => 'Tmcel',
+            '86' => 'Movitel',
+            '87' => 'Movitel',
+            '88' => 'Movitel',
         ];
 
         return $operators[$prefix] ?? null;

@@ -15,7 +15,7 @@
 export function isValidMozambicanPhone(phone: string): boolean {
   const cleaned = phone.replace(/[\s\-\(\)\+]/g, '')
   const withoutCountryCode = cleaned.startsWith('258') ? cleaned.slice(3) : cleaned
-  return /^8[2-7]\d{7}$/.test(withoutCountryCode)
+  return /^8[1-9]\d{7}$/.test(withoutCountryCode)
 }
 
 /**
@@ -50,10 +50,11 @@ export function getMobileOperator(phone: string): 'Vodacom' | 'Tmcel' | 'Movitel
   const operators: Record<string, 'Vodacom' | 'Tmcel' | 'Movitel'> = {
     '84': 'Vodacom',
     '85': 'Vodacom',
-    '86': 'Tmcel',
-    '87': 'Tmcel',
-    '82': 'Movitel',
-    '83': 'Movitel',
+    '82': 'Tmcel',
+    '83': 'Tmcel',
+    '86': 'Movitel',
+    '87': 'Movitel',
+    '88': 'Movitel',
   }
 
   return operators[prefix] ?? null
