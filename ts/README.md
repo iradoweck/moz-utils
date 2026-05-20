@@ -36,14 +36,16 @@ formatMozambicanPhone('841234567')       // "+258 84 123 4567"
 // Identificar operadora
 getMobileOperator('841234567')           // "Vodacom"
 
-// Formatar Meticais
-formatMZN(1500)                          // "1.500,00 MT"
+// Formatar Meticais (Espaço nos milhares e vírgula decimal)
+formatMZN(1500)                          // "1 500,00 MT"
+formatMZN(1500, 'MZN')                   // "1 500,00 MZN"
 
 // Gerar link WhatsApp
 buildWhatsAppUrl('841234567', 'Olá!')    // "https://wa.me/258841234567?text=Ol%C3%A1!"
 
 // Aceder a dados geográficos
-console.log(mozambiqueProvinces[0].name) // "Maputo Cidade"
+console.log(mozambiqueProvinces[0].name) // "Cabo Delgado"
+console.log(mozambiqueProvinces[0].sigla) // "CBD"
 ```
 
 ## Licença

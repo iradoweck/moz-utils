@@ -3,3 +3,17 @@ dist/
 .env*.local
 npm-debug.log*
 pnpm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
+
+# Kotlin / Gradle
+.gradle/
+build/
+
+# Dart
+.dart_tool/
+.packages
+pubspec.lock
+build/
