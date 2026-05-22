@@ -1,0 +1,64 @@
+name: Publicar Pacotes nos Registos Oficiais
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  publish-npm:
+    name: Publicar no NPM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Instalar Dependências e Compilar TypeScript
+        run: |
+          cd ts
+          npm ci
+          npm run build
+
+      - name: Publicar no NPM
+        run: |
+          cd ts
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-pypi:
+    name: Publicar no PyPI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Instalar Dependências de Build
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
+      - name: Construir Distribuição Python
+        run: |
+          cd python
+          python -m build
+
+      - name: Publicar no PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist/
+          password: ${{ secrets.PYPI_API_TOKEN }}
