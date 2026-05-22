@@ -2,6 +2,8 @@ package com.edmilsonmuacigarro.mozutils
 
 import java.net.URLEncoder
 
+data class District(val name: String, val provinceId: String)
+
 /**
  * MozUtils
  *
@@ -166,5 +168,35 @@ object MozUtils {
             mapOf("id" to "mpp", "name" to "Maputo (Província)", "region" to "Sul", "sigla" to "MPT", "districts" to listOf("Boane", "Magude", "Manhiça", "Marracuene", "Matola (Cidade)", "Matutuíne", "Moamba", "Namaacha")),
             mapOf("id" to "mpc", "name" to "Maputo (Cidade)", "region" to "Sul", "sigla" to "MC", "districts" to listOf("KaMpfumo", "Nlhamankulu", "KaMaxaquene", "KaMavota", "KaMubukwana", "KaTembe", "KaNyaka"))
         )
+    }
+
+    /**
+     * Retorna a lista de distritos pertencentes a uma determinada província.
+     */
+    fun getDistrictsByProvince(provinceId: String): List<String> {
+        val cleanId = provinceId.trim().lowercase()
+        for (province in getMozambiqueProvinces()) {
+            if (province["id"] == cleanId) {
+                @Suppress("UNCHECKED_CAST")
+                return province["districts"] as List<String>
+            }
+        }
+        throw IllegalArgumentException("Província inválida: $provinceId")
+    }
+
+    /**
+     * Retorna uma lista plana com todos os 161 distritos e respetivos IDs de província.
+     */
+    fun getAllDistricts(): List<District> {
+        val list = mutableListOf<District>()
+        for (province in getMozambiqueProvinces()) {
+            val pId = province["id"] as String
+            @Suppress("UNCHECKED_CAST")
+            val districts = province["districts"] as List<String>
+            for (district in districts) {
+                list.add(District(district, pId))
+            }
+        }
+        return list
     }
 }

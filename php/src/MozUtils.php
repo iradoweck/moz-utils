@@ -243,4 +243,36 @@ class MozUtils
             ]
         ];
     }
+
+    /**
+     * Retorna a lista de distritos pertencentes a uma determinada província.
+     */
+    public static function getDistrictsByProvince(string $provinceId): array
+    {
+        $provinceIdClean = trim(strtolower($provinceId));
+        foreach (self::getMozambiqueProvinces() as $province) {
+            if ($province['id'] === $provinceIdClean) {
+                return $province['districts'];
+            }
+        }
+        throw new \InvalidArgumentException("Província inválida: {$provinceId}");
+    }
+
+    /**
+     * Retorna uma lista plana com todos os 161 distritos e respetivos IDs de província.
+     */
+    public static function getAllDistricts(): array
+    {
+        $list = [];
+        foreach (self::getMozambiqueProvinces() as $province) {
+            foreach ($province['districts'] as $district) {
+                $list[] = [
+                    'name' => $district,
+                    'provinceId' => $province['id']
+                ];
+            }
+        }
+        return $list;
+    }
 }
+

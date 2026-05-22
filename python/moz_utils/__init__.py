@@ -149,3 +149,24 @@ def get_mozambique_provinces() -> List[Dict[str, Any]]:
         {'id': 'mpp', 'name': 'Maputo (Província)', 'region': 'Sul', 'sigla': 'MPT', 'districts': ['Boane', 'Magude', 'Manhiça', 'Marracuene', 'Matola (Cidade)', 'Matutuíne', 'Moamba', 'Namaacha']},
         {'id': 'mpc', 'name': 'Maputo (Cidade)', 'region': 'Sul', 'sigla': 'MC', 'districts': ['KaMpfumo', 'Nlhamankulu', 'KaMaxaquene', 'KaMavota', 'KaMubukwana', 'KaTembe', 'KaNyaka']}
     ]
+
+def get_districts_by_province(province_id: str) -> List[str]:
+    """Retorna a lista de distritos pertencentes a uma determinada província."""
+    clean_id = province_id.strip().lower()
+    for province in get_mozambique_provinces():
+        if province['id'] == clean_id:
+            return province['districts']
+    raise ValueError(f"Província inválida: {province_id}")
+
+def get_all_districts() -> List[Dict[str, str]]:
+    """Retorna uma lista plana com todos os 161 distritos e respetivos IDs de província."""
+    flat_list = []
+    for province in get_mozambique_provinces():
+        p_id = province['id']
+        for district in province['districts']:
+            flat_list.append({
+                'name': district,
+                'provinceId': p_id
+            })
+    return flat_list
+

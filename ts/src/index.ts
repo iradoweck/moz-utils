@@ -243,3 +243,34 @@ export const mozambiqueProvinces = [
     districts: ['KaMpfumo', 'Nlhamankulu', 'KaMaxaquene', 'KaMavota', 'KaMubukwana', 'KaTembe', 'KaNyaka']
   }
 ]
+
+export interface District {
+  name: string;
+  provinceId: string;
+}
+
+/**
+ * Retorna a lista de distritos pertencentes a uma determinada província.
+ * @param provinceId - O identificador da província (ex: 'cab', 'npl', 'mpc')
+ */
+export function getDistrictsByProvince(provinceId: string): string[] {
+  const province = mozambiqueProvinces.find(p => p.id === provinceId.trim().toLowerCase());
+  if (!province) {
+    throw new Error(`Província inválida: ${provinceId}`);
+  }
+  return province.districts;
+}
+
+/**
+ * Retorna uma lista plana com todos os 161 distritos e respetivos IDs de província.
+ */
+export function getAllDistricts(): District[] {
+  const list: District[] = [];
+  for (const province of mozambiqueProvinces) {
+    for (const district of province.districts) {
+      list.push({ name: district, provinceId: province.id });
+    }
+  }
+  return list;
+}
+

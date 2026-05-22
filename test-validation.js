@@ -63,6 +63,104 @@ function formatMZN(value, currency = 'MT') {
   return `${sign}${formattedInteger},${decimalPart} ${currency}`
 }
 
+const mozambiqueProvinces = [
+  {
+    id: 'cab',
+    name: 'Cabo Delgado',
+    region: 'Norte',
+    sigla: 'CBD',
+    districts: ['Ancuabe', 'Balama', 'Chiúre', 'Ibo', 'Macomia', 'Mecúfi', 'Meluco', 'Metuge', 'Mocímboa da Praia', 'Montepuez', 'Mueda', 'Muidumbe', 'Namuno', 'Nangade', 'Palma', 'Pemba (Cidade)', 'Quissanga']
+  },
+  {
+    id: 'nia',
+    name: 'Niassa',
+    region: 'Norte',
+    sigla: 'NS',
+    districts: ['Chimbonila', 'Cuamba', 'Lago', 'Lichinga (Cidade)', 'Majune', 'Mandimba', 'Marrupa', 'Maúa', 'Mavago', 'Mecanhelas', 'Mecula', 'Metarica', 'Muembe', "N'gauma", 'Nipepe', 'Sanga']
+  },
+  {
+    id: 'npl',
+    name: 'Nampula',
+    region: 'Norte',
+    sigla: 'NPL',
+    districts: ['Angoche', 'Eráti', 'Ilha de Moçambique', 'Lalaua', 'Larde', 'Liúpo', 'Malema', 'Meconta', 'Mecubúri', 'Memba', 'Mogincual', 'Mogovolas', 'Moma', 'Monapo', 'Mossuril', 'Muecate', 'Murrupula', 'Nacala-a-Velha', 'Nacala Porto', 'Nampula (Cidade)', 'Nacarôa', 'Rapale', 'Ribáuè']
+  },
+  {
+    id: 'zam',
+    name: 'Zambézia',
+    region: 'Centro',
+    sigla: 'ZMB',
+    districts: ['Alto Molócuè', 'Chinde', 'Derre', 'Gilé', 'Gurué', 'Ile', 'Inhassunge', 'Luabo', 'Lugela', 'Maganja da Costa', 'Milange', 'Mocuba', 'Mocubela', 'Molumbo', 'Mopeia', 'Morrumbala', 'Mulevala', 'Namacurra', 'Namarrói', 'Nicoadala', 'Pebane', 'Quelimane (Cidade)']
+  },
+  {
+    id: 'tet',
+    name: 'Tete',
+    region: 'Centro',
+    sigla: 'TT',
+    districts: ['Angónia', 'Cahora-Bassa', 'Changara', 'Chifunde', 'Chiuta', 'Dôa', 'Macanga', 'Magoé', 'Marara', 'Marávia', 'Moatize', 'Mutarara', 'Tete (Cidade)', 'Tsangano', 'Zumbo']
+  },
+  {
+    id: 'man',
+    name: 'Manica',
+    region: 'Centro',
+    sigla: 'MN',
+    districts: ['Bárue', 'Chimoio (Cidade)', 'Gondola', 'Guro', 'Macate', 'Machaze', 'Macossa', 'Manica', 'Mossurize', 'Sussundenga', 'Tambara', 'Vanduzi']
+  },
+  {
+    id: 'sof',
+    name: 'Sofala',
+    region: 'Centro',
+    sigla: 'SF',
+    districts: ['Beira (Cidade)', 'Búzi', 'Caia', 'Chemba', 'Cheringoma', 'Chibabava', 'Dondo', 'Gorongosa', 'Machanga', 'Maringué', 'Marromeu', 'Muanza', 'Nhamatanda']
+  },
+  {
+    id: 'inh',
+    name: 'Inhambane',
+    region: 'Sul',
+    sigla: 'INH',
+    districts: ['Funhalouro', 'Govuro', 'Homoíne', 'Inhambane (Cidade)', 'Inharrime', 'Inhassoro', 'Jangamo', 'Mabote', 'Massinga', 'Maxixe (Cidade)', 'Morrumbene', 'Panda', 'Vilankulo', 'Zavala']
+  },
+  {
+    id: 'gaz',
+    name: 'Gaza',
+    region: 'Sul',
+    sigla: 'GZ',
+    districts: ['Bilene', 'Chibuto', 'Chicualacuala', 'Chigubo', 'Chókwè', 'Chonguene', 'Guijá', 'Limpopo', 'Mabalane', 'Manjacaze', 'Mapai', 'Massangena', 'Massingir', 'Xai-Xai (Cidade)']
+  },
+  {
+    id: 'mpp',
+    name: 'Maputo (Província)',
+    region: 'Sul',
+    sigla: 'MPT',
+    districts: ['Boane', 'Magude', 'Manhiça', 'Marracuene', 'Matola (Cidade)', 'Matutuíne', 'Moamba', 'Namaacha']
+  },
+  {
+    id: 'mpc',
+    name: 'Maputo (Cidade)',
+    region: 'Sul',
+    sigla: 'MC',
+    districts: ['KaMpfumo', 'Nlhamankulu', 'KaMaxaquene', 'KaMavota', 'KaMubukwana', 'KaTembe', 'KaNyaka']
+  }
+];
+
+function getDistrictsByProvince(provinceId) {
+  const province = mozambiqueProvinces.find(p => p.id === provinceId.trim().toLowerCase());
+  if (!province) {
+    throw new Error(`Província inválida: ${provinceId}`);
+  }
+  return province.districts;
+}
+
+function getAllDistricts() {
+  const list = [];
+  for (const province of mozambiqueProvinces) {
+    for (const district of province.districts) {
+      list.push({ name: district, provinceId: province.id });
+    }
+  }
+  return list;
+}
+
 // =============================================
 // TESTES
 // =============================================
@@ -190,6 +288,28 @@ test('-500 → "-500,00 MT"', formatMZN(-500), '-500,00 MT')
 test('-1500 → "-1 500,00 MT"', formatMZN(-1500), '-1 500,00 MT')
 test('MZN: 1500 → "1 500,00 MZN"', formatMZN(1500, 'MZN'), '1 500,00 MZN')
 test('MZN: 50000 → "50 000,00 MZN"', formatMZN(50000, 'MZN'), '50 000,00 MZN')
+
+// --- Distritos ---
+console.log('\n🗺️ TESTES DE DISTRITOS')
+console.log('─'.repeat(50))
+
+test('Distritos de Cabo Delgado count → 17', getDistrictsByProvince('cab').length, 17)
+test('Distritos de Cabo Delgado primeiro → "Ancuabe"', getDistrictsByProvince('cab')[0], 'Ancuabe')
+test('Distritos de Cabo Delgado case insensitive → 17', getDistrictsByProvince('CaB').length, 17)
+test('Distritos de Maputo Cidade count → 7', getDistrictsByProvince('mpc').length, 7)
+
+let threwError = false
+try {
+  getDistrictsByProvince('xyz')
+} catch (e) {
+  threwError = true
+}
+test('Província inválida lança erro', threwError, true)
+
+const all = getAllDistricts()
+test('Total de distritos de Moçambique → 161', all.length, 161)
+test('Primeiro distrito retornado → "Ancuabe"', all[0].name, 'Ancuabe')
+test('Primeiro distrito provinceId → "cab"', all[0].provinceId, 'cab')
 
 // --- RESULTADO FINAL ---
 console.log('\n' + '═'.repeat(50))

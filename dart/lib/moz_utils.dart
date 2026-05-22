@@ -150,4 +150,32 @@ class MozUtils {
       {'id': 'mpc', 'name': 'Maputo (Cidade)', 'region': 'Sul', 'sigla': 'MC', 'districts': ['KaMpfumo', 'Nlhamankulu', 'KaMaxaquene', 'KaMavota', 'KaMubukwana', 'KaTembe', 'KaNyaka']}
     ];
   }
+
+  /// Retorna a lista de distritos pertencentes a uma determinada província.
+  static List<String> getDistrictsByProvince(String provinceId) {
+    final cleanId = provinceId.trim().toLowerCase();
+    for (final province in getMozambiqueProvinces()) {
+      if (province['id'] == cleanId) {
+        return List<String>.from(province['districts'] as List);
+      }
+    }
+    throw ArgumentError('Província inválida: $provinceId');
+  }
+
+  /// Retorna uma lista plana com todos os 161 distritos e respetivos IDs de província.
+  static List<Map<String, String>> getAllDistricts() {
+    final list = <Map<String, String>>[];
+    for (final province in getMozambiqueProvinces()) {
+      final pId = province['id'] as String;
+      final districts = province['districts'] as List;
+      for (final district in districts) {
+        list.add({
+          'name': district as String,
+          'provinceId': pId,
+        });
+      }
+    }
+    return list;
+  }
 }
+
