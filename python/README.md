@@ -1,6 +1,12 @@
-# moz_utils (Python)
+<h1 align="center">moz-utils</h1>
 
-> O Canivete Suíço para programadores em Moçambique — portado para Python. Ideal para integração em backends com Django, Flask, FastAPI e projetos de ciência de dados.
+<p align="center">
+  <b>Python</b>
+</p>
+
+<p align="center">
+  <i>O Canivete Suíço para programadores em Moçambique — portado para Python. Ideal para integração em backends com Django, Flask, FastAPI e projetos de ciência de dados.</i>
+</p>
 
 ---
 

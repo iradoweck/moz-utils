@@ -1,6 +1,12 @@
-# @iradoweck/moz-utils (TypeScript & JavaScript)
+<h1 align="center">@iradoweck/moz-utils</h1>
 
-> O Canivete Suíço para programadores em Moçambique — agora pronto para uso no ecossistema Node.js, navegadores e frameworks modernos.
+<p align="center">
+  <b>TypeScript & JavaScript</b>
+</p>
+
+<p align="center">
+  <i>O Canivete Suíço para programadores em Moçambique — agora pronto para uso no ecossistema Node.js, navegadores e frameworks modernos.</i>
+</p>
 
 ---
 

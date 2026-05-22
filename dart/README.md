@@ -1,6 +1,12 @@
-# moz_utils (Dart & Flutter)
+<h1 align="center">moz-utils</h1>
 
-> O Canivete Suíço para programadores em Moçambique — portado para Dart. Ideal para aplicações móveis e multi-plataforma desenvolvidas com Flutter.
+<p align="center">
+  <b>Dart & Flutter</b>
+</p>
+
+<p align="center">
+  <i>O Canivete Suíço para programadores em Moçambique — portado para Dart. Ideal para aplicações móveis e multi-plataforma desenvolvidas com Flutter.</i>
+</p>
 
 ---
 

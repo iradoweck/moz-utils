@@ -1,6 +1,12 @@
-# moz-utils (Kotlin)
+<h1 align="center">moz-utils</h1>
 
-> O Canivete Suíço para programadores em Moçambique — portado para Kotlin/JVM. Ideal para integração em backends com Spring Boot, Ktor, Micronaut ou desenvolvimento de aplicações Android nativas.
+<p align="center">
+  <b>Kotlin</b>
+</p>
+
+<p align="center">
+  <i>O Canivete Suíço para programadores em Moçambique — portado para Kotlin/JVM. Ideal para integração em backends com Spring Boot, Ktor, Micronaut ou desenvolvimento de aplicações Android nativas.</i>
+</p>
 
 ---
 

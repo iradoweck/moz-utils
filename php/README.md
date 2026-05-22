@@ -1,6 +1,12 @@
-# MozUtils (PHP)
+<h1 align="center">moz-utils</h1>
 
-> O Canivete Suíço para programadores em Moçambique — portado para PHP. Ideal para integração com Laravel, Symfony, WordPress e aplicações PHP modernas.
+<p align="center">
+  <b>PHP</b>
+</p>
+
+<p align="center">
+  <i>O Canivete Suíço para programadores em Moçambique — portado para PHP. Ideal para integração com Laravel, Symfony, WordPress e aplicações PHP modernas.</i>
+</p>
 
 ---
 
