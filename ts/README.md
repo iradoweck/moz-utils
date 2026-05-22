@@ -1,4 +1,4 @@
-<h1 align="center">@iradoweck/moz-utils</h1>
+<h1 align="center">moz-utils</h1>
 
 <p align="center">
   <b>TypeScript & JavaScript</b>
@@ -16,16 +16,16 @@ Adicione o pacote ao seu projeto utilizando o seu gestor de pacotes favorito:
 
 ```bash
 # Usando NPM
-npm install @iradoweck/moz-utils
+npm install moz-utils
 
 # Usando PNPM
-pnpm add @iradoweck/moz-utils
+pnpm add moz-utils
 
 # Usando Yarn
-yarn add @iradoweck/moz-utils
+yarn add moz-utils
 
 # Usando Bun
-bun add @iradoweck/moz-utils
+bun add moz-utils
 ```
 
 ---
@@ -37,7 +37,7 @@ bun add @iradoweck/moz-utils
 #### `isValidNUIT(nuit: string | number): boolean`
 Valida se um NUIT é sintaticamente válido seguindo as regras do Módulo 11 da Autoridade Tributária.
 ```typescript
-import { isValidNUIT } from '@iradoweck/moz-utils';
+import { isValidNUIT } from 'moz-utils';
 
 isValidNUIT('123456789'); // true
 isValidNUIT(111111111);   // false (número repetido)
@@ -46,7 +46,7 @@ isValidNUIT(111111111);   // false (número repetido)
 #### `getNUITEntityType(nuit: string | number): string | null`
 Retorna a classificação descritiva da entidade associada ao NUIT com base no primeiro dígito. Retorna `null` se o NUIT for inválido.
 ```typescript
-import { getNUITEntityType } from '@iradoweck/moz-utils';
+import { getNUITEntityType } from 'moz-utils';
 
 getNUITEntityType('100000008'); // "Singular (Cidadãos nacionais/estrangeiros e ENI)"
 getNUITEntityType('400000006'); // "Colectiva (Sociedades por Quotas, SA, Lda, Associações)"
@@ -55,7 +55,7 @@ getNUITEntityType('400000006'); // "Colectiva (Sociedades por Quotas, SA, Lda, A
 #### `isValidBI(bi: string): boolean`
 Valida se o formato do Bilhete de Identidade moçambicano está correto (12 dígitos + 1 letra). Ignora espaços e traços, e é insensível a maiúsculas/minúsculas na letra final.
 ```typescript
-import { isValidBI } from '@iradoweck/moz-utils';
+import { isValidBI } from 'moz-utils';
 
 isValidBI('110101234567A'); // true
 isValidBI('110101234567 a'); // true (ignora espaços e trata minúsculas)
@@ -69,7 +69,7 @@ isValidBI('11010123456');    // false
 #### `isValidMozambicanPhone(phone: string): boolean`
 Valida se o número pertence a uma operadora móvel nacional (Vodacom, Tmcel ou Movitel) e se tem um formato correto (com ou sem o prefixo internacional `+258`).
 ```typescript
-import { isValidMozambicanPhone } from '@iradoweck/moz-utils';
+import { isValidMozambicanPhone } from 'moz-utils';
 
 isValidMozambicanPhone('841234567');      // true
 isValidMozambicanPhone('+258869876543');  // true
@@ -79,7 +79,7 @@ isValidMozambicanPhone('991234567');      // false
 #### `formatMozambicanPhone(phone: string): string`
 Formata um número válido no formato de exibição internacional padrão: `+258 XX XXX XXXX`. Lança um erro se o número for inválido.
 ```typescript
-import { formatMozambicanPhone } from '@iradoweck/moz-utils';
+import { formatMozambicanPhone } from 'moz-utils';
 
 formatMozambicanPhone('841234567'); // "+258 84 123 4567"
 ```
@@ -87,7 +87,7 @@ formatMozambicanPhone('841234567'); // "+258 84 123 4567"
 #### `getMobileOperator(phone: string): 'Vodacom' | 'Tmcel' | 'Movitel' | null`
 Identifica e retorna a operadora do telemóvel fornecido. Retorna `null` se o número for inválido ou não corresponder a nenhuma operadora conhecida.
 ```typescript
-import { getMobileOperator } from '@iradoweck/moz-utils';
+import { getMobileOperator } from 'moz-utils';
 
 getMobileOperator('841234567'); // "Vodacom"
 getMobileOperator('823214567'); // "Tmcel"
@@ -96,7 +96,7 @@ getMobileOperator('823214567'); // "Tmcel"
 #### `buildWhatsAppUrl(phone: string, message?: string): string`
 Cria um link direto para abrir uma conversa no WhatsApp para o número indicado, já com o código de país moçambicano (`258`) e mensagem (opcional) codificada.
 ```typescript
-import { buildWhatsAppUrl } from '@iradoweck/moz-utils';
+import { buildWhatsAppUrl } from 'moz-utils';
 
 buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!');
 // "https://wa.me/258841234567?text=Ol%C3%A1%20Formiga%20Antonio%2C%20bem-vindo%20a%20Nampula%21"
@@ -109,7 +109,7 @@ buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!');
 #### `formatMZN(value: number, currency?: 'MT' | 'MZN'): string`
 Formata um número decimal/inteiro no padrão de representação de Meticais, com espaços separando milhares e vírgulas para decimais.
 ```typescript
-import { formatMZN } from '@iradoweck/moz-utils';
+import { formatMZN } from 'moz-utils';
 
 formatMZN(1250.50);        // "1 250,50 MT"
 formatMZN(5000000, 'MZN'); // "5 000 000,00 MZN"
@@ -128,7 +128,7 @@ import {
   getDistrictsByProvince, 
   getAllDistricts,
   District 
-} from '@iradoweck/moz-utils';
+} from 'moz-utils';
 
 // 1. Aceder diretamente à lista hierárquica estática
 console.log(mozambiqueProvinces[0]);

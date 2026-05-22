@@ -120,7 +120,7 @@ graph TD
 
 === "TypeScript"
     ```typescript
-    import { isValidNUIT, formatMZN, buildWhatsAppUrl } from '@iradoweck/moz-utils';
+    import { isValidNUIT, formatMZN, buildWhatsAppUrl } from 'moz-utils';
     
     console.log(isValidNUIT('123456789')); // true
     console.log(formatMZN(1500));          // "1 500,00 MT"
