@@ -185,12 +185,12 @@ graph TD
 </p>
 
 <p align="center">
-  <a href="https://github.com/zedecks" title="Edmilson Muacigarro (@zedecks)">
-    <img src="https://github.com/zedecks.png" width="60" height="60" style="border-radius: 50%;" alt="zedecks" />
+  <a href="https://github.com/iradoweck" title="Edmilson Muacigarro (@iradoweck)">
+    <img src="https://github.com/iradoweck.png" width="60" height="60" style="border-radius: 50%;" alt="iradoweck" />
   </a>
   &nbsp;&nbsp;
-  <a href="https://github.com/iradoweck" title="iradoweck (@iradoweck)">
-    <img src="https://github.com/iradoweck.png" width="60" height="60" style="border-radius: 50%;" alt="iradoweck" />
+  <a href="https://github.com/zedecks" title="Zedecks IT (@zedecks)">
+    <img src="https://github.com/zedecks.png" width="60" height="60" style="border-radius: 50%;" alt="zedecks" />
   </a>
 </p>
 
