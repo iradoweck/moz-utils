@@ -1,0 +1,33 @@
+name: Integração Contínua (CI)
+
+on:
+  push:
+    branches: [ main, devlab ]
+  pull_request:
+    branches: [ main, devlab ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Obter o código do repositório
+      uses: actions/checkout@v4
+
+    - name: Configurar o Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+        cache-dependency-path: ts/package.json
+
+    - name: Instalar dependências (TypeScript)
+      run: npm install
+      working-directory: ts
+
+    - name: Compilar o código TypeScript
+      run: npm run build
+      working-directory: ts
+
+    - name: Executar testes de validação
+      run: node test-validation.js
