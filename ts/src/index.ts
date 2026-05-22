@@ -1,5 +1,5 @@
 /**
- * @iradoweck/moz-utils
+ * moz-utils
  *
  * Funções de utilidade para Moçambique.
  * Validação de NUIT, BI, documentos, e formatação de telefones.
