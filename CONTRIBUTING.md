@@ -90,4 +90,5 @@ Se todas as validações passarem, verá a mensagem:
    * Criar a pasta correspondente (ex: `/rust`).
    * Adicionar um ficheiro `README.md` nessa pasta explicando a instalação e o uso básico na respetiva linguagem.
    * Adicionar a linha respetiva na tabela de ecossistemas do `README.md` principal da raiz.
-5. Crie um Pull Request detalhado com a descrição das suas alterações.
+5. Crie um Pull Request detalhado direcionado para a branch `devlab` (ramo de desenvolvimento e integração) com a descrição das suas alterações. Evite submeter Pull Requests diretamente para a branch `main` (ramo de produção e código estável).
+
