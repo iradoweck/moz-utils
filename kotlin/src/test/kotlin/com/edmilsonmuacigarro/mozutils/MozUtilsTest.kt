@@ -1,0 +1,147 @@
+package com.edmilsonmuacigarro.mozutils
+
+import kotlin.test.*
+
+class MozUtilsTest {
+
+    private fun generateValidNUIT(first8: String): String {
+        var sum = 0
+        for (i in 0 until 8) {
+            sum += Character.getNumericValue(first8[i]) * (9 - i)
+        }
+        val remainder = sum % 11
+        val checkDigit = if (remainder <= 1) 0 else 11 - remainder
+        return first8 + checkDigit.toString()
+    }
+
+    @Test
+    fun testNuitValidacao() {
+        val nuitSingular = generateValidNUIT("10000000")
+        val nuitSingular2 = generateValidNUIT("20000000")
+        val nuitEquiparada = generateValidNUIT("30000000")
+        val nuitColectiva = generateValidNUIT("40000000")
+        val nuitPublico = generateValidNUIT("50000000")
+
+        assertTrue(MozUtils.isValidNUIT(nuitSingular), "NUIT Singular válido")
+        assertTrue(MozUtils.isValidNUIT(nuitSingular2), "NUIT Singular2 válido")
+        assertTrue(MozUtils.isValidNUIT(nuitEquiparada), "NUIT Equiparada válido")
+        assertTrue(MozUtils.isValidNUIT(nuitColectiva), "NUIT Colectiva válido")
+        assertTrue(MozUtils.isValidNUIT(nuitPublico), "NUIT Público válido")
+
+        assertFalse(MozUtils.isValidNUIT("012345678"), "NUIT que começa com 0 → inválido")
+        assertFalse(MozUtils.isValidNUIT("612345678"), "NUIT que começa com 6 → inválido")
+        assertFalse(MozUtils.isValidNUIT("912345678"), "NUIT que começa com 9 → inválido")
+        assertFalse(MozUtils.isValidNUIT("1234"), "NUIT com menos de 9 dígitos → inválido")
+        assertFalse(MozUtils.isValidNUIT("1234567890"), "NUIT com mais de 9 dígitos → inválido")
+        assertFalse(MozUtils.isValidNUIT("111111111"), "NUIT com dígitos repetidos → inválido")
+        assertFalse(MozUtils.isValidNUIT(nuitSingular.substring(0, 8) + "9"), "NUIT com dígito de controlo errado")
+    }
+
+    @Test
+    fun testNuitClassificacao() {
+        val nuitSingular = generateValidNUIT("10000000")
+        val nuitSingular2 = generateValidNUIT("20000000")
+        val nuitEquiparada = generateValidNUIT("30000000")
+        val nuitColectiva = generateValidNUIT("40000000")
+        val nuitPublico = generateValidNUIT("50000000")
+
+        assertEquals("Singular (Cidadãos nacionais/estrangeiros e ENI)", MozUtils.getNUITEntityType(nuitSingular))
+        assertEquals("Singular (Cidadãos nacionais/estrangeiros e ENI)", MozUtils.getNUITEntityType(nuitSingular2))
+        assertEquals("Equiparada (Heranças Jacentes, Consórcios)", MozUtils.getNUITEntityType(nuitEquiparada))
+        assertEquals("Colectiva (Sociedades por Quotas, SA, Lda, Associações)", MozUtils.getNUITEntityType(nuitColectiva))
+        assertEquals("Público (Instituições do Estado e Ministérios)", MozUtils.getNUITEntityType(nuitPublico))
+        assertNull(MozUtils.getNUITEntityType("000000000"))
+    }
+
+    @Test
+    fun testTelefones() {
+        assertTrue(MozUtils.isValidMozambicanPhone("841234567"))
+        assertTrue(MozUtils.isValidMozambicanPhone("851234567"))
+        assertTrue(MozUtils.isValidMozambicanPhone("821234567"))
+        assertTrue(MozUtils.isValidMozambicanPhone("831234567"))
+        assertTrue(MozUtils.isValidMozambicanPhone("861234567"))
+        assertTrue(MozUtils.isValidMozambicanPhone("871234567"))
+        assertTrue(MozUtils.isValidMozambicanPhone("881234567"))
+
+        assertFalse(MozUtils.isValidMozambicanPhone("811234567"))
+        assertFalse(MozUtils.isValidMozambicanPhone("891234567"))
+        assertFalse(MozUtils.isValidMozambicanPhone("801234567"))
+        assertFalse(MozUtils.isValidMozambicanPhone("911234567"))
+
+        assertTrue(MozUtils.isValidMozambicanPhone("+258 84 123 4567"))
+        assertTrue(MozUtils.isValidMozambicanPhone("+258841234567"))
+        assertTrue(MozUtils.isValidMozambicanPhone("84 123 4567"))
+    }
+
+    @Test
+    fun testOperadoras() {
+        assertEquals("Vodacom", MozUtils.getMobileOperator("841234567"))
+        assertEquals("Vodacom", MozUtils.getMobileOperator("851234567"))
+        assertEquals("Tmcel", MozUtils.getMobileOperator("821234567"))
+        assertEquals("Tmcel", MozUtils.getMobileOperator("831234567"))
+        assertEquals("Movitel", MozUtils.getMobileOperator("861234567"))
+        assertEquals("Movitel", MozUtils.getMobileOperator("871234567"))
+        assertEquals("Movitel", MozUtils.getMobileOperator("881234567"))
+        assertNull(MozUtils.getMobileOperator("911234567"))
+    }
+
+    @Test
+    fun testBI() {
+        assertTrue(MozUtils.isValidBI("110101234567A"))
+        assertTrue(MozUtils.isValidBI("110101234567 A"))
+        assertTrue(MozUtils.isValidBI("110101234567a"))
+        assertFalse(MozUtils.isValidBI("1101012345670"))
+        assertFalse(MozUtils.isValidBI("11010123456A"))
+    }
+
+    @Test
+    fun testFormatMZN() {
+        assertEquals("1 500,00 MT", MozUtils.formatMZN(1500.0))
+        assertEquals("0,50 MT", MozUtils.formatMZN(0.5))
+        assertEquals("1 000 000,00 MT", MozUtils.formatMZN(1000000.0))
+        assertEquals("99,99 MT", MozUtils.formatMZN(99.99))
+        assertEquals("0,00 MT", MozUtils.formatMZN(0.0))
+        assertEquals("999,00 MT", MozUtils.formatMZN(999.0))
+        assertEquals("1 000,00 MT", MozUtils.formatMZN(1000.0))
+        assertEquals("-500,00 MT", MozUtils.formatMZN(-500.0))
+        assertEquals("-1 500,00 MT", MozUtils.formatMZN(-1500.0))
+        assertEquals("1 500,00 MZN", MozUtils.formatMZN(1500.0, "MZN"))
+        assertEquals("50 000,00 MZN", MozUtils.formatMZN(50000.0, "MZN"))
+    }
+
+    @Test
+    fun testDistritos() {
+        assertEquals(17, MozUtils.getDistrictsByProvince("cab").size)
+        assertEquals("Ancuabe", MozUtils.getDistrictsByProvince("cab")[0])
+        assertEquals(17, MozUtils.getDistrictsByProvince("CaB").size)
+        assertEquals(7, MozUtils.getDistrictsByProvince("mpc").size)
+
+        assertFailsWith<IllegalArgumentException> {
+            MozUtils.getDistrictsByProvince("xyz")
+        }
+
+        val all = MozUtils.getAllDistricts()
+        assertEquals(161, all.size)
+        assertEquals("Ancuabe", all[0].name)
+        assertEquals("cab", all[0].provinceId)
+
+        assertEquals(listOf("Ancuabe", "Metoro", "Meza"), all[0].postos_administrativos)
+        assertEquals(emptyList(), all[0].bairros)
+
+        val pemba = all.first { d -> d.name == "Pemba (Cidade)" }
+        assertEquals(listOf("Pemba"), pemba.postos_administrativos)
+        assertEquals(
+            listOf("Paquitequete", "Natite", "Cariacó", "Alto Gingone", "Insubria", "Muxara", "Maringanha", "Chibuébue"),
+            pemba.bairros
+        )
+
+        val majune = all.first { d -> d.name == "Majune" }
+        assertEquals(listOf("Majune", "Mua", "Nairrobi"), majune.postos_administrativos)
+
+        val maxixe = all.first { d -> d.name == "Maxixe (Cidade)" }
+        assertEquals(listOf("Bairro Central", "Chamba", "Macupula", "Nalazi"), maxixe.bairros)
+
+        val nampula = all.first { d -> d.name == "Nampula (Cidade)" }
+        assertTrue(nampula.bairros.contains("Namutequeliua"))
+    }
+}

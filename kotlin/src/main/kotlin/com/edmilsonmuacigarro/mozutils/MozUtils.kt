@@ -135,8 +135,8 @@ object MozUtils {
         val sign = if (value < 0) "-" else ""
         val absolute = Math.abs(value)
 
-        // Formatar com 2 casas decimais
-        val formatted = String.format("%,.2f", absolute)
+        // Formatar com 2 casas decimais usando locale US para garantir separador decimal como ponto e milhar como vírgula
+        val formatted = String.format(java.util.Locale.US, "%,.2f", absolute)
 
         // Substituir: vírgula dos milhares → espaço, ponto decimal → vírgula
         val result = formatted.replace(",", " ").replace(".", ",")
