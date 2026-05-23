@@ -1,4 +1,4 @@
-name: Notificar Monorepo Privado
+name: Notify Private Monorepo
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Enviar sinal de atualização
+      - name: Send update dispatch signal
         run: |
           curl -H "Authorization: token ${{ secrets.GH_PAT }}" \
                -H "Accept: application/vnd.github.v3+json" \

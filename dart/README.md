@@ -5,38 +5,38 @@
 </p>
 
 <p align="center">
-  <i>O Canivete Suíço para programadores em Moçambique — portado para Dart. Ideal para aplicações móveis e multi-plataforma desenvolvidas com Flutter.</i>
+  <i>The Swiss Army Knife for developers in Mozambique — ported to Dart. Ideal for mobile and multi-platform applications developed with Flutter.</i>
 </p>
 
 ---
 
-## 📦 Instalação
+## 📦 Installation
 
-Pode adicionar a biblioteca ao seu projeto Flutter ou Dart. No seu ficheiro `pubspec.yaml`, adicione o pacote a partir do caminho local:
+You can add the library to your Flutter or Dart project. In your `pubspec.yaml` file, add the package using the local path:
 
 ```yaml
 dependencies:
   moz_utils:
-    path: ../caminho/para/moz-utils/dart
+    path: ../path/to/moz-utils/dart
 ```
 
-E execute:
+Then run:
 ```bash
 dart pub get
-# ou para projetos Flutter
+# or for Flutter projects
 flutter pub get
 ```
 
 ---
 
-## 🚀 Guia de Referência da API
+## 🚀 API Reference Guide
 
-Todas as utilidades são expostas como métodos estáticos na classe `MozUtils`.
+All utilities are exposed as static methods on the `MozUtils` class.
 
-### 1. Validação de Documentos
+### 1. Document Validation
 
 #### `MozUtils.isValidNUIT(dynamic nuit): bool`
-Valida se um NUIT é sintaticamente válido seguindo as regras da AT (Autoridade Tributária) baseadas no Módulo 11. Aceita tanto `String` quanto `int`.
+Validates if a NUIT (Unique Tax Identification Number) is syntactically valid following the Modulo 11 rules of the Tax Authority (AT). Accepts both `String` and `int`.
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
@@ -45,7 +45,7 @@ print(MozUtils.isValidNUIT(111111111));   // false
 ```
 
 #### `MozUtils.getNUITEntityType(dynamic nuit): String?`
-Classifica a entidade associada ao NUIT com base no primeiro dígito. Retorna `null` se for inválido.
+Classifies the entity associated with the NUIT based on its first digit. Returns `null` if the NUIT is invalid.
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
@@ -54,7 +54,7 @@ print(MozUtils.getNUITEntityType('400000006')); // "Colectiva (Sociedades por Qu
 ```
 
 #### `MozUtils.isValidBI(String bi): bool`
-Valida o Bilhete de Identidade moçambicano (12 dígitos + 1 letra). Ignora espaços e traços.
+Validates the Mozambican National Identity Card (BI) (12 digits + 1 letter). It ignores spaces and dashes.
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
@@ -64,10 +64,10 @@ print(MozUtils.isValidBI('110101234567 a'));  // true
 
 ---
 
-### 2. Telecomunicações e WhatsApp
+### 2. Telecommunications and WhatsApp
 
 #### `MozUtils.isValidMozambicanPhone(String phone): bool`
-Valida se o número pertence a uma operadora de telecomunicações móveis nacional (Vodacom, Tmcel ou Movitel).
+Validates if the number belongs to a valid national mobile carrier (Vodacom, Tmcel, or Movitel).
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
@@ -76,7 +76,7 @@ print(MozUtils.isValidMozambicanPhone('+258861234567')); // true
 ```
 
 #### `MozUtils.formatMozambicanPhone(String phone): String`
-Formata o número de telemóvel para o padrão internacional: `+258 XX XXX XXXX`. Lança `ArgumentError` se for inválido.
+Formats the mobile number to the standard international display format: `+258 XX XXX XXXX`. Throws `ArgumentError` if the number is invalid.
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
@@ -84,7 +84,7 @@ print(MozUtils.formatMozambicanPhone('841234567')); // "+258 84 123 4567"
 ```
 
 #### `MozUtils.getMobileOperator(String phone): String?`
-Identifica a operadora móvel (`'Vodacom'`, `'Tmcel'` ou `'Movitel'`).
+Identifies and returns the mobile carrier name (`'Vodacom'`, `'Tmcel'`, or `'Movitel'`).
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
@@ -92,7 +92,7 @@ print(MozUtils.getMobileOperator('841234567')); // "Vodacom"
 ```
 
 #### `MozUtils.buildWhatsAppUrl(String phone, [String message = '']): String`
-Cria uma ligação direta para abrir uma conversa no WhatsApp.
+Creates a direct link to open a WhatsApp conversation.
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
@@ -102,10 +102,10 @@ print(MozUtils.buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a 
 
 ---
 
-### 3. Moeda Nacional
+### 3. National Currency
 
 #### `MozUtils.formatMZN(double value, [String currency = 'MT']): String`
-Formata valores monetários em Meticais de acordo com o padrão local (ex: `1 500,00 MT`).
+Formats monetary values in Meticais according to the official local standard (e.g., `1 500,00 MT`).
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
@@ -115,27 +115,27 @@ print(MozUtils.formatMZN(10000000, 'MZN')); // "10 000 000,00 MZN"
 
 ---
 
-### 4. Base Geográfica
+### 4. Geographical Database
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-// 1. Obter a lista completa com todas as províncias, distritos, postos e bairros
+// 1. Get the complete list containing all provinces, districts, posts, and neighborhoods
 final provinces = MozUtils.getMozambiqueProvinces();
 
-// 2. Obter distritos de uma província (ex: 'npl' para Nampula)
+// 2. Get districts of a specific province (e.g., 'npl' for Nampula)
 final districts = MozUtils.getDistrictsByProvince('npl'); // ['Angoche', 'Eráti', ...]
 
-// 3. Obter todos os distritos planos do país
+// 3. Get all flat districts of the country
 final allDistricts = MozUtils.getAllDistricts();
 ```
 
-## 📄 Licença
+## 📄 License
 
-Este projeto é licenciado sob a licença **AGPL-3.0-or-later**.
+This project is licensed under the **AGPL-3.0-or-later** license.
 
 ---
 
 <p align="center">
-  Desenvolvido por <b>Edmilson Muacigarro</b> e contribuidores.
+  Developed by <b>Edmilson Muacigarro</b> and contributors.
 </p>

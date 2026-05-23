@@ -5,37 +5,37 @@
 </p>
 
 <p align="center">
-  <i>O Canivete Suíço para programadores em Moçambique — portado para Python. Ideal para integração em backends com Django, Flask, FastAPI e projetos de ciência de dados.</i>
+  <i>The Swiss Army Knife for developers in Mozambique — ported to Python. Ideal for integration into backends with Django, Flask, FastAPI, and data science projects.</i>
 </p>
 
 ---
 
-## 📦 Instalação
+## 📦 Installation
 
-Pode instalar a biblioteca diretamente do diretório local ou através do seu gestor de pacotes preferido:
+You can install the library directly from the local directory or using pip:
 
 ```bash
-# Instalação a partir da raiz da pasta python
+# Installation from the python folder root
 pip install .
 ```
 
 ---
 
-## 🚀 Guia de Referência da API
+## 🚀 API Reference Guide
 
-### 1. Validação de Documentos
+### 1. Document Validation
 
 #### `is_valid_nuit(nuit: Union[str, int]) -> bool`
-Valida se um NUIT é sintaticamente válido seguindo as regras da AT (Autoridade Tributária) baseadas no Módulo 11.
+Validates if a NUIT (Unique Tax Identification Number) is syntactically valid following the Modulo 11 rules of the Tax Authority (AT).
 ```python
 from moz_utils import is_valid_nuit
 
 is_valid_nuit('123456789')  # True
-is_valid_nuit(111111111)    # False (dígito repetido)
+is_valid_nuit(111111111)    # False (repeated digit)
 ```
 
 #### `get_nuit_entity_type(nuit: Union[str, int]) -> Optional[str]`
-Retorna a classificação da entidade correspondente ao primeiro dígito do NUIT. Retorna `None` se o NUIT for inválido.
+Returns the entity classification corresponding to the first digit of the NUIT. Returns `None` if the NUIT is invalid.
 ```python
 from moz_utils import get_nuit_entity_type
 
@@ -44,21 +44,21 @@ get_nuit_entity_type('400000006')  # "Colectiva (Sociedades por Quotas, SA, Lda,
 ```
 
 #### `is_valid_bi(bi: str) -> bool`
-Valida se o formato do Bilhete de Identidade moçambicano está correto (12 dígitos + 1 letra). Ignora espaços e traços.
+Validates if the Mozambican National Identity Card (BI) format is correct (12 digits + 1 letter). It ignores spaces and dashes.
 ```python
 from moz_utils import is_valid_bi
 
 is_valid_bi('110101234567A')  # True
-is_valid_bi('110101234567 a')  # True (caso insensível a maiúsculas/espaços)
+is_valid_bi('110101234567 a')  # True (case-insensitive and ignores spaces)
 is_valid_bi('11010123456')     # False
 ```
 
 ---
 
-### 2. Utilitários de Telemóvel e Comunicação
+### 2. Mobile Phone and Communication Utilities
 
 #### `is_valid_mozambican_phone(phone: str) -> bool`
-Valida se o número pertence a uma operadora de telecomunicações móveis nacional válida (Vodacom, Tmcel ou Movitel).
+Validates if the number belongs to a valid national mobile carrier (Vodacom, Tmcel, or Movitel).
 ```python
 from moz_utils import is_valid_mozambican_phone
 
@@ -68,7 +68,7 @@ is_valid_mozambican_phone('991234567')      # False
 ```
 
 #### `format_mozambican_phone(phone: str) -> str`
-Formata o número de telemóvel para o padrão internacional: `+258 XX XXX XXXX`. Lança `ValueError` se for inválido.
+Formats the mobile number to the standard international display format: `+258 XX XXX XXXX`. Throws `ValueError` if the number is invalid.
 ```python
 from moz_utils import format_mozambican_phone
 
@@ -76,7 +76,7 @@ format_mozambican_phone('841234567')  # "+258 84 123 4567"
 ```
 
 #### `get_mobile_operator(phone: str) -> Optional[str]`
-Retorna o nome da operadora associada ao telemóvel (`'Vodacom'`, `'Tmcel'` ou `'Movitel'`).
+Returns the carrier name associated with the phone number (`'Vodacom'`, `'Tmcel'`, or `'Movitel'`).
 ```python
 from moz_utils import get_mobile_operator
 
@@ -85,7 +85,7 @@ get_mobile_operator('821234567')  # "Tmcel"
 ```
 
 #### `build_whatsapp_url(phone: str, message: str = "") -> str`
-Gera uma ligação direta para o WhatsApp com DDI moçambicano (`258`) e mensagem configurada.
+Generates a direct link to open a WhatsApp conversation pre-filled with the Mozambican country code (`258`) and the optional URL-encoded message.
 ```python
 from moz_utils import build_whatsapp_url
 
@@ -95,10 +95,10 @@ build_whatsapp_url('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!')
 
 ---
 
-### 3. Utilitário Monetário
+### 3. Currency Utilities
 
 #### `format_mzn(value: float, currency: str = 'MT') -> str`
-Formata um valor no padrão oficial de Meticais (espaço para milhares, vírgula para decimais).
+Formats a value into the official Metical format (space separator for thousands, comma for decimals).
 ```python
 from moz_utils import format_mzn
 
@@ -108,27 +108,27 @@ format_mzn(5000000, 'MZN') # "5 000 000,00 MZN"
 
 ---
 
-### 4. Base de Dados Geográfica
+### 4. Geographical Database
 
 ```python
 from moz_utils import get_mozambique_provinces, get_districts_by_province, get_all_districts
 
-# 1. Obter a lista completa com todas as províncias, distritos, postos e bairros
-provincias = get_mozambique_provinces()
+# 1. Get the complete list with all provinces, districts, posts, and neighborhoods
+provinces = get_mozambique_provinces()
 
-# 2. Obter distritos de uma província específica pelo seu ID (ex: 'npl' para Nampula)
-distritos_nampula = get_districts_by_province('npl')  # ['Angoche', 'Eráti', ...]
+# 2. Get districts of a specific province by its ID (e.g., 'npl' for Nampula)
+nampula_districts = get_districts_by_province('npl')  # ['Angoche', 'Eráti', ...]
 
-# 3. Obter uma lista contendo todos os distritos planos e sua respetiva província
-todos_distritos = get_all_districts()
+# 3. Get a flat list of all districts along with their respective provinces
+all_districts = get_all_districts()
 ```
 
-## 📄 Licença
+## 📄 License
 
-Este projeto é licenciado sob a licença **AGPL-3.0-or-later**.
+This project is licensed under the **AGPL-3.0-or-later** license.
 
 ---
 
 <p align="center">
-  Desenvolvido por <b>Edmilson Muacigarro</b> e contribuidores.
+  Developed by <b>Edmilson Muacigarro</b> and contributors.
 </p>

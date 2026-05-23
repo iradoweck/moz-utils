@@ -5,76 +5,76 @@
 </p>
 
 <p align="center">
-  <i>O Canivete Suíço para programadores em Moçambique — portado para Kotlin/JVM. Ideal para integração em backends com Spring Boot, Ktor, Micronaut ou desenvolvimento de aplicações Android nativas.</i>
+  <i>The Swiss Army Knife for developers in Mozambique — ported to Kotlin/JVM. Ideal for integration into backends with Spring Boot, Ktor, Micronaut, or native Android application development.</i>
 </p>
 
 ---
 
-## 📦 Instalação
+## 📦 Installation
 
-Como o projeto está estruturado como um subprojeto multi-pacotes local, pode incluí-lo na sua build do Gradle ou Maven:
+Since the project is structured as a local multi-package subproject, you can include it in your Gradle or Maven build:
 
 ### Gradle (Kotlin DSL)
-Adicione o subprojeto local no seu `settings.gradle.kts`:
+Add the local subproject in your `settings.gradle.kts`:
 ```kotlin
-include(":packages:moz-utils:kotlin") // Ajuste o caminho de acordo com a sua estrutura
+include(":packages:moz-utils:kotlin") // Adjust path according to your structure
 ```
 
-E declare a dependência no seu `build.gradle.kts`:
+And declare the dependency in your `build.gradle.kts`:
 ```kotlin
 dependencies {
     implementation(project(":packages:moz-utils:kotlin"))
 }
 ```
 
-### Publicação Local (Maven Local)
-Pode publicar o pacote para o seu repositório Maven local executando o seguinte comando a partir do diretório `kotlin`:
+### Local Publication (Maven Local)
+You can publish the package to your local Maven repository by running the following command from the `kotlin` directory:
 ```bash
 ./gradlew publishToMavenLocal
 ```
 
-E no seu projeto de consumo, certifique-se de que tem `mavenLocal()` nos repositórios e adicione:
+And in your consuming project, ensure you have `mavenLocal()` in your repositories and add:
 ```kotlin
-implementation("com.edmilsonmuacigarro:moz-utils:0.1.0")
+implementation("com.edmilsonmuacigarro:moz-utils:0.1.2")
 ```
 
 ---
 
-## 🚀 Guia de Referência da API
+## 🚀 API Reference Guide
 
-Todas as funcionalidades estão disponíveis através do objeto estático `MozUtils` sob o pacote `com.edmilsonmuacigarro.mozutils`.
+All features are available through the static `MozUtils` object under the `com.edmilsonmuacigarro.mozutils` package.
 
-### 1. Validação de Documentos
+### 1. Document Validation
 
 #### `MozUtils.isValidNUIT(nuit: Any): Boolean`
-Valida se um NUIT é sintaticamente válido seguindo as regras da AT (Autoridade Tributária) baseadas no cálculo do Módulo 11. Aceita tanto `String` quanto `Int`/`Long`.
+Validates if a NUIT (Unique Tax Identification Number) is syntactically valid following the Modulo 11 calculation rules of the Tax Authority (AT). Accepts both `String` and `Int`/`Long`.
 ```kotlin
 import com.edmilsonmuacigarro.mozutils.MozUtils
 
-val valido = MozUtils.isValidNUIT("123456789")  // true
-val invalido = MozUtils.isValidNUIT(111111111)   // false (dígitos repetidos)
+val valid = MozUtils.isValidNUIT("123456789")  // true
+val invalid = MozUtils.isValidNUIT(111111111)   // false (repeated digits)
 ```
 
 #### `MozUtils.getNUITEntityType(nuit: Any): String?`
-Retorna a classificação da entidade com base no primeiro dígito do NUIT. Retorna `null` se o NUIT for inválido.
+Returns the entity classification based on the first digit of the NUIT. Returns `null` if the NUIT is invalid.
 ```kotlin
-val tipo = MozUtils.getNUITEntityType("400000006")
-// Retorna: "Colectiva (Sociedades por Quotas, SA, Lda, Associações)"
+val type = MozUtils.getNUITEntityType("400000006")
+// Returns: "Colectiva (Sociedades por Quotas, SA, Lda, Associações)"
 ```
 
 #### `MozUtils.isValidBI(bi: String): Boolean`
-Valida se o formato do Bilhete de Identidade moçambicano está correto (12 dígitos seguidos de 1 letra). Ignora espaços e traços.
+Validates if the Mozambican National Identity Card (BI) format is correct (12 digits followed by 1 letter). It ignores spaces and dashes.
 ```kotlin
-val biValido = MozUtils.isValidBI("110101234567A")   // true
-val biInvalido = MozUtils.isValidBI("11010123456")   // false
+val validBi = MozUtils.isValidBI("110101234567A")   // true
+val invalidBi = MozUtils.isValidBI("11010123456")   // false
 ```
 
 ---
 
-### 2. Utilitários de Telemóvel e Comunicação
+### 2. Mobile Phone and Communication Utilities
 
 #### `MozUtils.isValidMozambicanPhone(phone: String): Boolean`
-Valida se o número pertence a uma operadora de telecomunicações móveis nacional válida (Vodacom, Tmcel ou Movitel).
+Validates if the number belongs to a valid national mobile carrier (Vodacom, Tmcel, or Movitel).
 ```kotlin
 MozUtils.isValidMozambicanPhone("841234567")      // true
 MozUtils.isValidMozambicanPhone("+258869876543")  // true
@@ -82,54 +82,54 @@ MozUtils.isValidMozambicanPhone("991234567")      // false
 ```
 
 #### `MozUtils.formatMozambicanPhone(phone: String): String`
-Formata o número de telemóvel para o padrão internacional: `+258 XX XXX XXXX`. Lança uma exceção `IllegalArgumentException` se o número for inválido.
+Formats the mobile number to the standard international display format: `+258 XX XXX XXXX`. Throws an `IllegalArgumentException` if the number is invalid.
 ```kotlin
-val formatado = MozUtils.formatMozambicanPhone("841234567")
-// Retorna: "+258 84 123 4567"
+val formatted = MozUtils.formatMozambicanPhone("841234567")
+// Returns: "+258 84 123 4567"
 ```
 
 #### `MozUtils.getMobileOperator(phone: String): String?`
-Retorna o nome da operadora móvel nacional associada ao número (`Vodacom`, `Tmcel` ou `Movitel`). Retorna `null` se for inválido.
+Returns the national mobile carrier name associated with the number (`Vodacom`, `Tmcel`, or `Movitel`). Returns `null` if invalid.
 ```kotlin
-val operadora = MozUtils.getMobileOperator("841234567") // "Vodacom"
+val carrier = MozUtils.getMobileOperator("841234567") // "Vodacom"
 ```
 
 #### `MozUtils.buildWhatsAppUrl(phone: String, message: String): String`
-Gera uma ligação direta para o WhatsApp com DDI moçambicano (`258`) e a mensagem desejada codificada em formato URL.
+Generates a direct link to open a WhatsApp conversation pre-filled with the Mozambican country code (`258`) and the URL-encoded message.
 ```kotlin
 val url = MozUtils.buildWhatsAppUrl("841234567", "Olá Formiga Antonio, bem-vindo a Nampula!")
-// Retorna: "https://wa.me/258841234567?text=Ol%C3%A1+Formiga+Antonio%2C+bem-vindo+a+Nampula%21"
+// Returns: "https://wa.me/258841234567?text=Ol%C3%A1+Formiga+Antonio%2C+bem-vindo+a+Nampula%21"
 ```
 
 ---
 
-### 3. Utilitário Monetário
+### 3. Currency Utilities
 
 #### `MozUtils.formatMZN(value: Double, currency: String): String`
-Formata um valor monetário no padrão oficial de Moçambique (espaço para milhares, vírgula para decimais e símbolo no final). O parâmetro `currency` padrão é `"MT"`.
+Formats a monetary value according to the official Mozambican standard (space separator for thousands, comma for decimals, and currency symbol at the end). The default `currency` parameter is `"MT"`.
 ```kotlin
-val preco1 = MozUtils.formatMZN(1250.50)         // "1 250,50 MT"
-val preco2 = MozUtils.formatMZN(5000000.0, "MZN") // "5 000 000,00 MZN"
+val price1 = MozUtils.formatMZN(1250.50)         // "1 250,50 MT"
+val price2 = MozUtils.formatMZN(5000000.0, "MZN") // "5 000 000,00 MZN"
 ```
 
 ---
 
-### 4. Base de Dados Geográfica
+### 4. Geographical Database
 
-A biblioteca fornece os seguintes métodos para consultar a estrutura administrativa oficial de Moçambique:
+The library provides the following methods to query the official administrative structure of Mozambique:
 
 ```kotlin
-// 1. Obter a lista completa com todas as províncias, distritos, postos e bairros
-val provincias: List<Map<String, Any>> = MozUtils.getMozambiqueProvinces()
+// 1. Get the complete list containing all provinces, districts, posts, and neighborhoods
+val provinces: List<Map<String, Any>> = MozUtils.getMozambiqueProvinces()
 
-// 2. Obter distritos de uma província específica pelo ID (ex: "npl" para Nampula)
-val distritosNampula: List<String> = MozUtils.getDistrictsByProvince("npl")
-// Exemplo de retorno: ["Angoche", "Eráti", "Ilha de Moçambique", ...]
+// 2. Get districts of a specific province by ID (e.g., "npl" for Nampula)
+val nampulaDistricts: List<String> = MozUtils.getDistrictsByProvince("npl")
+// Returns: ["Angoche", "Eráti", "Ilha de Moçambique", ...]
 
-// 3. Obter uma lista plana de todos os distritos através da data class District
-val todosDistritos: List<District> = MozUtils.getAllDistricts()
+// 3. Get all flat districts of the country using the District data class
+val allDistricts: List<District> = MozUtils.getAllDistricts()
 
-// Estrutura de District:
+// District structure:
 // data class District(
 //     val name: String,
 //     val provinceId: String,
@@ -138,12 +138,12 @@ val todosDistritos: List<District> = MozUtils.getAllDistricts()
 // )
 ```
 
-## 📄 Licença
+## 📄 License
 
-Este projeto é licenciado sob a licença **AGPL-3.0-or-later**.
+This project is licensed under the **AGPL-3.0-or-later** license.
 
 ---
 
 <p align="center">
-  Desenvolvido por <b>Edmilson Muacigarro</b> e contribuidores.
+  Developed by <b>Edmilson Muacigarro</b> and contributors.
 </p>
