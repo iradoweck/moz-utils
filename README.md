@@ -112,6 +112,47 @@ graph TD
 
 ---
 
+## 📦 Quick Installation
+
+<p align="justify">
+  Get started immediately by installing the package for your preferred ecosystem:
+</p>
+
+=== "TypeScript"
+    ```bash
+    npm install moz-utils
+    ```
+
+=== "Python"
+    ```bash
+    pip install moz-utils
+    ```
+
+=== "PHP"
+    ```bash
+    composer require iradoweck/moz-utils
+    ```
+
+=== "Dart"
+    ```yaml
+    # Add to your pubspec.yaml
+    dependencies:
+      moz_utils: ^0.1.2
+    ```
+
+=== "Kotlin"
+    ```kotlin
+    // Add to your build.gradle.kts (JitPack)
+    repositories {
+        maven { url = uri("https://jitpack.io") }
+    }
+    dependencies {
+        implementation("com.github.iradoweck:moz-utils:v0.1.2")
+    }
+    ```
+
+---
+
 ## 💻 Syntax Comparison
 
 <p align="justify">
