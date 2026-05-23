@@ -1,4 +1,4 @@
-name: Integração Contínua (CI)
+name: Continuous Integration (CI)
 
 on:
   push:
@@ -14,65 +14,65 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Obter o código do repositório
+    - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Configurar o Node.js
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 20
         cache: 'npm'
         cache-dependency-path: ts/package.json
 
-    - name: Instalar dependências (TypeScript)
+    - name: Install dependencies (TypeScript)
       run: npm install
       working-directory: ts
 
-    - name: Compilar o código TypeScript
+    - name: Compile TypeScript code
       run: npm run build
       working-directory: ts
 
-    - name: Executar testes de validação (TypeScript)
+    - name: Run validation tests (TypeScript)
       run: node test-validation.js
 
-    - name: Configurar o Python
+    - name: Setup Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.12'
 
-    - name: Executar testes de validação (Python)
+    - name: Run validation tests (Python)
       run: python python/test_validation.py
 
-    - name: Configurar o PHP
+    - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: '8.3'
 
-    - name: Executar testes de validação (PHP)
+    - name: Run validation tests (PHP)
       run: php php/test-validation.php
 
-    - name: Configurar o Dart
+    - name: Setup Dart
       uses: dart-lang/setup-dart@v1
 
-    - name: Instalar dependências (Dart)
+    - name: Install dependencies (Dart)
       run: dart pub get
       working-directory: dart
 
-    - name: Executar testes de validação (Dart)
+    - name: Run validation tests (Dart)
       run: dart test
       working-directory: dart
 
-    - name: Configurar o JDK 17
+    - name: Setup JDK 17
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Configurar o Gradle
+    - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
         gradle-version: '8.7'
 
-    - name: Executar testes de validação (Kotlin)
+    - name: Run validation tests (Kotlin)
       run: gradle test
       working-directory: kotlin

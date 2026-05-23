@@ -5,46 +5,46 @@
 </p>
 
 <p align="center">
-  <i>O Canivete Suíço para programadores em Moçambique — agora pronto para uso no ecossistema Node.js, navegadores e frameworks modernos.</i>
+  <i>The Swiss Army Knife for developers in Mozambique — now ready for use in the Node.js ecosystem, web browsers, and modern frameworks.</i>
 </p>
 
 ---
 
-## 📦 Instalação
+## 📦 Installation
 
-Adicione o pacote ao seu projeto utilizando o seu gestor de pacotes favorito:
+Add the package to your project using your favorite package manager:
 
 ```bash
-# Usando NPM
+# Using NPM
 npm install moz-utils
 
-# Usando PNPM
+# Using PNPM
 pnpm add moz-utils
 
-# Usando Yarn
+# Using Yarn
 yarn add moz-utils
 
-# Usando Bun
+# Using Bun
 bun add moz-utils
 ```
 
 ---
 
-## 🚀 Guia de Referência da API
+## 🚀 API Reference Guide
 
-### 1. Validação de Documentos
+### 1. Document Validation
 
 #### `isValidNUIT(nuit: string | number): boolean`
-Valida se um NUIT é sintaticamente válido seguindo as regras do Módulo 11 da Autoridade Tributária.
+Validates if a NUIT (Unique Tax Identification Number) is syntactically valid following the Modulo 11 rules defined by the Tax Authority.
 ```typescript
 import { isValidNUIT } from 'moz-utils';
 
 isValidNUIT('123456789'); // true
-isValidNUIT(111111111);   // false (número repetido)
+isValidNUIT(111111111);   // false (repeated numbers)
 ```
 
 #### `getNUITEntityType(nuit: string | number): string | null`
-Retorna a classificação descritiva da entidade associada ao NUIT com base no primeiro dígito. Retorna `null` se o NUIT for inválido.
+Returns the descriptive entity classification associated with the NUIT based on its first digit. Returns `null` if the NUIT is invalid.
 ```typescript
 import { getNUITEntityType } from 'moz-utils';
 
@@ -53,21 +53,21 @@ getNUITEntityType('400000006'); // "Colectiva (Sociedades por Quotas, SA, Lda, A
 ```
 
 #### `isValidBI(bi: string): boolean`
-Valida se o formato do Bilhete de Identidade moçambicano está correto (12 dígitos + 1 letra). Ignora espaços e traços, e é insensível a maiúsculas/minúsculas na letra final.
+Validates if the Mozambican National Identity Card (BI) format is correct (12 digits + 1 letter). It ignores spaces and dashes, and is case-insensitive for the final letter.
 ```typescript
 import { isValidBI } from 'moz-utils';
 
 isValidBI('110101234567A'); // true
-isValidBI('110101234567 a'); // true (ignora espaços e trata minúsculas)
+isValidBI('110101234567 a'); // true (ignores spaces and handles lowercase)
 isValidBI('11010123456');    // false
 ```
 
 ---
 
-### 2. Utilitários de Comunicação e Telemóveis
+### 2. Communication and Mobile Network Utilities
 
 #### `isValidMozambicanPhone(phone: string): boolean`
-Valida se o número pertence a uma operadora móvel nacional (Vodacom, Tmcel ou Movitel) e se tem um formato correto (com ou sem o prefixo internacional `+258`).
+Validates if the phone number belongs to a national mobile network (Vodacom, Tmcel, or Movitel) and matches the correct format (with or without the international prefix `+258`).
 ```typescript
 import { isValidMozambicanPhone } from 'moz-utils';
 
@@ -77,7 +77,7 @@ isValidMozambicanPhone('991234567');      // false
 ```
 
 #### `formatMozambicanPhone(phone: string): string`
-Formata um número válido no formato de exibição internacional padrão: `+258 XX XXX XXXX`. Lança um erro se o número for inválido.
+Formats a valid phone number into the standard international display format: `+258 XX XXX XXXX`. Throws an error if the number is invalid.
 ```typescript
 import { formatMozambicanPhone } from 'moz-utils';
 
@@ -85,7 +85,7 @@ formatMozambicanPhone('841234567'); // "+258 84 123 4567"
 ```
 
 #### `getMobileOperator(phone: string): 'Vodacom' | 'Tmcel' | 'Movitel' | null`
-Identifica e retorna a operadora do telemóvel fornecido. Retorna `null` se o número for inválido ou não corresponder a nenhuma operadora conhecida.
+Identifies and returns the carrier of the provided phone number. Returns `null` if the number is invalid or does not match any known national carrier.
 ```typescript
 import { getMobileOperator } from 'moz-utils';
 
@@ -94,7 +94,7 @@ getMobileOperator('823214567'); // "Tmcel"
 ```
 
 #### `buildWhatsAppUrl(phone: string, message?: string): string`
-Cria um link direto para abrir uma conversa no WhatsApp para o número indicado, já com o código de país moçambicano (`258`) e mensagem (opcional) codificada.
+Generates a direct link to open a WhatsApp conversation for the specified number, pre-filled with the Mozambican country code (`258`) and the optional URL-encoded message.
 ```typescript
 import { buildWhatsAppUrl } from 'moz-utils';
 
@@ -104,10 +104,10 @@ buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!');
 
 ---
 
-### 3. Utilitários Monetários
+### 3. Currency Utilities
 
 #### `formatMZN(value: number, currency?: 'MT' | 'MZN'): string`
-Formata um número decimal/inteiro no padrão de representação de Meticais, com espaços separando milhares e vírgulas para decimais.
+Formats a numeric value (decimal or integer) into the Metical representation standard, with space separators for thousands and commas for decimals.
 ```typescript
 import { formatMZN } from 'moz-utils';
 
@@ -118,9 +118,9 @@ formatMZN(-500);           // "-500,00 MT"
 
 ---
 
-### 4. Base de Dados Geográfica Integrada
+### 4. Integrated Geographical Database
 
-O pacote exporta a constante `mozambiqueProvinces` e duas funções auxiliares para pesquisa administrativa:
+The package exports the `mozambiqueProvinces` constant and two helper functions for administrative queries:
 
 ```typescript
 import { 
@@ -130,7 +130,7 @@ import {
   District 
 } from 'moz-utils';
 
-// 1. Aceder diretamente à lista hierárquica estática
+// 1. Access the static hierarchical list directly
 console.log(mozambiqueProvinces[0]);
 /*
 {
@@ -145,20 +145,20 @@ console.log(mozambiqueProvinces[0]);
 }
 */
 
-// 2. Obter distritos de uma província específica pelo ID (ex: 'npl' para Nampula)
-const distritosNampula = getDistrictsByProvince('npl');
+// 2. Get districts of a specific province by ID (e.g., 'npl' for Nampula)
+const nampulaDistricts = getDistrictsByProvince('npl');
 // ['Angoche', 'Eráti', 'Ilha de Moçambique', 'Lalaua', ..., 'Nampula (Cidade)', ...]
 
-// 3. Obter uma lista plana (flat) de todos os 161 distritos nacionais
-const todosDistritos = getAllDistricts(); // Array de District
+// 3. Get a flat list of all 161 national districts
+const allDistricts = getAllDistricts(); // Array of District
 ```
 
-## 📄 Licença
+## 📄 License
 
-Este projeto é licenciado sob a licença **AGPL-3.0-or-later**.
+This project is licensed under the **AGPL-3.0-or-later** license.
 
 ---
 
 <p align="center">
-  Desenvolvido por <b>Edmilson Muacigarro</b> e contribuidores.
+  Developed by <b>Edmilson Muacigarro</b> and contributors.
 </p>

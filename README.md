@@ -17,66 +17,66 @@
 </p>
 
 <p align="center">
-  <i>O Canivete Suíço Definitivo para Programadores em Moçambique.</i>
+  <i>The Definitive Swiss Army Knife for Software Developers in Mozambique.</i>
 </p>
 
 <p align="justify">
-  O <code>moz-utils</code> é uma coleção de funções essenciais de utilidade para o ecossistema moçambicano de desenvolvimento de software. Ele padroniza validações críticas como o <b>NUIT</b> (Número Único de Identificação Tributária), <b>BI</b> (Bilhete de Identidade), <b>números de telemóvel</b> (Vodacom, Tmcel, Movitel), <b>formatação de Meticais</b> (MZN) e <b>dados geográficos nacionais</b> (Províncias, Distritos, Postos Administrativos e Bairros).
+  <code>moz-utils</code> is a collection of essential utility functions tailored for the Mozambican software development ecosystem. It standardizes critical validations such as <b>NUIT</b> (Unique Tax Identification Number), <b>BI</b> (National Identity Card), <b>mobile phone numbers</b> (Vodacom, Tmcel, Movitel), <b>Metical currency formatting</b> (MZN), and <b>national geographical data</b> (Provinces, Districts, Administrative Posts, and Neighborhoods).
 </p>
 
 <p align="justify">
-  O projeto é mantido ativamente e portado para as linguagens mais populares usadas em África.
+  The project is actively maintained and ported to the most popular programming languages used across Africa.
 </p>
 
-### ℹ️ Especificações de Moçambique
+### ℹ️ Mozambique Specifications
 
-| Parâmetro | Detalhes |
+| Parameter | Details |
 | :--- | :--- |
-| **País** | Moçambique |
-| **Código de Chamada (DDI)** | `+258` |
-| **Idioma Oficial** | Português (pt-MZ) |
-| **Moeda Oficial** | Metical (`MZN` / `MT`) |
+| **Country** | Mozambique |
+| **Calling Code (DDI)** | `+258` |
+| **Official Language** | Portuguese (pt-MZ) |
+| **Official Currency** | Metical (`MZN` / `MT`) |
 
 ---
 
-## 🗺️ Fluxos e Arquitetura
+## 🗺️ Workflows and Architecture
 
-### 1. Validação de NUIT (Módulo 11)
+### 1. NUIT Validation (Modulo 11)
 
 <p align="justify">
-  A validação segue estritamente as regras da Autoridade Tributária de Moçambique:
+  The validation strictly follows the rules defined by the Tax Authority of Mozambique:
 </p>
 
 ```mermaid
 graph TD
-    A[Início: nuit] --> B{Tem 9 dígitos?}
-    B -- Não --> C[Inválido]
-    B -- Sim --> D{Todos dígitos iguais?<br/>ex: 111111111}
-    D -- Sim --> C
-    D -- Não --> E{Primeiro dígito<br/>entre 1 e 5?}
-    E -- Não --> C
-    E -- Sim --> F["Soma ponderada dos primeiros 8 dígitos:<br/>soma += digito[i] * (9 - i)"]
-    F --> G[Calcular resto = soma % 11]
-    G --> H{resto <= 1?}
-    H -- Sim --> I[Dígito Esperado = 0]
-    H -- Não --> J[Dígito Esperado = 11 - resto]
-    I --> K{Dígito 9 == Dígito Esperado?}
+    A[Start: nuit] --> B{Has 9 digits?}
+    B -- No --> C[Invalid]
+    B -- Yes --> D{All digits identical?<br/>e.g., 111111111}
+    D -- Yes --> C
+    D -- No --> E{First digit<br/>between 1 and 5?}
+    E -- No --> C
+    E -- Yes --> F["Weighted sum of the first 8 digits:<br/>sum += digit[i] * (9 - i)"]
+    F --> G[Calculate remainder = sum % 11]
+    G --> H{remainder <= 1?}
+    H -- Yes --> I[Expected Digit = 0]
+    H -- No --> J[Expected Digit = 11 - remainder]
+    I --> K{Digit 9 == Expected Digit?}
     J --> K
-    K -- Sim --> L[Válido]
-    K -- Não --> C
+    K -- Yes --> L[Valid]
+    K -- No --> C
 ```
 
-### 2. Hierarquia de Dados Geográficos
+### 2. Geographical Data Hierarchy
 
 <p align="justify">
-  Uma base estática robusta estruturada com dados oficiais do país:
+  A robust offline static database structured with official administrative divisions of the country:
 </p>
 
 ```mermaid
 graph TD
-    Moz[Moçambique] --> N["Região Norte"]
-    Moz --> C["Região Centro"]
-    Moz --> S["Região Sul"]
+    Moz[Mozambique] --> N["Northern Region"]
+    Moz --> C["Central Region"]
+    Moz --> S["Southern Region"]
 
     N --> CD["Cabo Delgado"]
     N --> NS["Niassa"]
@@ -89,33 +89,33 @@ graph TD
 
     S --> INH["Inhambane"]
     S --> GZ["Gaza"]
-    S --> MPT["Maputo Província"]
-    S --> MC["Maputo Cidade"]
+    S --> MPT["Maputo Province"]
+    S --> MC["Maputo City"]
 
-    CD --> D["Distritos <br/>ex: Nampula, Pemba (Cidade)..."]
+    CD --> D["Districts <br/>e.g., Nampula, Pemba (City)..."]
     NPL --> D
-    D --> PA["Postos Administrativos <br/>ex: Muhala..."]
-    PA --> B["Bairros principais <br/>ex: Namutequeliua..."]
+    D --> PA["Administrative Posts <br/>e.g., Muhala..."]
+    PA --> B["Main Neighborhoods <br/>e.g., Namutequeliua..."]
 ```
 
 ---
 
-## 🌍 Ecossistemas e Exemplos de Uso
+## 🌍 Ecosystems and Usage Examples
 
-| Ecossistema | Pasta | Gestor de Pacotes | Caso de Uso Principal |
+| Ecosystem | Folder | Package Manager | Primary Use Case |
 | :--- | :--- | :--- | :--- |
-| **[TypeScript / JS](./ts)** | `/ts` | NPM / PNPM / Yarn | Web React, Next.js, Node.js, Express |
+| **[TypeScript / JS](./ts)** | `/ts` | NPM / PNPM / Yarn | React Web, Next.js, Node.js, Express |
 | **[Python](./python)** | `/python` | Pip / Poetry | Django, FastAPI, Data Science |
 | **[PHP](./php)** | `/php` | Composer | Laravel, Symfony, WordPress |
-| **[Dart](./dart)** | `/dart` | Pub | Flutter (Aplicações Mobile) |
-| **[Kotlin / Java](./kotlin)**| `/kotlin` | Gradle / Maven | Android Nativo, Spring Boot |
+| **[Dart](./dart)** | `/dart` | Pub | Flutter (Mobile Applications) |
+| **[Kotlin / Java](./kotlin)**| `/kotlin` | Gradle / Maven | Native Android, Spring Boot |
 
 ---
 
-## 💻 Comparativo de Sintaxe
+## 💻 Syntax Comparison
 
 <p align="justify">
-  Abaixo está um exemplo de como a API foi desenhada de forma homogénea em todas as linguagens:
+  Below is an example showing how homogeneous the API design is across all supported languages:
 </p>
 
 === "TypeScript"
@@ -165,23 +165,23 @@ graph TD
 
 ---
 
-## 🤝 Contribuição e Portabilidade
+## 🤝 Contribution and Portability
 
 <p align="justify">
-  O <code>moz-utils</code> é um projeto de código aberto e adoraríamos ter o seu apoio para adicionar mais linguagens (como <b>Go</b>, <b>Rust</b>, <b>Ruby</b> ou <b>C#</b>) ou para otimizar os padrões regex e bases de dados geográficas!
+  <code>moz-utils</code> is an open-source project, and we would love to have your support to port it to more languages (such as <b>Go</b>, <b>Rust</b>, <b>Ruby</b>, or <b>C#</b>) or to optimize regex patterns and geographic databases!
 </p>
 
 <p align="justify">
-  Consulte o nosso <a href="./CONTRIBUTING.md">Guia de Contribuição</a> para saber mais sobre:
+  Please refer to our <a href="./CONTRIBUTING.md">Contribution Guide</a> to learn more about:
 </p>
-* A implementação algorítmica matemática do NUIT.
-* Padronização de nomes de variáveis e funções.
-* Criação de testes unitários para manter a integridade entre ecossistemas.
+* The mathematical implementation of NUIT validation.
+* Code style and naming conventions.
+* Writing unit tests to maintain parity across ecosystems.
 
-## 👥 Autores e Contribuidores
+## 👥 Authors and Contributors
 
 <p align="justify">
-  Este projeto foi idealizado e é mantido por:
+  This project was conceptualized and is maintained by:
 </p>
 
 <p align="center">
@@ -196,12 +196,12 @@ graph TD
 
 ---
 
-## 📄 Licença
+## 📄 License
 
-Este projeto é licenciado sob a licença **AGPL-3.0-or-later**.
+This project is licensed under the **AGPL-3.0-or-later** license.
 
 ---
 
 <p align="center">
-  Desenvolvido por <b>Edmilson Muacigarro</b> e contribuidores.
+  Developed by <b>Edmilson Muacigarro</b> and contributors.
 </p>

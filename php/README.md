@@ -5,22 +5,22 @@
 </p>
 
 <p align="center">
-  <i>O Canivete Suíço para programadores em Moçambique — portado para PHP. Ideal para integração com Laravel, Symfony, WordPress e aplicações PHP modernas.</i>
+  <i>The Swiss Army Knife for developers in Mozambique — ported to PHP. Ideal for integration with Laravel, Symfony, WordPress, and modern PHP applications.</i>
 </p>
 
 ---
 
-## 📦 Instalação
+## 📦 Installation
 
-Pode instalar a biblioteca através do Composer localmente (apontando para o repositório local) ou configurando o autoload:
+You can install the library via Composer locally (pointing to the local directory path) or using VCS:
 
 ```json
-// No seu composer.json do projeto
+// In your project's composer.json
 {
     "repositories": [
         {
             "type": "path",
-            "url": "../caminho/para/moz-utils/php"
+            "url": "../path/to/moz-utils/php"
         }
     ],
     "require": {
@@ -29,21 +29,21 @@ Pode instalar a biblioteca através do Composer localmente (apontando para o rep
 }
 ```
 
-E execute:
+Then run:
 ```bash
 composer update
 ```
 
 ---
 
-## 🚀 Guia de Referência da API
+## 🚀 API Reference Guide
 
-Todas as utilidades são expostas como métodos estáticos na classe `Iradoweck\MozUtils\MozUtils`.
+All utilities are exposed as static methods on the `Iradoweck\MozUtils\MozUtils` class.
 
-### 1. Validação de Documentos
+### 1. Document Validation
 
 #### `MozUtils::isValidNUIT(string|int $nuit): bool`
-Valida se um NUIT é sintaticamente válido segundo as regras da AT baseadas no Módulo 11.
+Validates if a NUIT (Unique Tax Identification Number) is syntactically valid according to the Modulo 11 rules of the Tax Authority (AT).
 ```php
 use Iradoweck\MozUtils\MozUtils;
 
@@ -52,7 +52,7 @@ MozUtils::isValidNUIT(111111111);   // false
 ```
 
 #### `MozUtils::getNUITEntityType(string|int $nuit): ?string`
-Retorna o tipo de entidade com base no NUIT fornecido. Retorna `null` se for inválido.
+Returns the entity type based on the provided NUIT. Returns `null` if the NUIT is invalid.
 ```php
 use Iradoweck\MozUtils\MozUtils;
 
@@ -61,7 +61,7 @@ MozUtils::getNUITEntityType('400000006'); // "Colectiva (Sociedades por Quotas, 
 ```
 
 #### `MozUtils::isValidBI(string $bi): bool`
-Valida o Bilhete de Identidade moçambicano (12 dígitos + 1 letra). Ignora espaços e traços.
+Validates the Mozambican National Identity Card (BI) (12 digits + 1 letter). It ignores spaces and dashes.
 ```php
 use Iradoweck\MozUtils\MozUtils;
 
@@ -71,10 +71,10 @@ MozUtils::isValidBI('110101234567 a');  // true
 
 ---
 
-### 2. Telecomunicações e WhatsApp
+### 2. Telecommunications and WhatsApp
 
 #### `MozUtils::isValidMozambicanPhone(string $phone): bool`
-Valida se o número é de Moçambique e pertence a uma das operadoras móveis locais (Vodacom, Tmcel ou Movitel).
+Validates if the number is from Mozambique and belongs to one of the local mobile carriers (Vodacom, Tmcel, or Movitel).
 ```php
 use Iradoweck\MozUtils\MozUtils;
 
@@ -83,7 +83,7 @@ MozUtils::isValidMozambicanPhone('+258861234567'); // true
 ```
 
 #### `MozUtils::formatMozambicanPhone(string $phone): string`
-Formata o número no padrão de apresentação internacional `+258 XX XXX XXXX`. Lança uma exceção `InvalidArgumentException` se o número for inválido.
+Formats the phone number to the standard international display format: `+258 XX XXX XXXX`. Throws an `InvalidArgumentException` if the number is invalid.
 ```php
 use Iradoweck\MozUtils\MozUtils;
 
@@ -91,7 +91,7 @@ MozUtils::formatMozambicanPhone('841234567'); // "+258 84 123 4567"
 ```
 
 #### `MozUtils::getMobileOperator(string $phone): ?string`
-Identifica a operadora móvel (`'Vodacom'`, `'Tmcel'` ou `'Movitel'`).
+Identifies and returns the mobile carrier name (`'Vodacom'`, `'Tmcel'`, or `'Movitel'`).
 ```php
 use Iradoweck\MozUtils\MozUtils;
 
@@ -99,7 +99,7 @@ MozUtils::getMobileOperator('841234567'); // "Vodacom"
 ```
 
 #### `MozUtils::buildWhatsAppUrl(string $phone, string $message = ''): string`
-Gera uma hiperligação para iniciar conversa direta no WhatsApp.
+Generates a direct link to initiate a WhatsApp conversation.
 ```php
 use Iradoweck\MozUtils\MozUtils;
 
@@ -109,10 +109,10 @@ MozUtils::buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampu
 
 ---
 
-### 3. Moeda Nacional
+### 3. National Currency
 
 #### `MozUtils::formatMZN(float $value, string $currency = 'MT'): string`
-Formata valores monetários em Meticais de acordo com o padrão local (ex: `-1 500,00 MT`).
+Formats monetary values in Meticais according to the official local standard (e.g., `-1 500,00 MT`).
 ```php
 use Iradoweck\MozUtils\MozUtils;
 
@@ -122,27 +122,27 @@ MozUtils::formatMZN(10000000, 'MZN'); // "10 000 000,00 MZN"
 
 ---
 
-### 4. Base Geográfica
+### 4. Geographical Database
 
 ```php
 use Iradoweck\MozUtils\MozUtils;
 
-// 1. Obter array de províncias, distritos, postos e bairros
+// 1. Get an array containing all provinces, districts, administrative posts, and neighborhoods
 $provinces = MozUtils::getMozambiqueProvinces();
 
-// 2. Obter distritos de uma província (ex: 'npl' para Nampula)
+// 2. Get districts of a specific province (e.g., 'npl' for Nampula)
 $districts = MozUtils::getDistrictsByProvince('npl'); // ['Angoche', 'Eráti', ...]
 
-// 3. Obter todos os distritos planos do país
+// 3. Get all flat districts of the country
 $allDistricts = MozUtils::getAllDistricts();
 ```
 
-## 📄 Licença
+## 📄 License
 
-Este projeto é licenciado sob a licença **AGPL-3.0-or-later**.
+This project is licensed under the **AGPL-3.0-or-later** license.
 
 ---
 
 <p align="center">
-  Desenvolvido por <b>Edmilson Muacigarro</b> e contribuidores.
+  Developed by <b>Edmilson Muacigarro</b> and contributors.
 </p>

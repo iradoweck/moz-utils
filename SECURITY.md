@@ -1,62 +1,62 @@
-<h1 align="center">Política de Segurança — Moz-Utils</h1>
+<h1 align="center">Security Policy — Moz-Utils</h1>
 
 <p align="center">
-  <b>Diretrizes para Reporte de Vulnerabilidades e Suporte de Versões</b>
+  <b>Guidelines for Vulnerability Reporting and Version Support</b>
 </p>
 
 ---
 
 <p align="justify">
-  A segurança dos nossos utilizadores e a integridade do ecossistema de desenvolvimento de software em Moçambique são a nossa maior prioridade. Esta política de segurança descreve as versões suportadas do <code>moz-utils</code> e o processo para reportar vulnerabilidades de forma responsável e confidencial.
+  The security of our users and the integrity of the software development ecosystem in Mozambique are our top priorities. This security policy describes the supported versions of <code>moz-utils</code> and the process for reporting vulnerabilities in a responsible and confidential manner.
 </p>
 
 ---
 
-## 🛡️ Versões Suportadas
+## 🛡️ Supported Versions
 
 <p align="justify">
-  Atualmente, prestamos suporte ativo e atualizações de segurança para as seguintes versões da biblioteca:
+  We currently provide active support and security updates for the following versions of the library:
 </p>
 
-| Versão | Suportada | Notas |
+| Version | Supported | Notes |
 | :--- | :---: | :--- |
-| **0.1.x** | :white_check_mark: | Versão de lançamento inicial. Receberá correções ativas de bugs e segurança. |
+| **0.1.x** | :white_check_mark: | Initial release version. Will receive active bug and security fixes. |
 
 ---
 
-## 🪲 Como Reportar uma Vulnerabilidade?
+## 🪲 How to Report a Vulnerability?
 
 <p align="justify">
-  Se descobrir alguma vulnerabilidade de segurança nesta biblioteca, por favor <b>não crie uma Issue pública</b>. Em vez disso, utilize o recurso de <b>Reporte Privado de Vulnerabilidades</b> (Private Vulnerability Reporting) diretamente no repositório GitHub em:
+  If you discover a security vulnerability in this library, please <b>do not create a public Issue</b>. Instead, use the <b>Private Vulnerability Reporting</b> feature directly on the GitHub repository at:
 </p>
 
 <p align="center">
   <a href="https://github.com/iradoweck/moz-utils/security/advisories/new">
-    <b>iradoweck/moz-utils - Reportar Vulnerabilidade Privadamente</b>
+    <b>iradoweck/moz-utils - Report Vulnerability Privately</b>
   </a>
 </p>
 
 <p align="justify">
-  Caso prefira, pode também entrar em contacto privado com os mantenedores principais do projeto através das respetivas páginas de perfil no GitHub:
+  Alternatively, you may reach out privately to the primary maintainers of the project through their GitHub profile pages:
 </p>
 
-* 👤 **Edmilson Muacigarro** ([@zedecks](https://github.com/zedecks))
-* 👤 **Iradoweck** ([@iradoweck](https://github.com/iradoweck))
+* 👤 **Edmilson Muacigarro** ([@iradoweck](https://github.com/iradoweck))
+* 🏢 **Zedecks IT** ([@zedecks](https://github.com/zedecks))
 
 <p align="justify">
-  Ao submeter um relatório, por favor inclua:
+  When submitting a report, please include:
 </p>
 
-1. Uma descrição detalhada da vulnerabilidade detetada.
-2. Passos detalhados ou um trecho de código para reproduzir o problema (PoC - Proof of Concept).
-3. Uma avaliação do impacto potencial na segurança de aplicações em produção que utilizam a biblioteca.
+1. A detailed description of the detected vulnerability.
+2. Step-by-step instructions or a code snippet to reproduce the issue (PoC - Proof of Concept).
+3. An assessment of the potential impact on the security of production applications using the library.
 
 <p align="justify">
-  Comprometemo-nos a analisar o seu relatório no prazo de <b>48 horas</b> e a trabalhar numa solução e publicação de patch o mais rapidamente possível.
+  We commit to reviewing your report within <b>48 hours</b> and working on a patch as quickly as possible.
 </p>
 
 ---
 
 <p align="center">
-  Obrigado por ajudar a manter o ecossistema de desenvolvimento moçambicano seguro! 🇲🇿
+  Thank you for helping keep the Mozambican development ecosystem secure! 🇲🇿
 </p>
