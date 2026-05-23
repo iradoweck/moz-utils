@@ -1,0 +1,65 @@
+name: "CodeQL Analysis"
+
+on:
+  push:
+    branches: [ main, devlab ]
+  pull_request:
+    branches: [ main, devlab ]
+  schedule:
+    - cron: '30 18 * * 5'
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analisar (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript-typescript', 'python', 'java-kotlin' ]
+
+    steps:
+    - name: Obter o código do repositório
+      uses: actions/checkout@v4
+
+    - name: Inicializar o CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        queries: security-extended,security-and-quality
+
+    # Configuração customizada de compilação para Java/Kotlin
+    - name: Configurar o JDK 17
+      if: matrix.language == 'java-kotlin'
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Configurar o Gradle
+      if: matrix.language == 'java-kotlin'
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: '8.7'
+
+    - name: Compilar projeto Kotlin para análise do CodeQL
+      if: matrix.language == 'java-kotlin'
+      run: gradle build -x test
+      working-directory: kotlin
+
+    # Para JS/TS e Python usamos o autobuild padrão
+    - name: Executar Autobuild (Linguagens Dinâmicas)
+      if: matrix.language != 'java-kotlin'
+      uses: github/codeql-action/autobuild@v3
+
+    - name: Executar Análise do CodeQL
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
