@@ -7,10 +7,14 @@ on:
 
 permissions:
   contents: read
+  id-token: write  # required for pub.dev OIDC publishing
 
 jobs:
+  # ─────────────────────────────────────────────
+  # TypeScript → npm
+  # ─────────────────────────────────────────────
   publish-npm:
-    name: Publish to NPM
+    name: Publish to NPM (TypeScript)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -35,8 +39,11 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+  # ─────────────────────────────────────────────
+  # Python → PyPI
+  # ─────────────────────────────────────────────
   publish-pypi:
-    name: Publish to PyPI
+    name: Publish to PyPI (Python)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -62,3 +69,30 @@ jobs:
         with:
           packages-dir: python/dist/
           password: ${{ secrets.PYPI_API_TOKEN }}
+
+  # ─────────────────────────────────────────────
+  # Dart → pub.dev
+  # ─────────────────────────────────────────────
+  publish-dart:
+    name: Publish to pub.dev (Dart)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Install Dart Dependencies
+        run: dart pub get
+        working-directory: dart
+
+      - name: Publish to pub.dev
+        run: dart pub publish --force
+        working-directory: dart
+
+  # ─────────────────────────────────────────────
+  # Kotlin → JitPack  (passive: auto-builds from tag)
+  # PHP   → Packagist (passive: auto-updates from tag)
+  # No CI steps needed — these registries watch GitHub tags automatically.
+  # ─────────────────────────────────────────────
