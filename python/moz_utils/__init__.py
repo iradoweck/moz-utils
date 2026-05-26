@@ -1069,3 +1069,246 @@ def get_all_districts() -> List[Dict[str, Any]]:
                 'bairros': district['bairros']
             })
     return flat_list
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# NAME & DOCUMENT FIELD SANITIZATION
+# ─────────────────────────────────────────────────────────────────────────────
+
+def is_valid_name(name: str) -> bool:
+    """
+    Checks whether a string is a valid personal name.
+    Accepts letters (including accented), spaces, hyphens, and apostrophes.
+    Rejects digits and most special characters.
+
+    Examples:
+        is_valid_name('Edmilson Muacigarro')  # True
+        is_valid_name('João O\'Brian')         # True
+        is_valid_name('Jean-Pierre')           # True
+        is_valid_name('ABC123')                # False
+    """
+    import unicodedata
+    stripped = name.strip()
+    if not stripped:
+        return False
+    for char in stripped:
+        cat = unicodedata.category(char)
+        if not (cat.startswith('L') or char in " '-"):
+            return False
+    return True
+
+
+def sanitize_name(name: str, all_caps: bool = False) -> str:
+    """
+    Sanitizes a personal name field.
+
+    By default converts to Title Case (each word starts with a capital letter).
+    Pass all_caps=True to force ALL UPPERCASE.
+
+    Strips digits and most special characters, keeping only letters,
+    spaces, hyphens, and apostrophes.
+
+    Args:
+        name: The raw name string to sanitize.
+        all_caps: If True, returns the name in ALL UPPERCASE.
+
+    Returns:
+        Sanitized name string.
+
+    Examples:
+        sanitize_name('  edmilson   muacigarro  ')    # 'Edmilson Muacigarro'
+        sanitize_name('JOÃO', all_caps=True)          # 'JOÃO'
+        sanitize_name('jean-pierre dupont')            # 'Jean-Pierre Dupont'
+    """
+    import unicodedata
+    # Keep only letters, spaces, hyphens, apostrophes
+    cleaned_chars = [c for c in name if unicodedata.category(c).startswith('L') or c in " '-"]
+    cleaned = ' '.join(''.join(cleaned_chars).split())  # collapse whitespace
+
+    if all_caps:
+        return cleaned.upper()
+
+    # Title Case: capitalise first letter after space or hyphen
+    result = []
+    capitalise_next = True
+    for char in cleaned:
+        if char in ' -':
+            result.append(char)
+            capitalise_next = True
+        elif capitalise_next:
+            result.append(char.upper())
+            capitalise_next = False
+        else:
+            result.append(char)
+    return ''.join(result)
+
+
+def sanitize_document_field(value: str) -> str:
+    """
+    Sanitizes a document number field that contains only digits.
+    Strips all non-numeric characters.
+
+    Useful for NUIT, phone numbers before validation, etc.
+
+    Examples:
+        sanitize_document_field('123 456 789')  # '123456789'
+        sanitize_document_field('123-456-789')  # '123456789'
+    """
+    return re.sub(r'\D', '', value)
+
+
+def sanitize_alphanumeric_field(value: str) -> str:
+    """
+    Sanitizes an alphanumeric document field (digits + letters),
+    forcing all letters to UPPERCASE.
+
+    Useful for BI, passports, and other mixed-format documents.
+
+    Examples:
+        sanitize_alphanumeric_field('110 101 234567a')  # '110101234567A'
+        sanitize_alphanumeric_field('abc-123-XYZ!')     # 'ABC123XYZ'
+    """
+    return re.sub(r'[^A-Za-z0-9]', '', value).upper()
+
+
+POSTAL_CODES = {
+    # Região Sul
+    # Maputo
+    '1100': {'locality': 'Maputo ECP (Sede)', 'province': 'Maputo'},
+    '1101': {'locality': 'Polana', 'province': 'Maputo'},
+    '1102': {'locality': 'Sommerchild', 'province': 'Maputo'},
+    '1103': {'locality': 'Malhangalene', 'province': 'Maputo'},
+    '1104': {'locality': 'Alto-Maé', 'province': 'Maputo'},
+    '1106': {'locality': 'Bairro Central', 'province': 'Maputo'},
+    '1107': {'locality': 'Bairro do Aeroporto', 'province': 'Maputo'},
+    '1108': {'locality': 'Bairro do Mavalane', 'province': 'Maputo'},
+    '1109': {'locality': 'Bairro do Jardim', 'province': 'Maputo'},
+    '1110': {'locality': 'Bairro do Xipamanine', 'province': 'Maputo'},
+    '1111': {'locality': 'Bairro George Dimitrov', 'province': 'Maputo'},
+    '1112': {'locality': 'Machava', 'province': 'Maputo'},
+    '1113': {'locality': 'Fomento', 'province': 'Maputo'},
+    '1114': {'locality': 'Matola', 'province': 'Maputo'},
+    '1115': {'locality': 'Boane', 'province': 'Maputo'},
+    '1116': {'locality': 'Namaacha', 'province': 'Maputo'},
+    '1117': {'locality': 'Katembe', 'province': 'Maputo'},
+    '1118': {'locality': 'Bela-Vista', 'province': 'Maputo'},
+    '1119': {'locality': 'Inhaca', 'province': 'Maputo'},
+    '1120': {'locality': 'Marracuene', 'province': 'Maputo'},
+    '1121': {'locality': 'Manhiça', 'province': 'Maputo'},
+    '1122': {'locality': 'Xinavane', 'province': 'Maputo'},
+    '1123': {'locality': 'Magude', 'province': 'Maputo'},
+    '1124': {'locality': 'Moamba', 'province': 'Maputo'},
+    '1125': {'locality': 'Ressano Garcia', 'province': 'Maputo'},
+    # Gaza
+    '1200': {'locality': 'Xai-Xai ECP', 'province': 'Gaza'},
+    '1201': {'locality': 'Praia de Xai-Xai', 'province': 'Gaza'},
+    '1202': {'locality': 'Macia', 'province': 'Gaza'},
+    '1203': {'locality': 'Praia de Bilene', 'province': 'Gaza'},
+    '1204': {'locality': 'Chokwé', 'province': 'Gaza'},
+    '1205': {'locality': 'Chilembene / Magoanine', 'province': 'Gaza'},
+    '1206': {'locality': 'Mabalane', 'province': 'Gaza'},
+    '1207': {'locality': 'Massingir', 'province': 'Gaza'},
+    '1208': {'locality': 'Chibuto', 'province': 'Gaza'},
+    '1209': {'locality': 'Manjacaze', 'province': 'Gaza'},
+    '1210': {'locality': 'Chidenguele', 'province': 'Gaza'},
+    '1211': {'locality': 'Chicualacuala', 'province': 'Gaza'},
+    # Inhambane
+    '1300': {'locality': 'Inhambane ECP', 'province': 'Inhambane'},
+    '1301': {'locality': 'Maxixe', 'province': 'Inhambane'},
+    '1302': {'locality': 'Morrumbene', 'province': 'Inhambane'},
+    '1303': {'locality': 'Massinga', 'province': 'Inhambane'},
+    '1304': {'locality': 'Vilanculos', 'province': 'Inhambane'},
+    '1305': {'locality': 'Inhassoro', 'province': 'Inhambane'},
+    '1306': {'locality': 'Nova-Mambone', 'province': 'Inhambane'},
+    '1307': {'locality': 'Jangamo', 'province': 'Inhambane'},
+    '1308': {'locality': 'Cumbane', 'province': 'Inhambane'},
+    '1309': {'locality': 'Homoine', 'province': 'Inhambane'},
+    '1310': {'locality': 'Panda', 'province': 'Inhambane'},
+    '1311': {'locality': 'Inharrime', 'province': 'Inhambane'},
+    '1312': {'locality': 'Quissico', 'province': 'Inhambane'},
+    '1313': {'locality': 'Funhalouro', 'province': 'Inhambane'},
+    '1314': {'locality': 'Mabote', 'province': 'Inhambane'},
+
+    # Região Centro
+    # Sofala
+    '2100': {'locality': 'Beira ECP', 'province': 'Sofala'},
+    '2101': {'locality': 'Macúti', 'province': 'Sofala'},
+    '2102': {'locality': 'Beira Aeroporto', 'province': 'Sofala'},
+    '2103': {'locality': 'Manga', 'province': 'Sofala'},
+    '2104': {'locality': 'Dondo', 'province': 'Sofala'},
+    '2105': {'locality': 'Mafambisse', 'province': 'Sofala'},
+    '2106': {'locality': 'Nhamatanda', 'province': 'Sofala'},
+    '2107': {'locality': 'Buzi', 'province': 'Sofala'},
+    '2110': {'locality': 'Gorongoza', 'province': 'Sofala'},
+    # Manica
+    '2200': {'locality': 'Chimoio ECP', 'province': 'Manica'},
+    '2201': {'locality': 'Catandica', 'province': 'Manica'},
+    '2202': {'locality': 'Vila de Manica', 'province': 'Manica'},
+    '2203': {'locality': 'Gondola', 'province': 'Manica'},
+    '2204': {'locality': 'Guro', 'province': 'Manica'},
+    '2205': {'locality': 'Machaze', 'province': 'Manica'},
+    '2206': {'locality': 'Macossa', 'province': 'Manica'},
+    '2207': {'locality': 'Sussundenga', 'province': 'Manica'},
+    '2208': {'locality': 'Tambara', 'province': 'Manica'},
+    # Tete
+    '2300': {'locality': 'Tete ECP', 'province': 'Tete'},
+    '2301': {'locality': 'Tete Aeroporto', 'province': 'Tete'},
+    '2302': {'locality': 'Moatize', 'province': 'Tete'},
+    '2304': {'locality': 'Songo', 'province': 'Tete'},
+    '2307': {'locality': 'Mutarara', 'province': 'Tete'},
+    '2312': {'locality': 'Zumbo', 'province': 'Tete'},
+    # Zambézia
+    '2400': {'locality': 'Quelimane ECP', 'province': 'Zambézia'},
+    '2401': {'locality': 'Nicoadala', 'province': 'Zambézia'},
+    '2403': {'locality': 'Mocuba', 'province': 'Zambézia'},
+    '2405': {'locality': 'Pebane', 'province': 'Zambézia'},
+    '2407': {'locality': 'Gurué', 'province': 'Zambézia'},
+    '2412': {'locality': 'Chinde', 'province': 'Zambézia'},
+
+    # Região Norte
+    # Nampula
+    '3100': {'locality': 'Nampula ECP', 'province': 'Nampula'},
+    '3101': {'locality': 'Angoche', 'province': 'Nampula'},
+    '3102': {'locality': 'Monapo', 'province': 'Nampula'},
+    '3105': {'locality': 'Ilha de Moçambique', 'province': 'Nampula'},
+    '3108': {'locality': 'Moma', 'province': 'Nampula'},
+    '3112': {'locality': 'Nacala', 'province': 'Nampula'},
+    '3115': {'locality': 'Namapa', 'province': 'Nampula'},
+    '3119': {'locality': 'Ribaue', 'province': 'Nampula'},
+    # Cabo Delgado
+    '3200': {'locality': 'Pemba ECP', 'province': 'Cabo Delgado'},
+    '3201': {'locality': 'Pemba-2', 'province': 'Cabo Delgado'},
+    '3208': {'locality': 'Montepuez', 'province': 'Cabo Delgado'},
+    '3216': {'locality': 'Mueda', 'province': 'Cabo Delgado'},
+    '3219': {'locality': 'Palma', 'province': 'Cabo Delgado'},
+    # Niassa
+    '3300': {'locality': 'Lichinga ECP', 'province': 'Niassa'},
+    '3301': {'locality': 'Macanhelas', 'province': 'Niassa'},
+    '3304': {'locality': 'Mandimba', 'province': 'Niassa'},
+    '3305': {'locality': 'Cuamba', 'province': 'Niassa'},
+    '3311': {'locality': 'Muembe', 'province': 'Niassa'}
+}
+
+
+def is_valid_postal_code(code: str) -> bool:
+    """
+    Valida se um código postal legado de Moçambique é válido.
+    Deve conter 4 dígitos numéricos pertencentes ao sistema clássico dos Correios de Moçambique.
+    """
+    cleaned = re.sub(r'\D', '', code)
+    return cleaned in POSTAL_CODES
+
+
+def get_postal_code_locality(code: str) -> Optional[str]:
+    """Retorna a localidade correspondente a um código postal legado de Moçambique."""
+    cleaned = re.sub(r'\D', '', code)
+    entry = POSTAL_CODES.get(cleaned)
+    return entry['locality'] if entry else None
+
+
+def get_postal_code_province(code: str) -> Optional[str]:
+    """Retorna a província correspondente a um código postal legado de Moçambique."""
+    cleaned = re.sub(r'\D', '', code)
+    entry = POSTAL_CODES.get(cleaned)
+    return entry['province'] if entry else None
+

@@ -193,6 +193,28 @@ foreach ($all as $d) {
 }
 test('Nampula (Cidade) bairros contêm Namutequeliua', in_array('Namutequeliua', $nampula['bairros']), true);
 
+// --- Código Postal ---
+echo "\n✉️ TESTES DE CÓDIGO POSTAL\n";
+echo str_repeat("─", 50) . "\n";
+
+test('Código postal válido (1100)', MozUtils::isValidPostalCode('1100'), true);
+test('Código postal com espaços (1101)', MozUtils::isValidPostalCode(' 1101 '), true);
+test('Código postal com traço (1102)', MozUtils::isValidPostalCode('11-02'), true);
+test('Código postal válido (1202)', MozUtils::isValidPostalCode('1202'), true);
+test('Código postal válido (3311)', MozUtils::isValidPostalCode('3311'), true);
+test('Código postal inválido (1199)', MozUtils::isValidPostalCode('1199'), false);
+test('Código postal muito longo', MozUtils::isValidPostalCode('11000'), false);
+test('Código postal muito curto', MozUtils::isValidPostalCode('110'), false);
+test('Código postal não numérico', MozUtils::isValidPostalCode('ABCD'), false);
+
+test('Localidade de 1100', MozUtils::getPostalCodeLocality('1100'), 'Maputo ECP (Sede)');
+test('Localidade de 1205', MozUtils::getPostalCodeLocality('1205'), 'Chilembene / Magoanine');
+test('Província de 1100', MozUtils::getPostalCodeProvince('1100'), 'Maputo');
+test('Província de 2100', MozUtils::getPostalCodeProvince('2100'), 'Sofala');
+test('Província de 3311', MozUtils::getPostalCodeProvince('3311'), 'Niassa');
+test('Localidade de inválido', MozUtils::getPostalCodeLocality('9999'), null);
+test('Província de inválido', MozUtils::getPostalCodeProvince('9999'), null);
+
 // --- RESULTADO ---
 echo "\n" . str_repeat("═", 50) . "\n";
 echo "📊 RESULTADO: $passed passaram, $failed falharam (Total: " . ($passed + $failed) . ")\n";

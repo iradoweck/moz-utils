@@ -98,6 +98,12 @@ graph TD
     PA --> B["Main Neighborhoods <br/>e.g., Namutequeliua..."]
 ```
 
+### 3. Legacy Postal Codes
+
+<p align="justify">
+  A complete database and validation for the classic 4-digit postal codes system of Mozambique, historically managed and validated by the <b>Correios de Moçambique</b>. The full reference of codes can be found in the <a href="./docs/postal_codes_mocambique.md">Postal Codes Documentation</a>.
+</p>
+
 ---
 
 ## 🌍 Ecosystems and Usage Examples
@@ -137,7 +143,7 @@ graph TD
     ```yaml
     # Add to your pubspec.yaml
     dependencies:
-      moz_utils: ^0.1.2
+      moz_utils: ^0.2.0
     ```
 
 === "Kotlin"
@@ -147,7 +153,7 @@ graph TD
         maven { url = uri("https://jitpack.io") }
     }
     dependencies {
-        implementation("com.github.iradoweck:moz-utils:v0.1.2")
+        implementation("com.github.iradoweck:moz-utils:v0.2.0")
     }
     ```
 
@@ -161,20 +167,24 @@ graph TD
 
 === "TypeScript"
     ```typescript
-    import { isValidNUIT, formatMZN, buildWhatsAppUrl } from 'moz-utils';
+    import { isValidNUIT, formatMZN, buildWhatsAppUrl, isValidPostalCode, getPostalCodeLocality } from 'moz-utils';
     
     console.log(isValidNUIT('123456789')); // true
     console.log(formatMZN(1500));          // "1 500,00 MT"
     console.log(buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!'));
+    console.log(isValidPostalCode('1100')); // true
+    console.log(getPostalCodeLocality('1100')); // "Maputo ECP (Sede)"
     ```
 
 === "Python"
     ```python
-    from moz_utils import is_valid_nuit, format_mzn, build_whatsapp_url
+    from moz_utils import is_valid_nuit, format_mzn, build_whatsapp_url, is_valid_postal_code, get_postal_code_locality
 
     print(is_valid_nuit('123456789')) # True
     print(format_mzn(1500))            # "1 500,00 MT"
     print(build_whatsapp_url('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!'))
+    print(is_valid_postal_code('1100')) # True
+    print(get_postal_code_locality('1100')) # "Maputo ECP (Sede)"
     ```
 
 === "PHP"
@@ -184,6 +194,8 @@ graph TD
     echo MozUtils::isValidNUIT('123456789'); // true
     echo MozUtils::formatMZN(1500);          // "1 500,00 MT"
     echo MozUtils::buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!');
+    echo MozUtils::isValidPostalCode('1100'); // true
+    echo MozUtils::getPostalCodeLocality('1100'); // "Maputo ECP (Sede)"
     ```
 
 === "Dart"
@@ -193,6 +205,8 @@ graph TD
     print(MozUtils.isValidNUIT('123456789')); // true
     print(MozUtils.formatMZN(1500));          // "1 500,00 MT"
     print(MozUtils.buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!'));
+    print(MozUtils.isValidPostalCode('1100')); // true
+    print(MozUtils.getPostalCodeLocality('1100')); // "Maputo ECP (Sede)"
     ```
 
 === "Kotlin"
@@ -202,6 +216,8 @@ graph TD
     println(MozUtils.isValidNUIT("123456789")) // true
     println(MozUtils.formatMZN(1500.0))         // "1 500,00 MT"
     println(MozUtils.buildWhatsAppUrl("841234567", "Olá Formiga Antonio, bem-vindo a Nampula!"))
+    println(MozUtils.isValidPostalCode("1100")) // true
+    println(MozUtils.getPostalCodeLocality("1100")) // "Maputo ECP (Sede)"
     ```
 
 ---

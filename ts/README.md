@@ -118,7 +118,36 @@ formatMZN(-500);           // "-500,00 MT"
 
 ---
 
-### 4. Integrated Geographical Database
+### 4. Legacy Postal Codes
+
+#### `isValidPostalCode(code: string): boolean`
+Validates if a legacy postal code of Moçambique is valid (exactly 4 digits belonging to the classic system of the Correios de Moçambique).
+```typescript
+import { isValidPostalCode } from 'moz-utils';
+
+isValidPostalCode('1100');   // true
+isValidPostalCode('1199');   // false
+```
+
+#### `getPostalCodeLocality(code: string): string | null`
+Returns the locality associated with the legacy postal code, or `null`.
+```typescript
+import { getPostalCodeLocality } from 'moz-utils';
+
+getPostalCodeLocality('1100'); // "Maputo ECP (Sede)"
+```
+
+#### `getPostalCodeProvince(code: string): string | null`
+Returns the province associated with the legacy postal code, or `null`.
+```typescript
+import { getPostalCodeProvince } from 'moz-utils';
+
+getPostalCodeProvince('1100'); // "Maputo"
+```
+
+---
+
+### 5. Integrated Geographical Database
 
 The package exports the `mozambiqueProvinces` constant and two helper functions for administrative queries:
 

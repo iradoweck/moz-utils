@@ -337,4 +337,70 @@ void main() {
       expect(bairros.contains('Namutequeliua'), isTrue);
     });
   });
+
+  group('Testes de Código Postal', () {
+    test('Código postal válido (1100)', () {
+      expect(MozUtils.isValidPostalCode('1100'), isTrue);
+    });
+
+    test('Código postal com espaços (1101)', () {
+      expect(MozUtils.isValidPostalCode(' 1101 '), isTrue);
+    });
+
+    test('Código postal com traço (1102)', () {
+      expect(MozUtils.isValidPostalCode('11-02'), isTrue);
+    });
+
+    test('Código postal válido (1202)', () {
+      expect(MozUtils.isValidPostalCode('1202'), isTrue);
+    });
+
+    test('Código postal válido (3311)', () {
+      expect(MozUtils.isValidPostalCode('3311'), isTrue);
+    });
+
+    test('Código postal inválido (1199)', () {
+      expect(MozUtils.isValidPostalCode('1199'), isFalse);
+    });
+
+    test('Código postal muito longo', () {
+      expect(MozUtils.isValidPostalCode('11000'), isFalse);
+    });
+
+    test('Código postal muito curto', () {
+      expect(MozUtils.isValidPostalCode('110'), isFalse);
+    });
+
+    test('Código postal não numérico', () {
+      expect(MozUtils.isValidPostalCode('ABCD'), isFalse);
+    });
+
+    test('Localidade de 1100', () {
+      expect(MozUtils.getPostalCodeLocality('1100'), equals('Maputo ECP (Sede)'));
+    });
+
+    test('Localidade de 1205', () {
+      expect(MozUtils.getPostalCodeLocality('1205'), equals('Chilembene / Magoanine'));
+    });
+
+    test('Província de 1100', () {
+      expect(MozUtils.getPostalCodeProvince('1100'), equals('Maputo'));
+    });
+
+    test('Província de 2100', () {
+      expect(MozUtils.getPostalCodeProvince('2100'), equals('Sofala'));
+    });
+
+    test('Província de 3311', () {
+      expect(MozUtils.getPostalCodeProvince('3311'), equals('Niassa'));
+    });
+
+    test('Localidade de inválido', () {
+      expect(MozUtils.getPostalCodeLocality('9999'), isNull);
+    });
+
+    test('Província de inválido', () {
+      expect(MozUtils.getPostalCodeProvince('9999'), isNull);
+    });
+  });
 }

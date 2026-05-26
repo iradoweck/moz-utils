@@ -10,7 +10,10 @@ const {
   isValidBI,
   formatMZN,
   getDistrictsByProvince,
-  getAllDistricts
+  getAllDistricts,
+  isValidPostalCode,
+  getPostalCodeLocality,
+  getPostalCodeProvince
 } = require('./ts/dist/index.js');
 
 let passed = 0;
@@ -176,6 +179,28 @@ test('Maxixe (Cidade) bairros (Bairro Central corrigido)', maxixe.bairros, ['Bai
 
 const nampula = all.find(d => d.name === 'Nampula (Cidade)');
 test('Nampula (Cidade) bairros contêm Namutequeliua', nampula.bairros.includes('Namutequeliua'), true);
+
+// --- Código Postal ---
+console.log('\n✉️ TESTES DE CÓDIGO POSTAL');
+console.log('─'.repeat(50));
+
+test('Código postal válido (1100)', isValidPostalCode('1100'), true);
+test('Código postal com espaços (1101)', isValidPostalCode(' 1101 '), true);
+test('Código postal com traço (1102)', isValidPostalCode('11-02'), true);
+test('Código postal válido (1202)', isValidPostalCode('1202'), true);
+test('Código postal válido (3311)', isValidPostalCode('3311'), true);
+test('Código postal inválido (1199)', isValidPostalCode('1199'), false);
+test('Código postal muito longo', isValidPostalCode('11000'), false);
+test('Código postal muito curto', isValidPostalCode('110'), false);
+test('Código postal não numérico', isValidPostalCode('ABCD'), false);
+
+test('Localidade de 1100', getPostalCodeLocality('1100'), 'Maputo ECP (Sede)');
+test('Localidade de 1205', getPostalCodeLocality('1205'), 'Chilembene / Magoanine');
+test('Província de 1100', getPostalCodeProvince('1100'), 'Maputo');
+test('Província de 2100', getPostalCodeProvince('2100'), 'Sofala');
+test('Província de 3311', getPostalCodeProvince('3311'), 'Niassa');
+test('Localidade de inválido', getPostalCodeLocality('9999'), null);
+test('Província de inválido', getPostalCodeProvince('9999'), null);
 
 // --- RESULTADO FINAL ---
 console.log('\n' + '═'.repeat(50));

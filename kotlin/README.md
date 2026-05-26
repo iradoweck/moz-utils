@@ -35,7 +35,7 @@ You can publish the package to your local Maven repository by running the follow
 
 And in your consuming project, ensure you have `mavenLocal()` in your repositories and add:
 ```kotlin
-implementation("com.edmilsonmuacigarro:moz-utils:0.1.2")
+implementation("com.edmilsonmuacigarro:moz-utils:0.2.0")
 ```
 
 ---
@@ -114,7 +114,30 @@ val price2 = MozUtils.formatMZN(5000000.0, "MZN") // "5 000 000,00 MZN"
 
 ---
 
-### 4. Geographical Database
+### 4. Legacy Postal Codes
+
+#### `MozUtils.isValidPostalCode(code: String): Boolean`
+Validates if a legacy postal code of Moçambique is valid (exactly 4 digits belonging to the classic system of the Correios de Moçambique).
+```kotlin
+val isValid = MozUtils.isValidPostalCode("1100")   // true
+val isInvalid = MozUtils.isValidPostalCode("1199") // false
+```
+
+#### `MozUtils.getPostalCodeLocality(code: String): String?`
+Returns the locality associated with the legacy postal code, or `null`.
+```kotlin
+val locality = MozUtils.getPostalCodeLocality("1100") // "Maputo ECP (Sede)"
+```
+
+#### `MozUtils.getPostalCodeProvince(code: String): String?`
+Returns the province associated with the legacy postal code, or `null`.
+```kotlin
+val province = MozUtils.getPostalCodeProvince("1100") // "Maputo"
+```
+
+---
+
+### 5. Geographical Database
 
 The library provides the following methods to query the official administrative structure of Mozambique:
 

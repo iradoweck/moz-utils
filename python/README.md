@@ -108,7 +108,36 @@ format_mzn(5000000, 'MZN') # "5 000 000,00 MZN"
 
 ---
 
-### 4. Geographical Database
+### 4. Legacy Postal Codes
+
+#### `is_valid_postal_code(code: str) -> bool`
+Validates if a legacy postal code of Moçambique is valid (exactly 4 digits belonging to the classic system of the Correios de Moçambique).
+```python
+from moz_utils import is_valid_postal_code
+
+is_valid_postal_code('1100')   # True
+is_valid_postal_code('1199')   # False
+```
+
+#### `get_postal_code_locality(code: str) -> Optional[str]`
+Returns the locality associated with the legacy postal code, or `None`.
+```python
+from moz_utils import get_postal_code_locality
+
+get_postal_code_locality('1100')  # "Maputo ECP (Sede)"
+```
+
+#### `get_postal_code_province(code: str) -> Optional[str]`
+Returns the province associated with the legacy postal code, or `None`.
+```python
+from moz_utils import get_postal_code_province
+
+get_postal_code_province('1100')  # "Maputo"
+```
+
+---
+
+### 5. Geographical Database
 
 ```python
 from moz_utils import get_mozambique_provinces, get_districts_by_province, get_all_districts

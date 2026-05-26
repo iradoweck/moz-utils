@@ -122,7 +122,36 @@ MozUtils::formatMZN(10000000, 'MZN'); // "10 000 000,00 MZN"
 
 ---
 
-### 4. Geographical Database
+### 4. Legacy Postal Codes
+
+#### `MozUtils::isValidPostalCode(string $code): bool`
+Validates if a legacy postal code of Moçambique is valid (exactly 4 digits belonging to the classic system of the Correios de Moçambique).
+```php
+use Iradoweck\MozUtils\MozUtils;
+
+MozUtils::isValidPostalCode('1100');   // true
+MozUtils::isValidPostalCode('1199');   // false
+```
+
+#### `MozUtils::getPostalCodeLocality(string $code): ?string`
+Returns the locality associated with the legacy postal code, or `null`.
+```php
+use Iradoweck\MozUtils\MozUtils;
+
+MozUtils::getPostalCodeLocality('1100'); // "Maputo ECP (Sede)"
+```
+
+#### `MozUtils::getPostalCodeProvince(string $code): ?string`
+Returns the province associated with the legacy postal code, or `null`.
+```php
+use Iradoweck\MozUtils\MozUtils;
+
+MozUtils::getPostalCodeProvince('1100'); // "Maputo"
+```
+
+---
+
+### 5. Geographical Database
 
 ```php
 use Iradoweck\MozUtils\MozUtils;

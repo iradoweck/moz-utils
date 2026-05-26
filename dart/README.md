@@ -115,7 +115,36 @@ print(MozUtils.formatMZN(10000000, 'MZN')); // "10 000 000,00 MZN"
 
 ---
 
-### 4. Geographical Database
+### 4. Legacy Postal Codes
+
+#### `MozUtils.isValidPostalCode(String code): bool`
+Validates if a legacy postal code of Moçambique is valid (exactly 4 digits belonging to the classic system of the Correios de Moçambique).
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+print(MozUtils.isValidPostalCode('1100'));   // true
+print(MozUtils.isValidPostalCode('1199'));   // false
+```
+
+#### `MozUtils.getPostalCodeLocality(String code): String?`
+Returns the locality associated with the legacy postal code, or `null`.
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+print(MozUtils.getPostalCodeLocality('1100')); // "Maputo ECP (Sede)"
+```
+
+#### `MozUtils.getPostalCodeProvince(String code): String?`
+Returns the province associated with the legacy postal code, or `null`.
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+print(MozUtils.getPostalCodeProvince('1100')); // "Maputo"
+```
+
+---
+
+### 5. Geographical Database
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';

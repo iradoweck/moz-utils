@@ -7,7 +7,10 @@ from moz_utils import (
     is_valid_bi,
     format_mzn,
     get_districts_by_province,
-    get_all_districts
+    get_all_districts,
+    is_valid_postal_code,
+    get_postal_code_locality,
+    get_postal_code_province
 )
 
 def generate_valid_nuit(first8: str) -> str:
@@ -127,6 +130,26 @@ class TestMozUtils(unittest.TestCase):
         
         nampula = next(d for d in all_districts if d['name'] == 'Nampula (Cidade)')
         self.assertTrue('Namutequeliua' in nampula['bairros'])
+
+    def test_postal_codes(self):
+        self.assertTrue(is_valid_postal_code('1100'))
+        self.assertTrue(is_valid_postal_code(' 1101 '))
+        self.assertTrue(is_valid_postal_code('11-02'))
+        self.assertTrue(is_valid_postal_code('1202'))
+        self.assertTrue(is_valid_postal_code('3311'))
+        
+        self.assertFalse(is_valid_postal_code('1199'))
+        self.assertFalse(is_valid_postal_code('11000'))
+        self.assertFalse(is_valid_postal_code('110'))
+        self.assertFalse(is_valid_postal_code('ABCD'))
+        
+        self.assertEqual(get_postal_code_locality('1100'), 'Maputo ECP (Sede)')
+        self.assertEqual(get_postal_code_locality('1205'), 'Chilembene / Magoanine')
+        self.assertEqual(get_postal_code_province('1100'), 'Maputo')
+        self.assertEqual(get_postal_code_province('2100'), 'Sofala')
+        self.assertEqual(get_postal_code_province('3311'), 'Niassa')
+        self.assertIsNone(get_postal_code_locality('9999'))
+        self.assertIsNone(get_postal_code_province('9999'))
 
 if __name__ == '__main__':
     unittest.main()

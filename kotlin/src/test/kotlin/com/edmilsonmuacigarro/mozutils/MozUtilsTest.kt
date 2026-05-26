@@ -144,4 +144,26 @@ class MozUtilsTest {
         val nampula = all.first { d -> d.name == "Nampula (Cidade)" }
         assertTrue(nampula.bairros.contains("Namutequeliua"))
     }
+
+    @Test
+    fun testPostalCodes() {
+        assertTrue(MozUtils.isValidPostalCode("1100"))
+        assertTrue(MozUtils.isValidPostalCode(" 1101 "))
+        assertTrue(MozUtils.isValidPostalCode("11-02"))
+        assertTrue(MozUtils.isValidPostalCode("1202"))
+        assertTrue(MozUtils.isValidPostalCode("3311"))
+
+        assertFalse(MozUtils.isValidPostalCode("1199"))
+        assertFalse(MozUtils.isValidPostalCode("11000"))
+        assertFalse(MozUtils.isValidPostalCode("110"))
+        assertFalse(MozUtils.isValidPostalCode("ABCD"))
+
+        assertEquals("Maputo ECP (Sede)", MozUtils.getPostalCodeLocality("1100"))
+        assertEquals("Chilembene / Magoanine", MozUtils.getPostalCodeLocality("1205"))
+        assertEquals("Maputo", MozUtils.getPostalCodeProvince("1100"))
+        assertEquals("Sofala", MozUtils.getPostalCodeProvince("2100"))
+        assertEquals("Niassa", MozUtils.getPostalCodeProvince("3311"))
+        assertNull(MozUtils.getPostalCodeLocality("9999"))
+        assertNull(MozUtils.getPostalCodeProvince("9999"))
+    }
 }

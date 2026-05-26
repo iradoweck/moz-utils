@@ -1111,4 +1111,225 @@ object MozUtils {
         }
         return list;
     }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // NAME & DOCUMENT FIELD SANITIZATION
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /**
+     * Checks whether a string is a valid personal name.
+     * Accepts Unicode letters, spaces, hyphens, and apostrophes.
+     *
+     * @sample isValidName("Edmilson Muacigarro") // true
+     * @sample isValidName("Jean-Pierre")          // true
+     * @sample isValidName("ABC123")               // false
+     */
+    fun isValidName(name: String): Boolean {
+        val trimmed = name.trim()
+        if (trimmed.isEmpty()) return false
+        return trimmed.all { it.isLetter() || it.isWhitespace() || it == '-' || it == '\'' }
+    }
+
+    /**
+     * Sanitizes a personal name field.
+     *
+     * By default converts to Title Case. Pass allCaps = true to force UPPERCASE.
+     * Strips digits and most special characters.
+     *
+     * @sample sanitizeName("  edmilson   muacigarro  ")        // "Edmilson Muacigarro"
+     * @sample sanitizeName("JOÃO", allCaps = true)             // "JOÃO"
+     * @sample sanitizeName("jean-pierre dupont")              // "Jean-Pierre Dupont"
+     */
+    fun sanitizeName(name: String, allCaps: Boolean = false): String {
+        // Keep only letters, spaces, hyphens, apostrophes; collapse whitespace
+        val cleaned = name
+            .filter { it.isLetter() || it.isWhitespace() || it == '-' || it == '\'' }
+            .replace(Regex("\\s+"), " ")
+            .trim()
+
+        if (allCaps) return cleaned.uppercase()
+
+        // Title Case: capitalise after start, space, or hyphen
+        val sb = StringBuilder()
+        var capitaliseNext = true
+        for (char in cleaned) {
+            when {
+                char == ' ' || char == '-' -> { sb.append(char); capitaliseNext = true }
+                capitaliseNext -> { sb.append(char.uppercaseChar()); capitaliseNext = false }
+                else -> sb.append(char)
+            }
+        }
+        return sb.toString()
+    }
+
+    /**
+     * Sanitizes a document number field that contains only digits.
+     * Strips all non-numeric characters.
+     *
+     * @sample sanitizeDocumentField("123 456 789")  // "123456789"
+     * @sample sanitizeDocumentField("123-456-789")  // "123456789"
+     */
+    fun sanitizeDocumentField(value: String): String {
+        return value.filter { it.isDigit() }
+    }
+
+    /**
+     * Sanitizes an alphanumeric document field (digits + letters),
+     * forcing all letters to UPPERCASE.
+     *
+     * Useful for BI, passports, and other mixed-format documents.
+     *
+     * @sample sanitizeAlphanumericField("110 101 234567a")  // "110101234567A"
+     * @sample sanitizeAlphanumericField("abc-123-XYZ!")    // "ABC123XYZ"
+     */
+    fun sanitizeAlphanumericField(value: String): String {
+        return value.filter { it.isLetterOrDigit() }.uppercase()
+    }
+
+    /**
+     * Mapa de Códigos Postais Legados de Moçambique.
+     */
+    val legacyPostalCodes: Map<String, Map<String, String>> = mapOf(
+        // Região Sul
+        // Maputo
+        "1100" to mapOf("locality" to "Maputo ECP (Sede)", "province" to "Maputo"),
+        "1101" to mapOf("locality" to "Polana", "province" to "Maputo"),
+        "1102" to mapOf("locality" to "Sommerchild", "province" to "Maputo"),
+        "1103" to mapOf("locality" to "Malhangalene", "province" to "Maputo"),
+        "1104" to mapOf("locality" to "Alto-Maé", "province" to "Maputo"),
+        "1106" to mapOf("locality" to "Bairro Central", "province" to "Maputo"),
+        "1107" to mapOf("locality" to "Bairro do Aeroporto", "province" to "Maputo"),
+        "1108" to mapOf("locality" to "Bairro do Mavalane", "province" to "Maputo"),
+        "1109" to mapOf("locality" to "Bairro do Jardim", "province" to "Maputo"),
+        "1110" to mapOf("locality" to "Bairro do Xipamanine", "province" to "Maputo"),
+        "1111" to mapOf("locality" to "Bairro George Dimitrov", "province" to "Maputo"),
+        "1112" to mapOf("locality" to "Machava", "province" to "Maputo"),
+        "1113" to mapOf("locality" to "Fomento", "province" to "Maputo"),
+        "1114" to mapOf("locality" to "Matola", "province" to "Maputo"),
+        "1115" to mapOf("locality" to "Boane", "province" to "Maputo"),
+        "1116" to mapOf("locality" to "Namaacha", "province" to "Maputo"),
+        "1117" to mapOf("locality" to "Katembe", "province" to "Maputo"),
+        "1118" to mapOf("locality" to "Bela-Vista", "province" to "Maputo"),
+        "1119" to mapOf("locality" to "Inhaca", "province" to "Maputo"),
+        "1120" to mapOf("locality" to "Marracuene", "province" to "Maputo"),
+        "1121" to mapOf("locality" to "Manhiça", "province" to "Maputo"),
+        "1122" to mapOf("locality" to "Xinavane", "province" to "Maputo"),
+        "1123" to mapOf("locality" to "Magude", "province" to "Maputo"),
+        "1124" to mapOf("locality" to "Moamba", "province" to "Maputo"),
+        "1125" to mapOf("locality" to "Ressano Garcia", "province" to "Maputo"),
+        // Gaza
+        "1200" to mapOf("locality" to "Xai-Xai ECP", "province" to "Gaza"),
+        "1201" to mapOf("locality" to "Praia de Xai-Xai", "province" to "Gaza"),
+        "1202" to mapOf("locality" to "Macia", "province" to "Gaza"),
+        "1203" to mapOf("locality" to "Praia de Bilene", "province" to "Gaza"),
+        "1204" to mapOf("locality" to "Chokwé", "province" to "Gaza"),
+        "1205" to mapOf("locality" to "Chilembene / Magoanine", "province" to "Gaza"),
+        "1206" to mapOf("locality" to "Mabalane", "province" to "Gaza"),
+        "1207" to mapOf("locality" to "Massingir", "province" to "Gaza"),
+        "1208" to mapOf("locality" to "Chibuto", "province" to "Gaza"),
+        "1209" to mapOf("locality" to "Manjacaze", "province" to "Gaza"),
+        "1210" to mapOf("locality" to "Chidenguele", "province" to "Gaza"),
+        "1211" to mapOf("locality" to "Chicualacuala", "province" to "Gaza"),
+        // Inhambane
+        "1300" to mapOf("locality" to "Inhambane ECP", "province" to "Inhambane"),
+        "1301" to mapOf("locality" to "Maxixe", "province" to "Inhambane"),
+        "1302" to mapOf("locality" to "Morrumbene", "province" to "Inhambane"),
+        "1303" to mapOf("locality" to "Massinga", "province" to "Inhambane"),
+        "1304" to mapOf("locality" to "Vilanculos", "province" to "Inhambane"),
+        "1305" to mapOf("locality" to "Inhassoro", "province" to "Inhambane"),
+        "1306" to mapOf("locality" to "Nova-Mambone", "province" to "Inhambane"),
+        "1307" to mapOf("locality" to "Jangamo", "province" to "Inhambane"),
+        "1308" to mapOf("locality" to "Cumbane", "province" to "Inhambane"),
+        "1309" to mapOf("locality" to "Homoine", "province" to "Inhambane"),
+        "1310" to mapOf("locality" to "Panda", "province" to "Inhambane"),
+        "1311" to mapOf("locality" to "Inharrime", "province" to "Inhambane"),
+        "1312" to mapOf("locality" to "Quissico", "province" to "Inhambane"),
+        "1313" to mapOf("locality" to "Funhalouro", "province" to "Inhambane"),
+        "1314" to mapOf("locality" to "Mabote", "province" to "Inhambane"),
+
+        // Região Centro
+        // Sofala
+        "2100" to mapOf("locality" to "Beira ECP", "province" to "Sofala"),
+        "2101" to mapOf("locality" to "Macúti", "province" to "Sofala"),
+        "2102" to mapOf("locality" to "Beira Aeroporto", "province" to "Sofala"),
+        "2103" to mapOf("locality" to "Manga", "province" to "Sofala"),
+        "2104" to mapOf("locality" to "Dondo", "province" to "Sofala"),
+        "2105" to mapOf("locality" to "Mafambisse", "province" to "Sofala"),
+        "2106" to mapOf("locality" to "Nhamatanda", "province" to "Sofala"),
+        "2107" to mapOf("locality" to "Buzi", "province" to "Sofala"),
+        "2110" to mapOf("locality" to "Gorongoza", "province" to "Sofala"),
+        // Manica
+        "2200" to mapOf("locality" to "Chimoio ECP", "province" to "Manica"),
+        "2201" to mapOf("locality" to "Catandica", "province" to "Manica"),
+        "2202" to mapOf("locality" to "Vila de Manica", "province" to "Manica"),
+        "2203" to mapOf("locality" to "Gondola", "province" to "Manica"),
+        "2204" to mapOf("locality" to "Guro", "province" to "Manica"),
+        "2205" to mapOf("locality" to "Machaze", "province" to "Manica"),
+        "2206" to mapOf("locality" to "Macossa", "province" to "Manica"),
+        "2207" to mapOf("locality" to "Sussundenga", "province" to "Manica"),
+        "2208" to mapOf("locality" to "Tambara", "province" to "Manica"),
+        // Tete
+        "2300" to mapOf("locality" to "Tete ECP", "province" to "Tete"),
+        "2301" to mapOf("locality" to "Tete Aeroporto", "province" to "Tete"),
+        "2302" to mapOf("locality" to "Moatize", "province" to "Tete"),
+        "2304" to mapOf("locality" to "Songo", "province" to "Tete"),
+        "2307" to mapOf("locality" to "Mutarara", "province" to "Tete"),
+        "2312" to mapOf("locality" to "Zumbo", "province" to "Tete"),
+        // Zambézia
+        "2400" to mapOf("locality" to "Quelimane ECP", "province" to "Zambézia"),
+        "2401" to mapOf("locality" to "Nicoadala", "province" to "Zambézia"),
+        "2403" to mapOf("locality" to "Mocuba", "province" to "Zambézia"),
+        "2405" to mapOf("locality" to "Pebane", "province" to "Zambézia"),
+        "2407" to mapOf("locality" to "Gurué", "province" to "Zambézia"),
+        "2412" to mapOf("locality" to "Chinde", "province" to "Zambézia"),
+
+        // Região Norte
+        // Nampula
+        "3100" to mapOf("locality" to "Nampula ECP", "province" to "Nampula"),
+        "3101" to mapOf("locality" to "Angoche", "province" to "Nampula"),
+        "3102" to mapOf("locality" to "Monapo", "province" to "Nampula"),
+        "3105" to mapOf("locality" to "Ilha de Moçambique", "province" to "Nampula"),
+        "3108" to mapOf("locality" to "Moma", "province" to "Nampula"),
+        "3112" to mapOf("locality" to "Nacala", "province" to "Nampula"),
+        "3115" to mapOf("locality" to "Namapa", "province" to "Nampula"),
+        "3119" to mapOf("locality" to "Ribaue", "province" to "Nampula"),
+        // Cabo Delgado
+        "3200" to mapOf("locality" to "Pemba ECP", "province" to "Cabo Delgado"),
+        "3201" to mapOf("locality" to "Pemba-2", "province" to "Cabo Delgado"),
+        "3208" to mapOf("locality" to "Montepuez", "province" to "Cabo Delgado"),
+        "3216" to mapOf("locality" to "Mueda", "province" to "Cabo Delgado"),
+        "3219" to mapOf("locality" to "Palma", "province" to "Cabo Delgado"),
+        // Niassa
+        "3300" to mapOf("locality" to "Lichinga ECP", "province" to "Niassa"),
+        "3301" to mapOf("locality" to "Macanhelas", "province" to "Niassa"),
+        "3304" to mapOf("locality" to "Mandimba", "province" to "Niassa"),
+        "3305" to mapOf("locality" to "Cuamba", "province" to "Niassa"),
+        "3311" to mapOf("locality" to "Muembe", "province" to "Niassa")
+    )
+
+    /**
+     * Valida se um código postal legado de Moçambique é válido.
+     * Deve conter 4 dígitos numéricos pertencentes ao sistema clássico dos Correios de Moçambique.
+     */
+    fun isValidPostalCode(code: String): Boolean {
+        val cleaned = code.filter { it.isDigit() }
+        return legacyPostalCodes.containsKey(cleaned)
+    }
+
+    /**
+     * Retorna a localidade correspondente a um código postal legado de Moçambique.
+     */
+    fun getPostalCodeLocality(code: String): String? {
+        val cleaned = code.filter { it.isDigit() }
+        return legacyPostalCodes[cleaned]?.get("locality")
+    }
+
+    /**
+     * Retorna a província correspondente a um código postal legado de Moçambique.
+     */
+    fun getPostalCodeProvince(code: String): String? {
+        val cleaned = code.filter { it.isDigit() }
+        return legacyPostalCodes[cleaned]?.get("province")
+    }
 }
+
