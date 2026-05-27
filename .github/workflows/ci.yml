@@ -33,7 +33,7 @@ jobs:
       working-directory: ts
 
     - name: Run validation tests (TypeScript)
-      run: node test-validation.js
+      run: cd ts && npm test
 
     - name: Setup Python
       uses: actions/setup-python@v5

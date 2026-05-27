@@ -1417,4 +1417,4 @@ object MozUtils {
         }
         return results
     }
-\n}\n
+}

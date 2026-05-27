@@ -1,7 +1,13 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'exported_data.json'), 'utf8'));
+
+const escapeStr = (str: string) => (str || '').replace(/"/g, '\\"');
 
 // Generate Python
 let pyCode = `"""\nDados do Código de Endereçamento Postal (CEP) de Moçambique.\nGerado automaticamente.\n"""\n\n`;
@@ -38,7 +44,7 @@ ktCode += `object CepData {\n`;
 // Kotlin requires more specific typing for Maps
 ktCode += `    val legacyPostalCodes: Map<String, Map<String, String>> = mapOf(\n`;
 for (const [k, v] of Object.entries(data.legacyPostalCodes)) {
-    ktCode += `        "${k}" to mapOf("locality" to "${(v as any).locality}", "province" to "${(v as any).province}", "administrative_posts" to "${(v as any).administrative_posts}", "neighborhoods" to "${(v as any).neighborhoods}"),\n`;
+    ktCode += `        "${k}" to mapOf("locality" to "${escapeStr((v as any).locality)}", "province" to "${escapeStr((v as any).province)}", "administrative_posts" to "${escapeStr((v as any).administrative_posts)}", "neighborhoods" to "${escapeStr((v as any).neighborhoods)}"),\n`;
 }
 ktCode += `    )\n\n`;
 
@@ -50,7 +56,7 @@ ktCode += `    )\n\n`;
 
 ktCode += `    val newCEPData: List<Map<String, String>> = listOf(\n`;
 for (const item of data.newCEPData as any[]) {
-    ktCode += `        mapOf("cep" to "${item.cep}", "province" to "${item.province}", "district" to "${item.district}", "locality" to "${item.locality}", "administrative_posts" to "${item.administrative_posts}", "neighborhoods" to "${item.neighborhoods}"),\n`;
+    ktCode += `        mapOf("cep" to "${escapeStr(item.cep)}", "province" to "${escapeStr(item.province)}", "district" to "${escapeStr(item.district)}", "locality" to "${escapeStr(item.locality)}", "administrative_posts" to "${escapeStr(item.administrative_posts)}", "neighborhoods" to "${escapeStr(item.neighborhoods)}"),\n`;
 }
 ktCode += `    )\n}\n`;
 fs.writeFileSync(path.join(__dirname, '../../kotlin/src/main/kotlin/com/edmilsonmuacigarro/mozutils/CepData.kt'), ktCode);
