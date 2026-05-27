@@ -7,7 +7,9 @@ library moz_utils;
 /// Classe utilitária contendo funções estáticas para validação e formatação
 /// de dados comuns no contexto moçambicano (como NUIT, BI, números de telefone,
 /// moeda MZN, códigos postais legados e divisões geográficas).
-import 'src/cep_data.dart';\n\nclass MozUtils {
+import 'src/cep_data.dart';
+
+class MozUtils {
   // Construtor privado para evitar instanciação direta.
   MozUtils._();
 
@@ -1224,7 +1226,6 @@ import 'src/cep_data.dart';\n\nclass MozUtils {
     // Handle the typo in Vilankulos key if present, though we should make sure province is always written exactly
     return legacyPostalCodes[cleaned]?['province'] ?? legacyPostalCodes[cleaned]?['province:'];
   }
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // NAME & DOCUMENT FIELD SANITIZATION
@@ -1238,7 +1239,7 @@ import 'src/cep_data.dart';\n\nclass MozUtils {
 /// isValidName('Jean-Pierre')         // true
 /// isValidName('ABC123')              // false
 /// ```
-bool isValidName(String name) {
+static bool isValidName(String name) {
   final trimmed = name.trim();
   if (trimmed.isEmpty) return false;
   return RegExp(r"^[\p{L}\s'\-]+$", unicode: true).hasMatch(trimmed);
@@ -1255,7 +1256,7 @@ bool isValidName(String name) {
 /// sanitizeName('JOÃO', allCaps: true)              // 'JOÃO'
 /// sanitizeName('jean-pierre dupont')               // 'Jean-Pierre Dupont'
 /// ```
-String sanitizeName(String name, {bool allCaps = false}) {
+static String sanitizeName(String name, {bool allCaps = false}) {
   // Remove anything that is not a letter, space, hyphen, or apostrophe
   final cleaned = name
       .replaceAll(RegExp(r"[^\p{L}\s'\-]", unicode: true), '')
@@ -1288,7 +1289,7 @@ String sanitizeName(String name, {bool allCaps = false}) {
 /// sanitizeDocumentField('123 456 789')  // '123456789'
 /// sanitizeDocumentField('123-456-789')  // '123456789'
 /// ```
-String sanitizeDocumentField(String value) {
+static String sanitizeDocumentField(String value) {
   return value.replaceAll(RegExp(r'\D'), '');
 }
 
@@ -1301,8 +1302,9 @@ String sanitizeDocumentField(String value) {
 /// sanitizeAlphanumericField('110 101 234567a')  // '110101234567A'
 /// sanitizeAlphanumericField('abc-123-XYZ!')     // 'ABC123XYZ'
 /// ```
-String sanitizeAlphanumericField(String value) {
+static String sanitizeAlphanumericField(String value) {
   return value.replaceAll(RegExp(r'[^A-Za-z0-9]'), '').toUpperCase();
+}
 
 
   /// Identifica a carteira móvel (Mobile Wallet) associada a um número moçambicano.
@@ -1381,4 +1383,4 @@ String sanitizeAlphanumericField(String value) {
     }
     return results;
   }
-\n}\n
+}
