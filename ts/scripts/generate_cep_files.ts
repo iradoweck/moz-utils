@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'exported_data.json'), 'utf8'));
 
-const escapeStr = (str: string) => (str || '').replace(/"/g, '\\"');
+const escapeStr = (str: string) => (str || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 
 // Generate Python
 let pyCode = `"""\nDados do Código de Endereçamento Postal (CEP) de Moçambique.\nGerado automaticamente.\n"""\n\n`;

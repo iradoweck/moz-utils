@@ -1290,7 +1290,9 @@ LEGACY_POSTAL_CODES = {
 }
 
 
-from .cep_data import LEGACY_POSTAL_CODES\n\ndef is_valid_postal_code(code: str) -> bool:
+from .cep_data import LEGACY_POSTAL_CODES
+
+def is_valid_postal_code(code: str) -> bool:
     """
     Valida se um código postal legado de Moçambique é válido.
     Deve conter 4 dígitos numéricos pertencentes ao sistema clássico dos Correios de Moçambique.
