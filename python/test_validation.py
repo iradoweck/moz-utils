@@ -129,7 +129,7 @@ class TestMozUtils(unittest.TestCase):
         self.assertEqual(maxixe['neighborhoods'], ['Bairro Central', 'Chamba', 'Macupula', 'Nalazi'])
         
         nampula = next(d for d in all_districts if d['name'] == 'Nampula (Cidade)')
-        self.assertTrue('Namutequeliua' in nampula['neighborhoods'])
+        self.assertIn('Namutequeliua', nampula['neighborhoods'])
 
     def test_postal_codes(self):
         self.assertTrue(is_valid_postal_code('1100'))

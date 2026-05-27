@@ -334,7 +334,7 @@ void main() {
       final all = MozUtils.getAllDistricts();
       final nampula = all.firstWhere((d) => d['name'] == 'Nampula (Cidade)');
       final neighborhoods = nampula['neighborhoods'] as List<String>;
-      expect(neighborhoods.contains('Namutequeliua'), isTrue);
+      expect(neighborhoods, contains('Namutequeliua'));
     });
   });
 

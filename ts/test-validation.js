@@ -66,6 +66,17 @@ test('NUIT with more than 9 digits → invalid', isValidNUIT('1234567890'), fals
 test('NUIT with repeated digits → invalid', isValidNUIT('111111111'), false);
 test('NUIT with wrong control digit', isValidNUIT(nuitSingular.slice(0, 8) + '9'), false);
 
+// --- NUIT: Classificação de Entidade ---
+console.log('\n📋 TESTES DE CLASSIFICAÇÃO DO NUIT');
+console.log('─'.repeat(50));
+
+test('Tipo 1 → Singular', getNUITEntityType(nuitSingular), 'Singular (Cidadãos nacionais/estrangeiros e ENI)');
+test('Tipo 2 → Singular', getNUITEntityType(nuitSingular2), 'Singular (Cidadãos nacionais/estrangeiros e ENI)');
+test('Tipo 3 → Equiparada', getNUITEntityType(nuitEquivalent), 'Equiparada (Heranças Jacentes, Consórcios)');
+test('Tipo 4 → Colectiva', getNUITEntityType(nuitCollective), 'Colectiva (Sociedades por Quotas, SA, Lda, Associações)');
+test('Tipo 5 → Público', getNUITEntityType(nuitPublico), 'Público (Instituições do Estado e Ministérios)');
+test('NUIT inválido → null', getNUITEntityType('000000000'), null);
+
 test('84XXXXXXX (Vodacom) valid', isValidMozambicanPhone('841234567'), true);
 test('85XXXXXXX (Vodacom) valid', isValidMozambicanPhone('851234567'), true);
 test('82XXXXXXX (Tmcel) valid', isValidMozambicanPhone('821234567'), true);
