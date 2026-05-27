@@ -25,7 +25,7 @@ function showMenu() {
     console.log('1. Validar Telefone (M-Pesa, e-Mola, mKesh)');
     console.log('2. Validar NUIT');
     console.log('3. Validar Bilhete de Identidade (BI)');
-    console.log('4. Validar DIRE');
+    console.log('4. Validate DIRE');
     console.log('5. Validar Passaporte');
     console.log('6. Validar Carta de Condução');
     console.log('7. Validar / Sugerir Códigos Postais (CEP)');
@@ -45,7 +45,7 @@ function showMenu() {
                 rl.close(); 
                 break;
             default:
-                console.log('\n❌ Opção inválida.');
+                console.log('\n❌ Invalid option.');
                 promptContinue();
                 break;
         }
@@ -62,14 +62,14 @@ function handlePhone() {
     rl.question('\nDigite o número de telefone (ex: 841234567 ou +258 84...): ', (input: string) => {
         if (isValidMozambicanPhone(input)) {
             const operator = getMobileOperator(input);
-            console.log(`\n✅ Número Válido!`);
-            console.log(`📡 Operadora detetada: ${operator}`);
+            console.log(`\n✅ Número Valid!`);
+            console.log(`📡 Operator detetada: ${operator}`);
             console.log(`📞 Formato Internacional: ${formatMozambicanPhone(input)}`);
             if (operator === 'Vodacom') console.log(`💼 Suporta M-Pesa: Sim`);
             else if (operator === 'Tmcel') console.log(`💼 Suporta mKesh: Sim`);
             else if (operator === 'Movitel') console.log(`💼 Suporta e-Mola: Sim`);
         } else {
-            console.log('\n❌ Número Inválido!');
+            console.log('\n❌ Número Invalid!');
         }
         promptContinue();
     });
@@ -79,10 +79,10 @@ function handleNUIT() {
     rl.question('\nDigite o NUIT (9 dígitos): ', (input: string) => {
         if (isValidNUIT(input)) {
             const type = getNUITEntityType(input);
-            console.log(`\n✅ NUIT Válido! (Passou no Módulo 11)`);
-            console.log(`🏢 Tipo de Entidade: ${type}`);
+            console.log(`\n✅ NUIT Valid! (Passou no Módulo 11)`);
+            console.log(`🏢 Entity Type: ${type}`);
         } else {
-            console.log('\n❌ NUIT Inválido!');
+            console.log('\n❌ NUIT Invalid!');
         }
         promptContinue();
     });
@@ -91,9 +91,9 @@ function handleNUIT() {
 function handleBI() {
     rl.question('\nDigite o BI (12 dígitos e 1 letra): ', (input: string) => {
         if (isValidBI(input)) {
-            console.log(`\n✅ BI Válido!`);
+            console.log(`\n✅ BI Valid!`);
         } else {
-            console.log('\n❌ BI Inválido!');
+            console.log('\n❌ BI Invalid!');
         }
         promptContinue();
     });
@@ -102,9 +102,9 @@ function handleBI() {
 function handleDIRE() {
     rl.question('\nDigite o DIRE (8 dígitos e 1 letra): ', (input: string) => {
         if (isValidDIRE(input)) {
-            console.log(`\n✅ DIRE Válido!`);
+            console.log(`\n✅ DIRE Valid!`);
         } else {
-            console.log('\n❌ DIRE Inválido!');
+            console.log('\n❌ DIRE Invalid!');
         }
         promptContinue();
     });
@@ -113,9 +113,9 @@ function handleDIRE() {
 function handlePassport() {
     rl.question('\nDigite o Passaporte (2 letras e 7 dígitos): ', (input: string) => {
         if (isValidPassport(input)) {
-            console.log(`\n✅ Passaporte Válido!`);
+            console.log(`\n✅ Passaporte Valid!`);
         } else {
-            console.log('\n❌ Passaporte Inválido!');
+            console.log('\n❌ Passaporte Invalid!');
         }
         promptContinue();
     });
@@ -151,7 +151,7 @@ function handleCEP() {
                     console.log(`  [${idx + 1}] ${s.cep} - ${s.locality}, ${s.district} (${s.province})`);
                 });
             } else {
-                console.log('\n❌ Formato ou Código Postal Inválido/Não Encontrado.');
+                console.log('\n❌ Formato ou Código Postal Invalid/Não Encontrado.');
             }
         }
         promptContinue();

@@ -2,6 +2,7 @@
   "name": "moz-utils",
   "version": "0.2.0",
   "description": "Utility functions for Mozambique — validation of NUIT, BI, documents, and phone number formatting",
+  "type": "module",
   "author": "Edmilson Muacigarro <contacto@edmilsonmuacigarro.com> (https://edmilsonmuacigarro.com)",
   "contributors": [
     "Zedecks IT (https://github.com/zedecks)"
@@ -41,7 +42,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "test": "node test-validation.js"
   },
   "dependencies": {},
   "devDependencies": {

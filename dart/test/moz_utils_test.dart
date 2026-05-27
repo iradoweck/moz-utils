@@ -15,55 +15,55 @@ void main() {
   group('Testes do NUIT (Módulo 11)', () {
     final nuitSingular = generateValidNUIT('10000000');
     final nuitSingular2 = generateValidNUIT('20000000');
-    final nuitEquiparada = generateValidNUIT('30000000');
-    final nuitColectiva = generateValidNUIT('40000000');
+    final nuitEquivalent = generateValidNUIT('30000000');
+    final nuitCollective = generateValidNUIT('40000000');
     final nuitPublico = generateValidNUIT('50000000');
 
-    test('NUIT Singular válido', () {
+    test('Valid Singular NUIT', () {
       expect(MozUtils.isValidNUIT(nuitSingular), isTrue);
     });
 
-    test('NUIT Singular2 válido', () {
+    test('Valid Singular2 NUIT', () {
       expect(MozUtils.isValidNUIT(nuitSingular2), isTrue);
     });
 
-    test('NUIT Equiparada válido', () {
-      expect(MozUtils.isValidNUIT(nuitEquiparada), isTrue);
+    test('Valid Equivalent NUIT', () {
+      expect(MozUtils.isValidNUIT(nuitEquivalent), isTrue);
     });
 
-    test('NUIT Colectiva válido', () {
-      expect(MozUtils.isValidNUIT(nuitColectiva), isTrue);
+    test('Valid Collective NUIT', () {
+      expect(MozUtils.isValidNUIT(nuitCollective), isTrue);
     });
 
-    test('NUIT Público válido', () {
+    test('Valid Public NUIT', () {
       expect(MozUtils.isValidNUIT(nuitPublico), isTrue);
     });
 
-    test('NUIT que começa com 0 → inválido', () {
+    test('NUIT that starts with 0 → invalid', () {
       expect(MozUtils.isValidNUIT('012345678'), isFalse);
     });
 
-    test('NUIT que começa com 6 → inválido', () {
+    test('NUIT that starts with 6 → invalid', () {
       expect(MozUtils.isValidNUIT('612345678'), isFalse);
     });
 
-    test('NUIT que começa com 9 → inválido', () {
+    test('NUIT that starts with 9 → invalid', () {
       expect(MozUtils.isValidNUIT('912345678'), isFalse);
     });
 
-    test('NUIT com menos de 9 dígitos → inválido', () {
+    test('NUIT with less than 9 digits → invalid', () {
       expect(MozUtils.isValidNUIT('1234'), isFalse);
     });
 
-    test('NUIT com mais de 9 dígitos → inválido', () {
+    test('NUIT with more than 9 digits → invalid', () {
       expect(MozUtils.isValidNUIT('1234567890'), isFalse);
     });
 
-    test('NUIT com dígitos repetidos → inválido', () {
+    test('NUIT with repeated digits → invalid', () {
       expect(MozUtils.isValidNUIT('111111111'), isFalse);
     });
 
-    test('NUIT com dígito de controlo errado', () {
+    test('NUIT with wrong control digit', () {
       expect(MozUtils.isValidNUIT('${nuitSingular.substring(0, 8)}9'), isFalse);
     });
   });
@@ -71,89 +71,89 @@ void main() {
   group('Testes de Classificação do NUIT', () {
     final nuitSingular = generateValidNUIT('10000000');
     final nuitSingular2 = generateValidNUIT('20000000');
-    final nuitEquiparada = generateValidNUIT('30000000');
-    final nuitColectiva = generateValidNUIT('40000000');
+    final nuitEquivalent = generateValidNUIT('30000000');
+    final nuitCollective = generateValidNUIT('40000000');
     final nuitPublico = generateValidNUIT('50000000');
 
-    test('Tipo 1 → Singular', () {
+    test('Type 1 → Singular', () {
       expect(MozUtils.getNUITEntityType(nuitSingular), equals('Singular (Cidadãos nacionais/estrangeiros e ENI)'));
     });
 
-    test('Tipo 2 → Singular', () {
+    test('Type 2 → Singular', () {
       expect(MozUtils.getNUITEntityType(nuitSingular2), equals('Singular (Cidadãos nacionais/estrangeiros e ENI)'));
     });
 
-    test('Tipo 3 → Equiparada', () {
-      expect(MozUtils.getNUITEntityType(nuitEquiparada), equals('Equiparada (Heranças Jacentes, Consórcios)'));
+    test('Type 3 → Equivalent', () {
+      expect(MozUtils.getNUITEntityType(nuitEquivalent), equals('Equivalent (Heranças Jacentes, Consórcios)'));
     });
 
-    test('Tipo 4 → Colectiva', () {
-      expect(MozUtils.getNUITEntityType(nuitColectiva), equals('Colectiva (Sociedades por Quotas, SA, Lda, Associações)'));
+    test('Type 4 → Collective', () {
+      expect(MozUtils.getNUITEntityType(nuitCollective), equals('Collective (Sociedades por Quotas, SA, Lda, Associações)'));
     });
 
-    test('Tipo 5 → Público', () {
-      expect(MozUtils.getNUITEntityType(nuitPublico), equals('Público (Instituições do Estado e Ministérios)'));
+    test('Type 5 → Public', () {
+      expect(MozUtils.getNUITEntityType(nuitPublico), equals('Public (Instituições do Estado e Ministérios)'));
     });
 
-    test('NUIT inválido → null', () {
+    test('NUIT invalid → null', () {
       expect(MozUtils.getNUITEntityType('000000000'), isNull);
     });
   });
 
   group('Testes de Telefone', () {
-    test('84XXXXXXX (Vodacom) válido', () {
+    test('84XXXXXXX (Vodacom) valid', () {
       expect(MozUtils.isValidMozambicanPhone('841234567'), isTrue);
     });
 
-    test('85XXXXXXX (Vodacom) válido', () {
+    test('85XXXXXXX (Vodacom) valid', () {
       expect(MozUtils.isValidMozambicanPhone('851234567'), isTrue);
     });
 
-    test('82XXXXXXX (Tmcel) válido', () {
+    test('82XXXXXXX (Tmcel) valid', () {
       expect(MozUtils.isValidMozambicanPhone('821234567'), isTrue);
     });
 
-    test('83XXXXXXX (Tmcel) válido', () {
+    test('83XXXXXXX (Tmcel) valid', () {
       expect(MozUtils.isValidMozambicanPhone('831234567'), isTrue);
     });
 
-    test('86XXXXXXX (Movitel) válido', () {
+    test('86XXXXXXX (Movitel) valid', () {
       expect(MozUtils.isValidMozambicanPhone('861234567'), isTrue);
     });
 
-    test('87XXXXXXX (Movitel) válido', () {
+    test('87XXXXXXX (Movitel) valid', () {
       expect(MozUtils.isValidMozambicanPhone('871234567'), isTrue);
     });
 
-    test('88XXXXXXX (Movitel) válido', () {
+    test('88XXXXXXX (Movitel) valid', () {
       expect(MozUtils.isValidMozambicanPhone('881234567'), isTrue);
     });
 
-    test('81XXXXXXX → inválido', () {
+    test('81XXXXXXX → invalid', () {
       expect(MozUtils.isValidMozambicanPhone('811234567'), isFalse);
     });
 
-    test('89XXXXXXX → inválido', () {
+    test('89XXXXXXX → invalid', () {
       expect(MozUtils.isValidMozambicanPhone('891234567'), isFalse);
     });
 
-    test('80XXXXXXX → inválido', () {
+    test('80XXXXXXX → invalid', () {
       expect(MozUtils.isValidMozambicanPhone('801234567'), isFalse);
     });
 
-    test('91XXXXXXX → inválido', () {
+    test('91XXXXXXX → invalid', () {
       expect(MozUtils.isValidMozambicanPhone('911234567'), isFalse);
     });
 
-    test('+258 84 123 4567 → válido', () {
+    test('+258 84 123 4567 → valid', () {
       expect(MozUtils.isValidMozambicanPhone('+258 84 123 4567'), isTrue);
     });
 
-    test('+258841234567 → válido', () {
+    test('+258841234567 → valid', () {
       expect(MozUtils.isValidMozambicanPhone('+258841234567'), isTrue);
     });
 
-    test('84 123 4567 → válido', () {
+    test('84 123 4567 → valid', () {
       expect(MozUtils.isValidMozambicanPhone('84 123 4567'), isTrue);
     });
   });
@@ -187,29 +187,29 @@ void main() {
       expect(MozUtils.getMobileOperator('881234567'), equals('Movitel'));
     });
 
-    test('Inválido → null', () {
+    test('Invalid → null', () {
       expect(MozUtils.getMobileOperator('911234567'), isNull);
     });
   });
 
   group('Testes do BI', () {
-    test('BI 12 dígitos + letra → válido', () {
+    test('BI 12 dígitos + letra → valid', () {
       expect(MozUtils.isValidBI('110101234567A'), isTrue);
     });
 
-    test('BI com espaço → válido', () {
+    test('BI with space → valid', () {
       expect(MozUtils.isValidBI('110101234567 A'), isTrue);
     });
 
-    test('BI minúsculo → válido', () {
+    test('Lowercase BI → valid', () {
       expect(MozUtils.isValidBI('110101234567a'), isTrue);
     });
 
-    test('BI sem letra → inválido', () {
+    test('BI without letter → invalid', () {
       expect(MozUtils.isValidBI('1101012345670'), isFalse);
     });
 
-    test('BI com 11 dígitos → inválido', () {
+    test('BI with 11 digits → invalid', () {
       expect(MozUtils.isValidBI('11010123456A'), isFalse);
     });
   });
@@ -261,145 +261,145 @@ void main() {
   });
 
   group('Testes de Distritos', () {
-    test('Distritos de Cabo Delgado count → 17', () {
+    test('Cabo Delgado districts count → 17', () {
       expect(MozUtils.getDistrictsByProvince('cab').length, equals(17));
     });
 
-    test('Distritos de Cabo Delgado primeiro → "Ancuabe"', () {
+    test('Cabo Delgado first district → "Ancuabe"', () {
       expect(MozUtils.getDistrictsByProvince('cab')[0], equals('Ancuabe'));
     });
 
-    test('Distritos de Cabo Delgado case insensitive → 17', () {
+    test('Cabo Delgado districts case insensitive → 17', () {
       expect(MozUtils.getDistrictsByProvince('CaB').length, equals(17));
     });
 
-    test('Distritos de Maputo Cidade count → 7', () {
+    test('Maputo City districts count → 7', () {
       expect(MozUtils.getDistrictsByProvince('mpc').length, equals(7));
     });
 
-    test('Província inválida lança erro', () {
+    test('Invalid province throws error', () {
       expect(() => MozUtils.getDistrictsByProvince('xyz'), throwsArgumentError);
     });
 
-    test('Total de distritos de Moçambique → 161', () {
+    test('Total Mozambique districts → 161', () {
       final all = MozUtils.getAllDistricts();
       expect(all.length, equals(161));
     });
 
-    test('Primeiro distrito retornado name → "Ancuabe"', () {
+    test('First returned district name → "Ancuabe"', () {
       final all = MozUtils.getAllDistricts();
       expect(all[0]['name'], equals('Ancuabe'));
     });
 
-    test('Primeiro distrito provinceId → "cab"', () {
+    test('First returned district provinceId → "cab"', () {
       final all = MozUtils.getAllDistricts();
       expect(all[0]['provinceId'], equals('cab'));
     });
 
-    test('Ancuabe postos_administrativos', () {
+    test('Ancuabe administrative_posts', () {
       final all = MozUtils.getAllDistricts();
-      expect(all[0]['postos_administrativos'], equals(['Ancuabe', 'Metoro', 'Meza']));
+      expect(all[0]['administrative_posts'], equals(['Ancuabe', 'Metoro', 'Meza']));
     });
 
-    test('Ancuabe bairros', () {
+    test('Ancuabe neighborhoods', () {
       final all = MozUtils.getAllDistricts();
-      expect(all[0]['bairros'], equals(<String>[]));
+      expect(all[0]['neighborhoods'], equals(<String>[]));
     });
 
-    test('Pemba (Cidade) postos_administrativos', () {
-      final all = MozUtils.getAllDistricts();
-      final pemba = all.firstWhere((d) => d['name'] == 'Pemba (Cidade)');
-      expect(pemba['postos_administrativos'], equals(['Pemba']));
-    });
-
-    test('Pemba (Cidade) bairros', () {
+    test('Pemba (Cidade) administrative_posts', () {
       final all = MozUtils.getAllDistricts();
       final pemba = all.firstWhere((d) => d['name'] == 'Pemba (Cidade)');
-      expect(pemba['bairros'], equals(['Paquitequete', 'Natite', 'Cariacó', 'Alto Gingone', 'Insubria', 'Muxara', 'Maringanha', 'Chibuébue']));
+      expect(pemba['administrative_posts'], equals(['Pemba']));
     });
 
-    test('Majune postos_administrativos (Mua corrigido)', () {
+    test('Pemba (Cidade) neighborhoods', () {
+      final all = MozUtils.getAllDistricts();
+      final pemba = all.firstWhere((d) => d['name'] == 'Pemba (Cidade)');
+      expect(pemba['neighborhoods'], equals(['Paquitequete', 'Natite', 'Cariacó', 'Alto Gingone', 'Insubria', 'Muxara', 'Maringanha', 'Chibuébue']));
+    });
+
+    test('Majune administrative_posts (Mua fixed)', () {
       final all = MozUtils.getAllDistricts();
       final majune = all.firstWhere((d) => d['name'] == 'Majune');
-      expect(majune['postos_administrativos'], equals(['Majune', 'Mua', 'Nairrobi']));
+      expect(majune['administrative_posts'], equals(['Majune', 'Mua', 'Nairrobi']));
     });
 
-    test('Maxixe (Cidade) bairros (Bairro Central corrigido)', () {
+    test('Maxixe (Cidade) neighborhoods (Bairro Central fixed)', () {
       final all = MozUtils.getAllDistricts();
       final maxixe = all.firstWhere((d) => d['name'] == 'Maxixe (Cidade)');
-      expect(maxixe['bairros'], equals(['Bairro Central', 'Chamba', 'Macupula', 'Nalazi']));
+      expect(maxixe['neighborhoods'], equals(['Bairro Central', 'Chamba', 'Macupula', 'Nalazi']));
     });
 
-    test('Nampula (Cidade) bairros contêm Namutequeliua', () {
+    test('Nampula (Cidade) neighborhoods contains Namutequeliua', () {
       final all = MozUtils.getAllDistricts();
       final nampula = all.firstWhere((d) => d['name'] == 'Nampula (Cidade)');
-      final bairros = nampula['bairros'] as List<String>;
-      expect(bairros.contains('Namutequeliua'), isTrue);
+      final neighborhoods = nampula['neighborhoods'] as List<String>;
+      expect(neighborhoods.contains('Namutequeliua'), isTrue);
     });
   });
 
   group('Testes de Código Postal', () {
-    test('Código postal válido (1100)', () {
+    test('Código postal valid (1100)', () {
       expect(MozUtils.isValidPostalCode('1100'), isTrue);
     });
 
-    test('Código postal com espaços (1101)', () {
+    test('Postal code with spaces (1101)', () {
       expect(MozUtils.isValidPostalCode(' 1101 '), isTrue);
     });
 
-    test('Código postal com traço (1102)', () {
+    test('Postal code with dash (1102)', () {
       expect(MozUtils.isValidPostalCode('11-02'), isTrue);
     });
 
-    test('Código postal válido (1202)', () {
+    test('Código postal valid (1202)', () {
       expect(MozUtils.isValidPostalCode('1202'), isTrue);
     });
 
-    test('Código postal válido (3311)', () {
+    test('Código postal valid (3311)', () {
       expect(MozUtils.isValidPostalCode('3311'), isTrue);
     });
 
-    test('Código postal inválido (1199)', () {
+    test('Código postal invalid (1199)', () {
       expect(MozUtils.isValidPostalCode('1199'), isFalse);
     });
 
-    test('Código postal muito longo', () {
+    test('Postal code too long', () {
       expect(MozUtils.isValidPostalCode('11000'), isFalse);
     });
 
-    test('Código postal muito curto', () {
+    test('Postal code too short', () {
       expect(MozUtils.isValidPostalCode('110'), isFalse);
     });
 
-    test('Código postal não numérico', () {
+    test('Non-numeric postal code', () {
       expect(MozUtils.isValidPostalCode('ABCD'), isFalse);
     });
 
-    test('Localidade de 1100', () {
+    test('Locality of 1100', () {
       expect(MozUtils.getPostalCodeLocality('1100'), equals('Maputo ECP (Sede)'));
     });
 
-    test('Localidade de 1205', () {
+    test('Locality of 1205', () {
       expect(MozUtils.getPostalCodeLocality('1205'), equals('Chilembene / Magoanine'));
     });
 
-    test('Província de 1100', () {
+    test('Province of 1100', () {
       expect(MozUtils.getPostalCodeProvince('1100'), equals('Maputo'));
     });
 
-    test('Província de 2100', () {
+    test('Province of 2100', () {
       expect(MozUtils.getPostalCodeProvince('2100'), equals('Sofala'));
     });
 
-    test('Província de 3311', () {
+    test('Province of 3311', () {
       expect(MozUtils.getPostalCodeProvince('3311'), equals('Niassa'));
     });
 
-    test('Localidade de inválido', () {
+    test('Locality of invalid', () {
       expect(MozUtils.getPostalCodeLocality('9999'), isNull);
     });
 
-    test('Província de inválido', () {
+    test('Province of invalid', () {
       expect(MozUtils.getPostalCodeProvince('9999'), isNull);
     });
   });

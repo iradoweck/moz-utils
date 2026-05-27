@@ -47,9 +47,9 @@ class TestMozUtils(unittest.TestCase):
     def test_nuit_classification(self):
         self.assertEqual(get_nuit_entity_type(self.nuit_singular), 'Singular (Cidadãos nacionais/estrangeiros e ENI)')
         self.assertEqual(get_nuit_entity_type(self.nuit_singular2), 'Singular (Cidadãos nacionais/estrangeiros e ENI)')
-        self.assertEqual(get_nuit_entity_type(self.nuit_equiparada), 'Equiparada (Heranças Jacentes, Consórcios)')
-        self.assertEqual(get_nuit_entity_type(self.nuit_colectiva), 'Colectiva (Sociedades por Quotas, SA, Lda, Associações)')
-        self.assertEqual(get_nuit_entity_type(self.nuit_publico), 'Público (Instituições do Estado e Ministérios)')
+        self.assertEqual(get_nuit_entity_type(self.nuit_equiparada), 'Equivalent (Heranças Jacentes, Consórcios)')
+        self.assertEqual(get_nuit_entity_type(self.nuit_colectiva), 'Collective (Sociedades por Quotas, SA, Lda, Associações)')
+        self.assertEqual(get_nuit_entity_type(self.nuit_publico), 'Public (Instituições do Estado e Ministérios)')
         self.assertIsNone(get_nuit_entity_type('000000000'))
 
     def test_phone_validation(self):
@@ -114,22 +114,22 @@ class TestMozUtils(unittest.TestCase):
         self.assertEqual(all_districts[0]['name'], 'Ancuabe')
         self.assertEqual(all_districts[0]['provinceId'], 'cab')
         
-        # Test postos administrativos & bairros
-        self.assertEqual(all_districts[0]['postos_administrativos'], ['Ancuabe', 'Metoro', 'Meza'])
-        self.assertEqual(all_districts[0]['bairros'], [])
+        # Test postos administrativos & neighborhoods
+        self.assertEqual(all_districts[0]['administrative_posts'], ['Ancuabe', 'Metoro', 'Meza'])
+        self.assertEqual(all_districts[0]['neighborhoods'], [])
         
         pemba = next(d for d in all_districts if d['name'] == 'Pemba (Cidade)')
-        self.assertEqual(pemba['postos_administrativos'], ['Pemba'])
-        self.assertEqual(pemba['bairros'], ['Paquitequete', 'Natite', 'Cariacó', 'Alto Gingone', 'Insubria', 'Muxara', 'Maringanha', 'Chibuébue'])
+        self.assertEqual(pemba['administrative_posts'], ['Pemba'])
+        self.assertEqual(pemba['neighborhoods'], ['Paquitequete', 'Natite', 'Cariacó', 'Alto Gingone', 'Insubria', 'Muxara', 'Maringanha', 'Chibuébue'])
         
         majune = next(d for d in all_districts if d['name'] == 'Majune')
-        self.assertEqual(majune['postos_administrativos'], ['Majune', 'Mua', 'Nairrobi'])
+        self.assertEqual(majune['administrative_posts'], ['Majune', 'Mua', 'Nairrobi'])
         
         maxixe = next(d for d in all_districts if d['name'] == 'Maxixe (Cidade)')
-        self.assertEqual(maxixe['bairros'], ['Bairro Central', 'Chamba', 'Macupula', 'Nalazi'])
+        self.assertEqual(maxixe['neighborhoods'], ['Bairro Central', 'Chamba', 'Macupula', 'Nalazi'])
         
         nampula = next(d for d in all_districts if d['name'] == 'Nampula (Cidade)')
-        self.assertTrue('Namutequeliua' in nampula['bairros'])
+        self.assertTrue('Namutequeliua' in nampula['neighborhoods'])
 
     def test_postal_codes(self):
         self.assertTrue(is_valid_postal_code('1100'))

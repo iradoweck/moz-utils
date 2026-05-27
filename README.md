@@ -21,7 +21,7 @@
 </p>
 
 <p align="justify">
-  <code>moz-utils</code> is a collection of essential utility functions tailored for the Mozambican software development ecosystem. It standardizes critical validations such as <b>NUIT</b> (Unique Tax Identification Number), <b>BI</b>, <b>DIRE</b>, <b>Passaportes</b>, <b>Cartas de Condução</b>, <b>mobile phone numbers</b> (Vodacom, Tmcel, Movitel / M-Pesa, e-Mola, mKesh), <b>Metical currency formatting</b> (MZN), and <b>national geographical data</b> (including the Novo Código de Endereçamento Postal - CEP).
+  <code>moz-utils</code> is a collection of essential utility functions tailored for the Mozambican software development ecosystem. It standardizes critical validations such as <b>NUIT</b> (Unique Tax Identification Number), <b>BI</b> (National ID), <b>DIRE</b> (Foreign Resident ID), <b>Passports</b>, <b>Driving Licenses</b>, <b>mobile phone numbers</b> (Vodacom, Tmcel, Movitel / M-Pesa, e-Mola, mKesh), <b>Metical currency formatting</b> (MZN), and <b>national geographical data</b> (including the New Postal Code System - CEP).
 </p>
 
 <p align="justify">
@@ -41,43 +41,30 @@
 
 ## 🗺️ Workflows and Architecture
 
-### 1. NUIT Validation (Modulo 11)
+All heavy technical logic (NUIT mathematics, document Regex validation, and Mozambique maps) has been isolated. To read detailed technical documentation on how algorithms work and the structure of Mozambican geographical databases, check out our official document:
+👉 **[Mozambique Kiwi Docs (Validations & Maps)](./mozambiquekiwi.md)**
 
-<p align="justify">
-  The validation strictly follows the rules defined by the Tax Authority of Mozambique, validating the 9 digits and resolving the Módulo 11 checksum for the 9th digit. It also detects the Entity Type (Singular, Coletiva, etc.).
-</p>
+### 1. Telephony and Mobile Wallets
 
-### 2. Validação de Documentos Oficiais
+Identification and validation of Mozambican 9-digit numbers (starting with 82, 83, 84, 85, 86, 87, 88). Robustly identifies if the number supports **M-Pesa** (Vodacom), **e-Mola** (Movitel), or **mKesh** (Tmcel).
 
-Oferece validação precisa através de RegEx (incluindo limpeza e sanitização de formatações, espaços e minúsculas) para:
-- **BI**: 12 dígitos e 1 letra.
-- **DIRE**: Exatamente 8 dígitos e 1 letra.
-- **Passaporte**: 2 letras seguidas de 7 dígitos.
-- **Carta de Condução**: 1 letra seguida de 5 a 7 dígitos.
+### 2. Postal Codes (Legacy vs New CEP)
 
-### 3. Telefonia e Carteiras Móveis
-
-Identificação e validação de números moçambicanos de 9 dígitos (começados por 82, 83, 84, 85, 86, 87, 88). Identifica de forma robusta se o número suporta **M-Pesa** (Vodacom), **e-Mola** (Movitel) ou **mKesh** (Tmcel).
-
-### 4. Códigos Postais (Legado vs Novo CEP)
-
-O ecossistema implementa o **Novo Sistema de CEP de Moçambique** (6 dígitos `XXXX-XX`).
-Mais do que apenas uma lista, construímos uma lógica inteligente de sugestão:
-- Se um utilizador inserir o código postal antigo (ex: `3100`), a biblioteca traduz automaticamente e sugere um *array* de Novos CEPs correspondentes (ex: `0909-01`, `0909-02`), permitindo construir menus *dropdown* perfeitos no Frontend para o utilizador final escolher o bairro exato.
-
-Podes consultar a lista completa em: [Documentação de Códigos Postais](./docs/postal_codes_mocambique.md).
+The ecosystem implements the **New Mozambican CEP System** (6 digits `XXXX-XX`).
+More than just a list, we built an intelligent suggestion logic:
+- If a user inputs an old postal code (e.g., `3100`), the library automatically translates and suggests an *array* of corresponding New CEPs (e.g., `0909-01`, `0909-02`), allowing you to build perfect frontend dropdown menus for the end user to choose the exact neighborhood.
 
 ---
 
-## 🚀 Emulador Interativo (CLI)
+## 🚀 Interactive Emulator (CLI)
 
-Para testar como esta biblioteca se comporta "em produção" sem precisares de escrever código, incluímos um **Emulador de CLI**.
+To test how this library behaves "in production" without needing to write code, we included a **CLI Emulator**.
 
-Basta executares na raiz do teu projeto:
+Simply run this in the root of your project:
 ```bash
 npx tsx emulator.ts
 ```
-Isto lançará um menu interativo onde podes digitar os teus NUITs, telefones, BIs ou CEPs e verificar a resposta da biblioteca em tempo real!
+This will launch an interactive menu where you can type NUITs, phones, BIs, or CEPs and check the library's real-time response!
 
 ---
 
@@ -118,7 +105,7 @@ Isto lançará um menu interativo onde podes digitar os teus NUITs, telefones, B
     ```yaml
     # Add to your pubspec.yaml
     dependencies:
-      moz_utils: ^0.2.0
+      moz_utils: ^0.3.0
     ```
 
 === "Kotlin"
@@ -128,7 +115,7 @@ Isto lançará um menu interativo onde podes digitar os teus NUITs, telefones, B
         maven { url = uri("https://jitpack.io") }
     }
     dependencies {
-        implementation("com.github.iradoweck:moz-utils:v0.2.0")
+        implementation("com.github.iradoweck:moz-utils:v0.3.0")
     }
     ```
 
@@ -148,7 +135,7 @@ Isto lançará um menu interativo onde podes digitar os teus NUITs, telefones, B
     } from 'moz-utils';
     
     console.log(isValidNUIT('123456789')); // true
-    console.log(isValidDIRE(' 00008312-c ')); // true (auto-sanitizado)
+    console.log(isValidDIRE(' 00008312-c ')); // true (auto-sanitized)
     console.log(formatMZN(1500));          // "1 500,00 MT"
     console.log(isValidMozambicanPhone('+258 841234567')); // true
     
@@ -197,5 +184,5 @@ This project is licensed under the **AGPL-3.0-or-later** license.
 ---
 
 <p align="center">
-  Developed by <b>Edmilson Muacigarro</b> and contributors.
+  Developed by <b>Open Source Contributors</b> & supported by <b>Edmilson Muacigarro</b>
 </p>

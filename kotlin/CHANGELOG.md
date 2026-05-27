@@ -1,4 +1,4 @@
-# Changelog: moz-utils (Dart)
+# Changelog: moz-utils (Kotlin)
 
 All notable changes to this project will be documented in this file.
 

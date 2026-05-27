@@ -77,7 +77,7 @@ To verify that your changes or a new port do not break the TypeScript/JavaScript
    ```
 
 If all validations pass, you will see the message:
-`🎉 TODOS OS TESTES PASSARAM!`
+`🎉 ALL TESTS PASSED!`
 
 ---
 

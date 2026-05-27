@@ -1,16 +1,16 @@
 /**
  * moz-utils
  *
- * Funções de utilidade para Moçambique.
- * Validação de NUIT, BI, documentos, e formatação de telefones.
+ * Utility functions for Mozambique.
+ * Validation of NUIT, BI, documents, and phone formatting.
  *
  * @license AGPL-3.0-or-later
  */
 
 /**
- * Valida um número de telefone moçambicano.
- * Aceita formatos: 84XXXXXXX, +258 84XXXXXXX, 258-84-XXX-XXXX, etc.
- * Operadoras válidas: Vodacom (84/85), Tmcel (82/83), Movitel (86/87/88)
+ * Validates a Mozambican phone number.
+ * Accepts formats: 84XXXXXXX, +258 84XXXXXXX, 258-84-XXX-XXXX, etc.
+ * Valid operators: Vodacom (84/85), Tmcel (82/83), Movitel (86/87/88)
  */
 export function isValidMozambicanPhone(phone: string): boolean {
   const cleaned = phone.replace(/[\s\-\(\)\+]/g, '')
@@ -19,15 +19,15 @@ export function isValidMozambicanPhone(phone: string): boolean {
 }
 
 /**
- * Formata um número de telefone moçambicano para o padrão internacional.
- * Ex: "841234567" → "+258 84 123 4567"
+ * Formats a Mozambican phone number to the international standard.
+ * E.g.: "841234567" → "+258 84 123 4567"
  */
 export function formatMozambicanPhone(phone: string): string {
   const cleaned = phone.replace(/[\s\-\(\)\+]/g, '')
   const withoutCountryCode = cleaned.startsWith('258') ? cleaned.slice(3) : cleaned
 
   if (!isValidMozambicanPhone(withoutCountryCode)) {
-    throw new Error(`Número de telefone inválido: ${phone}`)
+    throw new Error(`Invalid phone number: ${phone}`)
   }
 
   const prefix = withoutCountryCode.slice(0, 2)
@@ -38,7 +38,7 @@ export function formatMozambicanPhone(phone: string): string {
 }
 
 /**
- * Identifica a operadora de um número moçambicano.
+ * Identifies the operator of a Mozambican phone number.
  */
 export function getMobileOperator(phone: string): 'Vodacom' | 'Tmcel' | 'Movitel' | null {
   const cleaned = phone.replace(/[\s\-\(\)\+]/g, '')
@@ -61,10 +61,26 @@ export function getMobileOperator(phone: string): 'Vodacom' | 'Tmcel' | 'Movitel
 }
 
 /**
+ * Identifica a carteira móvel (Mobile Wallet) associada a um número moçambicano.
+ */
+export function getMobileWallet(phone: string): 'M-Pesa' | 'mKesh' | 'e-Mola' | null {
+  const operator = getMobileOperator(phone);
+  if (!operator) return null;
+  
+  const wallets: Record<string, 'M-Pesa' | 'mKesh' | 'e-Mola'> = {
+    'Vodacom': 'M-Pesa',
+    'Tmcel': 'mKesh',
+    'Movitel': 'e-Mola'
+  };
+  
+  return wallets[operator] ?? null;
+}
+
+/**
  * Valida o NUIT (Número Único de Identificação Tributária) de Moçambique.
  * 
  * Regras da AT (Autoridade Tributária):
- * - Composto por 9 dígitos.
+ * - Composed of 9 digits.
  * - Primeiro dígito: 1 a 5 (Classificação da Entidade).
  * - Nono dígito: Dígito de Controlo (Módulo 11).
  */
@@ -90,11 +106,11 @@ export function isValidNUIT(nuit: string | number): boolean {
 }
 
 /**
- * Classifica o tipo de entidade com base no primeiro dígito do NUIT.
- * - 1 ou 2: Pessoas Singulares
- * - 3: Entidades Equiparadas
- * - 4: Pessoas Colectivas
- * - 5: Organismos Públicos
+ * Classifies the entity type based on the first digit of the NUIT.
+ * - 1 or 2: Singular Persons
+ * - 3: Equivalent Entities
+ * - 4: Collective Persons
+ * - 5: Public Organisms
  */
 export function getNUITEntityType(nuit: string | number): string | null {
   const cleaned = String(nuit).replace(/\D/g, '')
@@ -113,8 +129,8 @@ export function getNUITEntityType(nuit: string | number): string | null {
 }
 
 /**
- * Valida o Bilhete de Identidade Moçambicano.
- * Formato padrão: 12 dígitos seguidos de 1 letra (Ex: 110101234567A)
+ * Validates the Mozambican National ID (BI).
+ * Standard format: 12 digits followed by 1 letter (E.g.: 110101234567A)
  */
 export function isValidBI(bi: string): boolean {
   const cleaned = bi.replace(/[\s\-]/g, '').toUpperCase()
@@ -123,7 +139,7 @@ export function isValidBI(bi: string): boolean {
 
 /**
  * Valida o DIRE (Documento de Identificação de Residente Estrangeiro) de Moçambique.
- * Formato oficial: Exatamente 8 dígitos seguidos de uma única letra (Ex: 00008312C).
+ * Official format: Exactly 8 digits followed by a single letter (E.g.: 00008312C).
  */
 export function isValidDIRE(dire: string): boolean {
   const cleaned = dire.replace(/[\s\-]/g, '').toUpperCase();
@@ -131,8 +147,8 @@ export function isValidDIRE(dire: string): boolean {
 }
 
 /**
- * Valida o Passaporte Moçambicano.
- * Formato oficial: Exatamente 2 letras seguidas de 7 dígitos numéricos (Ex: AO1234567).
+ * Validates the Mozambican Passport.
+ * Official format: Exactly 2 letters followed by 7 numeric digits (E.g.: AO1234567).
  */
 export function isValidPassport(passport: string): boolean {
   const cleaned = passport.replace(/[\s\-]/g, '').toUpperCase();
@@ -140,8 +156,8 @@ export function isValidPassport(passport: string): boolean {
 }
 
 /**
- * Valida a Carta de Condução Moçambicana.
- * Formato oficial: 1 letra (indicativo de província) seguida de 5 a 7 dígitos numéricos (Ex: M123456).
+ * Validates the Mozambican Driving License.
+ * Formato oficial: 1 letra (indicativo de província) seguida de 5 a 7 dígitos numéricos (E.g.: M123456).
  */
 export function isValidDrivingLicense(license: string): boolean {
   const cleaned = license.replace(/[\s\-]/g, '').toUpperCase();
@@ -149,16 +165,16 @@ export function isValidDrivingLicense(license: string): boolean {
 }
 
 /**
- * Formata um valor monetário em Meticais seguindo o padrão oficial de Moçambique.
+ * Formats a monetary value in Meticais following the official standard of Mozambique.
  *
  * Padrão oficial (SI + AT):
- * - Separador de milhares: espaço ( )
- * - Separador decimal: vírgula (,)
- * - Símbolo após o valor, separado por espaço
+ * - Thousands separator: space ( )
+ * - Decimal separator: comma (,)
+ * - Symbol after the value, separated by a space
  *
- * @param value - Valor numérico a formatar
+ * @param value - Numeric value to format
  * @param currency - 'MT' para uso nacional (padrão) ou 'MZN' para uso internacional (ISO 4217)
- * @returns Valor formatado (ex: "1 500,00 MT")
+ * @returns Formatted value (ex: "1 500,00 MT")
  *
  * @example
  * formatMZN(1500)           // "1 500,00 MT"
@@ -170,14 +186,14 @@ export function formatMZN(value: number, currency: 'MT' | 'MZN' = 'MT'): string 
   const [integerPart, decimalPart] = Math.abs(value).toFixed(2).split('.')
   const sign = value < 0 ? '-' : ''
 
-  // Agrupar dígitos em blocos de 3 da direita para a esquerda, separados por espaço
+  // Group digits in blocks of 3 from right to left, separated by a space
   const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
 
   return `${sign}${formattedInteger},${decimalPart} ${currency}`
 }
 
 /**
- * Gera um URL de contacto WhatsApp com mensagem pré-formatada.
+ * Generates a WhatsApp contact URL with a pre-formatted message.
  */
 export function buildWhatsAppUrl(phone: string, message?: string): string {
   const cleaned = phone.replace(/[\s\-\(\)\+]/g, '')
@@ -187,7 +203,7 @@ export function buildWhatsAppUrl(phone: string, message?: string): string {
 }
 
 /**
- * Lista oficial das Províncias de Moçambique com os seus distritos.
+ * Official list of Mozambique Provinces and their districts.
  * Fonte: Divisão administrativa oficial da República de Moçambique.
  * Inclui sigla oficial de cada província.
  */
@@ -198,27 +214,27 @@ export const mozambiqueProvinces = [
     region: 'Norte',
     sigla: 'CBD',
     districts: [
-      { name: 'Ancuabe', postos_administrativos: ['Ancuabe', 'Metoro', 'Meza'], bairros: [] },
-      { name: 'Balama', postos_administrativos: ['Balama', 'Chapa', 'Kuekue', 'Mavala'], bairros: [] },
-      { name: 'Chiúre', postos_administrativos: ['Chiúre', 'Chiúre-Velho', 'Katapua', 'Mazeze', 'Namogelia', 'Manoane'], bairros: [] },
-      { name: 'Ibo', postos_administrativos: ['Ibo', 'Quirimba'], bairros: [] },
-      { name: 'Macomia', postos_administrativos: ['Macomia', 'Chai', 'Mucojo', 'Quiterajo'], bairros: [] },
-      { name: 'Mecúfi', postos_administrativos: ['Mecúfi', 'Murrébuè'], bairros: [] },
-      { name: 'Meluco', postos_administrativos: ['Meluco', 'Muaguide'], bairros: [] },
-      { name: 'Metuge', postos_administrativos: ['Metuge', 'Mieze'], bairros: [] },
-      { name: 'Mocímboa da Praia', postos_administrativos: ['Mocímboa da Praia', 'Diaca', 'Mbau'], bairros: [] },
-      { name: 'Montepuez', postos_administrativos: ['Montepuez', 'Mapupulo', 'Namanhumbir', 'Nairoto', 'Napaula'], bairros: [] },
-      { name: 'Mueda', postos_administrativos: ['Mueda', 'Chapa', 'Imbuho', 'Negomano', 'N\'gapa'], bairros: [] },
-      { name: 'Muidumbe', postos_administrativos: ['Muidumbe', 'Chitunda', 'Miteda'], bairros: [] },
-      { name: 'Namuno', postos_administrativos: ['Namuno', 'Machoca', 'Meloco', 'Ncumpe', 'Luli'], bairros: [] },
-      { name: 'Nangade', postos_administrativos: ['Nangade', 'Ntamba'], bairros: [] },
-      { name: 'Palma', postos_administrativos: ['Palma', 'Olumbe', 'Quionga'], bairros: [] },
+      { name: 'Ancuabe', administrative_posts: ['Ancuabe', 'Metoro', 'Meza'], neighborhoods: [] },
+      { name: 'Balama', administrative_posts: ['Balama', 'Chapa', 'Kuekue', 'Mavala'], neighborhoods: [] },
+      { name: 'Chiúre', administrative_posts: ['Chiúre', 'Chiúre-Velho', 'Katapua', 'Mazeze', 'Namogelia', 'Manoane'], neighborhoods: [] },
+      { name: 'Ibo', administrative_posts: ['Ibo', 'Quirimba'], neighborhoods: [] },
+      { name: 'Macomia', administrative_posts: ['Macomia', 'Chai', 'Mucojo', 'Quiterajo'], neighborhoods: [] },
+      { name: 'Mecúfi', administrative_posts: ['Mecúfi', 'Murrébuè'], neighborhoods: [] },
+      { name: 'Meluco', administrative_posts: ['Meluco', 'Muaguide'], neighborhoods: [] },
+      { name: 'Metuge', administrative_posts: ['Metuge', 'Mieze'], neighborhoods: [] },
+      { name: 'Mocímboa da Praia', administrative_posts: ['Mocímboa da Praia', 'Diaca', 'Mbau'], neighborhoods: [] },
+      { name: 'Montepuez', administrative_posts: ['Montepuez', 'Mapupulo', 'Namanhumbir', 'Nairoto', 'Napaula'], neighborhoods: [] },
+      { name: 'Mueda', administrative_posts: ['Mueda', 'Chapa', 'Imbuho', 'Negomano', 'N\'gapa'], neighborhoods: [] },
+      { name: 'Muidumbe', administrative_posts: ['Muidumbe', 'Chitunda', 'Miteda'], neighborhoods: [] },
+      { name: 'Namuno', administrative_posts: ['Namuno', 'Machoca', 'Meloco', 'Ncumpe', 'Luli'], neighborhoods: [] },
+      { name: 'Nangade', administrative_posts: ['Nangade', 'Ntamba'], neighborhoods: [] },
+      { name: 'Palma', administrative_posts: ['Palma', 'Olumbe', 'Quionga'], neighborhoods: [] },
       { 
         name: 'Pemba (Cidade)', 
-        postos_administrativos: ['Pemba'], 
-        bairros: ['Paquitequete', 'Natite', 'Cariacó', 'Alto Gingone', 'Insubria', 'Muxara', 'Maringanha', 'Chibuébue'] 
+        administrative_posts: ['Pemba'], 
+        neighborhoods: ['Paquitequete', 'Natite', 'Cariacó', 'Alto Gingone', 'Insubria', 'Muxara', 'Maringanha', 'Chibuébue'] 
       },
-      { name: 'Quissanga', postos_administrativos: ['Quissanga', 'Mahate', 'Bilibiza'], bairros: [] }
+      { name: 'Quissanga', administrative_posts: ['Quissanga', 'Mahate', 'Bilibiza'], neighborhoods: [] }
     ]
   },
   {
@@ -227,26 +243,26 @@ export const mozambiqueProvinces = [
     region: 'Norte',
     sigla: 'NS',
     districts: [
-      { name: 'Chimbonila', postos_administrativos: ['Chimbonila', 'Meponda'], bairros: [] },
-      { name: 'Cuamba', postos_administrativos: ['Cuamba', 'Lúrio', 'Etatara'], bairros: ['Ribaue', 'Mutxora', 'Ademo', 'Aeroporto'] },
-      { name: 'Lago', postos_administrativos: ['Metangula', 'Cobué', 'Luninho', 'Maniamba'], bairros: [] },
+      { name: 'Chimbonila', administrative_posts: ['Chimbonila', 'Meponda'], neighborhoods: [] },
+      { name: 'Cuamba', administrative_posts: ['Cuamba', 'Lúrio', 'Etatara'], neighborhoods: ['Ribaue', 'Mutxora', 'Ademo', 'Aeroporto'] },
+      { name: 'Lago', administrative_posts: ['Metangula', 'Cobué', 'Luninho', 'Maniamba'], neighborhoods: [] },
       { 
         name: 'Lichinga (Cidade)', 
-        postos_administrativos: ['Lichinga'], 
-        bairros: ['Central', 'Popular', 'Chimba', 'Cerâmica', 'Ngaula', 'Sanjala', 'Chiuaula'] 
+        administrative_posts: ['Lichinga'], 
+        neighborhoods: ['Central', 'Popular', 'Chimba', 'Cerâmica', 'Ngaula', 'Sanjala', 'Chiuaula'] 
       },
-      { name: 'Majune', postos_administrativos: ['Majune', 'Mua', 'Nairrobi'], bairros: [] },
-      { name: 'Mandimba', postos_administrativos: ['Mandimba', 'Mitande'], bairros: [] },
-      { name: 'Marrupa', postos_administrativos: ['Marrupa', 'Marangira', 'Nungo'], bairros: [] },
-      { name: 'Maúa', postos_administrativos: ['Maúa', 'Maiaca'], bairros: [] },
-      { name: 'Mavago', postos_administrativos: ['Mavago', 'M\'saize'], bairros: [] },
-      { name: 'Mecanhelas', postos_administrativos: ['Mecanhelas', 'Chiuta'], bairros: [] },
-      { name: 'Mecula', postos_administrativos: ['Mecula', 'Matondovela'], bairros: [] },
-      { name: 'Metarica', postos_administrativos: ['Metarica', 'Nacuanha'], bairros: [] },
-      { name: 'Muembe', postos_administrativos: ['Muembe', 'Chiconono'], bairros: [] },
-      { name: "N'gauma", postos_administrativos: ['Massangulo', 'Itepela'], bairros: [] },
-      { name: 'Nipepe', postos_administrativos: ['Nipepe', 'Muatuca'], bairros: [] },
-      { name: 'Sanga', postos_administrativos: ['Unango', 'Malamuila', 'Matchedje'], bairros: [] }
+      { name: 'Majune', administrative_posts: ['Majune', 'Mua', 'Nairrobi'], neighborhoods: [] },
+      { name: 'Mandimba', administrative_posts: ['Mandimba', 'Mitande'], neighborhoods: [] },
+      { name: 'Marrupa', administrative_posts: ['Marrupa', 'Marangira', 'Nungo'], neighborhoods: [] },
+      { name: 'Maúa', administrative_posts: ['Maúa', 'Maiaca'], neighborhoods: [] },
+      { name: 'Mavago', administrative_posts: ['Mavago', 'M\'saize'], neighborhoods: [] },
+      { name: 'Mecanhelas', administrative_posts: ['Mecanhelas', 'Chiuta'], neighborhoods: [] },
+      { name: 'Mecula', administrative_posts: ['Mecula', 'Matondovela'], neighborhoods: [] },
+      { name: 'Metarica', administrative_posts: ['Metarica', 'Nacuanha'], neighborhoods: [] },
+      { name: 'Muembe', administrative_posts: ['Muembe', 'Chiconono'], neighborhoods: [] },
+      { name: "N'gauma", administrative_posts: ['Massangulo', 'Itepela'], neighborhoods: [] },
+      { name: 'Nipepe', administrative_posts: ['Nipepe', 'Muatuca'], neighborhoods: [] },
+      { name: 'Sanga', administrative_posts: ['Unango', 'Malamuila', 'Matchedje'], neighborhoods: [] }
     ]
   },
   {
@@ -255,33 +271,33 @@ export const mozambiqueProvinces = [
     region: 'Norte',
     sigla: 'NPL',
     districts: [
-      { name: 'Angoche', postos_administrativos: ['Angoche', 'Aube', 'Namaponda'], bairros: [] },
-      { name: 'Eráti', postos_administrativos: ['Namapa', 'Alua', 'Nakarari'], bairros: [] },
-      { name: 'Ilha de Moçambique', postos_administrativos: ['Ilha de Moçambique', 'Lumbo'], bairros: ['Museu', 'Litine', 'Areal', 'Marangonha'] },
-      { name: 'Lalaua', postos_administrativos: ['Lalaua', 'Meti'], bairros: [] },
-      { name: 'Larde', postos_administrativos: ['Larde', 'Mucuali'], bairros: [] },
-      { name: 'Liúpo', postos_administrativos: ['Liúpo', 'Quinga'], bairros: [] },
-      { name: 'Malema', postos_administrativos: ['Malema', 'Chinga', 'Mutuali'], bairros: [] },
-      { name: 'Meconta', postos_administrativos: ['Meconta', 'Corrane', 'Namialo'], bairros: [] },
-      { name: 'Mecubúri', postos_administrativos: ['Mecubúri', 'Milhana', 'Muite', 'Namina'], bairros: [] },
-      { name: 'Memba', postos_administrativos: ['Memba', 'Chipene', 'Mazua', 'Lurio'], bairros: [] },
-      { name: 'Mogincual', postos_administrativos: ['Mogincual', 'Quixaxe'], bairros: [] },
-      { name: 'Mogovolas', postos_administrativos: ['Nametil', 'Calipo', 'Ilute', 'Muatua'], bairros: [] },
-      { name: 'Moma', postos_administrativos: ['Macone', 'Chalai', 'Lunga'], bairros: [] },
-      { name: 'Monapo', postos_administrativos: ['Monapo', 'Itoculo', 'Netia'], bairros: [] },
-      { name: 'Mossuril', postos_administrativos: ['Mossuril', 'Lunga', 'Matibane'], bairros: [] },
-      { name: 'Muecate', postos_administrativos: ['Muecate', 'Imala', 'Muculuone'], bairros: [] },
-      { name: 'Murrupula', postos_administrativos: ['Murrupula', 'Chinga', 'Nihessiue'], bairros: [] },
-      { name: 'Nacala-a-Velha', postos_administrativos: ['Nacala-a-Velha', 'Covo'], bairros: [] },
-      { name: 'Nacala Porto', postos_administrativos: ['Nacala Porto', 'Muanona'], bairros: ['Mutiva', 'Triângulo', 'Ontupaia', 'Quissanga'] },
+      { name: 'Angoche', administrative_posts: ['Angoche', 'Aube', 'Namaponda'], neighborhoods: [] },
+      { name: 'Eráti', administrative_posts: ['Namapa', 'Alua', 'Nakarari'], neighborhoods: [] },
+      { name: 'Ilha de Moçambique', administrative_posts: ['Ilha de Moçambique', 'Lumbo'], neighborhoods: ['Museu', 'Litine', 'Areal', 'Marangonha'] },
+      { name: 'Lalaua', administrative_posts: ['Lalaua', 'Meti'], neighborhoods: [] },
+      { name: 'Larde', administrative_posts: ['Larde', 'Mucuali'], neighborhoods: [] },
+      { name: 'Liúpo', administrative_posts: ['Liúpo', 'Quinga'], neighborhoods: [] },
+      { name: 'Malema', administrative_posts: ['Malema', 'Chinga', 'Mutuali'], neighborhoods: [] },
+      { name: 'Meconta', administrative_posts: ['Meconta', 'Corrane', 'Namialo'], neighborhoods: [] },
+      { name: 'Mecubúri', administrative_posts: ['Mecubúri', 'Milhana', 'Muite', 'Namina'], neighborhoods: [] },
+      { name: 'Memba', administrative_posts: ['Memba', 'Chipene', 'Mazua', 'Lurio'], neighborhoods: [] },
+      { name: 'Mogincual', administrative_posts: ['Mogincual', 'Quixaxe'], neighborhoods: [] },
+      { name: 'Mogovolas', administrative_posts: ['Nametil', 'Calipo', 'Ilute', 'Muatua'], neighborhoods: [] },
+      { name: 'Moma', administrative_posts: ['Macone', 'Chalai', 'Lunga'], neighborhoods: [] },
+      { name: 'Monapo', administrative_posts: ['Monapo', 'Itoculo', 'Netia'], neighborhoods: [] },
+      { name: 'Mossuril', administrative_posts: ['Mossuril', 'Lunga', 'Matibane'], neighborhoods: [] },
+      { name: 'Muecate', administrative_posts: ['Muecate', 'Imala', 'Muculuone'], neighborhoods: [] },
+      { name: 'Murrupula', administrative_posts: ['Murrupula', 'Chinga', 'Nihessiue'], neighborhoods: [] },
+      { name: 'Nacala-a-Velha', administrative_posts: ['Nacala-a-Velha', 'Covo'], neighborhoods: [] },
+      { name: 'Nacala Porto', administrative_posts: ['Nacala Porto', 'Muanona'], neighborhoods: ['Mutiva', 'Triângulo', 'Ontupaia', 'Quissanga'] },
       { 
         name: 'Nampula (Cidade)', 
-        postos_administrativos: ['Urbano Central', 'Muatala', 'Muhala', 'Namikopo', 'Napipine', 'Natikiri'], 
-        bairros: ['Central', 'Muatala', 'Muhala', 'Namikopo', 'Napipine', 'Natikiri', 'Marrere', 'Namutequeliua'] 
+        administrative_posts: ['Urbano Central', 'Muatala', 'Muhala', 'Namikopo', 'Napipine', 'Natikiri'], 
+        neighborhoods: ['Central', 'Muatala', 'Muhala', 'Namikopo', 'Napipine', 'Natikiri', 'Marrere', 'Namutequeliua'] 
       },
-      { name: 'Nacarôa', postos_administrativos: ['Nacarôa', 'Saua-Saua'], bairros: [] },
-      { name: 'Rapale', postos_administrativos: ['Rapale', 'Anchilo', 'Mutivaze'], bairros: [] },
-      { name: 'Ribáuè', postos_administrativos: ['Ribáuè', 'Cunle', 'Iapala'], bairros: [] }
+      { name: 'Nacarôa', administrative_posts: ['Nacarôa', 'Saua-Saua'], neighborhoods: [] },
+      { name: 'Rapale', administrative_posts: ['Rapale', 'Anchilo', 'Mutivaze'], neighborhoods: [] },
+      { name: 'Ribáuè', administrative_posts: ['Ribáuè', 'Cunle', 'Iapala'], neighborhoods: [] }
     ]
   },
   {
@@ -290,31 +306,31 @@ export const mozambiqueProvinces = [
     region: 'Centro',
     sigla: 'ZMB',
     districts: [
-      { name: 'Alto Molócuè', postos_administrativos: ['Alto Molócuè', 'Nauela'], bairros: [] },
-      { name: 'Chinde', postos_administrativos: ['Chinde', 'Micaune'], bairros: [] },
-      { name: 'Derre', postos_administrativos: ['Derre', 'Guerissa'], bairros: [] },
-      { name: 'Gilé', postos_administrativos: ['Gilé', 'Alto Ligonha'], bairros: [] },
-      { name: 'Gurué', postos_administrativos: ['Gurué', 'Lioma', 'Nepuíte'], bairros: ['Bairro Central', 'Mucuapa', 'Nacuacue'] },
-      { name: 'Ile', postos_administrativos: ['Ile', 'Socone'], bairros: [] },
-      { name: 'Inhassunge', postos_administrativos: ['Mucupia', 'Gonhane'], bairros: [] },
-      { name: 'Luabo', postos_administrativos: ['Luabo', 'Chimbazo'], bairros: [] },
-      { name: 'Lugela', postos_administrativos: ['Lugela', 'Tacuane', 'Munhamade'], bairros: [] },
-      { name: 'Maganja da Costa', postos_administrativos: ['Maganja da Costa', 'Baleia'], bairros: [] },
-      { name: 'Milange', postos_administrativos: ['Milange', 'Majaua', 'Mongue'], bairros: [] },
-      { name: 'Mocuba', postos_administrativos: ['Mocuba', 'Mualama', 'Namanjavira'], bairros: ['Central', 'Aeroporto', 'Paraíso'] },
-      { name: 'Mocubela', postos_administrativos: ['Mocubela', 'Bajone'], bairros: [] },
-      { name: 'Molumbo', postos_administrativos: ['Molumbo', 'Corromana'], bairros: [] },
-      { name: 'Mopeia', postos_administrativos: ['Mopeia', 'Campo'], bairros: [] },
-      { name: 'Morrumbala', postos_administrativos: ['Morrumbala', 'Chire', 'Megaza'], bairros: [] },
-      { name: 'Mulevala', postos_administrativos: ['Mulevala', 'Chirimane'], bairros: [] },
-      { name: 'Namacurra', postos_administrativos: ['Namacurra', 'Macuse'], bairros: [] },
-      { name: 'Namarrói', postos_administrativos: ['Namarrói', 'Regone'], bairros: [] },
-      { name: 'Nicoadala', postos_administrativos: ['Nicoadala', 'Maquival'], bairros: [] },
-      { name: 'Pebane', postos_administrativos: ['Pebane', 'Mulela', 'Naburi'], bairros: [] },
+      { name: 'Alto Molócuè', administrative_posts: ['Alto Molócuè', 'Nauela'], neighborhoods: [] },
+      { name: 'Chinde', administrative_posts: ['Chinde', 'Micaune'], neighborhoods: [] },
+      { name: 'Derre', administrative_posts: ['Derre', 'Guerissa'], neighborhoods: [] },
+      { name: 'Gilé', administrative_posts: ['Gilé', 'Alto Ligonha'], neighborhoods: [] },
+      { name: 'Gurué', administrative_posts: ['Gurué', 'Lioma', 'Nepuíte'], neighborhoods: ['Bairro Central', 'Mucuapa', 'Nacuacue'] },
+      { name: 'Ile', administrative_posts: ['Ile', 'Socone'], neighborhoods: [] },
+      { name: 'Inhassunge', administrative_posts: ['Mucupia', 'Gonhane'], neighborhoods: [] },
+      { name: 'Luabo', administrative_posts: ['Luabo', 'Chimbazo'], neighborhoods: [] },
+      { name: 'Lugela', administrative_posts: ['Lugela', 'Tacuane', 'Munhamade'], neighborhoods: [] },
+      { name: 'Maganja da Costa', administrative_posts: ['Maganja da Costa', 'Baleia'], neighborhoods: [] },
+      { name: 'Milange', administrative_posts: ['Milange', 'Majaua', 'Mongue'], neighborhoods: [] },
+      { name: 'Mocuba', administrative_posts: ['Mocuba', 'Mualama', 'Namanjavira'], neighborhoods: ['Central', 'Aeroporto', 'Paraíso'] },
+      { name: 'Mocubela', administrative_posts: ['Mocubela', 'Bajone'], neighborhoods: [] },
+      { name: 'Molumbo', administrative_posts: ['Molumbo', 'Corromana'], neighborhoods: [] },
+      { name: 'Mopeia', administrative_posts: ['Mopeia', 'Campo'], neighborhoods: [] },
+      { name: 'Morrumbala', administrative_posts: ['Morrumbala', 'Chire', 'Megaza'], neighborhoods: [] },
+      { name: 'Mulevala', administrative_posts: ['Mulevala', 'Chirimane'], neighborhoods: [] },
+      { name: 'Namacurra', administrative_posts: ['Namacurra', 'Macuse'], neighborhoods: [] },
+      { name: 'Namarrói', administrative_posts: ['Namarrói', 'Regone'], neighborhoods: [] },
+      { name: 'Nicoadala', administrative_posts: ['Nicoadala', 'Maquival'], neighborhoods: [] },
+      { name: 'Pebane', administrative_posts: ['Pebane', 'Mulela', 'Naburi'], neighborhoods: [] },
       { 
         name: 'Quelimane (Cidade)', 
-        postos_administrativos: ['Urbano nº 1', 'Urbano nº 2', 'Urbano nº 3', 'Urbano nº 4'], 
-        bairros: ['Central', 'Cementório', 'Inhassunge', 'Icidua', 'Chingo', 'Matacuane'] 
+        administrative_posts: ['Urbano nº 1', 'Urbano nº 2', 'Urbano nº 3', 'Urbano nº 4'], 
+        neighborhoods: ['Central', 'Cementório', 'Inhassunge', 'Icidua', 'Chingo', 'Matacuane'] 
       }
     ]
   },
@@ -324,25 +340,25 @@ export const mozambiqueProvinces = [
     region: 'Centro',
     sigla: 'TT',
     districts: [
-      { name: 'Angónia', postos_administrativos: ['Ulongue', 'Domue'], bairros: [] },
-      { name: 'Cahora-Bassa', postos_administrativos: ['Songo', 'Chitima', 'Muxeza'], bairros: [] },
-      { name: 'Changara', postos_administrativos: ['Luenha', 'Chioco', 'Mavago'], bairros: [] },
-      { name: 'Chifunde', postos_administrativos: ['Chifunde', 'Mualadzi', 'Nsadzu'], bairros: [] },
-      { name: 'Chiuta', postos_administrativos: ['Manje', 'Kazula'], bairros: [] },
-      { name: 'Dôa', postos_administrativos: ['Dôa', 'Chueza'], bairros: [] },
-      { name: 'Macanga', postos_administrativos: ['Furancungo', 'Chinde'], bairros: [] },
-      { name: 'Magoé', postos_administrativos: ['Mpende', 'Chinthopo', 'Mukumbura'], bairros: [] },
-      { name: 'Marara', postos_administrativos: ['Marara', 'M\'fuba'], bairros: [] },
-      { name: 'Marávia', postos_administrativos: ['Fingoé', 'Chiputo', 'Molumbo'], bairros: [] },
-      { name: 'Moatize', postos_administrativos: ['Moatize', 'Kambulatsitsi', 'Zóbuè'], bairros: ['Bairro 25 de Setembro', 'Liberdade', 'Chithatha'] },
-      { name: 'Mutarara', postos_administrativos: ['Nhamayabué', 'Inhangoma'], bairros: [] },
+      { name: 'Angónia', administrative_posts: ['Ulongue', 'Domue'], neighborhoods: [] },
+      { name: 'Cahora-Bassa', administrative_posts: ['Songo', 'Chitima', 'Muxeza'], neighborhoods: [] },
+      { name: 'Changara', administrative_posts: ['Luenha', 'Chioco', 'Mavago'], neighborhoods: [] },
+      { name: 'Chifunde', administrative_posts: ['Chifunde', 'Mualadzi', 'Nsadzu'], neighborhoods: [] },
+      { name: 'Chiuta', administrative_posts: ['Manje', 'Kazula'], neighborhoods: [] },
+      { name: 'Dôa', administrative_posts: ['Dôa', 'Chueza'], neighborhoods: [] },
+      { name: 'Macanga', administrative_posts: ['Furancungo', 'Chinde'], neighborhoods: [] },
+      { name: 'Magoé', administrative_posts: ['Mpende', 'Chinthopo', 'Mukumbura'], neighborhoods: [] },
+      { name: 'Marara', administrative_posts: ['Marara', 'M\'fuba'], neighborhoods: [] },
+      { name: 'Marávia', administrative_posts: ['Fingoé', 'Chiputo', 'Molumbo'], neighborhoods: [] },
+      { name: 'Moatize', administrative_posts: ['Moatize', 'Kambulatsitsi', 'Zóbuè'], neighborhoods: ['Bairro 25 de Setembro', 'Liberdade', 'Chithatha'] },
+      { name: 'Mutarara', administrative_posts: ['Nhamayabué', 'Inhangoma'], neighborhoods: [] },
       { 
         name: 'Tete (Cidade)', 
-        postos_administrativos: ['Tete'], 
-        bairros: ['Chingo', 'Degue', 'Matundo', 'Mpadue', 'Josina Machel', 'Francisco Manyanga'] 
+        administrative_posts: ['Tete'], 
+        neighborhoods: ['Chingo', 'Degue', 'Matundo', 'Mpadue', 'Josina Machel', 'Francisco Manyanga'] 
       },
-      { name: 'Tsangano', postos_administrativos: ['Tsangano', 'Ntengo-Wambuzi'], bairros: [] },
-      { name: 'Zumbo', postos_administrativos: ['Zumbo', 'Muze', 'Zambue'], bairros: [] }
+      { name: 'Tsangano', administrative_posts: ['Tsangano', 'Ntengo-Wambuzi'], neighborhoods: [] },
+      { name: 'Zumbo', administrative_posts: ['Zumbo', 'Muze', 'Zambue'], neighborhoods: [] }
     ]
   },
   {
@@ -351,22 +367,22 @@ export const mozambiqueProvinces = [
     region: 'Centro',
     sigla: 'MN',
     districts: [
-      { name: 'Bárue', postos_administrativos: ['Catandica', 'Nhampassa', 'Chuala'], bairros: [] },
+      { name: 'Bárue', administrative_posts: ['Catandica', 'Nhampassa', 'Chuala'], neighborhoods: [] },
       { 
         name: 'Chimoio (Cidade)', 
-        postos_administrativos: ['Urbano nº 1', 'Urbano nº 2', 'Urbano nº 3'], 
-        bairros: ['Central', '7 de Setembro', 'Soalpo', 'Nandfe', 'Vila Nova', 'Cordor'] 
+        administrative_posts: ['Urbano nº 1', 'Urbano nº 2', 'Urbano nº 3'], 
+        neighborhoods: ['Central', '7 de Setembro', 'Soalpo', 'Nandfe', 'Vila Nova', 'Cordor'] 
       },
-      { name: 'Gondola', postos_administrativos: ['Gondola', 'Cafumpe', 'Amatongas'], bairros: [] },
-      { name: 'Guro', postos_administrativos: ['Guro', 'Mandie', 'Nhamassonge'], bairros: [] },
-      { name: 'Macate', postos_administrativos: ['Macate', 'Marera'], bairros: [] },
-      { name: 'Machaze', postos_administrativos: ['Machaze', 'Save'], bairros: [] },
-      { name: 'Macossa', postos_administrativos: ['Macossa', 'Nhamagua'], bairros: [] },
-      { name: 'Manica', postos_administrativos: ['Manica', 'Messica', 'Mavonde'], bairros: [] },
-      { name: 'Mossurize', postos_administrativos: ['Espungabera', 'Dacata'], bairros: [] },
-      { name: 'Sussundenga', postos_administrativos: ['Sussundenga', 'Dombe', 'Muhoa'], bairros: [] },
-      { name: 'Tambara', postos_administrativos: ['Nhacolo', 'Buzua'], bairros: [] },
-      { name: 'Vanduzi', postos_administrativos: ['Vanduzi', 'Matsinho'], bairros: [] }
+      { name: 'Gondola', administrative_posts: ['Gondola', 'Cafumpe', 'Amatongas'], neighborhoods: [] },
+      { name: 'Guro', administrative_posts: ['Guro', 'Mandie', 'Nhamassonge'], neighborhoods: [] },
+      { name: 'Macate', administrative_posts: ['Macate', 'Marera'], neighborhoods: [] },
+      { name: 'Machaze', administrative_posts: ['Machaze', 'Save'], neighborhoods: [] },
+      { name: 'Macossa', administrative_posts: ['Macossa', 'Nhamagua'], neighborhoods: [] },
+      { name: 'Manica', administrative_posts: ['Manica', 'Messica', 'Mavonde'], neighborhoods: [] },
+      { name: 'Mossurize', administrative_posts: ['Espungabera', 'Dacata'], neighborhoods: [] },
+      { name: 'Sussundenga', administrative_posts: ['Sussundenga', 'Dombe', 'Muhoa'], neighborhoods: [] },
+      { name: 'Tambara', administrative_posts: ['Nhacolo', 'Buzua'], neighborhoods: [] },
+      { name: 'Vanduzi', administrative_posts: ['Vanduzi', 'Matsinho'], neighborhoods: [] }
     ]
   },
   {
@@ -377,21 +393,21 @@ export const mozambiqueProvinces = [
     districts: [
       { 
         name: 'Beira (Cidade)', 
-        postos_administrativos: ['Central', 'Munhava', 'Manga Loot', 'Inhamizua'], 
-        bairros: ['Chaimite', 'Macuti', 'Ponta Gêa', 'Munhava', 'Manga', 'Vaz', 'Esturro', 'Cipangara'] 
+        administrative_posts: ['Central', 'Munhava', 'Manga Loot', 'Inhamizua'], 
+        neighborhoods: ['Chaimite', 'Macuti', 'Ponta Gêa', 'Munhava', 'Manga', 'Vaz', 'Esturro', 'Cipangara'] 
       },
-      { name: 'Búzi', postos_administrativos: ['Búzi', 'Estaquinha', 'Nova Sofala'], bairros: [] },
-      { name: 'Caia', postos_administrativos: ['Caia', 'Sena', 'Murraça'], bairros: [] },
-      { name: 'Chemba', postos_administrativos: ['Chemba', 'Chiramba', 'Mulima'], bairros: [] },
-      { name: 'Cheringoma', postos_administrativos: ['Inhaminga', 'Muanza'], bairros: [] },
-      { name: 'Chibabava', postos_administrativos: ['Chibabava', 'Goonda', 'Muxúnguè'], bairros: [] },
-      { name: 'Dondo', postos_administrativos: ['Dondo', 'Mafambisse'], bairros: ['Chibuabuamua', 'Central', 'Planalto'] },
-      { name: 'Gorongosa', postos_administrativos: ['Gorongosa', 'Nhamadzi', 'Vanduzi'], bairros: [] },
-      { name: 'Machanga', postos_administrativos: ['Machanga', 'Divinhe'], bairros: [] },
-      { name: 'Maringué', postos_administrativos: ['Maringué', 'Canxixe', 'Subui'], bairros: [] },
-      { name: 'Marromeu', postos_administrativos: ['Marromeu', 'Chupanga'], bairros: [] },
-      { name: 'Muanza', postos_administrativos: ['Muanza', 'Galinha'], bairros: [] },
-      { name: 'Nhamatanda', postos_administrativos: ['Nhamatanda', 'Tica'], bairros: [] }
+      { name: 'Búzi', administrative_posts: ['Búzi', 'Estaquinha', 'Nova Sofala'], neighborhoods: [] },
+      { name: 'Caia', administrative_posts: ['Caia', 'Sena', 'Murraça'], neighborhoods: [] },
+      { name: 'Chemba', administrative_posts: ['Chemba', 'Chiramba', 'Mulima'], neighborhoods: [] },
+      { name: 'Cheringoma', administrative_posts: ['Inhaminga', 'Muanza'], neighborhoods: [] },
+      { name: 'Chibabava', administrative_posts: ['Chibabava', 'Goonda', 'Muxúnguè'], neighborhoods: [] },
+      { name: 'Dondo', administrative_posts: ['Dondo', 'Mafambisse'], neighborhoods: ['Chibuabuamua', 'Central', 'Planalto'] },
+      { name: 'Gorongosa', administrative_posts: ['Gorongosa', 'Nhamadzi', 'Vanduzi'], neighborhoods: [] },
+      { name: 'Machanga', administrative_posts: ['Machanga', 'Divinhe'], neighborhoods: [] },
+      { name: 'Maringué', administrative_posts: ['Maringué', 'Canxixe', 'Subui'], neighborhoods: [] },
+      { name: 'Marromeu', administrative_posts: ['Marromeu', 'Chupanga'], neighborhoods: [] },
+      { name: 'Muanza', administrative_posts: ['Muanza', 'Galinha'], neighborhoods: [] },
+      { name: 'Nhamatanda', administrative_posts: ['Nhamatanda', 'Tica'], neighborhoods: [] }
     ]
   },
   {
@@ -400,24 +416,24 @@ export const mozambiqueProvinces = [
     region: 'Sul',
     sigla: 'INH',
     districts: [
-      { name: 'Funhalouro', postos_administrativos: ['Funhalouro', 'Tome'], bairros: [] },
-      { name: 'Govuro', postos_administrativos: ['Nova Mambone', 'Jofane'], bairros: [] },
-      { name: 'Homoíne', postos_administrativos: ['Homoíne', 'Pembe'], bairros: [] },
+      { name: 'Funhalouro', administrative_posts: ['Funhalouro', 'Tome'], neighborhoods: [] },
+      { name: 'Govuro', administrative_posts: ['Nova Mambone', 'Jofane'], neighborhoods: [] },
+      { name: 'Homoíne', administrative_posts: ['Homoíne', 'Pembe'], neighborhoods: [] },
       { 
         name: 'Inhambane (Cidade)', 
-        postos_administrativos: ['Inhambane'], 
-        bairros: ['Balane', 'Chamane', 'Josina Machel', 'Muelé', 'Liberdade', 'Aeroporto'] 
+        administrative_posts: ['Inhambane'], 
+        neighborhoods: ['Balane', 'Chamane', 'Josina Machel', 'Muelé', 'Liberdade', 'Aeroporto'] 
       },
-      { name: 'Inharrime', postos_administrativos: ['Inharrime', 'Chambone'], bairros: [] },
-      { name: 'Inhassoro', postos_administrativos: ['Inhassoro', 'Bazaruto'], bairros: [] },
-      { name: 'Jangamo', postos_administrativos: ['Jangamo', 'Cumbana'], bairros: [] },
-      { name: 'Mabote', postos_administrativos: ['Mabote', 'Zimane'], bairros: [] },
-      { name: 'Massinga', postos_administrativos: ['Massinga', 'Chicomo'], bairros: [] },
-      { name: 'Maxixe (Cidade)', postos_administrativos: ['Maxixe'], bairros: ['Bairro Central', 'Chamba', 'Macupula', 'Nalazi'] },
-      { name: 'Morrumbene', postos_administrativos: ['Morrumbene', 'Mucodoene'], bairros: [] },
-      { name: 'Panda', postos_administrativos: ['Panda', 'Muelé'], bairros: [] },
-      { name: 'Vilankulo', postos_administrativos: ['Vilankulo', 'Mapinhane'], bairros: ['Bairro Central', 'Mucoque', 'Alto Macassa'] },
-      { name: 'Zavala', postos_administrativos: ['Quissico', 'Zandamela'], bairros: [] }
+      { name: 'Inharrime', administrative_posts: ['Inharrime', 'Chambone'], neighborhoods: [] },
+      { name: 'Inhassoro', administrative_posts: ['Inhassoro', 'Bazaruto'], neighborhoods: [] },
+      { name: 'Jangamo', administrative_posts: ['Jangamo', 'Cumbana'], neighborhoods: [] },
+      { name: 'Mabote', administrative_posts: ['Mabote', 'Zimane'], neighborhoods: [] },
+      { name: 'Massinga', administrative_posts: ['Massinga', 'Chicomo'], neighborhoods: [] },
+      { name: 'Maxixe (Cidade)', administrative_posts: ['Maxixe'], neighborhoods: ['Bairro Central', 'Chamba', 'Macupula', 'Nalazi'] },
+      { name: 'Morrumbene', administrative_posts: ['Morrumbene', 'Mucodoene'], neighborhoods: [] },
+      { name: 'Panda', administrative_posts: ['Panda', 'Muelé'], neighborhoods: [] },
+      { name: 'Vilankulo', administrative_posts: ['Vilankulo', 'Mapinhane'], neighborhoods: ['Bairro Central', 'Mucoque', 'Alto Macassa'] },
+      { name: 'Zavala', administrative_posts: ['Quissico', 'Zandamela'], neighborhoods: [] }
     ]
   },
   {
@@ -426,23 +442,23 @@ export const mozambiqueProvinces = [
     region: 'Sul',
     sigla: 'GZ',
     districts: [
-      { name: 'Bilene', postos_administrativos: ['Macia', 'Bilene Macia', 'Chissano'], bairros: [] },
-      { name: 'Chibuto', postos_administrativos: ['Chibuto', 'Chaimite', 'Changanine'], bairros: [] },
-      { name: 'Chicualacuala', postos_administrativos: ['Chicualacuala', 'Mapai'], bairros: [] },
-      { name: 'Chigubo', postos_administrativos: ['Chigubo', 'Ndindiza'], bairros: [] },
-      { name: 'Chókwè', postos_administrativos: ['Chókwè', 'Lionde', 'Macarretane'], bairros: [] },
-      { name: 'Chonguene', postos_administrativos: ['Chonguene', 'Chongoene'], bairros: [] },
-      { name: 'Guijá', postos_administrativos: ['Canicado', 'Chivonguene'], bairros: [] },
-      { name: 'Limpopo', postos_administrativos: ['Chicumbane', 'Zongoene'], bairros: [] },
-      { name: 'Mabalane', postos_administrativos: ['Mabalane', 'Combomune'], bairros: [] },
-      { name: 'Manjacaze', postos_administrativos: ['Manjacaze', 'Chidenguele'], bairros: [] },
-      { name: 'Mapai', postos_administrativos: ['Mapai', 'Machaila'], bairros: [] },
-      { name: 'Massangena', postos_administrativos: ['Massangena', 'Mavue'], bairros: [] },
-      { name: 'Massingir', postos_administrativos: ['Massingir', 'Zulo'], bairros: [] },
+      { name: 'Bilene', administrative_posts: ['Macia', 'Bilene Macia', 'Chissano'], neighborhoods: [] },
+      { name: 'Chibuto', administrative_posts: ['Chibuto', 'Chaimite', 'Changanine'], neighborhoods: [] },
+      { name: 'Chicualacuala', administrative_posts: ['Chicualacuala', 'Mapai'], neighborhoods: [] },
+      { name: 'Chigubo', administrative_posts: ['Chigubo', 'Ndindiza'], neighborhoods: [] },
+      { name: 'Chókwè', administrative_posts: ['Chókwè', 'Lionde', 'Macarretane'], neighborhoods: [] },
+      { name: 'Chonguene', administrative_posts: ['Chonguene', 'Chongoene'], neighborhoods: [] },
+      { name: 'Guijá', administrative_posts: ['Canicado', 'Chivonguene'], neighborhoods: [] },
+      { name: 'Limpopo', administrative_posts: ['Chicumbane', 'Zongoene'], neighborhoods: [] },
+      { name: 'Mabalane', administrative_posts: ['Mabalane', 'Combomune'], neighborhoods: [] },
+      { name: 'Manjacaze', administrative_posts: ['Manjacaze', 'Chidenguele'], neighborhoods: [] },
+      { name: 'Mapai', administrative_posts: ['Mapai', 'Machaila'], neighborhoods: [] },
+      { name: 'Massangena', administrative_posts: ['Massangena', 'Mavue'], neighborhoods: [] },
+      { name: 'Massingir', administrative_posts: ['Massingir', 'Zulo'], neighborhoods: [] },
       { 
         name: 'Xai-Xai (Cidade)', 
-        postos_administrativos: ['Xai-Xai'], 
-        bairros: ['Central', 'Alto-Gaza', 'Inhamissa', 'Panjane', 'Chicumbane', 'Patrice Lumumba'] 
+        administrative_posts: ['Xai-Xai'], 
+        neighborhoods: ['Central', 'Alto-Gaza', 'Inhamissa', 'Panjane', 'Chicumbane', 'Patrice Lumumba'] 
       }
     ]
   },
@@ -452,18 +468,18 @@ export const mozambiqueProvinces = [
     region: 'Sul',
     sigla: 'MPT',
     districts: [
-      { name: 'Boane', postos_administrativos: ['Boane', 'Matola-Rio'], bairros: ['Bairro Central', 'Campinho', 'Massaca'] },
-      { name: 'Magude', postos_administrativos: ['Magude', 'Mapulanguene', 'Motaze'], bairros: [] },
-      { name: 'Manhiça', postos_administrativos: ['Manhiça', 'Xinavane', '3 de Fevereiro'], bairros: [] },
-      { name: 'Marracuene', postos_administrativos: ['Marracuene', 'Machubo'], bairros: ['Aliança', 'Cumbe', 'Habel Jafar'] },
+      { name: 'Boane', administrative_posts: ['Boane', 'Matola-Rio'], neighborhoods: ['Bairro Central', 'Campinho', 'Massaca'] },
+      { name: 'Magude', administrative_posts: ['Magude', 'Mapulanguene', 'Motaze'], neighborhoods: [] },
+      { name: 'Manhiça', administrative_posts: ['Manhiça', 'Xinavane', '3 de Fevereiro'], neighborhoods: [] },
+      { name: 'Marracuene', administrative_posts: ['Marracuene', 'Machubo'], neighborhoods: ['Aliança', 'Cumbe', 'Habel Jafar'] },
       { 
         name: 'Matola (Cidade)', 
-        postos_administrativos: ['Matola', 'Infulene', 'Machava'], 
-        bairros: ['Matola Sede', 'Fomento', 'Liberdade', 'T3', 'Trevo', 'Machava Socimol', 'Cingatela'] 
+        administrative_posts: ['Matola', 'Infulene', 'Machava'], 
+        neighborhoods: ['Matola Sede', 'Fomento', 'Liberdade', 'T3', 'Trevo', 'Machava Socimol', 'Cingatela'] 
       },
-      { name: 'Matutuíne', postos_administrativos: ['Bela Vista', 'Catembe', 'Zitundo'], bairros: [] },
-      { name: 'Moamba', postos_administrativos: ['Moamba', 'Ressano Garcia', 'Pessene'], bairros: [] },
-      { name: 'Namaacha', postos_administrativos: ['Namaacha', 'Changalane'], bairros: [] }
+      { name: 'Matutuíne', administrative_posts: ['Bela Vista', 'Catembe', 'Zitundo'], neighborhoods: [] },
+      { name: 'Moamba', administrative_posts: ['Moamba', 'Ressano Garcia', 'Pessene'], neighborhoods: [] },
+      { name: 'Namaacha', administrative_posts: ['Namaacha', 'Changalane'], neighborhoods: [] }
     ]
   },
   {
@@ -474,38 +490,38 @@ export const mozambiqueProvinces = [
     districts: [
       { 
         name: 'KaMpfumo', 
-        postos_administrativos: ['KaMpfumo'], 
-        bairros: ['Central A/B', 'Alto Maé A/B', 'Malhangalene A/B', 'Polana Cimento A/B/C', 'Coop', 'Sommerschield'] 
+        administrative_posts: ['KaMpfumo'], 
+        neighborhoods: ['Central A/B', 'Alto Maé A/B', 'Malhangalene A/B', 'Polana Cimento A/B/C', 'Coop', 'Sommerschield'] 
       },
       { 
         name: 'Nlhamankulu', 
-        postos_administrativos: ['Nlhamankulu'], 
-        bairros: ['Aeroporto A/B', 'Chamanculo A/B/C/D', 'Malanga', 'Xipamanine', 'Munhuana', 'Unidade 7'] 
+        administrative_posts: ['Nlhamankulu'], 
+        neighborhoods: ['Aeroporto A/B', 'Chamanculo A/B/C/D', 'Malanga', 'Xipamanine', 'Munhuana', 'Unidade 7'] 
       },
       { 
         name: 'KaMaxaquene', 
-        postos_administrativos: ['KaMaxaquene'], 
-        bairros: ['Maxaquene A/B/C/D', 'Polana Caniço A/B', 'Urbanização', 'Mafalala'] 
+        administrative_posts: ['KaMaxaquene'], 
+        neighborhoods: ['Maxaquene A/B/C/D', 'Polana Caniço A/B', 'Urbanização', 'Mafalala'] 
       },
       { 
         name: 'KaMavota', 
-        postos_administrativos: ['KaMavota'], 
-        bairros: ['Mavalane A/B', 'FPLM', 'Hulene A/B', 'Ferroviário', 'Costa do Sol', 'Polana Caniço B'] 
+        administrative_posts: ['KaMavota'], 
+        neighborhoods: ['Mavalane A/B', 'FPLM', 'Hulene A/B', 'Ferroviário', 'Costa do Sol', 'Polana Caniço B'] 
       },
       { 
         name: 'KaMubukwana', 
-        postos_administrativos: ['KaMubukwana'], 
-        bairros: ['Bagamoyo', 'George Dimitrov', 'Inhagoia A/B', 'Magoanine A/B/C', 'Zimpeto'] 
+        administrative_posts: ['KaMubukwana'], 
+        neighborhoods: ['Bagamoyo', 'George Dimitrov', 'Inhagoia A/B', 'Magoanine A/B/C', 'Zimpeto'] 
       },
       { 
         name: 'KaTembe', 
-        postos_administrativos: ['KaTembe'], 
-        bairros: ['Gwaza Muthini', 'Incassane', 'Inguide', 'Chali', 'Chamissava'] 
+        administrative_posts: ['KaTembe'], 
+        neighborhoods: ['Gwaza Muthini', 'Incassane', 'Inguide', 'Chali', 'Chamissava'] 
       },
       { 
         name: 'KaNyaka', 
-        postos_administrativos: ['KaNyaka'], 
-        bairros: ['Ribzene', 'Nghanyane', 'Chadwane'] 
+        administrative_posts: ['KaNyaka'], 
+        neighborhoods: ['Ribzene', 'Nghanyane', 'Chadwane'] 
       }
     ]
   }
@@ -514,12 +530,12 @@ export const mozambiqueProvinces = [
 export interface District {
   name: string;
   provinceId: string;
-  postos_administrativos: string[];
-  bairros: string[];
+  administrative_posts: string[];
+  neighborhoods: string[];
 }
 
 /**
- * Retorna a lista de distritos pertencentes a uma determinada província.
+ * Returns the list of districts belonging to a given province.
  * @param provinceId - O identificador da província (ex: 'cab', 'npl', 'mpc')
  */
 export function getDistrictsByProvince(provinceId: string): string[] {
@@ -531,7 +547,7 @@ export function getDistrictsByProvince(provinceId: string): string[] {
 }
 
 /**
- * Retorna uma lista plana com todos os 161 distritos e respetivos IDs de província.
+ * Returns a flat list of all 161 districts and their respective province IDs.
  */
 export function getAllDistricts(): District[] {
   const list: District[] = [];
@@ -540,8 +556,8 @@ export function getAllDistricts(): District[] {
       list.push({
         name: district.name,
         provinceId: province.id,
-        postos_administrativos: district.postos_administrativos,
-        bairros: district.bairros
+        administrative_posts: district.administrative_posts,
+        neighborhoods: district.neighborhoods
       });
     }
   }
@@ -781,15 +797,15 @@ export interface CEPInfo {
   cep: string;
   province: string;
   district: string;
-  locality: string; // Posto Administrativo ou Bairro
+  locality: string; // Administrative Post or Neighborhood
 }
 
-import { newCEPData } from './cep_data';
+import { newCEPData } from './cep_data.js';
 export { newCEPData };
 
 /**
- * Mapeamento de Códigos Legados para prefixos de Distrito no Novo CEP.
- * Exemplo: 3100 (Nampula ECP) -> '0909' (Prefixo do distrito de Nampula no novo sistema)
+ * Mapping of Legacy Codes to District prefixes in the New CEP.
+ * Example: 3100 (Nampula ECP) -> '0909' (Nampula district prefix in the new system)
  */
 export const legacyToNewCEPPrefix: Record<string, string[]> = {
   '1100': ["0101","0102","0103","0104","0105","0106","0107"],
