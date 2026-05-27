@@ -47,9 +47,9 @@ class MozUtilsTest {
 
         assertEquals("Singular (Cidadãos nacionais/estrangeiros e ENI)", MozUtils.getNUITEntityType(nuitSingular))
         assertEquals("Singular (Cidadãos nacionais/estrangeiros e ENI)", MozUtils.getNUITEntityType(nuitSingular2))
-        assertEquals("Equivalent (Heranças Jacentes, Consórcios)", MozUtils.getNUITEntityType(nuitEquivalent))
-        assertEquals("Collective (Sociedades por Quotas, SA, Lda, Associações)", MozUtils.getNUITEntityType(nuitCollective))
-        assertEquals("Public (Instituições do Estado e Ministérios)", MozUtils.getNUITEntityType(nuitPublico))
+        assertEquals("Equiparada (Heranças Jacentes, Consórcios)", MozUtils.getNUITEntityType(nuitEquivalent))
+        assertEquals("Colectiva (Sociedades por Quotas, SA, Lda, Associações)", MozUtils.getNUITEntityType(nuitCollective))
+        assertEquals("Público (Instituições do Estado e Ministérios)", MozUtils.getNUITEntityType(nuitPublico))
         assertNull(MozUtils.getNUITEntityType("000000000"))
     }
 
