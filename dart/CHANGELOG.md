@@ -5,8 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.0] - 2026-05-27
+## [0.3.1] - 2026-05-27
 
+### Fixed
+- Fixed class closure issues and syntax errors in `moz_utils.dart`
+- Changed new validation methods to static to align with standard usage
+
+## [0.3.0] - 2026-05-27
 ### Added
 - **New CEP Engine & Intelligent Suggestions:**
   - `isValidNewCEP`: Full support for the geo-referenced system (e.g., `0101-01`).
