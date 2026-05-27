@@ -4,6 +4,33 @@ Histórico de alterações de todas as versões do projecto **moz-utils** (TypeS
 
 ---
 
+## 0.3.0
+
+> **Versão minor — Documentos Oficiais, Novo CEP e Padrões Open Source**
+
+### TypeScript / JS Stack
+- **Novas Validações:** Suporte completo para validação de DIRE, Passaporte e Carta de Condução.
+- **Ecossistema Financeiro:** Mapeamento explícito de carteiras móveis (M-Pesa, e-Mola, mKesh) associado às operadoras.
+- **Novo Sistema CEP:** Adicionado suporte para o Novo Código de Endereçamento Postal (6 dígitos).
+- **Mapeamento Legado:** Sistema inteligente de *auto-fallback* que converte Códigos Postais Legados para as novas regiões CEP.
+- **Emulador CLI:** Adição de um emulador interativo de linha de comandos (`emulator.ts`) para ensaiar a biblioteca em tempo real.
+
+### Python, PHP, Dart & Kotlin Stacks
+- *Aviso:* A arquitetura das novas validações (DIRE, Passaporte, Novo CEP, etc.) foi concebida na *Stack* principal (TS). A equipa e a comunidade Open Source estão atualmente a trabalhar no porting oficial destas expressões regulares para as respetivas linguagens nestas *stacks*.
+
+### Governança e Open Source
+- **Templates GitHub:** Adição de templates estruturados para Pull Requests e Issues (`bug_report`, `feature_request`).
+- **Code of Conduct:** Implementação do Contributor Covenant Code of Conduct.
+- **Documentação:** Desdobramento de fluxogramas arquiteturais e hierarquias geográficas para `docs/mozambiquekiwi.md`.
+- **Automação (Skill Interna):** Criada uma GitHub Action automática que credita o perfil dos colaboradores no repositório assim que o seu código for integrado na branch principal (`main`).
+
+### Segurança e Atualizações Automáticas
+- **Dependabot:** Configuração de autovarrimento e atualizações para garantir que todas as dependências em todas as stacks se mantenham seguras e sem quebrar a retrocompatibilidade.
+- **CodeQL Security:** Implementação nativa de SAST (Análise Estática de Segurança) para blindar o código contra Injeções XSS, SQLi e malwares de terceiros.
+- **Auditoria de Cadeia de Suprimentos:** Execução automatizada de varrimentos `npm audit` para proteção contra *supply chain attacks*.
+
+---
+
 ## 0.2.0
 
 > **Versão minor — Nova funcionalidade: Códigos Postais Legados**

@@ -122,6 +122,33 @@ export function isValidBI(bi: string): boolean {
 }
 
 /**
+ * Valida o DIRE (Documento de Identificação de Residente Estrangeiro) de Moçambique.
+ * Formato oficial: Exatamente 8 dígitos seguidos de uma única letra (Ex: 00008312C).
+ */
+export function isValidDIRE(dire: string): boolean {
+  const cleaned = dire.replace(/[\s\-]/g, '').toUpperCase();
+  return /^\d{8}[A-Z]$/.test(cleaned);
+}
+
+/**
+ * Valida o Passaporte Moçambicano.
+ * Formato oficial: Exatamente 2 letras seguidas de 7 dígitos numéricos (Ex: AO1234567).
+ */
+export function isValidPassport(passport: string): boolean {
+  const cleaned = passport.replace(/[\s\-]/g, '').toUpperCase();
+  return /^[A-Z]{2}\d{7}$/.test(cleaned);
+}
+
+/**
+ * Valida a Carta de Condução Moçambicana.
+ * Formato oficial: 1 letra (indicativo de província) seguida de 5 a 7 dígitos numéricos (Ex: M123456).
+ */
+export function isValidDrivingLicense(license: string): boolean {
+  const cleaned = license.replace(/[\s\-]/g, '').toUpperCase();
+  return /^[A-Z]\d{5,7}$/.test(cleaned);
+}
+
+/**
  * Formata um valor monetário em Meticais seguindo o padrão oficial de Moçambique.
  *
  * Padrão oficial (SI + AT):
@@ -746,3 +773,130 @@ export function getPostalCodeProvince(code: string): string | null {
   return legacyPostalCodes[cleaned]?.province ?? null
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// NOVO SISTEMA DE CÓDIGO DE ENDEREÇAMENTO POSTAL (CEP)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface CEPInfo {
+  cep: string;
+  province: string;
+  district: string;
+  locality: string; // Posto Administrativo ou Bairro
+}
+
+import { newCEPData } from './cep_data';
+export { newCEPData };
+
+/**
+ * Mapeamento de Códigos Legados para prefixos de Distrito no Novo CEP.
+ * Exemplo: 3100 (Nampula ECP) -> '0909' (Prefixo do distrito de Nampula no novo sistema)
+ */
+export const legacyToNewCEPPrefix: Record<string, string[]> = {
+  '1100': ["0101","0102","0103","0104","0105","0106","0107"],
+  '1101': ["0101","0103"],
+  '1103': ["0101"],
+  '1112': ["0204"],
+  '1114': ["0203","0204"],
+  '1115': ["0203"],
+  '1116': ["0202"],
+  '1117': ["0106"],
+  '1118': ["0201"],
+  '1120': ["0205"],
+  '1121': ["0207"],
+  '1122': ["0207"],
+  '1123': ["0208"],
+  '1124': ["0206"],
+  '1125': ["0206"],
+  '1200': ["0302"],
+  '1201': ["0302"],
+  '1202': ["0304"],
+  '1206': ["0310"],
+  '1207': ["0311"],
+  '1208': ["0306"],
+  '1209': ["0305"],
+  '1210': ["0305"],
+  '1211': ["0313"],
+  '1300': ["0404"],
+  '1301': ["0405"],
+  '1302': ["0408"],
+  '1303': ["0409"],
+  '1305': ["0413"],
+  '1307': ["0403"],
+  '1308': ["0303"],
+  '1310': ["0407","0608"],
+  '1311': ["0402"],
+  '1312': ["0401"],
+  '1313': ["0410"],
+  '1314': ["0412"],
+  '2100': ["0504"],
+  '2103': ["0504"],
+  '2104': ["0505"],
+  '2105': ["0505"],
+  '2106': ["0506"],
+  '2200': ["0602"],
+  '2201': ["0610"],
+  '2203': ["0605"],
+  '2204': ["0612"],
+  '2205': ["0601"],
+  '2206': ["0609"],
+  '2207': ["0603"],
+  '2208': ["0611"],
+  '2300': ["0702"],
+  '2302': ["0704"],
+  '2304': ["0707"],
+  '2307': ["0701"],
+  '2312': ["0712"],
+  '2400': ["0802"],
+  '2401': ["0807"],
+  '2403': ["0810"],
+  '2405': ["0813"],
+  '2412': ["0801"],
+  '3100': ["0909"],
+  '3101': ["0903"],
+  '3102': ["0915"],
+  '3105': ["0913"],
+  '3108': ["0901"],
+  '3112': ["0919","0920"],
+  '3200': ["1005"],
+  '3201': ["1005"],
+  '3208': ["1011"],
+  '3216': ["1015"],
+  '3219': ["1016"],
+  '3300': ["1111"],
+  '3304': ["1104"],
+  '3305': ["1101"],
+  '3311': ["1114"],
+};
+
+/**
+ * Valida o formato do Novo CEP (Formato: XXXX-XX)
+ */
+export function isValidNewCEP(cep: string): boolean {
+  return /^\d{4}-\d{2}$/.test(cep.trim());
+}
+
+/**
+ * Sugere uma lista de Novos CEPs baseados no input do utilizador.
+ * Funcionalidade:
+ * - Se o input for um código legado (ex: "3100"), retorna todos os novos CEPs equivalentes.
+ * - Se for um CEP novo parcial ou total, pode sugerir (neste ensaio valida a string inteira).
+ */
+export function suggestCEPs(input: string): CEPInfo[] {
+  const cleaned = input.trim();
+
+  // 1. Se já for um formato de novo CEP, filtramos os que batem com o input
+  if (isValidNewCEP(cleaned)) {
+    return newCEPData.filter(c => c.cep === cleaned);
+  }
+
+  // 2. Se for um código legado (ex: 3100), sugerimos as divisões do novo CEP
+  if (isValidPostalCode(cleaned)) {
+    const prefixes = legacyToNewCEPPrefix[cleaned];
+    if (prefixes && prefixes.length > 0) {
+      return newCEPData.filter(c => prefixes.some(prefix => c.cep.startsWith(prefix)));
+    }
+  }
+
+  // 3. Caso não encontre correspondência
+  return [];
+}

@@ -1,0 +1,42 @@
+name: Auto Add Contributor
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  add-contributor:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Add Contributor to README
+        run: |
+          AUTHOR="${{ github.event.pull_request.user.login }}"
+          PROFILE_URL="https://github.com/$AUTHOR"
+          AVATAR_URL="https://github.com/$AUTHOR.png"
+          
+          # Check if author is already in README
+          if grep -q "$PROFILE_URL" README.md; then
+            echo "Contributor $AUTHOR already in README."
+            exit 0
+          fi
+          
+          echo "Adding $AUTHOR to contributors list..."
+          
+          # Injects the new contributor's avatar right after the zedecks profile block
+          sed -i "/alt=\"zedecks\" \/>/a \ \ <\/a>\n  \&nbsp;\&nbsp;\n  <a href=\"$PROFILE_URL\" title=\"@$AUTHOR\">\n    <img src=\"$AVATAR_URL\" width=\"60\" height=\"60\" style=\"border-radius: 50%;\" alt=\"$AUTHOR\" />" README.md
+          
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md
+          git diff-index --quiet HEAD || git commit -m "docs: add @${{ github.event.pull_request.user.login }} as a contributor [skip ci]"
+          git push

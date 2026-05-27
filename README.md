@@ -21,7 +21,7 @@
 </p>
 
 <p align="justify">
-  <code>moz-utils</code> is a collection of essential utility functions tailored for the Mozambican software development ecosystem. It standardizes critical validations such as <b>NUIT</b> (Unique Tax Identification Number), <b>BI</b> (National Identity Card), <b>mobile phone numbers</b> (Vodacom, Tmcel, Movitel), <b>Metical currency formatting</b> (MZN), and <b>national geographical data</b> (Provinces, Districts, Administrative Posts, and Neighborhoods).
+  <code>moz-utils</code> is a collection of essential utility functions tailored for the Mozambican software development ecosystem. It standardizes critical validations such as <b>NUIT</b> (Unique Tax Identification Number), <b>BI</b>, <b>DIRE</b>, <b>Passaportes</b>, <b>Cartas de Condução</b>, <b>mobile phone numbers</b> (Vodacom, Tmcel, Movitel / M-Pesa, e-Mola, mKesh), <b>Metical currency formatting</b> (MZN), and <b>national geographical data</b> (including the Novo Código de Endereçamento Postal - CEP).
 </p>
 
 <p align="justify">
@@ -44,65 +44,40 @@
 ### 1. NUIT Validation (Modulo 11)
 
 <p align="justify">
-  The validation strictly follows the rules defined by the Tax Authority of Mozambique:
+  The validation strictly follows the rules defined by the Tax Authority of Mozambique, validating the 9 digits and resolving the Módulo 11 checksum for the 9th digit. It also detects the Entity Type (Singular, Coletiva, etc.).
 </p>
 
-```mermaid
-graph TD
-    A[Start: nuit] --> B{Has 9 digits?}
-    B -- No --> C[Invalid]
-    B -- Yes --> D{All digits identical?<br/>e.g., 111111111}
-    D -- Yes --> C
-    D -- No --> E{First digit<br/>between 1 and 5?}
-    E -- No --> C
-    E -- Yes --> F["Weighted sum of the first 8 digits:<br/>sum += digit[i] * (9 - i)"]
-    F --> G[Calculate remainder = sum % 11]
-    G --> H{remainder <= 1?}
-    H -- Yes --> I[Expected Digit = 0]
-    H -- No --> J[Expected Digit = 11 - remainder]
-    I --> K{Digit 9 == Expected Digit?}
-    J --> K
-    K -- Yes --> L[Valid]
-    K -- No --> C
+### 2. Validação de Documentos Oficiais
+
+Oferece validação precisa através de RegEx (incluindo limpeza e sanitização de formatações, espaços e minúsculas) para:
+- **BI**: 12 dígitos e 1 letra.
+- **DIRE**: Exatamente 8 dígitos e 1 letra.
+- **Passaporte**: 2 letras seguidas de 7 dígitos.
+- **Carta de Condução**: 1 letra seguida de 5 a 7 dígitos.
+
+### 3. Telefonia e Carteiras Móveis
+
+Identificação e validação de números moçambicanos de 9 dígitos (começados por 82, 83, 84, 85, 86, 87, 88). Identifica de forma robusta se o número suporta **M-Pesa** (Vodacom), **e-Mola** (Movitel) ou **mKesh** (Tmcel).
+
+### 4. Códigos Postais (Legado vs Novo CEP)
+
+O ecossistema implementa o **Novo Sistema de CEP de Moçambique** (6 dígitos `XXXX-XX`).
+Mais do que apenas uma lista, construímos uma lógica inteligente de sugestão:
+- Se um utilizador inserir o código postal antigo (ex: `3100`), a biblioteca traduz automaticamente e sugere um *array* de Novos CEPs correspondentes (ex: `0909-01`, `0909-02`), permitindo construir menus *dropdown* perfeitos no Frontend para o utilizador final escolher o bairro exato.
+
+Podes consultar a lista completa em: [Documentação de Códigos Postais](./docs/postal_codes_mocambique.md).
+
+---
+
+## 🚀 Emulador Interativo (CLI)
+
+Para testar como esta biblioteca se comporta "em produção" sem precisares de escrever código, incluímos um **Emulador de CLI**.
+
+Basta executares na raiz do teu projeto:
+```bash
+npx tsx emulator.ts
 ```
-
-### 2. Geographical Data Hierarchy
-
-<p align="justify">
-  A robust offline static database structured with official administrative divisions of the country:
-</p>
-
-```mermaid
-graph TD
-    Moz[Mozambique] --> N["Northern Region"]
-    Moz --> C["Central Region"]
-    Moz --> S["Southern Region"]
-
-    N --> CD["Cabo Delgado"]
-    N --> NS["Niassa"]
-    N --> NPL["Nampula"]
-
-    C --> ZMB["Zambézia"]
-    C --> TT["Tete"]
-    C --> MN["Manica"]
-    C --> SF["Sofala"]
-
-    S --> INH["Inhambane"]
-    S --> GZ["Gaza"]
-    S --> MPT["Maputo Province"]
-    S --> MC["Maputo City"]
-
-    CD --> D["Districts <br/>e.g., Nampula, Pemba (City)..."]
-    NPL --> D
-    D --> PA["Administrative Posts <br/>e.g., Muhala..."]
-    PA --> B["Main Neighborhoods <br/>e.g., Namutequeliua..."]
-```
-
-### 3. Legacy Postal Codes
-
-<p align="justify">
-  A complete database and validation for the classic 4-digit postal codes system of Mozambique, historically managed and validated by the <b>Correios de Moçambique</b>. The full reference of codes can be found in the <a href="./docs/postal_codes_mocambique.md">Postal Codes Documentation</a>.
-</p>
+Isto lançará um menu interativo onde podes digitar os teus NUITs, telefones, BIs ou CEPs e verificar a resposta da biblioteca em tempo real!
 
 ---
 
@@ -162,62 +137,24 @@ graph TD
 ## 💻 Syntax Comparison
 
 <p align="justify">
-  Below is an example showing how homogeneous the API design is across all supported languages:
+  Below is an example showing how homogeneous the API design is across all supported languages (TypeScript example with new features):
 </p>
 
 === "TypeScript"
     ```typescript
-    import { isValidNUIT, formatMZN, buildWhatsAppUrl, isValidPostalCode, getPostalCodeLocality } from 'moz-utils';
+    import { 
+      isValidNUIT, isValidDIRE, isValidMozambicanPhone,
+      suggestCEPs, formatMZN 
+    } from 'moz-utils';
     
     console.log(isValidNUIT('123456789')); // true
+    console.log(isValidDIRE(' 00008312-c ')); // true (auto-sanitizado)
     console.log(formatMZN(1500));          // "1 500,00 MT"
-    console.log(buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!'));
-    console.log(isValidPostalCode('1100')); // true
-    console.log(getPostalCodeLocality('1100')); // "Maputo ECP (Sede)"
-    ```
-
-=== "Python"
-    ```python
-    from moz_utils import is_valid_nuit, format_mzn, build_whatsapp_url, is_valid_postal_code, get_postal_code_locality
-
-    print(is_valid_nuit('123456789')) # True
-    print(format_mzn(1500))            # "1 500,00 MT"
-    print(build_whatsapp_url('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!'))
-    print(is_valid_postal_code('1100')) # True
-    print(get_postal_code_locality('1100')) # "Maputo ECP (Sede)"
-    ```
-
-=== "PHP"
-    ```php
-    use Iradoweck\MozUtils\MozUtils;
-
-    echo MozUtils::isValidNUIT('123456789'); // true
-    echo MozUtils::formatMZN(1500);          // "1 500,00 MT"
-    echo MozUtils::buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!');
-    echo MozUtils::isValidPostalCode('1100'); // true
-    echo MozUtils::getPostalCodeLocality('1100'); // "Maputo ECP (Sede)"
-    ```
-
-=== "Dart"
-    ```dart
-    import 'package:moz_utils/moz_utils.dart';
-
-    print(MozUtils.isValidNUIT('123456789')); // true
-    print(MozUtils.formatMZN(1500));          // "1 500,00 MT"
-    print(MozUtils.buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!'));
-    print(MozUtils.isValidPostalCode('1100')); // true
-    print(MozUtils.getPostalCodeLocality('1100')); // "Maputo ECP (Sede)"
-    ```
-
-=== "Kotlin"
-    ```kotlin
-    import com.edmilsonmuacigarro.mozutils.MozUtils
-
-    println(MozUtils.isValidNUIT("123456789")) // true
-    println(MozUtils.formatMZN(1500.0))         // "1 500,00 MT"
-    println(MozUtils.buildWhatsAppUrl("841234567", "Olá Formiga Antonio, bem-vindo a Nampula!"))
-    println(MozUtils.isValidPostalCode("1100")) // true
-    println(MozUtils.getPostalCodeLocality("1100")) // "Maputo ECP (Sede)"
+    console.log(isValidMozambicanPhone('+258 841234567')); // true
+    
+    // Auto-fallback and suggestions for legacy postal codes
+    const suggestions = suggestCEPs('3100');
+    console.log(suggestions[0]); // { cep: '0909-01', locality: 'Anchilo', ... }
     ```
 
 ---
