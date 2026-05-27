@@ -18,37 +18,37 @@ class MozUtilsTest {
     fun testNuitValidacao() {
         val nuitSingular = generateValidNUIT("10000000")
         val nuitSingular2 = generateValidNUIT("20000000")
-        val nuitEquiparada = generateValidNUIT("30000000")
-        val nuitColectiva = generateValidNUIT("40000000")
+        val nuitEquivalent = generateValidNUIT("30000000")
+        val nuitCollective = generateValidNUIT("40000000")
         val nuitPublico = generateValidNUIT("50000000")
 
-        assertTrue(MozUtils.isValidNUIT(nuitSingular), "NUIT Singular válido")
-        assertTrue(MozUtils.isValidNUIT(nuitSingular2), "NUIT Singular2 válido")
-        assertTrue(MozUtils.isValidNUIT(nuitEquiparada), "NUIT Equiparada válido")
-        assertTrue(MozUtils.isValidNUIT(nuitColectiva), "NUIT Colectiva válido")
-        assertTrue(MozUtils.isValidNUIT(nuitPublico), "NUIT Público válido")
+        assertTrue(MozUtils.isValidNUIT(nuitSingular), "Valid Singular NUIT")
+        assertTrue(MozUtils.isValidNUIT(nuitSingular2), "Valid Singular2 NUIT")
+        assertTrue(MozUtils.isValidNUIT(nuitEquivalent), "Valid Equivalent NUIT")
+        assertTrue(MozUtils.isValidNUIT(nuitCollective), "Valid Collective NUIT")
+        assertTrue(MozUtils.isValidNUIT(nuitPublico), "Valid Public NUIT")
 
-        assertFalse(MozUtils.isValidNUIT("012345678"), "NUIT que começa com 0 → inválido")
-        assertFalse(MozUtils.isValidNUIT("612345678"), "NUIT que começa com 6 → inválido")
-        assertFalse(MozUtils.isValidNUIT("912345678"), "NUIT que começa com 9 → inválido")
-        assertFalse(MozUtils.isValidNUIT("1234"), "NUIT com menos de 9 dígitos → inválido")
-        assertFalse(MozUtils.isValidNUIT("1234567890"), "NUIT com mais de 9 dígitos → inválido")
-        assertFalse(MozUtils.isValidNUIT("111111111"), "NUIT com dígitos repetidos → inválido")
-        assertFalse(MozUtils.isValidNUIT(nuitSingular.substring(0, 8) + "9"), "NUIT com dígito de controlo errado")
+        assertFalse(MozUtils.isValidNUIT("012345678"), "NUIT that starts with 0 → invalid")
+        assertFalse(MozUtils.isValidNUIT("612345678"), "NUIT that starts with 6 → invalid")
+        assertFalse(MozUtils.isValidNUIT("912345678"), "NUIT that starts with 9 → invalid")
+        assertFalse(MozUtils.isValidNUIT("1234"), "NUIT with less than 9 digits → invalid")
+        assertFalse(MozUtils.isValidNUIT("1234567890"), "NUIT with more than 9 digits → invalid")
+        assertFalse(MozUtils.isValidNUIT("111111111"), "NUIT with repeated digits → invalid")
+        assertFalse(MozUtils.isValidNUIT(nuitSingular.substring(0, 8) + "9"), "NUIT with wrong control digit")
     }
 
     @Test
     fun testNuitClassificacao() {
         val nuitSingular = generateValidNUIT("10000000")
         val nuitSingular2 = generateValidNUIT("20000000")
-        val nuitEquiparada = generateValidNUIT("30000000")
-        val nuitColectiva = generateValidNUIT("40000000")
+        val nuitEquivalent = generateValidNUIT("30000000")
+        val nuitCollective = generateValidNUIT("40000000")
         val nuitPublico = generateValidNUIT("50000000")
 
         assertEquals("Singular (Cidadãos nacionais/estrangeiros e ENI)", MozUtils.getNUITEntityType(nuitSingular))
         assertEquals("Singular (Cidadãos nacionais/estrangeiros e ENI)", MozUtils.getNUITEntityType(nuitSingular2))
-        assertEquals("Equiparada (Heranças Jacentes, Consórcios)", MozUtils.getNUITEntityType(nuitEquiparada))
-        assertEquals("Colectiva (Sociedades por Quotas, SA, Lda, Associações)", MozUtils.getNUITEntityType(nuitColectiva))
+        assertEquals("Equiparada (Heranças Jacentes, Consórcios)", MozUtils.getNUITEntityType(nuitEquivalent))
+        assertEquals("Colectiva (Sociedades por Quotas, SA, Lda, Associações)", MozUtils.getNUITEntityType(nuitCollective))
         assertEquals("Público (Instituições do Estado e Ministérios)", MozUtils.getNUITEntityType(nuitPublico))
         assertNull(MozUtils.getNUITEntityType("000000000"))
     }
@@ -125,23 +125,45 @@ class MozUtilsTest {
         assertEquals("Ancuabe", all[0].name)
         assertEquals("cab", all[0].provinceId)
 
-        assertEquals(listOf("Ancuabe", "Metoro", "Meza"), all[0].postos_administrativos)
-        assertEquals(emptyList(), all[0].bairros)
+        assertEquals(listOf("Ancuabe", "Metoro", "Meza"), all[0].administrative_posts)
+        assertEquals(emptyList(), all[0].neighborhoods)
 
         val pemba = all.first { d -> d.name == "Pemba (Cidade)" }
-        assertEquals(listOf("Pemba"), pemba.postos_administrativos)
+        assertEquals(listOf("Pemba"), pemba.administrative_posts)
         assertEquals(
             listOf("Paquitequete", "Natite", "Cariacó", "Alto Gingone", "Insubria", "Muxara", "Maringanha", "Chibuébue"),
-            pemba.bairros
+            pemba.neighborhoods
         )
 
         val majune = all.first { d -> d.name == "Majune" }
-        assertEquals(listOf("Majune", "Mua", "Nairrobi"), majune.postos_administrativos)
+        assertEquals(listOf("Majune", "Mua", "Nairrobi"), majune.administrative_posts)
 
         val maxixe = all.first { d -> d.name == "Maxixe (Cidade)" }
-        assertEquals(listOf("Bairro Central", "Chamba", "Macupula", "Nalazi"), maxixe.bairros)
+        assertEquals(listOf("Bairro Central", "Chamba", "Macupula", "Nalazi"), maxixe.neighborhoods)
 
         val nampula = all.first { d -> d.name == "Nampula (Cidade)" }
-        assertTrue(nampula.bairros.contains("Namutequeliua"))
+        assertTrue(nampula.neighborhoods.contains("Namutequeliua"))
+    }
+
+    @Test
+    fun testPostalCodes() {
+        assertTrue(MozUtils.isValidPostalCode("1100"))
+        assertTrue(MozUtils.isValidPostalCode(" 1101 "))
+        assertTrue(MozUtils.isValidPostalCode("11-02"))
+        assertTrue(MozUtils.isValidPostalCode("1202"))
+        assertTrue(MozUtils.isValidPostalCode("3311"))
+
+        assertFalse(MozUtils.isValidPostalCode("1199"))
+        assertFalse(MozUtils.isValidPostalCode("11000"))
+        assertFalse(MozUtils.isValidPostalCode("110"))
+        assertFalse(MozUtils.isValidPostalCode("ABCD"))
+
+        assertEquals("Maputo ECP (Sede)", MozUtils.getPostalCodeLocality("1100"))
+        assertEquals("Chilembene / Magoanine", MozUtils.getPostalCodeLocality("1205"))
+        assertEquals("Maputo", MozUtils.getPostalCodeProvince("1100"))
+        assertEquals("Sofala", MozUtils.getPostalCodeProvince("2100"))
+        assertEquals("Niassa", MozUtils.getPostalCodeProvince("3311"))
+        assertNull(MozUtils.getPostalCodeLocality("9999"))
+        assertNull(MozUtils.getPostalCodeProvince("9999"))
     }
 }

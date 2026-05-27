@@ -1,4 +1,4 @@
-# Changelog: moz-utils (Dart)
+# Changelog: moz-utils (Python)
 
 All notable changes to this project will be documented in this file.
 
@@ -9,14 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **New CEP Engine & Intelligent Suggestions:**
-  - `isValidNewCEP`: Full support for the geo-referenced system (e.g., `0101-01`).
-  - `suggestCEPs`: Transactional engine that translates legacy postal codes to the new format instantly.
+  - `is_valid_new_cep`: Full support for the geo-referenced system (e.g., `0101-01`).
+  - `suggest_ceps`: Transactional engine that translates legacy postal codes to the new format instantly.
 - **Financial Ecosystem:**
-  - `getMobileWallet`: Mapping of mobile accounts (M-Pesa, e-Mola, mKesh) by operator.
+  - `get_mobile_wallet`: Mapping of mobile accounts (M-Pesa, e-Mola, mKesh) by operator.
 - **New National Validations:**
-  - `isValidDIRE`: For Foreign Resident Identification Document (DIRE).
-  - `isValidPassport`: For passports.
-  - `isValidDrivingLicense`: For Mozambican driving licenses.
+  - `is_valid_dire`: For Foreign Resident Identification Document (DIRE).
+  - `is_valid_passport`: For passports.
+  - `is_valid_driving_license`: For Mozambican driving licenses.
 
 ### Global Security (OS Governance)
 - Active implementation of GitHub Actions for static analysis and malware prevention via CodeQL.

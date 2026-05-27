@@ -1,25 +1,33 @@
 /// moz_utils
 ///
-/// Funções de utilidade para Moçambique.
-/// Validação de NUIT, BI, documentos, e formatação de telefones.
+/// Utility functions for Mozambique.
+/// Validation of NUIT, BI, documents, and phone formatting.
 library moz_utils;
 
+/// Classe utilitária contendo funções estáticas para validação e formatação
+/// de dados comuns no contexto moçambicano (como NUIT, BI, números de telefone,
+/// moeda MZN, códigos postais legados e divisões geográficas).
+import 'src/cep_data.dart';
+
 class MozUtils {
-  /// Valida um número de telefone moçambicano.
-  /// Operadoras válidas: Vodacom (84/85), Tmcel (82/83), Movitel (86/87/88)
+  // Construtor privado para evitar instanciação direta.
+  MozUtils._();
+
+  /// Validates a Mozambican phone number.
+  /// Valid operators: Vodacom (84/85), Tmcel (82/83), Movitel (86/87/88)
   static bool isValidMozambicanPhone(String phone) {
     final cleaned = phone.replaceAll(RegExp(r'[\s\-\(\)\+]'), '');
     final withoutCountryCode = cleaned.startsWith('258') ? cleaned.substring(3) : cleaned;
     return RegExp(r'^8[2-8]\d{7}$').hasMatch(withoutCountryCode);
   }
 
-  /// Formata um número de telefone moçambicano para o padrão internacional.
+  /// Formats a Mozambican phone number to the international standard.
   static String formatMozambicanPhone(String phone) {
     final cleaned = phone.replaceAll(RegExp(r'[\s\-\(\)\+]'), '');
     final withoutCountryCode = cleaned.startsWith('258') ? cleaned.substring(3) : cleaned;
 
     if (!isValidMozambicanPhone(withoutCountryCode)) {
-      throw ArgumentError('Número de telefone inválido: $phone');
+      throw ArgumentError('Invalid phone number: $phone');
     }
 
     final prefix = withoutCountryCode.substring(0, 2);
@@ -29,7 +37,7 @@ class MozUtils {
     return '+258 $prefix $part1 $part2';
   }
 
-  /// Identifica a operadora de um número moçambicano.
+  /// Identifies the operator of a Mozambican phone number.
   static String? getMobileOperator(String phone) {
     final cleaned = phone.replaceAll(RegExp(r'[\s\-\(\)\+]'), '');
     final withoutCountryCode = cleaned.startsWith('258') ? cleaned.substring(3) : cleaned;
@@ -74,7 +82,7 @@ class MozUtils {
     return int.parse(cleaned[8]) == expectedDigit;
   }
 
-  /// Classifica o tipo de entidade com base no primeiro dígito do NUIT.
+  /// Classifies the entity type based on the first digit of the NUIT.
   static String? getNUITEntityType(dynamic nuit) {
     final cleaned = nuit.toString().replaceAll(RegExp(r'\D'), '');
     if (!isValidNUIT(cleaned)) return null;
@@ -91,18 +99,18 @@ class MozUtils {
     return types[firstDigit];
   }
 
-  /// Valida o Bilhete de Identidade Moçambicano.
+  /// Validates the Mozambican National ID (BI).
   static bool isValidBI(String bi) {
     final cleaned = bi.replaceAll(RegExp(r'[\s\-]'), '').toUpperCase();
     return RegExp(r'^\d{12}[A-Z]$').hasMatch(cleaned);
   }
 
-  /// Formata um valor monetário em Meticais seguindo o padrão oficial de Moçambique.
+  /// Formats a monetary value in Meticais following the official standard of Mozambique.
   ///
   /// Padrão oficial (SI + AT):
-  /// - Separador de milhares: espaço
-  /// - Separador decimal: vírgula
-  /// - Símbolo após o valor, separado por espaço
+  /// - Thousands separator: space
+  /// - Decimal separator: comma
+  /// - Symbol after the value, separated by a space
   ///
   /// [currency] pode ser 'MT' (nacional) ou 'MZN' (ISO 4217).
   static String formatMZN(double value, [String currency = 'MT']) {
@@ -124,7 +132,7 @@ class MozUtils {
     return '$sign${buffer.toString()},$decimalPart $currency';
   }
 
-  /// Gera um URL de contacto WhatsApp com mensagem pré-formatada.
+  /// Generates a WhatsApp contact URL with a pre-formatted message.
   static String buildWhatsAppUrl(String phone, [String message = '']) {
     final cleaned = phone.replaceAll(RegExp(r'[\s\-\(\)\+]'), '');
     final international = cleaned.startsWith('258') ? cleaned : '258$cleaned';
@@ -133,7 +141,7 @@ class MozUtils {
     return 'https://wa.me/$international$encodedMessage';
   }
 
-  /// Lista oficial das Províncias de Moçambique com os seus distritos.
+  /// Official list of Mozambique Provinces and their districts.
   /// Fonte: Divisão administrativa oficial da República de Moçambique.
   static List<Map<String, dynamic>> getMozambiqueProvinces() {
     return [
@@ -145,83 +153,83 @@ class MozUtils {
             'districts': [
                 {
                     'name': 'Ancuabe',
-                    'postos_administrativos': ['Ancuabe', 'Metoro', 'Meza'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Ancuabe', 'Metoro', 'Meza'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Balama',
-                    'postos_administrativos': ['Balama', 'Chapa', 'Kuekue', 'Mavala'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Balama', 'Chapa', 'Kuekue', 'Mavala'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Chiúre',
-                    'postos_administrativos': ['Chiúre', 'Chiúre-Velho', 'Katapua', 'Mazeze', 'Namogelia', 'Manoane'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Chiúre', 'Chiúre-Velho', 'Katapua', 'Mazeze', 'Namogelia', 'Manoane'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Ibo',
-                    'postos_administrativos': ['Ibo', 'Quirimba'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Ibo', 'Quirimba'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Macomia',
-                    'postos_administrativos': ['Macomia', 'Chai', 'Mucojo', 'Quiterajo'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Macomia', 'Chai', 'Mucojo', 'Quiterajo'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mecúfi',
-                    'postos_administrativos': ['Mecúfi', 'Murrébuè'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mecúfi', 'Murrébuè'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Meluco',
-                    'postos_administrativos': ['Meluco', 'Muaguide'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Meluco', 'Muaguide'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Metuge',
-                    'postos_administrativos': ['Metuge', 'Mieze'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Metuge', 'Mieze'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mocímboa da Praia',
-                    'postos_administrativos': ['Mocímboa da Praia', 'Diaca', 'Mbau'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mocímboa da Praia', 'Diaca', 'Mbau'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Montepuez',
-                    'postos_administrativos': ['Montepuez', 'Mapupulo', 'Namanhumbir', 'Nairoto', 'Napaula'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Montepuez', 'Mapupulo', 'Namanhumbir', 'Nairoto', 'Napaula'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mueda',
-                    'postos_administrativos': ['Mueda', 'Chapa', 'Imbuho', 'Negomano', 'N\'gapa'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mueda', 'Chapa', 'Imbuho', 'Negomano', 'N\'gapa'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Muidumbe',
-                    'postos_administrativos': ['Muidumbe', 'Chitunda', 'Miteda'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Muidumbe', 'Chitunda', 'Miteda'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Namuno',
-                    'postos_administrativos': ['Namuno', 'Machoca', 'Meloco', 'Ncumpe', 'Luli'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Namuno', 'Machoca', 'Meloco', 'Ncumpe', 'Luli'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Nangade',
-                    'postos_administrativos': ['Nangade', 'Ntamba'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Nangade', 'Ntamba'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Palma',
-                    'postos_administrativos': ['Palma', 'Olumbe', 'Quionga'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Palma', 'Olumbe', 'Quionga'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Pemba (Cidade)',
-                    'postos_administrativos': ['Pemba'],
-                    'bairros': [
+                    'administrative_posts': ['Pemba'],
+                    'neighborhoods': [
                         'Paquitequete',
                         'Natite',
                         'Cariacó',
@@ -234,8 +242,8 @@ class MozUtils {
                 },
                 {
                     'name': 'Quissanga',
-                    'postos_administrativos': ['Quissanga', 'Mahate', 'Bilibiza'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Quissanga', 'Mahate', 'Bilibiza'],
+                    'neighborhoods': <String>[]
                 }
             ]
         },
@@ -247,83 +255,83 @@ class MozUtils {
             'districts': [
                 {
                     'name': 'Chimbonila',
-                    'postos_administrativos': ['Chimbonila', 'Meponda'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Chimbonila', 'Meponda'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Cuamba',
-                    'postos_administrativos': ['Cuamba', 'Lúrio', 'Etatara'],
-                    'bairros': ['Ribaue', 'Mutxora', 'Ademo', 'Aeroporto']
+                    'administrative_posts': ['Cuamba', 'Lúrio', 'Etatara'],
+                    'neighborhoods': ['Ribaue', 'Mutxora', 'Ademo', 'Aeroporto']
                 },
                 {
                     'name': 'Lago',
-                    'postos_administrativos': ['Metangula', 'Cobué', 'Luninho', 'Maniamba'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Metangula', 'Cobué', 'Luninho', 'Maniamba'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Lichinga (Cidade)',
-                    'postos_administrativos': ['Lichinga'],
-                    'bairros': ['Central', 'Popular', 'Chimba', 'Cerâmica', 'Ngaula', 'Sanjala', 'Chiuaula']
+                    'administrative_posts': ['Lichinga'],
+                    'neighborhoods': ['Central', 'Popular', 'Chimba', 'Cerâmica', 'Ngaula', 'Sanjala', 'Chiuaula']
                 },
                 {
                     'name': 'Majune',
-                    'postos_administrativos': ['Majune', 'Mua', 'Nairrobi'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Majune', 'Mua', 'Nairrobi'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mandimba',
-                    'postos_administrativos': ['Mandimba', 'Mitande'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mandimba', 'Mitande'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Marrupa',
-                    'postos_administrativos': ['Marrupa', 'Marangira', 'Nungo'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Marrupa', 'Marangira', 'Nungo'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Maúa',
-                    'postos_administrativos': ['Maúa', 'Maiaca'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Maúa', 'Maiaca'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mavago',
-                    'postos_administrativos': ['Mavago', 'M\'saize'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mavago', 'M\'saize'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mecanhelas',
-                    'postos_administrativos': ['Mecanhelas', 'Chiuta'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mecanhelas', 'Chiuta'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mecula',
-                    'postos_administrativos': ['Mecula', 'Matondovela'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mecula', 'Matondovela'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Metarica',
-                    'postos_administrativos': ['Metarica', 'Nacuanha'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Metarica', 'Nacuanha'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Muembe',
-                    'postos_administrativos': ['Muembe', 'Chiconono'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Muembe', 'Chiconono'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'N\'gauma',
-                    'postos_administrativos': ['Massangulo', 'Itepela'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Massangulo', 'Itepela'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Nipepe',
-                    'postos_administrativos': ['Nipepe', 'Muatuca'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Nipepe', 'Muatuca'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Sanga',
-                    'postos_administrativos': ['Unango', 'Malamuila', 'Matchedje'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Unango', 'Malamuila', 'Matchedje'],
+                    'neighborhoods': <String>[]
                 }
             ]
         },
@@ -335,118 +343,118 @@ class MozUtils {
             'districts': [
                 {
                     'name': 'Angoche',
-                    'postos_administrativos': ['Angoche', 'Aube', 'Namaponda'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Angoche', 'Aube', 'Namaponda'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Eráti',
-                    'postos_administrativos': ['Namapa', 'Alua', 'Nakarari'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Namapa', 'Alua', 'Nakarari'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Ilha de Moçambique',
-                    'postos_administrativos': ['Ilha de Moçambique', 'Lumbo'],
-                    'bairros': ['Museu', 'Litine', 'Areal', 'Marangonha']
+                    'administrative_posts': ['Ilha de Moçambique', 'Lumbo'],
+                    'neighborhoods': ['Museu', 'Litine', 'Areal', 'Marangonha']
                 },
                 {
                     'name': 'Lalaua',
-                    'postos_administrativos': ['Lalaua', 'Meti'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Lalaua', 'Meti'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Larde',
-                    'postos_administrativos': ['Larde', 'Mucuali'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Larde', 'Mucuali'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Liúpo',
-                    'postos_administrativos': ['Liúpo', 'Quinga'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Liúpo', 'Quinga'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Malema',
-                    'postos_administrativos': ['Malema', 'Chinga', 'Mutuali'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Malema', 'Chinga', 'Mutuali'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Meconta',
-                    'postos_administrativos': ['Meconta', 'Corrane', 'Namialo'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Meconta', 'Corrane', 'Namialo'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mecubúri',
-                    'postos_administrativos': ['Mecubúri', 'Milhana', 'Muite', 'Namina'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mecubúri', 'Milhana', 'Muite', 'Namina'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Memba',
-                    'postos_administrativos': ['Memba', 'Chipene', 'Mazua', 'Lurio'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Memba', 'Chipene', 'Mazua', 'Lurio'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mogincual',
-                    'postos_administrativos': ['Mogincual', 'Quixaxe'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mogincual', 'Quixaxe'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mogovolas',
-                    'postos_administrativos': ['Nametil', 'Calipo', 'Ilute', 'Muatua'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Nametil', 'Calipo', 'Ilute', 'Muatua'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Moma',
-                    'postos_administrativos': ['Macone', 'Chalai', 'Lunga'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Macone', 'Chalai', 'Lunga'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Monapo',
-                    'postos_administrativos': ['Monapo', 'Itoculo', 'Netia'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Monapo', 'Itoculo', 'Netia'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mossuril',
-                    'postos_administrativos': ['Mossuril', 'Lunga', 'Matibane'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mossuril', 'Lunga', 'Matibane'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Muecate',
-                    'postos_administrativos': ['Muecate', 'Imala', 'Muculuone'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Muecate', 'Imala', 'Muculuone'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Murrupula',
-                    'postos_administrativos': ['Murrupula', 'Chinga', 'Nihessiue'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Murrupula', 'Chinga', 'Nihessiue'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Nacala-a-Velha',
-                    'postos_administrativos': ['Nacala-a-Velha', 'Covo'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Nacala-a-Velha', 'Covo'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Nacala Porto',
-                    'postos_administrativos': ['Nacala Porto', 'Muanona'],
-                    'bairros': ['Mutiva', 'Triângulo', 'Ontupaia', 'Quissanga']
+                    'administrative_posts': ['Nacala Porto', 'Muanona'],
+                    'neighborhoods': ['Mutiva', 'Triângulo', 'Ontupaia', 'Quissanga']
                 },
                 {
                     'name': 'Nampula (Cidade)',
-                    'postos_administrativos': ['Urbano Central', 'Muatala', 'Muhala', 'Namikopo', 'Napipine', 'Natikiri'],
-                    'bairros': ['Central', 'Muatala', 'Muhala', 'Namikopo', 'Napipine', 'Natikiri', 'Marrere', 'Namutequeliua']
+                    'administrative_posts': ['Urbano Central', 'Muatala', 'Muhala', 'Namikopo', 'Napipine', 'Natikiri'],
+                    'neighborhoods': ['Central', 'Muatala', 'Muhala', 'Namikopo', 'Napipine', 'Natikiri', 'Marrere', 'Namutequeliua']
                 },
                 {
                     'name': 'Nacarôa',
-                    'postos_administrativos': ['Nacarôa', 'Saua-Saua'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Nacarôa', 'Saua-Saua'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Rapale',
-                    'postos_administrativos': ['Rapale', 'Anchilo', 'Mutivaze'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Rapale', 'Anchilo', 'Mutivaze'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Ribáuè',
-                    'postos_administrativos': ['Ribáuè', 'Cunle', 'Iapala'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Ribáuè', 'Cunle', 'Iapala'],
+                    'neighborhoods': <String>[]
                 }
             ]
         },
@@ -458,113 +466,113 @@ class MozUtils {
             'districts': [
                 {
                     'name': 'Alto Molócuè',
-                    'postos_administrativos': ['Alto Molócuè', 'Nauela'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Alto Molócuè', 'Nauela'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Chinde',
-                    'postos_administrativos': ['Chinde', 'Micaune'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Chinde', 'Micaune'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Derre',
-                    'postos_administrativos': ['Derre', 'Guerissa'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Derre', 'Guerissa'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Gilé',
-                    'postos_administrativos': ['Gilé', 'Alto Ligonha'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Gilé', 'Alto Ligonha'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Gurué',
-                    'postos_administrativos': ['Gurué', 'Lioma', 'Nepuíte'],
-                    'bairros': ['Bairro Central', 'Mucuapa', 'Nacuacue']
+                    'administrative_posts': ['Gurué', 'Lioma', 'Nepuíte'],
+                    'neighborhoods': ['Bairro Central', 'Mucuapa', 'Nacuacue']
                 },
                 {
                     'name': 'Ile',
-                    'postos_administrativos': ['Ile', 'Socone'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Ile', 'Socone'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Inhassunge',
-                    'postos_administrativos': ['Mucupia', 'Gonhane'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mucupia', 'Gonhane'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Luabo',
-                    'postos_administrativos': ['Luabo', 'Chimbazo'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Luabo', 'Chimbazo'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Lugela',
-                    'postos_administrativos': ['Lugela', 'Tacuane', 'Munhamade'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Lugela', 'Tacuane', 'Munhamade'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Maganja da Costa',
-                    'postos_administrativos': ['Maganja da Costa', 'Baleia'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Maganja da Costa', 'Baleia'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Milange',
-                    'postos_administrativos': ['Milange', 'Majaua', 'Mongue'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Milange', 'Majaua', 'Mongue'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mocuba',
-                    'postos_administrativos': ['Mocuba', 'Mualama', 'Namanjavira'],
-                    'bairros': ['Central', 'Aeroporto', 'Paraíso']
+                    'administrative_posts': ['Mocuba', 'Mualama', 'Namanjavira'],
+                    'neighborhoods': ['Central', 'Aeroporto', 'Paraíso']
                 },
                 {
                     'name': 'Mocubela',
-                    'postos_administrativos': ['Mocubela', 'Bajone'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mocubela', 'Bajone'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Molumbo',
-                    'postos_administrativos': ['Molumbo', 'Corromana'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Molumbo', 'Corromana'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mopeia',
-                    'postos_administrativos': ['Mopeia', 'Campo'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mopeia', 'Campo'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Morrumbala',
-                    'postos_administrativos': ['Morrumbala', 'Chire', 'Megaza'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Morrumbala', 'Chire', 'Megaza'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mulevala',
-                    'postos_administrativos': ['Mulevala', 'Chirimane'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mulevala', 'Chirimane'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Namacurra',
-                    'postos_administrativos': ['Namacurra', 'Macuse'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Namacurra', 'Macuse'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Namarrói',
-                    'postos_administrativos': ['Namarrói', 'Regone'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Namarrói', 'Regone'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Nicoadala',
-                    'postos_administrativos': ['Nicoadala', 'Maquival'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Nicoadala', 'Maquival'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Pebane',
-                    'postos_administrativos': ['Pebane', 'Mulela', 'Naburi'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Pebane', 'Mulela', 'Naburi'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Quelimane (Cidade)',
-                    'postos_administrativos': ['Urbano nº 1', 'Urbano nº 2', 'Urbano nº 3', 'Urbano nº 4'],
-                    'bairros': ['Central', 'Cementório', 'Inhassunge', 'Icidua', 'Chingo', 'Matacuane']
+                    'administrative_posts': ['Urbano nº 1', 'Urbano nº 2', 'Urbano nº 3', 'Urbano nº 4'],
+                    'neighborhoods': ['Central', 'Cementório', 'Inhassunge', 'Icidua', 'Chingo', 'Matacuane']
                 }
             ]
         },
@@ -576,78 +584,78 @@ class MozUtils {
             'districts': [
                 {
                     'name': 'Angónia',
-                    'postos_administrativos': ['Ulongue', 'Domue'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Ulongue', 'Domue'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Cahora-Bassa',
-                    'postos_administrativos': ['Songo', 'Chitima', 'Muxeza'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Songo', 'Chitima', 'Muxeza'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Changara',
-                    'postos_administrativos': ['Luenha', 'Chioco', 'Mavago'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Luenha', 'Chioco', 'Mavago'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Chifunde',
-                    'postos_administrativos': ['Chifunde', 'Mualadzi', 'Nsadzu'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Chifunde', 'Mualadzi', 'Nsadzu'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Chiuta',
-                    'postos_administrativos': ['Manje', 'Kazula'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Manje', 'Kazula'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Dôa',
-                    'postos_administrativos': ['Dôa', 'Chueza'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Dôa', 'Chueza'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Macanga',
-                    'postos_administrativos': ['Furancungo', 'Chinde'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Furancungo', 'Chinde'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Magoé',
-                    'postos_administrativos': ['Mpende', 'Chinthopo', 'Mukumbura'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mpende', 'Chinthopo', 'Mukumbura'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Marara',
-                    'postos_administrativos': ['Marara', 'M\'fuba'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Marara', 'M\'fuba'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Marávia',
-                    'postos_administrativos': ['Fingoé', 'Chiputo', 'Molumbo'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Fingoé', 'Chiputo', 'Molumbo'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Moatize',
-                    'postos_administrativos': ['Moatize', 'Kambulatsitsi', 'Zóbuè'],
-                    'bairros': ['Bairro 25 de Setembro', 'Liberdade', 'Chithatha']
+                    'administrative_posts': ['Moatize', 'Kambulatsitsi', 'Zóbuè'],
+                    'neighborhoods': ['Bairro 25 de Setembro', 'Liberdade', 'Chithatha']
                 },
                 {
                     'name': 'Mutarara',
-                    'postos_administrativos': ['Nhamayabué', 'Inhangoma'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Nhamayabué', 'Inhangoma'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Tete (Cidade)',
-                    'postos_administrativos': ['Tete'],
-                    'bairros': ['Chingo', 'Degue', 'Matundo', 'Mpadue', 'Josina Machel', 'Francisco Manyanga']
+                    'administrative_posts': ['Tete'],
+                    'neighborhoods': ['Chingo', 'Degue', 'Matundo', 'Mpadue', 'Josina Machel', 'Francisco Manyanga']
                 },
                 {
                     'name': 'Tsangano',
-                    'postos_administrativos': ['Tsangano', 'Ntengo-Wambuzi'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Tsangano', 'Ntengo-Wambuzi'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Zumbo',
-                    'postos_administrativos': ['Zumbo', 'Muze', 'Zambue'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Zumbo', 'Muze', 'Zambue'],
+                    'neighborhoods': <String>[]
                 }
             ]
         },
@@ -659,63 +667,63 @@ class MozUtils {
             'districts': [
                 {
                     'name': 'Bárue',
-                    'postos_administrativos': ['Catandica', 'Nhampassa', 'Chuala'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Catandica', 'Nhampassa', 'Chuala'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Chimoio (Cidade)',
-                    'postos_administrativos': ['Urbano nº 1', 'Urbano nº 2', 'Urbano nº 3'],
-                    'bairros': ['Central', '7 de Setembro', 'Soalpo', 'Nandfe', 'Vila Nova', 'Cordor']
+                    'administrative_posts': ['Urbano nº 1', 'Urbano nº 2', 'Urbano nº 3'],
+                    'neighborhoods': ['Central', '7 de Setembro', 'Soalpo', 'Nandfe', 'Vila Nova', 'Cordor']
                 },
                 {
                     'name': 'Gondola',
-                    'postos_administrativos': ['Gondola', 'Cafumpe', 'Amatongas'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Gondola', 'Cafumpe', 'Amatongas'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Guro',
-                    'postos_administrativos': ['Guro', 'Mandie', 'Nhamassonge'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Guro', 'Mandie', 'Nhamassonge'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Macate',
-                    'postos_administrativos': ['Macate', 'Marera'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Macate', 'Marera'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Machaze',
-                    'postos_administrativos': ['Machaze', 'Save'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Machaze', 'Save'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Macossa',
-                    'postos_administrativos': ['Macossa', 'Nhamagua'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Macossa', 'Nhamagua'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Manica',
-                    'postos_administrativos': ['Manica', 'Messica', 'Mavonde'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Manica', 'Messica', 'Mavonde'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mossurize',
-                    'postos_administrativos': ['Espungabera', 'Dacata'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Espungabera', 'Dacata'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Sussundenga',
-                    'postos_administrativos': ['Sussundenga', 'Dombe', 'Muhoa'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Sussundenga', 'Dombe', 'Muhoa'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Tambara',
-                    'postos_administrativos': ['Nhacolo', 'Buzua'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Nhacolo', 'Buzua'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Vanduzi',
-                    'postos_administrativos': ['Vanduzi', 'Matsinho'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Vanduzi', 'Matsinho'],
+                    'neighborhoods': <String>[]
                 }
             ]
         },
@@ -727,68 +735,68 @@ class MozUtils {
             'districts': [
                 {
                     'name': 'Beira (Cidade)',
-                    'postos_administrativos': ['Central', 'Munhava', 'Manga Loot', 'Inhamizua'],
-                    'bairros': ['Chaimite', 'Macuti', 'Ponta Gêa', 'Munhava', 'Manga', 'Vaz', 'Esturro', 'Cipangara']
+                    'administrative_posts': ['Central', 'Munhava', 'Manga Loot', 'Inhamizua'],
+                    'neighborhoods': ['Chaimite', 'Macuti', 'Ponta Gêa', 'Munhava', 'Manga', 'Vaz', 'Esturro', 'Cipangara']
                 },
                 {
                     'name': 'Búzi',
-                    'postos_administrativos': ['Búzi', 'Estaquinha', 'Nova Sofala'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Búzi', 'Estaquinha', 'Nova Sofala'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Caia',
-                    'postos_administrativos': ['Caia', 'Sena', 'Murraça'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Caia', 'Sena', 'Murraça'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Chemba',
-                    'postos_administrativos': ['Chemba', 'Chiramba', 'Mulima'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Chemba', 'Chiramba', 'Mulima'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Cheringoma',
-                    'postos_administrativos': ['Inhaminga', 'Muanza'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Inhaminga', 'Muanza'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Chibabava',
-                    'postos_administrativos': ['Chibabava', 'Goonda', 'Muxúnguè'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Chibabava', 'Goonda', 'Muxúnguè'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Dondo',
-                    'postos_administrativos': ['Dondo', 'Mafambisse'],
-                    'bairros': ['Chibuabuamua', 'Central', 'Planalto']
+                    'administrative_posts': ['Dondo', 'Mafambisse'],
+                    'neighborhoods': ['Chibuabuamua', 'Central', 'Planalto']
                 },
                 {
                     'name': 'Gorongosa',
-                    'postos_administrativos': ['Gorongosa', 'Nhamadzi', 'Vanduzi'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Gorongosa', 'Nhamadzi', 'Vanduzi'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Machanga',
-                    'postos_administrativos': ['Machanga', 'Divinhe'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Machanga', 'Divinhe'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Maringué',
-                    'postos_administrativos': ['Maringué', 'Canxixe', 'Subui'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Maringué', 'Canxixe', 'Subui'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Marromeu',
-                    'postos_administrativos': ['Marromeu', 'Chupanga'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Marromeu', 'Chupanga'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Muanza',
-                    'postos_administrativos': ['Muanza', 'Galinha'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Muanza', 'Galinha'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Nhamatanda',
-                    'postos_administrativos': ['Nhamatanda', 'Tica'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Nhamatanda', 'Tica'],
+                    'neighborhoods': <String>[]
                 }
             ]
         },
@@ -800,73 +808,73 @@ class MozUtils {
             'districts': [
                 {
                     'name': 'Funhalouro',
-                    'postos_administrativos': ['Funhalouro', 'Tome'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Funhalouro', 'Tome'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Govuro',
-                    'postos_administrativos': ['Nova Mambone', 'Jofane'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Nova Mambone', 'Jofane'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Homoíne',
-                    'postos_administrativos': ['Homoíne', 'Pembe'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Homoíne', 'Pembe'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Inhambane (Cidade)',
-                    'postos_administrativos': ['Inhambane'],
-                    'bairros': ['Balane', 'Chamane', 'Josina Machel', 'Muelé', 'Liberdade', 'Aeroporto']
+                    'administrative_posts': ['Inhambane'],
+                    'neighborhoods': ['Balane', 'Chamane', 'Josina Machel', 'Muelé', 'Liberdade', 'Aeroporto']
                 },
                 {
                     'name': 'Inharrime',
-                    'postos_administrativos': ['Inharrime', 'Chambone'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Inharrime', 'Chambone'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Inhassoro',
-                    'postos_administrativos': ['Inhassoro', 'Bazaruto'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Inhassoro', 'Bazaruto'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Jangamo',
-                    'postos_administrativos': ['Jangamo', 'Cumbana'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Jangamo', 'Cumbana'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mabote',
-                    'postos_administrativos': ['Mabote', 'Zimane'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mabote', 'Zimane'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Massinga',
-                    'postos_administrativos': ['Massinga', 'Chicomo'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Massinga', 'Chicomo'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Maxixe (Cidade)',
-                    'postos_administrativos': ['Maxixe'],
-                    'bairros': ['Bairro Central', 'Chamba', 'Macupula', 'Nalazi']
+                    'administrative_posts': ['Maxixe'],
+                    'neighborhoods': ['Bairro Central', 'Chamba', 'Macupula', 'Nalazi']
                 },
                 {
                     'name': 'Morrumbene',
-                    'postos_administrativos': ['Morrumbene', 'Mucodoene'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Morrumbene', 'Mucodoene'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Panda',
-                    'postos_administrativos': ['Panda', 'Muelé'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Panda', 'Muelé'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Vilankulo',
-                    'postos_administrativos': ['Vilankulo', 'Mapinhane'],
-                    'bairros': ['Bairro Central', 'Mucoque', 'Alto Macassa']
+                    'administrative_posts': ['Vilankulo', 'Mapinhane'],
+                    'neighborhoods': ['Bairro Central', 'Mucoque', 'Alto Macassa']
                 },
                 {
                     'name': 'Zavala',
-                    'postos_administrativos': ['Quissico', 'Zandamela'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Quissico', 'Zandamela'],
+                    'neighborhoods': <String>[]
                 }
             ]
         },
@@ -878,73 +886,73 @@ class MozUtils {
             'districts': [
                 {
                     'name': 'Bilene',
-                    'postos_administrativos': ['Macia', 'Bilene Macia', 'Chissano'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Macia', 'Bilene Macia', 'Chissano'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Chibuto',
-                    'postos_administrativos': ['Chibuto', 'Chaimite', 'Changanine'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Chibuto', 'Chaimite', 'Changanine'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Chicualacuala',
-                    'postos_administrativos': ['Chicualacuala', 'Mapai'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Chicualacuala', 'Mapai'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Chigubo',
-                    'postos_administrativos': ['Chigubo', 'Ndindiza'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Chigubo', 'Ndindiza'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Chókwè',
-                    'postos_administrativos': ['Chókwè', 'Lionde', 'Macarretane'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Chókwè', 'Lionde', 'Macarretane'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Chonguene',
-                    'postos_administrativos': ['Chonguene', 'Chongoene'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Chonguene', 'Chongoene'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Guijá',
-                    'postos_administrativos': ['Canicado', 'Chivonguene'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Canicado', 'Chivonguene'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Limpopo',
-                    'postos_administrativos': ['Chicumbane', 'Zongoene'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Chicumbane', 'Zongoene'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mabalane',
-                    'postos_administrativos': ['Mabalane', 'Combomune'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mabalane', 'Combomune'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Manjacaze',
-                    'postos_administrativos': ['Manjacaze', 'Chidenguele'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Manjacaze', 'Chidenguele'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Mapai',
-                    'postos_administrativos': ['Mapai', 'Machaila'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Mapai', 'Machaila'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Massangena',
-                    'postos_administrativos': ['Massangena', 'Mavue'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Massangena', 'Mavue'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Massingir',
-                    'postos_administrativos': ['Massingir', 'Zulo'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Massingir', 'Zulo'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Xai-Xai (Cidade)',
-                    'postos_administrativos': ['Xai-Xai'],
-                    'bairros': ['Central', 'Alto-Gaza', 'Inhamissa', 'Panjane', 'Chicumbane', 'Patrice Lumumba']
+                    'administrative_posts': ['Xai-Xai'],
+                    'neighborhoods': ['Central', 'Alto-Gaza', 'Inhamissa', 'Panjane', 'Chicumbane', 'Patrice Lumumba']
                 }
             ]
         },
@@ -956,43 +964,43 @@ class MozUtils {
             'districts': [
                 {
                     'name': 'Boane',
-                    'postos_administrativos': ['Boane', 'Matola-Rio'],
-                    'bairros': ['Bairro Central', 'Campinho', 'Massaca']
+                    'administrative_posts': ['Boane', 'Matola-Rio'],
+                    'neighborhoods': ['Bairro Central', 'Campinho', 'Massaca']
                 },
                 {
                     'name': 'Magude',
-                    'postos_administrativos': ['Magude', 'Mapulanguene', 'Motaze'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Magude', 'Mapulanguene', 'Motaze'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Manhiça',
-                    'postos_administrativos': ['Manhiça', 'Xinavane', '3 de Fevereiro'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Manhiça', 'Xinavane', '3 de Fevereiro'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Marracuene',
-                    'postos_administrativos': ['Marracuene', 'Machubo'],
-                    'bairros': ['Aliança', 'Cumbe', 'Habel Jafar']
+                    'administrative_posts': ['Marracuene', 'Machubo'],
+                    'neighborhoods': ['Aliança', 'Cumbe', 'Habel Jafar']
                 },
                 {
                     'name': 'Matola (Cidade)',
-                    'postos_administrativos': ['Matola', 'Infulene', 'Machava'],
-                    'bairros': ['Matola Sede', 'Fomento', 'Liberdade', 'T3', 'Trevo', 'Machava Socimol', 'Cingatela']
+                    'administrative_posts': ['Matola', 'Infulene', 'Machava'],
+                    'neighborhoods': ['Matola Sede', 'Fomento', 'Liberdade', 'T3', 'Trevo', 'Machava Socimol', 'Cingatela']
                 },
                 {
                     'name': 'Matutuíne',
-                    'postos_administrativos': ['Bela Vista', 'Catembe', 'Zitundo'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Bela Vista', 'Catembe', 'Zitundo'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Moamba',
-                    'postos_administrativos': ['Moamba', 'Ressano Garcia', 'Pessene'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Moamba', 'Ressano Garcia', 'Pessene'],
+                    'neighborhoods': <String>[]
                 },
                 {
                     'name': 'Namaacha',
-                    'postos_administrativos': ['Namaacha', 'Changalane'],
-                    'bairros': <String>[]
+                    'administrative_posts': ['Namaacha', 'Changalane'],
+                    'neighborhoods': <String>[]
                 }
             ]
         },
@@ -1004,8 +1012,8 @@ class MozUtils {
             'districts': [
                 {
                     'name': 'KaMpfumo',
-                    'postos_administrativos': ['KaMpfumo'],
-                    'bairros': [
+                    'administrative_posts': ['KaMpfumo'],
+                    'neighborhoods': [
                         'Central A/B',
                         'Alto Maé A/B',
                         'Malhangalene A/B',
@@ -1016,40 +1024,40 @@ class MozUtils {
                 },
                 {
                     'name': 'Nlhamankulu',
-                    'postos_administrativos': ['Nlhamankulu'],
-                    'bairros': ['Aeroporto A/B', 'Chamanculo A/B/C/D', 'Malanga', 'Xipamanine', 'Munhuana', 'Unidade 7']
+                    'administrative_posts': ['Nlhamankulu'],
+                    'neighborhoods': ['Aeroporto A/B', 'Chamanculo A/B/C/D', 'Malanga', 'Xipamanine', 'Munhuana', 'Unidade 7']
                 },
                 {
                     'name': 'KaMaxaquene',
-                    'postos_administrativos': ['KaMaxaquene'],
-                    'bairros': ['Maxaquene A/B/C/D', 'Polana Caniço A/B', 'Urbanização', 'Mafalala']
+                    'administrative_posts': ['KaMaxaquene'],
+                    'neighborhoods': ['Maxaquene A/B/C/D', 'Polana Caniço A/B', 'Urbanização', 'Mafalala']
                 },
                 {
                     'name': 'KaMavota',
-                    'postos_administrativos': ['KaMavota'],
-                    'bairros': ['Mavalane A/B', 'FPLM', 'Hulene A/B', 'Ferroviário', 'Costa do Sol', 'Polana Caniço B']
+                    'administrative_posts': ['KaMavota'],
+                    'neighborhoods': ['Mavalane A/B', 'FPLM', 'Hulene A/B', 'Ferroviário', 'Costa do Sol', 'Polana Caniço B']
                 },
                 {
                     'name': 'KaMubukwana',
-                    'postos_administrativos': ['KaMubukwana'],
-                    'bairros': ['Bagamoyo', 'George Dimitrov', 'Inhagoia A/B', 'Magoanine A/B/C', 'Zimpeto']
+                    'administrative_posts': ['KaMubukwana'],
+                    'neighborhoods': ['Bagamoyo', 'George Dimitrov', 'Inhagoia A/B', 'Magoanine A/B/C', 'Zimpeto']
                 },
                 {
                     'name': 'KaTembe',
-                    'postos_administrativos': ['KaTembe'],
-                    'bairros': ['Gwaza Muthini', 'Incassane', 'Inguide', 'Chali', 'Chamissava']
+                    'administrative_posts': ['KaTembe'],
+                    'neighborhoods': ['Gwaza Muthini', 'Incassane', 'Inguide', 'Chali', 'Chamissava']
                 },
                 {
                     'name': 'KaNyaka',
-                    'postos_administrativos': ['KaNyaka'],
-                    'bairros': ['Ribzene', 'Nghanyane', 'Chadwane']
+                    'administrative_posts': ['KaNyaka'],
+                    'neighborhoods': ['Ribzene', 'Nghanyane', 'Chadwane']
                 }
             ]
         }
     ];
   }
 
-  /// Retorna a lista de distritos pertencentes a uma determinada província.
+  /// Returns the list of districts belonging to a given province.
   static List<String> getDistrictsByProvince(String provinceId) {
     final cleanId = provinceId.trim().toLowerCase();
     for (final province in getMozambiqueProvinces()) {
@@ -1061,7 +1069,7 @@ class MozUtils {
     throw ArgumentError('Província inválida: $provinceId');
   }
 
-  /// Retorna uma lista plana com todos os 161 distritos e respetivos IDs de província.
+  /// Returns a flat list of all 161 districts and their respective province IDs.
   static List<Map<String, dynamic>> getAllDistricts() {
     final list = <Map<String, dynamic>>[];
     for (final province in getMozambiqueProvinces()) {
@@ -1072,12 +1080,307 @@ class MozUtils {
         list.add({
           'name': dMap['name'] as String,
           'provinceId': pId,
-          'postos_administrativos': List<String>.from(dMap['postos_administrativos'] as List),
-          'bairros': List<String>.from(dMap['bairros'] as List),
+          'administrative_posts': List<String>.from(dMap['administrative_posts'] as List),
+          'neighborhoods': List<String>.from(dMap['neighborhoods'] as List),
         });
       }
     }
     return list;
   }
+
+  /// Mapa de Códigos Postais Legados de Moçambique.
+  static const Map<String, Map<String, String>> legacyPostalCodes = {
+    // Região Sul
+    // Maputo
+    '1100': {'locality': 'Maputo ECP (Sede)', 'province': 'Maputo'},
+    '1101': {'locality': 'Polana', 'province': 'Maputo'},
+    '1102': {'locality': 'Sommerchild', 'province': 'Maputo'},
+    '1103': {'locality': 'Malhangalene', 'province': 'Maputo'},
+    '1104': {'locality': 'Alto-Maé', 'province': 'Maputo'},
+    '1106': {'locality': 'Bairro Central', 'province': 'Maputo'},
+    '1107': {'locality': 'Bairro do Aeroporto', 'province': 'Maputo'},
+    '1108': {'locality': 'Bairro do Mavalane', 'province': 'Maputo'},
+    '1109': {'locality': 'Bairro do Jardim', 'province': 'Maputo'},
+    '1110': {'locality': 'Bairro do Xipamanine', 'province': 'Maputo'},
+    '1111': {'locality': 'Bairro George Dimitrov', 'province': 'Maputo'},
+    '1112': {'locality': 'Machava', 'province': 'Maputo'},
+    '1113': {'locality': 'Fomento', 'province': 'Maputo'},
+    '1114': {'locality': 'Matola', 'province': 'Maputo'},
+    '1115': {'locality': 'Boane', 'province': 'Maputo'},
+    '1116': {'locality': 'Namaacha', 'province': 'Maputo'},
+    '1117': {'locality': 'Katembe', 'province': 'Maputo'},
+    '1118': {'locality': 'Bela-Vista', 'province': 'Maputo'},
+    '1119': {'locality': 'Inhaca', 'province': 'Maputo'},
+    '1120': {'locality': 'Marracuene', 'province': 'Maputo'},
+    '1121': {'locality': 'Manhiça', 'province': 'Maputo'},
+    '1122': {'locality': 'Xinavane', 'province': 'Maputo'},
+    '1123': {'locality': 'Magude', 'province': 'Maputo'},
+    '1124': {'locality': 'Moamba', 'province': 'Maputo'},
+    '1125': {'locality': 'Ressano Garcia', 'province': 'Maputo'},
+    // Gaza
+    '1200': {'locality': 'Xai-Xai ECP', 'province': 'Gaza'},
+    '1201': {'locality': 'Praia de Xai-Xai', 'province': 'Gaza'},
+    '1202': {'locality': 'Macia', 'province': 'Gaza'},
+    '1203': {'locality': 'Praia de Bilene', 'province': 'Gaza'},
+    '1204': {'locality': 'Chokwé', 'province': 'Gaza'},
+    '1205': {'locality': 'Chilembene / Magoanine', 'province': 'Gaza'},
+    '1206': {'locality': 'Mabalane', 'province': 'Gaza'},
+    '1207': {'locality': 'Massingir', 'province': 'Gaza'},
+    '1208': {'locality': 'Chibuto', 'province': 'Gaza'},
+    '1209': {'locality': 'Manjacaze', 'province': 'Gaza'},
+    '1210': {'locality': 'Chidenguele', 'province': 'Gaza'},
+    '1211': {'locality': 'Chicualacuala', 'province': 'Gaza'},
+    // Inhambane
+    '1300': {'locality': 'Inhambane ECP', 'province': 'Inhambane'},
+    '1301': {'locality': 'Maxixe', 'province': 'Inhambane'},
+    '1302': {'locality': 'Morrumbene', 'province': 'Inhambane'},
+    '1303': {'locality': 'Massinga', 'province': 'Inhambane'},
+    '1304': {'locality': 'Vilanculos', 'province:': 'Inhambane'},
+    '1305': {'locality': 'Inhassoro', 'province': 'Inhambane'},
+    '1306': {'locality': 'Nova-Mambone', 'province': 'Inhambane'},
+    '1307': {'locality': 'Jangamo', 'province': 'Inhambane'},
+    '1308': {'locality': 'Cumbane', 'province': 'Inhambane'},
+    '1309': {'locality': 'Homoine', 'province': 'Inhambane'},
+    '1310': {'locality': 'Panda', 'province': 'Inhambane'},
+    '1311': {'locality': 'Inharrime', 'province': 'Inhambane'},
+    '1312': {'locality': 'Quissico', 'province': 'Inhambane'},
+    '1313': {'locality': 'Funhalouro', 'province': 'Inhambane'},
+    '1314': {'locality': 'Mabote', 'province': 'Inhambane'},
+
+    // Região Centro
+    // Sofala
+    '2100': {'locality': 'Beira ECP', 'province': 'Sofala'},
+    '2101': {'locality': 'Macúti', 'province': 'Sofala'},
+    '2102': {'locality': 'Beira Aeroporto', 'province': 'Sofala'},
+    '2103': {'locality': 'Manga', 'province': 'Sofala'},
+    '2104': {'locality': 'Dondo', 'province': 'Sofala'},
+    '2105': {'locality': 'Mafambisse', 'province': 'Sofala'},
+    '2106': {'locality': 'Nhamatanda', 'province': 'Sofala'},
+    '2107': {'locality': 'Buzi', 'province': 'Sofala'},
+    '2110': {'locality': 'Gorongoza', 'province': 'Sofala'},
+    // Manica
+    '2200': {'locality': 'Chimoio ECP', 'province': 'Manica'},
+    '2201': {'locality': 'Catandica', 'province': 'Manica'},
+    '2202': {'locality': 'Vila de Manica', 'province': 'Manica'},
+    '2203': {'locality': 'Gondola', 'province': 'Manica'},
+    '2204': {'locality': 'Guro', 'province': 'Manica'},
+    '2205': {'locality': 'Machaze', 'province': 'Manica'},
+    '2206': {'locality': 'Macossa', 'province': 'Manica'},
+    '2207': {'locality': 'Sussundenga', 'province': 'Manica'},
+    '2208': {'locality': 'Tambara', 'province': 'Manica'},
+    // Tete
+    '2300': {'locality': 'Tete ECP', 'province': 'Tete'},
+    '2301': {'locality': 'Tete Aeroporto', 'province': 'Tete'},
+    '2302': {'locality': 'Moatize', 'province': 'Tete'},
+    '2304': {'locality': 'Songo', 'province': 'Tete'},
+    '2307': {'locality': 'Mutarara', 'province': 'Tete'},
+    '2312': {'locality': 'Zumbo', 'province': 'Tete'},
+    // Zambézia
+    '2400': {'locality': 'Quelimane ECP', 'province': 'Zambézia'},
+    '2401': {'locality': 'Nicoadala', 'province': 'Zambézia'},
+    '2403': {'locality': 'Mocuba', 'province': 'Zambézia'},
+    '2405': {'locality': 'Pebane', 'province': 'Zambézia'},
+    '2407': {'locality': 'Gurué', 'province': 'Zambézia'},
+    '2412': {'locality': 'Chinde', 'province': 'Zambézia'},
+
+    // Região Norte
+    // Nampula
+    '3100': {'locality': 'Nampula ECP', 'province': 'Nampula'},
+    '3101': {'locality': 'Angoche', 'province': 'Nampula'},
+    '3102': {'locality': 'Monapo', 'province': 'Nampula'},
+    '3105': {'locality': 'Ilha de Moçambique', 'province': 'Nampula'},
+    '3108': {'locality': 'Moma', 'province': 'Nampula'},
+    '3112': {'locality': 'Nacala', 'province': 'Nampula'},
+    '3115': {'locality': 'Namapa', 'province': 'Nampula'},
+    '3119': {'locality': 'Ribaue', 'province': 'Nampula'},
+    // Cabo Delgado
+    '3200': {'locality': 'Pemba ECP', 'province': 'Cabo Delgado'},
+    '3201': {'locality': 'Pemba-2', 'province': 'Cabo Delgado'},
+    '3208': {'locality': 'Montepuez', 'province': 'Cabo Delgado'},
+    '3216': {'locality': 'Mueda', 'province': 'Cabo Delgado'},
+    '3219': {'locality': 'Palma', 'province': 'Cabo Delgado'},
+    // Niassa
+    '3300': {'locality': 'Lichinga ECP', 'province': 'Niassa'},
+    '3301': {'locality': 'Macanhelas', 'province': 'Niassa'},
+    '3304': {'locality': 'Mandimba', 'province': 'Niassa'},
+    '3305': {'locality': 'Cuamba', 'province': 'Niassa'},
+    '3311': {'locality': 'Muembe', 'province': 'Niassa'}
+  };
+
+  /// Valida se um código postal legado de Moçambique é válido.
+  /// Deve conter 4 dígitos numéricos pertencentes ao sistema clássico dos Correios de Moçambique.
+  static bool isValidPostalCode(String code) {
+    final cleaned = code.replaceAll(RegExp(r'\D'), '');
+    return legacyPostalCodes.containsKey(cleaned);
+  }
+
+  /// Retorna a localidade correspondente a um código postal legado de Moçambique.
+  static String? getPostalCodeLocality(String code) {
+    final cleaned = code.replaceAll(RegExp(r'\D'), '');
+    return legacyPostalCodes[cleaned]?['locality'];
+  }
+
+  /// Retorna a província correspondente a um código postal legado de Moçambique.
+  static String? getPostalCodeProvince(String code) {
+    final cleaned = code.replaceAll(RegExp(r'\D'), '');
+    // Handle the typo in Vilankulos key if present, though we should make sure province is always written exactly
+    return legacyPostalCodes[cleaned]?['province'] ?? legacyPostalCodes[cleaned]?['province:'];
+  }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// NAME & DOCUMENT FIELD SANITIZATION
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Checks whether a string is a valid personal name.
+/// Accepts Unicode letters, spaces, hyphens, and apostrophes.
+///
+/// ```dart
+/// isValidName('Edmilson Muacigarro') // true
+/// isValidName('Jean-Pierre')         // true
+/// isValidName('ABC123')              // false
+/// ```
+static bool isValidName(String name) {
+  final trimmed = name.trim();
+  if (trimmed.isEmpty) return false;
+  return RegExp(r"^[\p{L}\s'\-]+$", unicode: true).hasMatch(trimmed);
 }
 
+/// Sanitizes a personal name field.
+///
+/// By default converts to Title Case (each word capitalised).
+/// Set [allCaps] to `true` to force ALL UPPERCASE.
+/// Strips digits and most special characters.
+///
+/// ```dart
+/// sanitizeName('  edmilson   muacigarro  ')        // 'Edmilson Muacigarro'
+/// sanitizeName('JOÃO', allCaps: true)              // 'JOÃO'
+/// sanitizeName('jean-pierre dupont')               // 'Jean-Pierre Dupont'
+/// ```
+static String sanitizeName(String name, {bool allCaps = false}) {
+  // Remove anything that is not a letter, space, hyphen, or apostrophe
+  final cleaned = name
+      .replaceAll(RegExp(r"[^\p{L}\s'\-]", unicode: true), '')
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .trim();
+
+  if (allCaps) return cleaned.toUpperCase();
+
+  // Title Case: capitalise after start, space, or hyphen
+  final buffer = StringBuffer();
+  bool capitaliseNext = true;
+  for (final char in cleaned.split('')) {
+    if (char == ' ' || char == '-') {
+      buffer.write(char);
+      capitaliseNext = true;
+    } else if (capitaliseNext) {
+      buffer.write(char.toUpperCase());
+      capitaliseNext = false;
+    } else {
+      buffer.write(char);
+    }
+  }
+  return buffer.toString();
+}
+
+/// Sanitizes a document number field that contains only digits.
+/// Strips all non-numeric characters.
+///
+/// ```dart
+/// sanitizeDocumentField('123 456 789')  // '123456789'
+/// sanitizeDocumentField('123-456-789')  // '123456789'
+/// ```
+static String sanitizeDocumentField(String value) {
+  return value.replaceAll(RegExp(r'\D'), '');
+}
+
+/// Sanitizes an alphanumeric document field (digits + letters),
+/// forcing all letters to UPPERCASE.
+///
+/// Useful for BI, passports, and other mixed-format documents.
+///
+/// ```dart
+/// sanitizeAlphanumericField('110 101 234567a')  // '110101234567A'
+/// sanitizeAlphanumericField('abc-123-XYZ!')     // 'ABC123XYZ'
+/// ```
+static String sanitizeAlphanumericField(String value) {
+  return value.replaceAll(RegExp(r'[^A-Za-z0-9]'), '').toUpperCase();
+}
+
+
+  /// Identifica a carteira móvel (Mobile Wallet) associada a um número moçambicano.
+  static String? getMobileWallet(String phone) {
+    final operatorName = getMobileOperator(phone);
+    if (operatorName == null) return null;
+    
+    final wallets = {
+      'Vodacom': 'M-Pesa',
+      'Tmcel': 'mKesh',
+      'Movitel': 'e-Mola'
+    };
+    
+    return wallets[operatorName];
+  }
+
+  /// Valida o DIRE (Documento de Identificação de Residente Estrangeiro) de Moçambique.
+  /// Formato: Exatamente 8 dígitos seguidos de uma única letra.
+  static bool isValidDIRE(String dire) {
+    final cleaned = dire.replaceAll(RegExp(r'[\s\-]'), '').toUpperCase();
+    return RegExp(r'^\d{8}[A-Z]$').hasMatch(cleaned);
+  }
+
+  /// Validates the Mozambican Passport.
+  /// Formato: Exatamente 2 letras seguidas de 7 dígitos numéricos.
+  static bool isValidPassport(String passport) {
+    final cleaned = passport.replaceAll(RegExp(r'[\s\-]'), '').toUpperCase();
+    return RegExp(r'^[A-Z]{2}\d{7}$').hasMatch(cleaned);
+  }
+
+  /// Validates the Mozambican Driving License.
+  /// Formato: 1 letra seguida de 5 a 7 dígitos numéricos.
+  static bool isValidDrivingLicense(String license) {
+    final cleaned = license.replaceAll(RegExp(r'[\s\-]'), '').toUpperCase();
+    return RegExp(r'^[A-Z]\d{5,7}$').hasMatch(cleaned);
+  }
+
+  /// Valida o formato do Novo CEP (Formato: XXXX-XX)
+  static bool isValidNewCEP(String cep) {
+    return RegExp(r'^\d{4}-\d{2}$').hasMatch(cep.trim());
+  }
+
+  /// Sugere Novos Códigos de Endereçamento Postal (CEP) baseados numa entrada.
+  static List<Map<String, String>> suggestCEPs(String input) {
+    final cleaned = input.trim();
+    if (cleaned.isEmpty) return [];
+
+    final isDigits = int.tryParse(cleaned.replaceAll('-', '')) != null;
+    List<String> searchPrefixes = [];
+
+    if (isDigits && cleaned.length == 4 && legacyToNewCEPPrefix.containsKey(cleaned)) {
+      searchPrefixes = legacyToNewCEPPrefix[cleaned]!;
+    }
+
+    final results = <Map<String, String>>[];
+    final cleanedLower = cleaned.toLowerCase();
+
+    for (final item in newCEPData) {
+      if (searchPrefixes.isNotEmpty) {
+        bool matchesPrefix = false;
+        for (final prefix in searchPrefixes) {
+          if (item['cep']!.startsWith(prefix)) {
+            matchesPrefix = true;
+            break;
+          }
+        }
+        if (matchesPrefix) results.add(item);
+      } else {
+        if (item['cep']!.toLowerCase().contains(cleanedLower) ||
+            item['province']!.toLowerCase().contains(cleanedLower) ||
+            item['district']!.toLowerCase().contains(cleanedLower) ||
+            item['locality']!.toLowerCase().contains(cleanedLower)) {
+          results.add(item);
+        }
+      }
+    }
+    return results;
+  }
+}

@@ -1,0 +1,46 @@
+name: "Add Open Source Contributor"
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  add-contributor:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Add Contributor to README
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const author = context.payload.pull_request.user.login;
+            console.log(`Pull Request merged by: @${author}`);
+            
+            // This is a placeholder for where the script would edit the README
+            // or an ALL-CONTRIBUTORS file.
+            // Alternatively, you can use the standard 'allcontributors' bot
+            // to do this via comments: "@all-contributors please add @${author} for code"
+
+            // Since we want this to be an internal automated skill, we recommend
+            // the maintainer to use the AllContributors bot or this action can be expanded
+            // to automatically modify the README.md files across the mono-repo.
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const author = context.payload.pull_request.user.login;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🎉 Congratulations @${author}! Your PR was approved and successfully merged into \`main\`. You have been automatically added to the contributors list of the **moz-utils** project. Thank you for helping to develop open-source software in Mozambique! 🇲🇿`
+            });

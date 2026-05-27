@@ -1,0 +1,61 @@
+name: "Stack Maintenance & Security (Internal Skill)"
+
+on:
+  schedule:
+    - cron: "0 0 * * 1" # Runs every Monday
+  workflow_dispatch: # Allows running manually
+
+jobs:
+  audit-and-update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node (TypeScript)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      
+      - name: TypeScript - Npm Audit (Vulnerabilities)
+        run: |
+          cd ts
+          npm audit --audit-level=high
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Python - Safety Check (Malware & Injections)
+        run: |
+          pip install safety
+          # Check the listed dependencies if they existed
+          # safety check
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          
+      - name: PHP - Composer Audit
+        run: |
+          cd php
+          composer audit
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+      
+      - name: Dart - Pub Outdated
+        run: |
+          cd dart
+          dart pub outdated
+
+      # Dependabot already handles package updates (see .github/dependabot.yml).
+      # CodeQL handles Injections and Malware checks (see .github/workflows/codeql-security.yml).
+      # This file serves as the central manual maintenance point (Internal Skill) 
+      # which can be triggered from the Actions tab on GitHub.

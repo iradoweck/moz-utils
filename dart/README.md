@@ -5,137 +5,125 @@
 </p>
 
 <p align="center">
-  <i>The Swiss Army Knife for developers in Mozambique — ported to Dart. Ideal for mobile and multi-platform applications developed with Flutter.</i>
+  <i>The digital foundation of Mozambican identity. The definitive Swiss army knife for validations, postal codes, and financial ecosystems in Mozambique, natively ported to the Dart ecosystem.</i>
 </p>
+
+---
+
+## 📜 The Vision
+
+In Mozambique, digital accuracy is the foundation of the future. From the pulse of mobile wallets in the squares to the rigorous structure of the National ID (BI), **moz-utils** exists to ensure that every piece of data that crosses your mobile application (Flutter) or backend (Dart Server) is validated, structured, and authentic.
+
+Built impeccably for the Dart ecosystem, this package is more than a library — it is the open-source validation infrastructure our country deserves. Clean code, tested, and poetically engineered for Mozambique.
 
 ---
 
 ## 📦 Installation
 
-You can add the library to your Flutter or Dart project. In your `pubspec.yaml` file, add the package using the local path:
+Add the dependency to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  moz_utils:
-    path: ../path/to/moz-utils/dart
-```
-
-Then run:
-```bash
-dart pub get
-# or for Flutter projects
-flutter pub get
+  moz_utils: ^0.3.0
 ```
 
 ---
 
 ## 🚀 API Reference Guide
 
-All utilities are exposed as static methods on the `MozUtils` class.
+### 1. Documents and Citizen Identity
 
-### 1. Document Validation
-
-#### `MozUtils.isValidNUIT(dynamic nuit): bool`
-Validates if a NUIT (Unique Tax Identification Number) is syntactically valid following the Modulo 11 rules of the Tax Authority (AT). Accepts both `String` and `int`.
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-print(MozUtils.isValidNUIT('123456789')); // true
-print(MozUtils.isValidNUIT(111111111));   // false
-```
+// National ID (12 digits + 1 letter)
+MozUtils.isValidBI('110101234567A');  // true
 
-#### `MozUtils.getNUITEntityType(dynamic nuit): String?`
-Classifies the entity associated with the NUIT based on its first digit. Returns `null` if the NUIT is invalid.
-```dart
-import 'package:moz_utils/moz_utils.dart';
+// NUIT - Unique Tax Identification Number
+MozUtils.isValidNUIT('123456789');    // true
+MozUtils.getNUITEntityType('400000006');  // "Collective (Quotas Companies...)"
 
-print(MozUtils.getNUITEntityType('100000008')); // "Singular (Cidadãos nacionais/estrangeiros e ENI)"
-print(MozUtils.getNUITEntityType('400000006')); // "Colectiva (Sociedades por Quotas, SA, Lda, Associações)"
-```
+// DIRE - Foreign Resident Identification Document
+MozUtils.isValidDIRE('00008312C');    // true
 
-#### `MozUtils.isValidBI(String bi): bool`
-Validates the Mozambican National Identity Card (BI) (12 digits + 1 letter). It ignores spaces and dashes.
-```dart
-import 'package:moz_utils/moz_utils.dart';
-
-print(MozUtils.isValidBI('110101234567A'));  // true
-print(MozUtils.isValidBI('110101234567 a'));  // true
+// Passport and Driving License
+MozUtils.isValidPassport('AO1234567');       // true
+MozUtils.isValidDrivingLicense('M123456');   // true
 ```
 
 ---
 
-### 2. Telecommunications and WhatsApp
+### 2. Financial Ecosystem and Telecommunications
 
-#### `MozUtils.isValidMozambicanPhone(String phone): bool`
-Validates if the number belongs to a valid national mobile carrier (Vodacom, Tmcel, or Movitel).
+Deep mapping of the Mozambican digital circulatory system — identifies operators and the pulse of associated mobile wallets.
+
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-print(MozUtils.isValidMozambicanPhone('841234567'));     // true
-print(MozUtils.isValidMozambicanPhone('+258861234567')); // true
-```
+// Validation and Formatting
+MozUtils.isValidMozambicanPhone('841234567');  // true
+MozUtils.formatMozambicanPhone('841234567');   // "+258 84 123 4567"
 
-#### `MozUtils.formatMozambicanPhone(String phone): String`
-Formats the mobile number to the standard international display format: `+258 XX XXX XXXX`. Throws `ArgumentError` if the number is invalid.
-```dart
-import 'package:moz_utils/moz_utils.dart';
+// Telecom and Financial Intelligence
+MozUtils.getMobileOperator('841234567');  // "Vodacom"
+MozUtils.getMobileWallet('841234567');    // "M-Pesa"
+MozUtils.getMobileWallet('821234567');    // "mKesh"
+MozUtils.getMobileWallet('861234567');    // "e-Mola"
 
-print(MozUtils.formatMozambicanPhone('841234567')); // "+258 84 123 4567"
-```
-
-#### `MozUtils.getMobileOperator(String phone): String?`
-Identifies and returns the mobile carrier name (`'Vodacom'`, `'Tmcel'`, or `'Movitel'`).
-```dart
-import 'package:moz_utils/moz_utils.dart';
-
-print(MozUtils.getMobileOperator('841234567')); // "Vodacom"
-```
-
-#### `MozUtils.buildWhatsAppUrl(String phone, [String message = '']): String`
-Creates a direct link to open a WhatsApp conversation.
-```dart
-import 'package:moz_utils/moz_utils.dart';
-
-print(MozUtils.buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!'));
-// "https://wa.me/258841234567?text=Ol%C3%A1%20Formiga%20Antonio%2C%20bem-vindo%20a%20Nampula%21"
+// Social Connections
+MozUtils.buildWhatsAppUrl('841234567', 'Hello, Mozambique!'); 
+// "https://wa.me/258841234567?text=Hello%2C%20Mozambique%21"
 ```
 
 ---
 
-### 3. National Currency
+### 3. Postal Codes (Legacy and New CEP)
 
-#### `MozUtils.formatMZN(double value, [String currency = 'MT']): String`
-Formats monetary values in Meticais according to the official local standard (e.g., `1 500,00 MT`).
+A graceful transition between the past and the future: from the old post office stations to the geo-referenced New CEP.
+
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-print(MozUtils.formatMZN(1250.5));          // "1 250,50 MT"
-print(MozUtils.formatMZN(10000000, 'MZN')); // "10 000 000,00 MZN"
+// The Future (New CEP: Province, District, and Locality)
+MozUtils.isValidNewCEP('0101-01');  // true
+
+// Intelligent Suggestion Engine (Supports Legacy -> New Transition)
+// Search by the old code "3100" (Nampula HQ) or by a neighborhood
+MozUtils.suggestCEPs('3100');
+MozUtils.suggestCEPs('Malhangalene');
+
+// The Legacy
+MozUtils.isValidPostalCode('1100');            // true
+MozUtils.getPostalCodeLocality('1100');        // "Maputo ECP (HQ)"
 ```
 
 ---
 
-### 4. Geographical Database
+### 4. National Geography and Finances
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-// 1. Get the complete list containing all provinces, districts, posts, and neighborhoods
+// Monumental Value
+MozUtils.formatMZN(1250.5);         // "1 250,50 MT"
+
+// Full Geography
 final provinces = MozUtils.getMozambiqueProvinces();
-
-// 2. Get districts of a specific province (e.g., 'npl' for Nampula)
-final districts = MozUtils.getDistrictsByProvince('npl'); // ['Angoche', 'Eráti', ...]
-
-// 3. Get all flat districts of the country
-final allDistricts = MozUtils.getAllDistricts();
+final nampulaDistricts = MozUtils.getDistrictsByProvince('npl');
 ```
+
+---
+
+## 🤝 Rules of Conduct and Contribution
+
+This is not just any project. It is a project of national pride. We ask for excellence in code, compassion with colleagues, and the ambition to make the Mozambican web world-class. Read our `CODE_OF_CONDUCT.md` in the project root.
 
 ## 📄 License
 
-This project is licensed under the **AGPL-3.0-or-later** license.
+The code lives and breathes the freedom of Open Source. Licensed under **AGPL-3.0-or-later**.
 
 ---
 
 <p align="center">
-  Developed by <b>Edmilson Muacigarro</b> and contributors.
+  Developed by <b>Open Source Contributors</b> & supported by <b>Edmilson Muacigarro</b>
 </p>

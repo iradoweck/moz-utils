@@ -1,149 +1,128 @@
 <h1 align="center">moz-utils</h1>
 
 <p align="center">
-  <b>Kotlin</b>
+  <b>Kotlin & Android JVM</b>
 </p>
 
 <p align="center">
-  <i>The Swiss Army Knife for developers in Mozambique — ported to Kotlin/JVM. Ideal for integration into backends with Spring Boot, Ktor, Micronaut, or native Android application development.</i>
+  <i>The digital foundation of Mozambican identity. The definitive Swiss army knife for validations, postal codes, and financial ecosystems in Mozambique, natively ported to the Kotlin ecosystem.</i>
 </p>
+
+---
+
+## 📜 The Vision
+
+In Mozambique, digital accuracy is the foundation of the future. From the pulse of mobile wallets in the squares to the rigorous structure of the National ID (BI), **moz-utils** exists to ensure that every piece of data that crosses your mobile application (Android) or backend (Spring Boot/Ktor) is validated, structured, and authentic.
+
+Built impeccably for the Kotlin ecosystem, this package is more than a library — it is the open-source validation infrastructure our country deserves. Clean code, tested, and poetically engineered for Mozambique.
 
 ---
 
 ## 📦 Installation
 
-Since the project is structured as a local multi-package subproject, you can include it in your Gradle or Maven build:
+Add the dependency to your `build.gradle.kts`:
 
-### Gradle (Kotlin DSL)
-Add the local subproject in your `settings.gradle.kts`:
 ```kotlin
-include(":packages:moz-utils:kotlin") // Adjust path according to your structure
-```
-
-And declare the dependency in your `build.gradle.kts`:
-```kotlin
-dependencies {
-    implementation(project(":packages:moz-utils:kotlin"))
-}
-```
-
-### Local Publication (Maven Local)
-You can publish the package to your local Maven repository by running the following command from the `kotlin` directory:
-```bash
-./gradlew publishToMavenLocal
-```
-
-And in your consuming project, ensure you have `mavenLocal()` in your repositories and add:
-```kotlin
-implementation("com.edmilsonmuacigarro:moz-utils:0.1.2")
+implementation("com.edmilsonmuacigarro:moz-utils:0.3.0")
 ```
 
 ---
 
 ## 🚀 API Reference Guide
 
-All features are available through the static `MozUtils` object under the `com.edmilsonmuacigarro.mozutils` package.
+### 1. Documents and Citizen Identity
 
-### 1. Document Validation
-
-#### `MozUtils.isValidNUIT(nuit: Any): Boolean`
-Validates if a NUIT (Unique Tax Identification Number) is syntactically valid following the Modulo 11 calculation rules of the Tax Authority (AT). Accepts both `String` and `Int`/`Long`.
 ```kotlin
 import com.edmilsonmuacigarro.mozutils.MozUtils
 
-val valid = MozUtils.isValidNUIT("123456789")  // true
-val invalid = MozUtils.isValidNUIT(111111111)   // false (repeated digits)
-```
+// National ID (12 digits + 1 letter)
+MozUtils.isValidBI("110101234567A")  // true
 
-#### `MozUtils.getNUITEntityType(nuit: Any): String?`
-Returns the entity classification based on the first digit of the NUIT. Returns `null` if the NUIT is invalid.
-```kotlin
-val type = MozUtils.getNUITEntityType("400000006")
-// Returns: "Colectiva (Sociedades por Quotas, SA, Lda, Associações)"
-```
+// NUIT - Unique Tax Identification Number
+MozUtils.isValidNUIT("123456789")    // true
+MozUtils.getNUITEntityType("400000006")  // "Collective (Quotas Companies...)"
 
-#### `MozUtils.isValidBI(bi: String): Boolean`
-Validates if the Mozambican National Identity Card (BI) format is correct (12 digits followed by 1 letter). It ignores spaces and dashes.
-```kotlin
-val validBi = MozUtils.isValidBI("110101234567A")   // true
-val invalidBi = MozUtils.isValidBI("11010123456")   // false
+// DIRE - Foreign Resident Identification Document
+MozUtils.isValidDIRE("00008312C")    // true
+
+// Passport and Driving License
+MozUtils.isValidPassport("AO1234567")       // true
+MozUtils.isValidDrivingLicense("M123456")   // true
 ```
 
 ---
 
-### 2. Mobile Phone and Communication Utilities
+### 2. Financial Ecosystem and Telecommunications
 
-#### `MozUtils.isValidMozambicanPhone(phone: String): Boolean`
-Validates if the number belongs to a valid national mobile carrier (Vodacom, Tmcel, or Movitel).
-```kotlin
-MozUtils.isValidMozambicanPhone("841234567")      // true
-MozUtils.isValidMozambicanPhone("+258869876543")  // true
-MozUtils.isValidMozambicanPhone("991234567")      // false
-```
+Deep mapping of the Mozambican digital circulatory system — identifies operators and the pulse of associated mobile wallets.
 
-#### `MozUtils.formatMozambicanPhone(phone: String): String`
-Formats the mobile number to the standard international display format: `+258 XX XXX XXXX`. Throws an `IllegalArgumentException` if the number is invalid.
 ```kotlin
-val formatted = MozUtils.formatMozambicanPhone("841234567")
-// Returns: "+258 84 123 4567"
-```
+import com.edmilsonmuacigarro.mozutils.MozUtils
 
-#### `MozUtils.getMobileOperator(phone: String): String?`
-Returns the national mobile carrier name associated with the number (`Vodacom`, `Tmcel`, or `Movitel`). Returns `null` if invalid.
-```kotlin
-val carrier = MozUtils.getMobileOperator("841234567") // "Vodacom"
-```
+// Validation and Formatting
+MozUtils.isValidMozambicanPhone("841234567")  // true
+MozUtils.formatMozambicanPhone("841234567")   // "+258 84 123 4567"
 
-#### `MozUtils.buildWhatsAppUrl(phone: String, message: String): String`
-Generates a direct link to open a WhatsApp conversation pre-filled with the Mozambican country code (`258`) and the URL-encoded message.
-```kotlin
-val url = MozUtils.buildWhatsAppUrl("841234567", "Olá Formiga Antonio, bem-vindo a Nampula!")
-// Returns: "https://wa.me/258841234567?text=Ol%C3%A1+Formiga+Antonio%2C+bem-vindo+a+Nampula%21"
+// Telecom and Financial Intelligence
+MozUtils.getMobileOperator("841234567")  // "Vodacom"
+MozUtils.getMobileWallet("841234567")    // "M-Pesa"
+MozUtils.getMobileWallet("821234567")    // "mKesh"
+MozUtils.getMobileWallet("861234567")    // "e-Mola"
+
+// Social Connections
+MozUtils.buildWhatsAppUrl("841234567", "Hello, Mozambique!") 
+// "https://wa.me/258841234567?text=Hello%2C%20Mozambique%21"
 ```
 
 ---
 
-### 3. Currency Utilities
+### 3. Postal Codes (Legacy and New CEP)
 
-#### `MozUtils.formatMZN(value: Double, currency: String): String`
-Formats a monetary value according to the official Mozambican standard (space separator for thousands, comma for decimals, and currency symbol at the end). The default `currency` parameter is `"MT"`.
+A graceful transition between the past and the future: from the old post office stations to the geo-referenced New CEP.
+
 ```kotlin
-val price1 = MozUtils.formatMZN(1250.50)         // "1 250,50 MT"
-val price2 = MozUtils.formatMZN(5000000.0, "MZN") // "5 000 000,00 MZN"
+import com.edmilsonmuacigarro.mozutils.MozUtils
+
+// The Future (New CEP: Province, District, and Locality)
+MozUtils.isValidNewCEP("0101-01")  // true
+
+// Intelligent Suggestion Engine (Supports Legacy -> New Transition)
+// Search by the old code "3100" (Nampula HQ) or by a neighborhood
+MozUtils.suggestCEPs("3100")
+MozUtils.suggestCEPs("Malhangalene")
+
+// The Legacy
+MozUtils.isValidPostalCode("1100")            // true
+MozUtils.getPostalCodeLocality("1100")        // "Maputo ECP (HQ)"
 ```
 
 ---
 
-### 4. Geographical Database
-
-The library provides the following methods to query the official administrative structure of Mozambique:
+### 4. National Geography and Finances
 
 ```kotlin
-// 1. Get the complete list containing all provinces, districts, posts, and neighborhoods
-val provinces: List<Map<String, Any>> = MozUtils.getMozambiqueProvinces()
+import com.edmilsonmuacigarro.mozutils.MozUtils
 
-// 2. Get districts of a specific province by ID (e.g., "npl" for Nampula)
-val nampulaDistricts: List<String> = MozUtils.getDistrictsByProvince("npl")
-// Returns: ["Angoche", "Eráti", "Ilha de Moçambique", ...]
+// Monumental Value
+MozUtils.formatMZN(1250.5)         // "1 250,50 MT"
 
-// 3. Get all flat districts of the country using the District data class
-val allDistricts: List<District> = MozUtils.getAllDistricts()
-
-// District structure:
-// data class District(
-//     val name: String,
-//     val provinceId: String,
-//     val postos_administrativos: List<String>,
-//     val bairros: List<String>
-// )
+// Full Geography
+val provinces = MozUtils.getMozambiqueProvinces()
+val nampulaDistricts = MozUtils.getDistrictsByProvince("npl")
 ```
+
+---
+
+## 🤝 Rules of Conduct and Contribution
+
+This is not just any project. It is a project of national pride. We ask for excellence in code, compassion with colleagues, and the ambition to make the Mozambican web world-class. Read our `CODE_OF_CONDUCT.md` in the project root.
 
 ## 📄 License
 
-This project is licensed under the **AGPL-3.0-or-later** license.
+The code lives and breathes the freedom of Open Source. Licensed under **AGPL-3.0-or-later**.
 
 ---
 
 <p align="center">
-  Developed by <b>Edmilson Muacigarro</b> and contributors.
+  Developed by <b>Open Source Contributors</b> & supported by <b>Edmilson Muacigarro</b>
 </p>

@@ -1,7 +1,7 @@
 <?php
 
+require_once __DIR__ . '/src/CepData.php';
 require_once __DIR__ . '/src/MozUtils.php';
-
 use Iradoweck\MozUtils\MozUtils;
 
 $passed = 0;
@@ -153,8 +153,8 @@ test('Total de distritos de Moçambique → 161', count($all), 161);
 test('Primeiro distrito retornado name → "Ancuabe"', $all[0]['name'], 'Ancuabe');
 test('Primeiro distrito provinceId → "cab"', $all[0]['provinceId'], 'cab');
 
-test('Ancuabe postos_administrativos', $all[0]['postos_administrativos'], ['Ancuabe', 'Metoro', 'Meza']);
-test('Ancuabe bairros', $all[0]['bairros'], []);
+test('Ancuabe postos_administrativos', $all[0]['administrative_posts'], ['Ancuabe', 'Metoro', 'Meza']);
+test('Ancuabe bairros', $all[0]['neighborhoods'], []);
 
 $pemba = null;
 foreach ($all as $d) {
@@ -163,8 +163,8 @@ foreach ($all as $d) {
         break;
     }
 }
-test('Pemba (Cidade) postos_administrativos', $pemba['postos_administrativos'], ['Pemba']);
-test('Pemba (Cidade) bairros', $pemba['bairros'], ['Paquitequete', 'Natite', 'Cariacó', 'Alto Gingone', 'Insubria', 'Muxara', 'Maringanha', 'Chibuébue']);
+test('Pemba (Cidade) postos_administrativos', $pemba['administrative_posts'], ['Pemba']);
+test('Pemba (Cidade) bairros', $pemba['neighborhoods'], ['Paquitequete', 'Natite', 'Cariacó', 'Alto Gingone', 'Insubria', 'Muxara', 'Maringanha', 'Chibuébue']);
 
 $majune = null;
 foreach ($all as $d) {
@@ -173,7 +173,7 @@ foreach ($all as $d) {
         break;
     }
 }
-test('Majune postos_administrativos (Mua corrigido)', $majune['postos_administrativos'], ['Majune', 'Mua', 'Nairrobi']);
+test('Majune postos_administrativos (Mua corrigido)', $majune['administrative_posts'], ['Majune', 'Mua', 'Nairrobi']);
 
 $maxixe = null;
 foreach ($all as $d) {
@@ -182,7 +182,7 @@ foreach ($all as $d) {
         break;
     }
 }
-test('Maxixe (Cidade) bairros (Bairro Central corrigido)', $maxixe['bairros'], ['Bairro Central', 'Chamba', 'Macupula', 'Nalazi']);
+test('Maxixe (Cidade) bairros (Bairro Central corrigido)', $maxixe['neighborhoods'], ['Bairro Central', 'Chamba', 'Macupula', 'Nalazi']);
 
 $nampula = null;
 foreach ($all as $d) {
@@ -191,7 +191,29 @@ foreach ($all as $d) {
         break;
     }
 }
-test('Nampula (Cidade) bairros contêm Namutequeliua', in_array('Namutequeliua', $nampula['bairros']), true);
+test('Nampula (Cidade) bairros contêm Namutequeliua', in_array('Namutequeliua', $nampula['neighborhoods']), true);
+
+// --- Código Postal ---
+echo "\n✉️ TESTES DE CÓDIGO POSTAL\n";
+echo str_repeat("─", 50) . "\n";
+
+test('Código postal válido (1100)', MozUtils::isValidPostalCode('1100'), true);
+test('Código postal com espaços (1101)', MozUtils::isValidPostalCode(' 1101 '), true);
+test('Código postal com traço (1102)', MozUtils::isValidPostalCode('11-02'), true);
+test('Código postal válido (1202)', MozUtils::isValidPostalCode('1202'), true);
+test('Código postal válido (3311)', MozUtils::isValidPostalCode('3311'), true);
+test('Código postal inválido (1199)', MozUtils::isValidPostalCode('1199'), false);
+test('Código postal muito longo', MozUtils::isValidPostalCode('11000'), false);
+test('Código postal muito curto', MozUtils::isValidPostalCode('110'), false);
+test('Código postal não numérico', MozUtils::isValidPostalCode('ABCD'), false);
+
+test('Localidade de 1100', MozUtils::getPostalCodeLocality('1100'), 'Maputo ECP (Sede)');
+test('Localidade de 1205', MozUtils::getPostalCodeLocality('1205'), 'Chilembene / Magoanine');
+test('Província de 1100', MozUtils::getPostalCodeProvince('1100'), 'Maputo');
+test('Província de 2100', MozUtils::getPostalCodeProvince('2100'), 'Sofala');
+test('Província de 3311', MozUtils::getPostalCodeProvince('3311'), 'Niassa');
+test('Localidade de inválido', MozUtils::getPostalCodeLocality('9999'), null);
+test('Província de inválido', MozUtils::getPostalCodeProvince('9999'), null);
 
 // --- RESULTADO ---
 echo "\n" . str_repeat("═", 50) . "\n";

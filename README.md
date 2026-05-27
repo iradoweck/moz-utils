@@ -21,7 +21,7 @@
 </p>
 
 <p align="justify">
-  <code>moz-utils</code> is a collection of essential utility functions tailored for the Mozambican software development ecosystem. It standardizes critical validations such as <b>NUIT</b> (Unique Tax Identification Number), <b>BI</b> (National Identity Card), <b>mobile phone numbers</b> (Vodacom, Tmcel, Movitel), <b>Metical currency formatting</b> (MZN), and <b>national geographical data</b> (Provinces, Districts, Administrative Posts, and Neighborhoods).
+  <code>moz-utils</code> is a collection of essential utility functions tailored for the Mozambican software development ecosystem. It standardizes critical validations such as <b>NUIT</b> (Unique Tax Identification Number), <b>BI</b> (National ID), <b>DIRE</b> (Foreign Resident ID), <b>Passports</b>, <b>Driving Licenses</b>, <b>mobile phone numbers</b> (Vodacom, Tmcel, Movitel / M-Pesa, e-Mola, mKesh), <b>Metical currency formatting</b> (MZN), and <b>national geographical data</b> (including the New Postal Code System - CEP).
 </p>
 
 <p align="justify">
@@ -41,62 +41,30 @@
 
 ## 🗺️ Workflows and Architecture
 
-### 1. NUIT Validation (Modulo 11)
+All heavy technical logic (NUIT mathematics, document Regex validation, and Mozambique maps) has been isolated. To read detailed technical documentation on how algorithms work and the structure of Mozambican geographical databases, check out our official document:
+👉 **[Mozambique Kiwi Docs (Validations & Maps)](./mozambiquekiwi.md)**
 
-<p align="justify">
-  The validation strictly follows the rules defined by the Tax Authority of Mozambique:
-</p>
+### 1. Telephony and Mobile Wallets
 
-```mermaid
-graph TD
-    A[Start: nuit] --> B{Has 9 digits?}
-    B -- No --> C[Invalid]
-    B -- Yes --> D{All digits identical?<br/>e.g., 111111111}
-    D -- Yes --> C
-    D -- No --> E{First digit<br/>between 1 and 5?}
-    E -- No --> C
-    E -- Yes --> F["Weighted sum of the first 8 digits:<br/>sum += digit[i] * (9 - i)"]
-    F --> G[Calculate remainder = sum % 11]
-    G --> H{remainder <= 1?}
-    H -- Yes --> I[Expected Digit = 0]
-    H -- No --> J[Expected Digit = 11 - remainder]
-    I --> K{Digit 9 == Expected Digit?}
-    J --> K
-    K -- Yes --> L[Valid]
-    K -- No --> C
+Identification and validation of Mozambican 9-digit numbers (starting with 82, 83, 84, 85, 86, 87, 88). Robustly identifies if the number supports **M-Pesa** (Vodacom), **e-Mola** (Movitel), or **mKesh** (Tmcel).
+
+### 2. Postal Codes (Legacy vs New CEP)
+
+The ecosystem implements the **New Mozambican CEP System** (6 digits `XXXX-XX`).
+More than just a list, we built an intelligent suggestion logic:
+- If a user inputs an old postal code (e.g., `3100`), the library automatically translates and suggests an *array* of corresponding New CEPs (e.g., `0909-01`, `0909-02`), allowing you to build perfect frontend dropdown menus for the end user to choose the exact neighborhood.
+
+---
+
+## 🚀 Interactive Emulator (CLI)
+
+To test how this library behaves "in production" without needing to write code, we included a **CLI Emulator**.
+
+Simply run this in the root of your project:
+```bash
+npx tsx emulator.ts
 ```
-
-### 2. Geographical Data Hierarchy
-
-<p align="justify">
-  A robust offline static database structured with official administrative divisions of the country:
-</p>
-
-```mermaid
-graph TD
-    Moz[Mozambique] --> N["Northern Region"]
-    Moz --> C["Central Region"]
-    Moz --> S["Southern Region"]
-
-    N --> CD["Cabo Delgado"]
-    N --> NS["Niassa"]
-    N --> NPL["Nampula"]
-
-    C --> ZMB["Zambézia"]
-    C --> TT["Tete"]
-    C --> MN["Manica"]
-    C --> SF["Sofala"]
-
-    S --> INH["Inhambane"]
-    S --> GZ["Gaza"]
-    S --> MPT["Maputo Province"]
-    S --> MC["Maputo City"]
-
-    CD --> D["Districts <br/>e.g., Nampula, Pemba (City)..."]
-    NPL --> D
-    D --> PA["Administrative Posts <br/>e.g., Muhala..."]
-    PA --> B["Main Neighborhoods <br/>e.g., Namutequeliua..."]
-```
+This will launch an interactive menu where you can type NUITs, phones, BIs, or CEPs and check the library's real-time response!
 
 ---
 
@@ -137,7 +105,7 @@ graph TD
     ```yaml
     # Add to your pubspec.yaml
     dependencies:
-      moz_utils: ^0.1.2
+      moz_utils: ^0.3.0
     ```
 
 === "Kotlin"
@@ -147,7 +115,7 @@ graph TD
         maven { url = uri("https://jitpack.io") }
     }
     dependencies {
-        implementation("com.github.iradoweck:moz-utils:v0.1.2")
+        implementation("com.github.iradoweck:moz-utils:v0.3.0")
     }
     ```
 
@@ -156,52 +124,24 @@ graph TD
 ## 💻 Syntax Comparison
 
 <p align="justify">
-  Below is an example showing how homogeneous the API design is across all supported languages:
+  Below is an example showing how homogeneous the API design is across all supported languages (TypeScript example with new features):
 </p>
 
 === "TypeScript"
     ```typescript
-    import { isValidNUIT, formatMZN, buildWhatsAppUrl } from 'moz-utils';
+    import { 
+      isValidNUIT, isValidDIRE, isValidMozambicanPhone,
+      suggestCEPs, formatMZN 
+    } from 'moz-utils';
     
     console.log(isValidNUIT('123456789')); // true
+    console.log(isValidDIRE(' 00008312-c ')); // true (auto-sanitized)
     console.log(formatMZN(1500));          // "1 500,00 MT"
-    console.log(buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!'));
-    ```
-
-=== "Python"
-    ```python
-    from moz_utils import is_valid_nuit, format_mzn, build_whatsapp_url
-
-    print(is_valid_nuit('123456789')) # True
-    print(format_mzn(1500))            # "1 500,00 MT"
-    print(build_whatsapp_url('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!'))
-    ```
-
-=== "PHP"
-    ```php
-    use Iradoweck\MozUtils\MozUtils;
-
-    echo MozUtils::isValidNUIT('123456789'); // true
-    echo MozUtils::formatMZN(1500);          // "1 500,00 MT"
-    echo MozUtils::buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!');
-    ```
-
-=== "Dart"
-    ```dart
-    import 'package:moz_utils/moz_utils.dart';
-
-    print(MozUtils.isValidNUIT('123456789')); // true
-    print(MozUtils.formatMZN(1500));          // "1 500,00 MT"
-    print(MozUtils.buildWhatsAppUrl('841234567', 'Olá Formiga Antonio, bem-vindo a Nampula!'));
-    ```
-
-=== "Kotlin"
-    ```kotlin
-    import com.edmilsonmuacigarro.mozutils.MozUtils
-
-    println(MozUtils.isValidNUIT("123456789")) // true
-    println(MozUtils.formatMZN(1500.0))         // "1 500,00 MT"
-    println(MozUtils.buildWhatsAppUrl("841234567", "Olá Formiga Antonio, bem-vindo a Nampula!"))
+    console.log(isValidMozambicanPhone('+258 841234567')); // true
+    
+    // Auto-fallback and suggestions for legacy postal codes
+    const suggestions = suggestCEPs('3100');
+    console.log(suggestions[0]); // { cep: '0909-01', locality: 'Anchilo', ... }
     ```
 
 ---
@@ -244,5 +184,5 @@ This project is licensed under the **AGPL-3.0-or-later** license.
 ---
 
 <p align="center">
-  Developed by <b>Edmilson Muacigarro</b> and contributors.
+  Developed by <b>Open Source Contributors</b> & supported by <b>Edmilson Muacigarro</b>
 </p>
