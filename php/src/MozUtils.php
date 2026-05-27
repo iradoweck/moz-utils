@@ -1440,4 +1440,4 @@ class MozUtils
         }
         return $results;
     }
-\n}\n
+}
