@@ -47,9 +47,9 @@ class TestMozUtils(unittest.TestCase):
     def test_nuit_classification(self):
         self.assertEqual(get_nuit_entity_type(self.nuit_singular), 'Singular (Cidadãos nacionais/estrangeiros e ENI)')
         self.assertEqual(get_nuit_entity_type(self.nuit_singular2), 'Singular (Cidadãos nacionais/estrangeiros e ENI)')
-        self.assertEqual(get_nuit_entity_type(self.nuit_equiparada), 'Equivalent (Heranças Jacentes, Consórcios)')
-        self.assertEqual(get_nuit_entity_type(self.nuit_colectiva), 'Collective (Sociedades por Quotas, SA, Lda, Associações)')
-        self.assertEqual(get_nuit_entity_type(self.nuit_publico), 'Public (Instituições do Estado e Ministérios)')
+        self.assertEqual(get_nuit_entity_type(self.nuit_equiparada), 'Equiparada (Heranças Jacentes, Consórcios)')
+        self.assertEqual(get_nuit_entity_type(self.nuit_colectiva), 'Colectiva (Sociedades por Quotas, SA, Lda, Associações)')
+        self.assertEqual(get_nuit_entity_type(self.nuit_publico), 'Público (Instituições do Estado e Ministérios)')
         self.assertIsNone(get_nuit_entity_type('000000000'))
 
     def test_phone_validation(self):

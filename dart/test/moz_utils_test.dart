@@ -84,15 +84,15 @@ void main() {
     });
 
     test('Type 3 → Equivalent', () {
-      expect(MozUtils.getNUITEntityType(nuitEquivalent), equals('Equivalent (Heranças Jacentes, Consórcios)'));
+      expect(MozUtils.getNUITEntityType(nuitEquivalent), equals('Equiparada (Heranças Jacentes, Consórcios)'));
     });
 
     test('Type 4 → Collective', () {
-      expect(MozUtils.getNUITEntityType(nuitCollective), equals('Collective (Sociedades por Quotas, SA, Lda, Associações)'));
+      expect(MozUtils.getNUITEntityType(nuitCollective), equals('Colectiva (Sociedades por Quotas, SA, Lda, Associações)'));
     });
 
     test('Type 5 → Public', () {
-      expect(MozUtils.getNUITEntityType(nuitPublico), equals('Public (Instituições do Estado e Ministérios)'));
+      expect(MozUtils.getNUITEntityType(nuitPublico), equals('Público (Instituições do Estado e Ministérios)'));
     });
 
     test('NUIT invalid → null', () {
