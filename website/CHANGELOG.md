@@ -2,6 +2,14 @@
 
 All notable changes to the Official Website and Spa will be documented in this file.
 
+## [0.1.4] - 2026-05-28
+
+### Added & Fixed
+- **Stable Routing:** Eliminated 404 Not Found errors on GitHub Pages by migrating the application to HashRouter (`/#/`) and correctly configuring the Vite base path.
+- **Robust Insights Data:** Removed unstable public CORS proxies. The dashboard now consumes a reliable, auto-generated `stats.json` file.
+- **Resilient UI Fetching:** Implemented asynchronous progressive loading and a strict 4-second timeout (`AbortController`) to prevent the Insights page from freezing during network delays.
+- **CI/CD Pipeline Fix:** Resolved a critical build failure in GitHub Actions by ensuring the TypeScript library (`ts`) is fully installed and compiled before building the React website.
+
 ## [0.1.3] - 2026-05-28
 
 ### Added

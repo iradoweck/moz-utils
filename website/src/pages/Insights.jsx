@@ -12,43 +12,60 @@ export default function Insights() {
 
   useEffect(() => {
     async function fetchRealData() {
-      try {
-        const [ghRepoRes, ghContribRes, npmRes, packagistRes, pubRes, pypiRes] = await Promise.allSettled([
-          fetch('https://api.github.com/repos/iradoweck/moz-utils'),
-          fetch('https://api.github.com/repos/iradoweck/moz-utils/contributors'),
-          fetch('https://api.npmjs.org/downloads/point/last-month/moz-utils'),
-          fetch('https://packagist.org/packages/iradoweck/moz-utils.json'),
-          fetch('https://corsproxy.io/?' + encodeURIComponent('https://pub.dev/api/packages/moz_utils/metrics')),
-          fetch('https://corsproxy.io/?' + encodeURIComponent('https://pypistats.org/api/packages/moz-utils/recent'))
-        ]);
+      const safeFetch = async (url, isJson = true) => {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 4000); // 4s timeout
+          const res = await fetch(url, { signal: controller.signal });
+          clearTimeout(timeoutId);
+          if (!res.ok) return null;
+          return isJson ? await res.json() : await res.text();
+        } catch (e) {
+          return null;
+        }
+      };
 
-        const ghRepo = ghRepoRes.status === 'fulfilled' && ghRepoRes.value.ok ? await ghRepoRes.value.json() : null;
-        const ghContrib = ghContribRes.status === 'fulfilled' && ghContribRes.value.ok ? await ghContribRes.value.json() : [];
-        const npmData = npmRes.status === 'fulfilled' && npmRes.value.ok ? await npmRes.value.json() : null;
-        const packagistData = packagistRes.status === 'fulfilled' && packagistRes.value.ok ? await packagistRes.value.json() : null;
-        const pubData = pubRes.status === 'fulfilled' && pubRes.value.ok ? await pubRes.value.json() : null;
-        const pypiData = pypiRes.status === 'fulfilled' && pypiRes.value.ok ? await pypiRes.value.json() : null;
+      // GitHub Stats
+      safeFetch('https://api.github.com/repos/iradoweck/moz-utils').then(data => {
+        if (data) {
+          setStats(s => ({ ...s, github: { stars: data.stargazers_count || 0, forks: data.forks_count || 0 } }));
+        }
+      });
 
-        setStats({
-          downloads: { 
-            ts: npmData?.downloads ? npmData.downloads.toLocaleString() : '0', 
-            php: packagistData?.package?.downloads?.total ? packagistData.package.downloads.total.toLocaleString() : '0', 
-            python: pypiData?.data?.last_month ? pypiData.data.last_month.toLocaleString() : '0', 
-            dart: pubData?.score?.downloadCount30Days ? pubData.score.downloadCount30Days.toLocaleString() : '0' 
-          },
-          github: { 
-            stars: ghRepo?.stargazers_count || 0, 
-            forks: ghRepo?.forks_count || 0 
-          },
-          contributors: Array.isArray(ghContrib) ? ghContrib.map(c => ({
-            login: c.login,
-            avatar: c.avatar_url,
-            contributions: c.contributions
-          })) : []
-        });
-      } catch (err) {
-        console.error('Error fetching real insights data', err);
-      }
+      // Contributors
+      safeFetch('https://api.github.com/repos/iradoweck/moz-utils/contributors').then(data => {
+        if (data && Array.isArray(data)) {
+          setStats(s => ({ ...s, contributors: data.map(c => ({ login: c.login, avatar: c.avatar_url, contributions: c.contributions })) }));
+        }
+      });
+
+      // Typescript (NPM)
+      safeFetch('https://api.npmjs.org/downloads/point/last-month/moz-utils').then(data => {
+        if (data?.downloads) {
+          setStats(s => ({ ...s, downloads: { ...s.downloads, ts: data.downloads.toLocaleString() } }));
+        }
+      });
+
+      // PHP (Packagist)
+      safeFetch('https://packagist.org/packages/iradoweck/moz-utils.json').then(data => {
+        if (data?.package?.downloads?.total) {
+          setStats(s => ({ ...s, downloads: { ...s.downloads, php: data.package.downloads.total.toLocaleString() } }));
+        }
+      });
+
+      // Dart (Pub.dev) via proxy
+      safeFetch('https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent('https://pub.dev/api/packages/moz_utils/metrics')).then(data => {
+        if (data?.score?.downloadCount30Days) {
+          setStats(s => ({ ...s, downloads: { ...s.downloads, dart: data.score.downloadCount30Days.toLocaleString() } }));
+        }
+      });
+
+      // Python (PyPI) via proxy
+      safeFetch('https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent('https://pypistats.org/api/packages/moz-utils/recent')).then(data => {
+        if (data?.data?.last_month) {
+          setStats(s => ({ ...s, downloads: { ...s.downloads, python: data.data.last_month.toLocaleString() } }));
+        }
+      });
     }
 
     fetchRealData();
