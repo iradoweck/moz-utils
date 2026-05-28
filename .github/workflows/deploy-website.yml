@@ -53,58 +53,58 @@ jobs:
         working-directory: ./website
         
       - name: Fetch Insights Data
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          GH_HEADERS='-H "Accept: application/vnd.github.v3+json"'
+          GH_HEADERS="-H \"Accept: application/vnd.github.v3+json\" -H \"Authorization: token $GITHUB_TOKEN\""
 
           # Fetch GitHub Repo Stats
-          REPO_INFO=$(curl -s -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/iradoweck/moz-utils)
-          STARS=$(echo "$REPO_INFO" | jq '.stargazers_count // 0')
-          FORKS=$(echo "$REPO_INFO" | jq '.forks_count // 0')
-          OPEN_ISSUES=$(echo "$REPO_INFO" | jq '.open_issues_count // 0')
-          LICENSE=$(echo "$REPO_INFO" | jq -r '.license.spdx_id // "N/A"')
-          LANG=$(echo "$REPO_INFO" | jq -r '.language // "N/A"')
+          REPO_INFO=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/iradoweck/moz-utils || echo '{}')
+          STARS=$(echo "$REPO_INFO" | jq '.stargazers_count // 0' || echo '0')
+          FORKS=$(echo "$REPO_INFO" | jq '.forks_count // 0' || echo '0')
+          OPEN_ISSUES=$(echo "$REPO_INFO" | jq '.open_issues_count // 0' || echo '0')
+          LICENSE=$(echo "$REPO_INFO" | jq -r '.license.spdx_id // "N/A"' || echo 'N/A')
+          LANG=$(echo "$REPO_INFO" | jq -r '.language // "N/A"' || echo 'N/A')
 
           # Fetch Open Pull Requests count
-          PR_INFO=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/iradoweck/moz-utils/pulls?state=open&per_page=1")
-          # Count is better approximated by listing issues with is:pr
-          OPEN_PRS=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/search/issues?q=repo:iradoweck/moz-utils+type:pr+state:open" | jq '.total_count // 0')
+          OPEN_PRS=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/search/issues?q=repo:iradoweck/moz-utils+type:pr+state:open" | jq '.total_count // 0' || echo '0')
 
           # Fetch Recent Commits (last 5)
-          RECENT_COMMITS=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/iradoweck/moz-utils/commits?per_page=5" | \
-            jq -c '[.[] | {sha: .sha[0:7], message: (.commit.message | split("\n")[0]), author: .commit.author.name, date: .commit.author.date}]')
+          RECENT_COMMITS=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/iradoweck/moz-utils/commits?per_page=5" | \
+            jq -c '[.[]? | {sha: (.sha // "")[0:7], message: ((.commit.message // "") | split("\n")[0]), author: .commit.author.name, date: .commit.author.date}]' || echo '[]')
 
           # Fetch NPM Downloads (last month)
           NPM_INFO=$(curl -s https://api.npmjs.org/downloads/point/last-month/moz-utils || echo '{"downloads": 0}')
-          NPM_DL=$(echo "$NPM_INFO" | jq '.downloads // 0')
+          NPM_DL=$(echo "$NPM_INFO" | jq '.downloads // 0' || echo '0')
 
           # Fetch NPM Downloads weekly trend (last 8 weeks)
           NPM_TREND_RAW=$(curl -s "https://api.npmjs.org/downloads/range/last-8-weeks/moz-utils" || echo '{"downloads":[]}')
-          NPM_TREND=$(echo "$NPM_TREND_RAW" | jq -c '[.downloads // [] | .[] | {week: .day, count: .downloads}]')
+          NPM_TREND=$(echo "$NPM_TREND_RAW" | jq -c '[.downloads? // [] | .[]? | {week: .day, count: .downloads}]' || echo '[]')
 
           # Packagist (PHP) Downloads
           PHP_INFO=$(curl -s https://packagist.org/packages/iradoweck/moz-utils.json || echo '{"package":{"downloads":{"total":0}}}')
-          PHP_DL=$(echo "$PHP_INFO" | jq '.package.downloads.total // 0')
+          PHP_DL=$(echo "$PHP_INFO" | jq '.package.downloads.total // 0' || echo '0')
 
           # Python (PyPI) Downloads
           PY_INFO=$(curl -s https://pypistats.org/api/packages/moz-utils/recent || echo '{"data":{"last_month":0}}')
-          PY_DL=$(echo "$PY_INFO" | jq '.data.last_month // 0')
+          PY_DL=$(echo "$PY_INFO" | jq '.data.last_month // 0' || echo '0')
 
           # Dart (pub.dev)
           DART_INFO=$(curl -s https://pub.dev/api/packages/moz_utils/metrics || echo '{"score":{"downloadCount30Days":0}}')
-          DART_DL=$(echo "$DART_INFO" | jq '.score.downloadCount30Days // 0')
+          DART_DL=$(echo "$DART_INFO" | jq '.score.downloadCount30Days // 0' || echo '0')
 
           # Compute total downloads
-          TOTAL_DL=$(echo "$NPM_DL + $PHP_DL + $PY_DL + $DART_DL" | bc)
+          TOTAL_DL=$(echo "$NPM_DL + $PHP_DL + $PY_DL + $DART_DL" | bc || echo '0')
 
           # Fetch Top Contributors (humans only)
-          CONTRIBUTORS=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/iradoweck/moz-utils/contributors?per_page=15" | \
-            jq -c '[.[] | select(.type == "User") | {login: .login, avatar: .avatar_url, contributions: .contributions}] | .[0:10]')
+          CONTRIBUTORS=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/iradoweck/moz-utils/contributors?per_page=15" | \
+            jq -c '[.[]? | select(.type == "User") | {login: .login, avatar: .avatar_url, contributions: .contributions}] | .[0:10]' || echo '[]')
 
           # Check ecosystem health (HTTP status codes)
-          NPM_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://registry.npmjs.org/moz-utils/latest)
-          PYPI_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://pypi.org/pypi/moz-utils/json)
-          DART_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://pub.dev/packages/moz_utils)
-          PHP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://packagist.org/packages/iradoweck/moz-utils)
+          NPM_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://registry.npmjs.org/moz-utils/latest || echo '500')
+          PYPI_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://pypi.org/pypi/moz-utils/json || echo '500')
+          DART_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://pub.dev/packages/moz_utils || echo '500')
+          PHP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://packagist.org/packages/iradoweck/moz-utils || echo '500')
 
           NPM_HEALTHY=$( [ "$NPM_STATUS" = "200" ] && echo "true" || echo "false" )
           PYPI_HEALTHY=$( [ "$PYPI_STATUS" = "200" ] && echo "true" || echo "false" )
@@ -141,6 +141,7 @@ jobs:
             }
           }
           EOF
+
 
 
       - name: Build website
