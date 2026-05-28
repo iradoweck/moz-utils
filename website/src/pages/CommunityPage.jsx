@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquare, Target, Users, AlertCircle } from 'lucide-react';
+import { MessageSquare, Users, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function CommunityPage() {

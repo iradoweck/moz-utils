@@ -32,12 +32,16 @@ if (!config[stack]) {
 
 const filePath = path.resolve(process.cwd(), config[stack].file);
 
-if (!fs.existsSync(filePath)) {
-  console.error(`File not found: ${filePath}`);
-  process.exit(1);
+let content;
+try {
+  content = fs.readFileSync(filePath, 'utf-8');
+} catch (error) {
+  if (error.code === 'ENOENT') {
+    console.error(`File not found: ${filePath}`);
+    process.exit(1);
+  }
+  throw error;
 }
-
-let content = fs.readFileSync(filePath, 'utf-8');
 const match = content.match(config[stack].regex);
 
 if (!match) {

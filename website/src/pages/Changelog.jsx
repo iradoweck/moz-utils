@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FileText, ChevronDown, ChevronUp, Layers, Terminal, Globe, Code, Box } from 'lucide-react';
+import { ChevronDown, ChevronUp, Layers, Terminal, Globe, Code, Box } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 import changelogGlobal from '../../../CHANGELOG.md?raw';
@@ -9,7 +9,6 @@ import changelogPhp from '../../../php/CHANGELOG.md?raw';
 import changelogPython from '../../../python/CHANGELOG.md?raw';
 import changelogDart from '../../../dart/CHANGELOG.md?raw';
 import changelogKotlin from '../../../kotlin/CHANGELOG.md?raw';
-import changelogWebsite from '../../CHANGELOG.md?raw';
 
 import tsConfig from '../../../ts/package.json?raw';
 import websiteConfig from '../../package.json?raw';
