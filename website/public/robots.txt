@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://mozutils.edmilsonmuacigarro.com/sitemap.xml
+
+# Disallow build artifacts
+Disallow: /assets/
