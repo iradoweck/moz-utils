@@ -13,8 +13,8 @@ Change history for all versions of the **moz-utils** project (TypeScript, Dart, 
 - **New Pages:**
   - `Documentation`: Guides on how to use, contribute to, and test the polyglot repository.
   - `Community`: Dedicated space for Issues, Debates, and Maintainer recruitment.
-  - `Insights`: Dynamic dashboard pulling real-time statistics (NPM, Packagist, GitHub Stars, Forks) powered by a new GitHub Actions workflow.
-  - `Changelog`: A dedicated on-site page for reading this changelog easily.
+  - `Insights`: Real-time dynamic dashboard. Migrated from mock/cron data to live JS fetches for NPM, Packagist, PyPI, and Pub.dev (bypassing CORS). Stars and Forks automatically hide if < 3. Creators receive a special 'Maintainer' badge. Fully internationalized.
+  - `Changelog`: A dedicated on-site page, fully internationalized, for reading global and stack-specific version history easily.
 - **New Geographic Simulators:** Created a separate, dedicated interface to test Legacy Postal Codes, convert to the New CEP system, and list districts by province. The official `moz-utils` logic has been deeply integrated into the UI for true real-time validation.
 - **Additional Data & Enhanced Logic:** Inserted comprehensive data for Nampula province (including Nampula ECP, Namutequeliua, Anchilo) across all stacks (TypeScript, Python, PHP, Kotlin, Dart). The New CEP converter search engine was also improved to support case-insensitive locality lookups.
 - **Donations:** Integrated GitHub Sponsors and PayPal badges directly into the Navbar and footer.

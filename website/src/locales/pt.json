@@ -104,5 +104,18 @@
     "global_history": "Histórico Geral (Global)",
     "view_less": "Ver menos",
     "view_all": "Ver todas as versões"
+  },
+  "insights_page": {
+    "description": "Estatísticas de uso em tempo real, transferências e o nosso ranking de contribuidores.",
+    "github_stars": "GitHub Stars",
+    "forks": "Forks",
+    "downloads_npm": "Downloads NPM",
+    "downloads_packagist": "Downloads Packagist",
+    "downloads_pypi": "Downloads PyPI",
+    "downloads_pub": "Downloads Pub.dev",
+    "top_contributors": "Top Contribuidores",
+    "commits": "commits",
+    "creator_maintainer": "Criador / Maintainer",
+    "loading_contributors": "A carregar contribuidores..."
   }
 }

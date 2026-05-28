@@ -59,7 +59,7 @@ export default function Insights() {
       <div style={{ textAlign: 'center', marginBottom: '60px' }}>
         <h1 style={{ fontSize: '3rem', marginBottom: '16px' }}>{t('nav.insights')}</h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '800px', margin: '0 auto' }}>
-          Estatísticas de uso em tempo real, transferências e o nosso ranking de contribuidores.
+          {t('insights_page.description')}
         </p>
       </div>
 
@@ -69,42 +69,42 @@ export default function Insights() {
           <div className="glass-panel" style={{ textAlign: 'center' }}>
             <Star size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
             <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.github.stars}</h2>
-            <p style={{ color: 'var(--text-secondary)' }}>GitHub Stars</p>
+            <p style={{ color: 'var(--text-secondary)' }}>{t('insights_page.github_stars')}</p>
           </div>
         )}
         {(stats.github.forks === '...' || stats.github.forks >= 3) && (
           <div className="glass-panel" style={{ textAlign: 'center' }}>
             <GitFork size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
             <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.github.forks}</h2>
-            <p style={{ color: 'var(--text-secondary)' }}>Forks</p>
+            <p style={{ color: 'var(--text-secondary)' }}>{t('insights_page.forks')}</p>
           </div>
         )}
         <div className="glass-panel" style={{ textAlign: 'center' }}>
           <Download size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
           <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.downloads.ts}</h2>
-          <p style={{ color: 'var(--text-secondary)' }}>Downloads NPM</p>
+          <p style={{ color: 'var(--text-secondary)' }}>{t('insights_page.downloads_npm')}</p>
         </div>
         <div className="glass-panel" style={{ textAlign: 'center' }}>
           <BarChart3 size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
           <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.downloads.php}</h2>
-          <p style={{ color: 'var(--text-secondary)' }}>Downloads Packagist</p>
+          <p style={{ color: 'var(--text-secondary)' }}>{t('insights_page.downloads_packagist')}</p>
         </div>
         <div className="glass-panel" style={{ textAlign: 'center' }}>
           <BarChart3 size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
           <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.downloads.python}</h2>
-          <p style={{ color: 'var(--text-secondary)' }}>Downloads PyPI</p>
+          <p style={{ color: 'var(--text-secondary)' }}>{t('insights_page.downloads_pypi')}</p>
         </div>
         <div className="glass-panel" style={{ textAlign: 'center' }}>
           <BarChart3 size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
           <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.downloads.dart}</h2>
-          <p style={{ color: 'var(--text-secondary)' }}>Downloads Pub.dev</p>
+          <p style={{ color: 'var(--text-secondary)' }}>{t('insights_page.downloads_pub')}</p>
         </div>
       </div>
 
       {/* Top Contribuidores (Formato Xadrez) */}
       <div style={{ marginTop: '60px' }}>
         <h2 style={{ fontSize: '2rem', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Users color="var(--neon-green)" /> Top Contribuidores
+          <Users color="var(--neon-green)" /> {t('insights_page.top_contributors')}
         </h2>
         <div style={{ 
           display: 'grid', 
@@ -132,7 +132,7 @@ export default function Insights() {
                   color: '#FFD700',
                   fontWeight: 'bold'
                 }}>
-                  Criador / Maintainer
+                  {t('insights_page.creator_maintainer')}
                 </span>
               ) : (
                 <span style={{ 
@@ -142,12 +142,12 @@ export default function Insights() {
                   fontSize: '0.8rem',
                   color: 'var(--neon-green)'
                 }}>
-                  {c.contributions} commits
+                  {c.contributions} {t('insights_page.commits')}
                 </span>
               )}
             </div>
           )) : (
-            <p style={{ color: 'var(--text-secondary)' }}>A carregar contribuidores...</p>
+            <p style={{ color: 'var(--text-secondary)' }}>{t('insights_page.loading_contributors')}</p>
           )}
         </div>
       </div>
