@@ -12,60 +12,15 @@ export default function Insights() {
 
   useEffect(() => {
     async function fetchRealData() {
-      const safeFetch = async (url, isJson = true) => {
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 4000); // 4s timeout
-          const res = await fetch(url, { signal: controller.signal });
-          clearTimeout(timeoutId);
-          if (!res.ok) return null;
-          return isJson ? await res.json() : await res.text();
-        } catch (e) {
-          return null;
+      try {
+        const res = await fetch('/stats.json');
+        if (res.ok) {
+          const data = await res.json();
+          setStats(data);
         }
-      };
-
-      // GitHub Stats
-      safeFetch('https://api.github.com/repos/iradoweck/moz-utils').then(data => {
-        if (data) {
-          setStats(s => ({ ...s, github: { stars: data.stargazers_count || 0, forks: data.forks_count || 0 } }));
-        }
-      });
-
-      // Contributors
-      safeFetch('https://api.github.com/repos/iradoweck/moz-utils/contributors').then(data => {
-        if (data && Array.isArray(data)) {
-          setStats(s => ({ ...s, contributors: data.map(c => ({ login: c.login, avatar: c.avatar_url, contributions: c.contributions })) }));
-        }
-      });
-
-      // Typescript (NPM)
-      safeFetch('https://api.npmjs.org/downloads/point/last-month/moz-utils').then(data => {
-        if (data?.downloads) {
-          setStats(s => ({ ...s, downloads: { ...s.downloads, ts: data.downloads.toLocaleString() } }));
-        }
-      });
-
-      // PHP (Packagist)
-      safeFetch('https://packagist.org/packages/iradoweck/moz-utils.json').then(data => {
-        if (data?.package?.downloads?.total) {
-          setStats(s => ({ ...s, downloads: { ...s.downloads, php: data.package.downloads.total.toLocaleString() } }));
-        }
-      });
-
-      // Dart (Pub.dev) via proxy
-      safeFetch('https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent('https://pub.dev/api/packages/moz_utils/metrics')).then(data => {
-        if (data?.score?.downloadCount30Days) {
-          setStats(s => ({ ...s, downloads: { ...s.downloads, dart: data.score.downloadCount30Days.toLocaleString() } }));
-        }
-      });
-
-      // Python (PyPI) via proxy
-      safeFetch('https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent('https://pypistats.org/api/packages/moz-utils/recent')).then(data => {
-        if (data?.data?.last_month) {
-          setStats(s => ({ ...s, downloads: { ...s.downloads, python: data.data.last_month.toLocaleString() } }));
-        }
-      });
+      } catch (err) {
+        console.error('Error fetching stats.json', err);
+      }
     }
 
     fetchRealData();
