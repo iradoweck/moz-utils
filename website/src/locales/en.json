@@ -116,6 +116,40 @@
     "top_contributors": "Top Contributors",
     "commits": "commits",
     "creator_maintainer": "Creator / Maintainer",
-    "loading_contributors": "Loading contributors..."
+    "loading_contributors": "Loading contributors...",
+    "loading_insights": "Loading insights data…",
+    "open_closed_issues": "Open / Closed Issues",
+    "open_merged_prs": "Open / Merged PRs",
+    "total_downloads": "Total Downloads",
+    "downloads_by_ecosystem": "Downloads by Ecosystem",
+    "npm_weekly_trend": "NPM Weekly Trend",
+    "last_8_weeks": "Last 8 weeks of NPM downloads",
+    "no_trend_data": "No trend data available yet.",
+    "leads_with": "leads with",
+    "of_all_downloads": "of all downloads",
+    "ecosystem_health": "Ecosystem Health",
+    "recent_activity": "Recent Activity",
+    "want_to_contribute": "Want to become a contributor?",
+    "contribute_desc": "This section will display contributors once the community starts growing. Be the first to contribute and have your name featured here!",
+    "read_contrib_guide": "Read the Contribution Guide"
+  },
+  "docs_page": {
+    "title": "Documentation",
+    "description": "Comprehensive guide on how to use moz-utils across all supported ecosystems.",
+    "menu": {
+      "title": "Contents",
+      "overview": "Overview",
+      "installation": "Installation",
+      "phones": "Phones & Mobile",
+      "documents": "Identity Documents",
+      "currency": "Currency (MZN)",
+      "geography": "Geography & Districts",
+      "sanitization": "Sanitization",
+      "postal": "Postal Codes (CEP)",
+      "examples": "Use Cases",
+      "errors": "Error Handling",
+      "contributing": "Contributing",
+      "faq": "FAQ"
+    }
   }
 }

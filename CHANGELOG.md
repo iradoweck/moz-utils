@@ -3,6 +3,20 @@
 Change history for all versions of the **moz-utils** project (TypeScript, Dart, Python, PHP, and Kotlin).
 ---
 
+## 0.3.3
+
+> **Patch version — SEO Overhaul, CI/CD Hardening & Documentation Preps**
+
+### Official Website
+- **SEO & Discoverability:** Massive SEO improvement with dynamic `react-helmet-async`, dynamic canonical URLs, automated Open Graph generation, and localized JSON-LD schemas.
+- **Insights Enhancements:** Insights now render Issues (Open/Closed) and PRs (Open/Merged) intelligently via live GitHub API fetches with a robust local fallback mechanism. Fixed all React state warnings.
+- **Documentation Prep:** Prepared infrastructure to launch a fully redesigned interactive documentation portal with live playgrounds.
+
+### Core Infrastructure & CI/CD
+- **Hardened CI/CD Pipelines:** Resilient API requests across all actions. The `deploy-website.yml` now injects `GITHUB_TOKEN` specifically to prevent rate-limit 403 blocks during dependency analysis, and uses strict `jq` fallbacks for unavailable upstream data (e.g., PyPI delays).
+
+---
+
 ## 0.3.2
 
 > **Patch version — Stable SPA Routing and Automated Insights Pipeline**
