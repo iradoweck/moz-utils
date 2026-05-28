@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronUp, Layers, Terminal, Globe, Code, Box } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { useSEO } from '../hooks/useSEO';
 
 import changelogGlobal from '../../../CHANGELOG.md?raw';
 import changelogTs from '../../../ts/CHANGELOG.md?raw';
@@ -113,6 +114,10 @@ const ChangelogSection = ({ titleKey, titleFallback, markdown, limit, icon: Icon
 
 export default function Changelog() {
   const { t } = useTranslation();
+  useSEO(
+    'Changelog',
+    'Version history and release notes for moz-utils across all stacks: TypeScript, Python, PHP, Dart, Kotlin, and the official website.'
+  );
 
   return (
     <div className="container animate-fade-up" style={{ padding: '60px 20px', maxWidth: '900px' }}>

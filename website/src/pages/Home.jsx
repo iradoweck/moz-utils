@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSEO } from '../hooks/useSEO';
 import Hero from '../components/Hero';
 import MotionDemo from '../components/MotionDemo';
 import EcosystemInstallation from '../components/EcosystemInstallation';
@@ -7,6 +8,10 @@ import UnifiedSimulator from '../components/UnifiedSimulator';
 
 export default function Home() {
   const { t } = useTranslation();
+  useSEO(
+    'Mozambique Utility Library',
+    'Validate Mozambican NUIT, BI, phone numbers, postal codes (CEP), and explore geographic data. Open-source for TypeScript, Python, PHP, Dart, and Kotlin.'
+  );
   
   return (
     <>
