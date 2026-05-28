@@ -18,8 +18,16 @@ export default function GeoSimulator() {
 
   if (inputValue) {
     if (activeTab === 'province') {
+      let districts = [];
+      let found = false;
       try {
-        const districts = getDistrictsByProvince(inputValue);
+        districts = getDistrictsByProvince(inputValue);
+        found = true;
+      } catch (e) {
+        found = false;
+      }
+      
+      if (found) {
         resultJSX = (
           <div style={{ color: 'var(--neon-green)', fontWeight: '500' }}>
             <p>Província Encontrada! Distritos ({districts.length}):</p>
@@ -32,7 +40,7 @@ export default function GeoSimulator() {
             </div>
           </div>
         );
-      } catch (e) {
+      } else {
         resultJSX = <div className="text-error">Província não encontrada. Usa um ID válido (ex: mpt, mpc, npl).</div>;
       }
     } else if (activeTab === 'legacy_postal') {

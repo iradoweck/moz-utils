@@ -55,8 +55,16 @@ export default function UnifiedSimulator() {
   let logisticsError = false;
   if (activeCategory === 'logistics' && inputValue) {
     if (activeTabLogistics === 'province') {
+      let districts = [];
+      let found = false;
       try {
-        const districts = getDistrictsByProvince(inputValue);
+        districts = getDistrictsByProvince(inputValue);
+        found = true;
+      } catch (e) {
+        found = false;
+      }
+
+      if (found) {
         logisticsJSX = (
           <div style={{ color: 'var(--neon-green)', fontWeight: '500' }}>
             <p style={{ margin: '0 0 8px 0', fontSize: '0.9rem' }}>{t('simulator.results.districts')} ({districts.length}):</p>
@@ -68,7 +76,7 @@ export default function UnifiedSimulator() {
             </div>
           </div>
         );
-      } catch (e) {
+      } else {
         logisticsError = true;
         logisticsJSX = <div className="text-error" style={{ fontSize: '0.9rem' }}>{t('simulator.results.provNotFound')}</div>;
       }
