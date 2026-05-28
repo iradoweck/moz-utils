@@ -18,8 +18,8 @@ export default function Insights() {
           fetch('https://api.github.com/repos/iradoweck/moz-utils/contributors'),
           fetch('https://api.npmjs.org/downloads/point/last-month/moz-utils'),
           fetch('https://packagist.org/packages/iradoweck/moz-utils.json'),
-          fetch('https://pub.dev/api/packages/moz_utils/metrics'),
-          fetch('https://pypistats.org/api/packages/moz-utils/recent')
+          fetch('https://corsproxy.io/?' + encodeURIComponent('https://pub.dev/api/packages/moz_utils/metrics')),
+          fetch('https://corsproxy.io/?' + encodeURIComponent('https://pypistats.org/api/packages/moz-utils/recent'))
         ]);
 
         const ghRepo = ghRepoRes.status === 'fulfilled' && ghRepoRes.value.ok ? await ghRepoRes.value.json() : null;
