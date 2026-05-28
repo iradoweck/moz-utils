@@ -17,8 +17,9 @@ const bumpType = args[1] ? args[1].toLowerCase() : 'patch';
 
 const config = {
   ts: { file: 'ts/package.json', regex: /("version":\s*")(\d+)\.(\d+)\.(\d+)(")/ },
+  php: { file: 'php/composer.json', regex: /("version":\s*")(\d+)\.(\d+)\.(\d+)(")/ },
   website: { file: 'website/package.json', regex: /("version":\s*")(\d+)\.(\d+)\.(\d+)(")/ },
-  python: { file: 'python/setup.py', regex: /(version=")(\d+)\.(\d+)\.(\d+)(")/ },
+  python: { file: 'python/pyproject.toml', regex: /(version\s*=\s*")(\d+)\.(\d+)\.(\d+)(")/ },
   dart: { file: 'dart/pubspec.yaml', regex: /^(version:\s*)(\d+)\.(\d+)\.(\d+)/m },
   kotlin: { file: 'kotlin/build.gradle.kts', regex: /(version\s*=\s*")(\d+)\.(\d+)\.(\d+)(")/ },
   global: { file: 'CHANGELOG.md', regex: /^(##\s*)(\d+)\.(\d+)\.(\d+)/m } // Reading highest version

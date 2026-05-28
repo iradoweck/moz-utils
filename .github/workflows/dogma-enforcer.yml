@@ -47,9 +47,9 @@ jobs:
           fi
           
           # Check Python
-          if [[ -f python/setup.py ]]; then
-            py_ver=$(grep -oP 'version="\K\d+\.\d+\.\d+' python/setup.py || true)
-            check_version "python/setup.py" "$py_ver"
+          if [[ -f python/pyproject.toml ]]; then
+            py_ver=$(grep -oP 'version\s*=\s*"\K\d+\.\d+\.\d+' python/pyproject.toml || true)
+            check_version "python/pyproject.toml" "$py_ver"
           fi
           
           # Check Dart
