@@ -1,5 +1,8 @@
 name: "Stack Maintenance & Security (Internal Skill)"
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   schedule:
     - cron: "0 0 * * 1" # Runs every Monday
