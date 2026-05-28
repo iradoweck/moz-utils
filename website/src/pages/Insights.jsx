@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BarChart3, Star, GitFork, Download, Users } from 'lucide-react';
+import { useSEO } from '../hooks/useSEO';
 
 export default function Insights() {
   const { t } = useTranslation();
+  useSEO(
+    'Insights',
+    'Live download stats, GitHub activity, and contributor metrics for moz-utils across NPM, PyPI, Packagist, and pub.dev.'
+  );
+
   const [stats, setStats] = useState({
     downloads: { ts: '...', php: '...', python: '...', dart: '...' },
     github: { stars: '...', forks: '...' },
@@ -35,16 +41,16 @@ export default function Insights() {
         </p>
       </div>
 
-      {/* Estatísticas Gerais */}
+      {/* General Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '40px' }}>
-        {(stats.github.stars === '...' || stats.github.stars >= 3) && (
+        {(stats.github.stars === '...' || Number(stats.github.stars) >= 3) && (
           <div className="glass-panel" style={{ textAlign: 'center' }}>
             <Star size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
             <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.github.stars}</h2>
             <p style={{ color: 'var(--text-secondary)' }}>{t('insights_page.github_stars')}</p>
           </div>
         )}
-        {(stats.github.forks === '...' || stats.github.forks >= 3) && (
+        {(stats.github.forks === '...' || Number(stats.github.forks) >= 3) && (
           <div className="glass-panel" style={{ textAlign: 'center' }}>
             <GitFork size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
             <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.github.forks}</h2>
@@ -73,7 +79,7 @@ export default function Insights() {
         </div>
       </div>
 
-      {/* Top Contribuidores (Formato Xadrez) */}
+      {/* Top Contributors (Chessboard Layout) */}
       <div style={{ marginTop: '60px' }}>
         <h2 style={{ fontSize: '2rem', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Users color="var(--neon-green)" /> {t('insights_page.top_contributors')}
