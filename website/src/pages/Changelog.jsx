@@ -1,26 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FileText } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import changelogText from '../../../CHANGELOG.md?raw';
 
 export default function Changelog() {
   const { t } = useTranslation();
-  const [changelog, setChangelog] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Fetch directly from raw github content
-    fetch('https://raw.githubusercontent.com/iradoweck/moz-utils/main/CHANGELOG.md')
-      .then(res => res.text())
-      .then(text => {
-        setChangelog(text);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setChangelog('Erro ao carregar o changelog. Por favor, verifica diretamente no GitHub.');
-        setLoading(false);
-      });
-  }, []);
 
   return (
     <div className="container animate-fade-up" style={{ padding: '60px 20px', maxWidth: '900px' }}>
@@ -37,19 +22,29 @@ export default function Changelog() {
           <h2 style={{ margin: 0 }}>CHANGELOG.md</h2>
         </div>
         
-        {loading ? (
-          <p style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '40px' }}>A carregar histórico...</p>
-        ) : (
-          <div style={{ 
-            color: 'var(--text-primary)', 
-            whiteSpace: 'pre-wrap', 
-            fontFamily: 'monospace',
-            fontSize: '0.9rem',
-            lineHeight: '1.6'
-          }}>
-            {changelog}
-          </div>
-        )}
+        <div className="markdown-body" style={{ 
+          color: 'var(--text-primary)', 
+          lineHeight: '1.6',
+          fontSize: '1.05rem'
+        }}>
+          <ReactMarkdown
+            components={{
+              h1: ({node, ...props}) => <h1 style={{ borderBottom: '1px solid var(--panel-border)', paddingBottom: '10px', marginTop: '40px' }} {...props} />,
+              h2: ({node, ...props}) => <h2 style={{ color: 'var(--neon-green)', marginTop: '30px' }} {...props} />,
+              h3: ({node, ...props}) => <h3 style={{ marginTop: '20px' }} {...props} />,
+              blockquote: ({node, ...props}) => <blockquote style={{ borderLeft: '4px solid var(--neon-green)', paddingLeft: '16px', color: 'var(--text-secondary)', fontStyle: 'italic', background: 'rgba(0,0,0,0.2)', padding: '10px 16px', borderRadius: '0 8px 8px 0' }} {...props} />,
+              code: ({node, inline, ...props}) => 
+                inline 
+                  ? <code style={{ background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '4px', color: 'var(--neon-green)', fontFamily: 'monospace' }} {...props} />
+                  : <code style={{ display: 'block', background: 'rgba(0,0,0,0.4)', padding: '16px', borderRadius: '8px', overflowX: 'auto', fontFamily: 'monospace' }} {...props} />,
+              ul: ({node, ...props}) => <ul style={{ paddingLeft: '20px', marginBottom: '16px' }} {...props} />,
+              li: ({node, ...props}) => <li style={{ marginBottom: '8px' }} {...props} />,
+              hr: ({node, ...props}) => <hr style={{ border: 'none', borderTop: '1px solid var(--panel-border)', margin: '40px 0' }} {...props} />,
+            }}
+          >
+            {changelogText}
+          </ReactMarkdown>
+        </div>
       </div>
     </div>
   );

@@ -82,9 +82,17 @@ export default function UnifiedSimulator() {
       }
     } else if (activeTabLogistics === 'new_cep') {
       const isValid = isValidNewCEP(inputValue);
-      logisticsJSX = isValid 
-        ? <div style={{ color: 'var(--neon-green)', fontWeight: '500', fontSize: '0.9rem' }}>{t('simulator.results.cepValid')}</div>
-        : (logisticsError = true, <div className="text-error" style={{ fontSize: '0.9rem' }}>{t('simulator.results.cepInvalid')}</div>);
+      if (isValid) {
+        const suggestions = suggestCEPs(inputValue);
+        if (suggestions.length > 0) {
+          logisticsJSX = <div style={{ color: 'var(--neon-green)', fontWeight: '500', fontSize: '0.9rem' }}>{t('simulator.results.cepValid')} - {suggestions[0].locality} ({suggestions[0].province})</div>;
+        } else {
+          logisticsJSX = <div style={{ color: 'var(--neon-green)', fontWeight: '500', fontSize: '0.9rem' }}>{t('simulator.results.cepValid')}</div>;
+        }
+      } else {
+        logisticsError = true;
+        logisticsJSX = <div className="text-error" style={{ fontSize: '0.9rem' }}>{t('simulator.results.cepInvalid')}</div>;
+      }
     } else if (activeTabLogistics === 'migration') {
       const suggestions = suggestCEPs(inputValue);
       if (suggestions.length > 0) {

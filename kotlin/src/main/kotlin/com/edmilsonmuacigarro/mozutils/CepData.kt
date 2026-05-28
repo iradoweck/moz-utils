@@ -737,5 +737,7 @@ object CepData {
         mapOf("cep" to "1116-02", "province" to "Niassa", "district" to "Lago", "locality" to "Lunho", "administrative_posts" to "", "neighborhoods" to ""),
         mapOf("cep" to "1116-03", "province" to "Niassa", "district" to "Lago", "locality" to "Maniamba", "administrative_posts" to "", "neighborhoods" to ""),
         mapOf("cep" to "1116-04", "province" to "Niassa", "district" to "Lago", "locality" to "Metangula (Sede)", "administrative_posts" to "", "neighborhoods" to ""),
+        mapOf("cep" to "0909-09", "province" to "Nampula", "district" to "Nampula", "locality" to "Namutequeliua", "administrative_posts" to "", "neighborhoods" to ""),
+        mapOf("cep" to "0909-01", "province" to "Nampula", "district" to "Nampula", "locality" to "Anchilo", "administrative_posts" to "", "neighborhoods" to "")
     )
 }

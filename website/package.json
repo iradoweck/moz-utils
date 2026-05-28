@@ -12,10 +12,11 @@
   "dependencies": {
     "i18next": "^26.3.0",
     "lucide-react": "^1.16.0",
-    "moz-utils": "^0.3.1",
+    "moz-utils": "file:../ts",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-i18next": "^17.0.8",
+    "react-markdown": "^10.1.0",
     "react-router-dom": "^7.15.1"
   },
   "devDependencies": {
