@@ -1,6 +1,22 @@
 # Changelog — moz-utils
 
 Histórico de alterações de todas as versões do projecto **moz-utils** (TypeScript, Dart, Python, PHP e Kotlin).
+---
+
+## 0.4.0
+
+> **Versão minor — O Novo Portal da Comunidade**
+
+### Website Oficial & SPA
+- **Nova Arquitetura:** O website oficial foi reescrito para uma Single Page Application (SPA) usando `react-router-dom`.
+- **Internacionalização:** Adicionado suporte nativo para traduções (i18n) em Português e Inglês usando `react-i18next`.
+- **Novas Páginas:**
+  - `Documentação`: Guias sobre como usar, contribuir e testar o repositório poliglota.
+  - `Comunidade`: Espaço dedicado para Issues, Debates e recrutamento de Maintainers.
+  - `Insights`: Dashboard dinâmico que puxa estatísticas em tempo real (NPM, Packagist, GitHub Stars, Forks) geradas por um novo workflow do GitHub Actions.
+  - `Changelog`: Página dedicada no site para leitura fácil deste mesmo ficheiro.
+- **Novos Simuladores Geográficos:** Criada interface dedicada e separada para testar Códigos Postais Legados, conversão para os Novos CEPs, e listagem de distritos por província.
+- **Donativos:** Integração com GitHub Sponsors e PayPal diretamente na Navbar e no rodapé.
 
 ---
 

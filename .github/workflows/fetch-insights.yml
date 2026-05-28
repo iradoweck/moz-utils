@@ -1,0 +1,69 @@
+name: Fetch Insights and Update Stats
+
+on:
+  schedule:
+    - cron: '0 */12 * * *' # Correr de 12 em 12 horas
+  workflow_dispatch: # Permitir correr manualmente
+
+permissions:
+  contents: write
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch GitHub & NPM Stats
+        run: |
+          # Fetch GitHub Stats
+          REPO_INFO=$(curl -s -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/iradoweck/moz-utils)
+          STARS=$(echo "$REPO_INFO" | jq '.stargazers_count // 0')
+          FORKS=$(echo "$REPO_INFO" | jq '.forks_count // 0')
+
+          # Fetch NPM Downloads
+          NPM_INFO=$(curl -s https://api.npmjs.org/downloads/point/last-month/moz-utils || echo '{"downloads": 0}')
+          NPM_DL=$(echo "$NPM_INFO" | jq '.downloads // 0')
+
+          # Packagist (PHP) Downloads
+          # Packagist API
+          PHP_INFO=$(curl -s https://packagist.org/packages/iradoweck/moz-utils.json || echo '{"package":{"downloads":{"total":0}}}')
+          PHP_DL=$(echo "$PHP_INFO" | jq '.package.downloads.total // 0')
+
+          # Python (PyPI) Downloads
+          # PyPI does not have a simple download count API, using a placeholder or 0
+          PY_DL=0
+
+          # Dart (pub.dev)
+          # Pub.dev doesn't expose raw download counts easily, using placeholder or 0
+          DART_DL=0
+
+          # Fetch Top Contributors
+          CONTRIBUTORS=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/iradoweck/moz-utils/contributors?per_page=15" | \
+            jq -c '[.[] | select(.type == "User") | {login: .login, avatar: .avatar_url, contributions: .contributions}] | .[0:10]')
+
+          # Create stats.json
+          cat <<EOF > website/public/stats.json
+          {
+            "downloads": {
+              "ts": "$NPM_DL",
+              "php": "$PHP_DL",
+              "python": "$PY_DL",
+              "dart": "$DART_DL"
+            },
+            "github": {
+              "stars": "$STARS",
+              "forks": "$FORKS"
+            },
+            "contributors": $CONTRIBUTORS
+          }
+          EOF
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add website/public/stats.json
+          git commit -m "chore: auto-update insights stats [skip ci]" || echo "No changes to commit"
+          git push
