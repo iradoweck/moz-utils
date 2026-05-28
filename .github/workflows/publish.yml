@@ -6,17 +6,21 @@ on:
 
 permissions:
   contents: read
+  id-token: write  # required for pub.dev OIDC (passwordless publishing)
 
 jobs:
+  # ─────────────────────────────────────────────
+  # TypeScript → npm
+  # ─────────────────────────────────────────────
   publish-npm:
-    name: Publish to NPM
+    name: Publish to NPM (TypeScript)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20
           registry-url: 'https://registry.npmjs.org'
@@ -34,15 +38,18 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+  # ─────────────────────────────────────────────
+  # Python → PyPI
+  # ─────────────────────────────────────────────
   publish-pypi:
-    name: Publish to PyPI
+    name: Publish to PyPI (Python)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.10'
 
@@ -61,3 +68,46 @@ jobs:
         with:
           packages-dir: python/dist/
           password: ${{ secrets.PYPI_API_TOKEN }}
+
+  # ─────────────────────────────────────────────
+  # Dart → pub.dev  (OIDC — no token needed after
+  #   one-time setup at pub.dev/packages/moz_utils/admin)
+  # ─────────────────────────────────────────────
+  publish-dart:
+    name: Publish to pub.dev (Dart)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Install Dart Dependencies
+        run: dart pub get
+        working-directory: dart
+
+      - name: Publish to pub.dev
+        run: dart pub publish --force
+        working-directory: dart
+
+  # ─────────────────────────────────────────────
+  # PHP → Packagist  (API webhook trigger)
+  # ─────────────────────────────────────────────
+  notify-packagist:
+    name: Notify Packagist (PHP)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Packagist package update
+        run: |
+          curl -s -X POST \
+            "https://packagist.org/api/update-package?username=iradoweck&apiToken=${{ secrets.PACKAGIST_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"repository":{"url":"https://github.com/iradoweck/moz-utils"}}'
+
+  # ─────────────────────────────────────────────
+  # Kotlin → JitPack  (passive — auto-builds from tag)
+  # JitPack monitors GitHub tags and builds on demand.
+  # The JITPACK_TOKEN secret grants API access if needed.
+  # No CI step required.
+  # ─────────────────────────────────────────────
