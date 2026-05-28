@@ -65,16 +65,20 @@ export default function Insights() {
 
       {/* Estatísticas Gerais */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '40px' }}>
-        <div className="glass-panel" style={{ textAlign: 'center' }}>
-          <Star size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
-          <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.github.stars}</h2>
-          <p style={{ color: 'var(--text-secondary)' }}>GitHub Stars</p>
-        </div>
-        <div className="glass-panel" style={{ textAlign: 'center' }}>
-          <GitFork size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
-          <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.github.forks}</h2>
-          <p style={{ color: 'var(--text-secondary)' }}>Forks</p>
-        </div>
+        {(stats.github.stars === '...' || stats.github.stars >= 3) && (
+          <div className="glass-panel" style={{ textAlign: 'center' }}>
+            <Star size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
+            <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.github.stars}</h2>
+            <p style={{ color: 'var(--text-secondary)' }}>GitHub Stars</p>
+          </div>
+        )}
+        {(stats.github.forks === '...' || stats.github.forks >= 3) && (
+          <div className="glass-panel" style={{ textAlign: 'center' }}>
+            <GitFork size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
+            <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.github.forks}</h2>
+            <p style={{ color: 'var(--text-secondary)' }}>Forks</p>
+          </div>
+        )}
         <div className="glass-panel" style={{ textAlign: 'center' }}>
           <Download size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
           <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.downloads.ts}</h2>
@@ -119,15 +123,28 @@ export default function Insights() {
                 style={{ width: '64px', height: '64px', borderRadius: '50%', marginBottom: '12px', border: '2px solid var(--neon-green)' }} 
               />
               <h4 style={{ margin: '0 0 8px 0', fontSize: '1rem', wordBreak: 'break-all' }}>@{c.login}</h4>
-              <span style={{ 
-                background: 'rgba(0,0,0,0.5)', 
-                padding: '4px 12px', 
-                borderRadius: '12px', 
-                fontSize: '0.8rem',
-                color: 'var(--neon-green)'
-              }}>
-                {c.contributions} commits
-              </span>
+              {['iradoweck', 'zedeckmuacy'].includes(c.login.toLowerCase()) ? (
+                <span style={{ 
+                  background: 'rgba(255,215,0,0.2)', 
+                  padding: '4px 12px', 
+                  borderRadius: '12px', 
+                  fontSize: '0.8rem',
+                  color: '#FFD700',
+                  fontWeight: 'bold'
+                }}>
+                  Criador / Maintainer
+                </span>
+              ) : (
+                <span style={{ 
+                  background: 'rgba(0,0,0,0.5)', 
+                  padding: '4px 12px', 
+                  borderRadius: '12px', 
+                  fontSize: '0.8rem',
+                  color: 'var(--neon-green)'
+                }}>
+                  {c.contributions} commits
+                </span>
+              )}
             </div>
           )) : (
             <p style={{ color: 'var(--text-secondary)' }}>A carregar contribuidores...</p>
