@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  BarChart3, Star, GitFork, Download, Users, GitCommitHorizontal,
+  Star, GitFork, Download, Users, GitCommitHorizontal,
   GitPullRequest, CircleDot, CheckCircle, XCircle, TrendingUp,
   Package, Clock, Award, Globe
 } from 'lucide-react';
