@@ -284,9 +284,19 @@ export default function Insights() {
           </h2>
           <div className="glass-panel" style={{ padding: '0' }}>
             {recentCommits.map((c, i) => {
-              const sha = c.sha || c.sha?.substring(0, 7);
+              const sha = typeof c.sha === 'string' ? c.sha.substring(0, 7) : '';
               const msg = c.message || (c.commit?.message?.split('\n')[0]);
-              const author = c.author || c.commit?.author?.name;
+              
+              // Handle author which can be an object in live API or string in stats.json
+              let authorName = 'Unknown';
+              if (c.commit?.author?.name) {
+                authorName = c.commit.author.name;
+              } else if (typeof c.author === 'string') {
+                authorName = c.author;
+              } else if (c.author?.login) {
+                authorName = c.author.login;
+              }
+
               const date = c.date || c.commit?.author?.date;
               return (
                 <div key={i} style={{
@@ -302,7 +312,7 @@ export default function Insights() {
                       {msg}
                     </p>
                     <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.75rem' }}>
-                      {author} · {date ? new Date(date).toLocaleDateString() : ''}
+                      {authorName} · {date ? new Date(date).toLocaleDateString() : ''}
                     </p>
                   </div>
                   <code style={{
@@ -313,7 +323,7 @@ export default function Insights() {
                     borderRadius: '4px',
                     flexShrink: 0
                   }}>
-                    {typeof sha === 'string' ? sha.substring(0, 7) : sha}
+                    {sha}
                   </code>
                 </div>
               );
