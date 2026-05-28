@@ -3,7 +3,7 @@
 Change history for all versions of the **moz-utils** project (TypeScript, Dart, Python, PHP, and Kotlin).
 ---
 
-## 0.4.0
+## 0.3.1
 
 > **Minor version — The New Community Portal**
 

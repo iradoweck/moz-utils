@@ -140,7 +140,6 @@ export default function Changelog() {
       </div>
 
       <ChangelogSection title="Histórico Geral (Global)" markdown={changelogGlobal} limit={1} icon={Globe} />
-      <ChangelogSection title="Website" markdown={changelogWebsite} icon={Globe} />
       <ChangelogSection title="TypeScript" markdown={changelogTs} limit={1} icon={Code} />
       <ChangelogSection title="Python" markdown={changelogPython} limit={1} icon={Terminal} />
       <ChangelogSection title="PHP" markdown={changelogPhp} limit={1} icon={Box} />
