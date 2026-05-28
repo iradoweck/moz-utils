@@ -13,24 +13,28 @@ export default function Insights() {
   useEffect(() => {
     async function fetchRealData() {
       try {
-        const [ghRepoRes, ghContribRes, npmRes, packagistRes] = await Promise.allSettled([
+        const [ghRepoRes, ghContribRes, npmRes, packagistRes, pubRes, pypiRes] = await Promise.allSettled([
           fetch('https://api.github.com/repos/iradoweck/moz-utils'),
           fetch('https://api.github.com/repos/iradoweck/moz-utils/contributors'),
           fetch('https://api.npmjs.org/downloads/point/last-month/moz-utils'),
-          fetch('https://packagist.org/packages/iradoweck/moz-utils.json')
+          fetch('https://packagist.org/packages/iradoweck/moz-utils.json'),
+          fetch('https://pub.dev/api/packages/moz_utils/metrics'),
+          fetch('https://pypistats.org/api/packages/moz-utils/recent')
         ]);
 
         const ghRepo = ghRepoRes.status === 'fulfilled' && ghRepoRes.value.ok ? await ghRepoRes.value.json() : null;
         const ghContrib = ghContribRes.status === 'fulfilled' && ghContribRes.value.ok ? await ghContribRes.value.json() : [];
         const npmData = npmRes.status === 'fulfilled' && npmRes.value.ok ? await npmRes.value.json() : null;
         const packagistData = packagistRes.status === 'fulfilled' && packagistRes.value.ok ? await packagistRes.value.json() : null;
+        const pubData = pubRes.status === 'fulfilled' && pubRes.value.ok ? await pubRes.value.json() : null;
+        const pypiData = pypiRes.status === 'fulfilled' && pypiRes.value.ok ? await pypiRes.value.json() : null;
 
         setStats({
           downloads: { 
             ts: npmData?.downloads ? npmData.downloads.toLocaleString() : '0', 
             php: packagistData?.package?.downloads?.total ? packagistData.package.downloads.total.toLocaleString() : '0', 
-            python: 'N/A', 
-            dart: 'N/A' 
+            python: pypiData?.data?.last_month ? pypiData.data.last_month.toLocaleString() : '0', 
+            dart: pubData?.score?.downloadCount30Days ? pubData.score.downloadCount30Days.toLocaleString() : '0' 
           },
           github: { 
             stars: ghRepo?.stargazers_count || 0, 
@@ -80,6 +84,16 @@ export default function Insights() {
           <BarChart3 size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
           <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.downloads.php}</h2>
           <p style={{ color: 'var(--text-secondary)' }}>Downloads Packagist</p>
+        </div>
+        <div className="glass-panel" style={{ textAlign: 'center' }}>
+          <BarChart3 size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
+          <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.downloads.python}</h2>
+          <p style={{ color: 'var(--text-secondary)' }}>Downloads PyPI</p>
+        </div>
+        <div className="glass-panel" style={{ textAlign: 'center' }}>
+          <BarChart3 size={32} color="var(--neon-green)" style={{ margin: '0 auto 16px auto' }} />
+          <h2 style={{ fontSize: '2.5rem', margin: '0' }}>{stats.downloads.dart}</h2>
+          <p style={{ color: 'var(--text-secondary)' }}>Downloads Pub.dev</p>
         </div>
       </div>
 
