@@ -1,0 +1,121 @@
+{
+  "nav": {
+    "home": "Início",
+    "docs": "Documentação",
+    "insights": "Insights",
+    "community": "Comunidade",
+    "changelog": "Changelog",
+    "donate": "Doar"
+  },
+  "hero": {
+    "title1": "moz-",
+    "title2": "utils",
+    "description": "A biblioteca open-source definitiva para software em Moçambique. Validações de NUIT, BI, parsing de telemóveis, novos CEPs e mais, disponível para TypeScript, PHP, Python, Kotlin e Dart.",
+    "cta": "Testar no Simulador"
+  },
+  "footer": {
+    "developedBy": "Desenvolvido por Edmilson Muacigaro & Comunidade | Powered By ZEDECK's IT...",
+    "openSource": "Open Source sob Licença AGPL-3.0-or-later",
+    "donatePrimary": "Apoiar via GitHub Sponsors",
+    "donateSecondary": "Doação Única (PayPal)"
+  },
+  "home": {
+    "simulatorTitle": "Simulador",
+    "simulatorTitleLive": "Live",
+    "simulatorDesc": "Testa todas as funcionalidades da biblioteca diretamente no teu browser."
+  },
+  "motionDemo": {
+    "title": "Como Funciona",
+    "desc": "Feedback em tempo real para os teus formulários.",
+    "label": "Validar NUIT",
+    "valid": "✓ NUIT Válido",
+    "invalid": "✗ NUIT Inválido (requer 9 dígitos)"
+  },
+  "installation": {
+    "title": "Instalação Rápida",
+    "desc": "Um projeto open-source disponível para os 5 principais ecossistemas.",
+    "copy": "Copiar",
+    "copied": "Copiado!",
+    "joinCommunity": "Junte-se à nossa Comunidade"
+  },
+  "simulator": {
+    "catEntities": "Entidades",
+    "catLogistics": "Logística",
+    "catOthers": "Outros",
+    "titleEntities": "Validação de Entidades",
+    "titleLogistics": "Dados Geográficos e Postais",
+    "titleOthers": "Ferramentas Diversas",
+    "tabs": {
+      "nuit": "NUIT",
+      "bi": "BI",
+      "dire": "DIRE",
+      "passport": "Passaporte",
+      "license": "Carta",
+      "province": "Províncias",
+      "new_cep": "Novo CEP",
+      "legacy_postal": "Legado",
+      "migration": "Migração",
+      "phone": "Telefone",
+      "whatsapp": "WhatsApp URL",
+      "money": "Moeda (MZN)"
+    },
+    "placeholders": {
+      "nuit": "Digita um NUIT (ex: 400000008)",
+      "bi": "Digita um BI Nacional (ex: 123456789123A)",
+      "dire": "Digita um DIRE (ex: 00008312C)",
+      "passport": "Digita um Passaporte (ex: AO1234567)",
+      "license": "Digita uma Carta de Condução (ex: M123456)",
+      "province": "ID Província (ex: npl (Nampula))",
+      "legacy_postal": "Código antigo (ex: 3100)",
+      "new_cep": "Novo CEP (ex: 0909-09)",
+      "migration": "Localidade ou código (ex: Namutequeliua, 3100)",
+      "phone": "Nº telemóvel (ex: 841234567)",
+      "whatsapp": "Nº telemóvel para link WA",
+      "money": "Valor monetário (ex: 1500.50)"
+    },
+    "results": {
+      "nuitValid": "NUIT Válido. Entidade:",
+      "nuitInvalid": "NUIT Inválido",
+      "biValid": "BI Válido",
+      "biInvalid": "BI Inválido",
+      "direValid": "DIRE Válido",
+      "direInvalid": "DIRE Inválido",
+      "passportValid": "Passaporte Válido",
+      "passportInvalid": "Passaporte Inválido",
+      "licenseValid": "Carta de Condução Válida",
+      "licenseInvalid": "Carta de Condução Inválida",
+      "districts": "Distritos",
+      "provNotFound": "Província não encontrada.",
+      "legacyValid": "Válido:",
+      "legacyInvalid": "Código Legado Inválido",
+      "cepValid": "Formato Válido!",
+      "cepInvalid": "Inválido (Ex: XXXX-XX)",
+      "cepMatches": "CEP(s) correspondente(s):",
+      "cepNotFound": "Nenhum CEP encontrado.",
+      "phoneInvalid": "Telefone Inválido",
+      "moneyInvalid": "Valor Inválido",
+      "url": "URL:"
+    }
+  },
+  "changelog_page": {
+    "title": "Changelog",
+    "description": "Acompanha todas as novidades, correções e atualizações em cada versão da ",
+    "current_stacks": "Versões Atuais das Stacks",
+    "global_history": "Histórico Geral (Global)",
+    "view_less": "Ver menos",
+    "view_all": "Ver todas as versões"
+  },
+  "insights_page": {
+    "description": "Estatísticas de uso em tempo real, transferências e o nosso ranking de contribuidores.",
+    "github_stars": "GitHub Stars",
+    "forks": "Forks",
+    "downloads_npm": "Downloads NPM",
+    "downloads_packagist": "Downloads Packagist",
+    "downloads_pypi": "Downloads PyPI",
+    "downloads_pub": "Downloads Pub.dev",
+    "top_contributors": "Top Contribuidores",
+    "commits": "commits",
+    "creator_maintainer": "Criador / Maintainer",
+    "loading_contributors": "A carregar contribuidores..."
+  }
+}

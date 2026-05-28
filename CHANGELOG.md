@@ -1,15 +1,32 @@
 # Changelog — moz-utils
 
-Histórico de alterações de todas as versões do projecto **moz-utils** (TypeScript, Dart, Python, PHP e Kotlin).
+Change history for all versions of the **moz-utils** project (TypeScript, Dart, Python, PHP, and Kotlin).
+---
+
+## 0.3.1
+
+> **Minor version — The New Community Portal**
+
+### Official Website & SPA
+- **New Architecture:** The official website has been rewritten into a Single Page Application (SPA) using `react-router-dom`.
+- **Internationalization:** Added native i18n support for English and Portuguese using `react-i18next`.
+- **New Pages:**
+  - `Documentation`: Guides on how to use, contribute to, and test the polyglot repository.
+  - `Community`: Dedicated space for Issues, Debates, and Maintainer recruitment.
+  - `Insights`: Real-time dynamic dashboard. Migrated from mock/cron data to live JS fetches for NPM, Packagist, PyPI, and Pub.dev (bypassing CORS). Stars and Forks automatically hide if < 3. Creators receive a special 'Maintainer' badge. Fully internationalized.
+  - `Changelog`: A dedicated on-site page, fully internationalized, for reading global and stack-specific version history easily.
+- **New Geographic Simulators:** Created a separate, dedicated interface to test Legacy Postal Codes, convert to the New CEP system, and list districts by province. The official `moz-utils` logic has been deeply integrated into the UI for true real-time validation.
+- **Additional Data & Enhanced Logic:** Inserted comprehensive data for Nampula province (including Nampula ECP, Namutequeliua, Anchilo) across all stacks (TypeScript, Python, PHP, Kotlin, Dart). The New CEP converter search engine was also improved to support case-insensitive locality lookups.
+- **Donations:** Integrated GitHub Sponsors and PayPal badges directly into the Navbar and footer.
 
 ---
 
 ## 0.3.0
 
-> **Versão minor — Documentos Oficiais, Novo CEP e Padrões Open Source**
+> **Minor version — Official Documents, New CEP, and Open Source Standards**
 
 ### Core Polyglot Translation
-- **100% English Codebase:** The entire mono-repo (TypeScript, Python, PHP, Dart, Kotlin) has been structurally translated to strict English. All internal variables (e.g. `administrative_posts`, `neighborhoods`), docstrings, exceptions, and validation messages are now globally standardized.
+- **100% English Codebase:** The entire mono-repo (TypeScript, Python, PHP, Dart, Kotlin) has been structurally translated to strict English. All internal variables (e.g., `administrative_posts`, `neighborhoods`), docstrings, exceptions, and validation messages are now globally standardized.
 - **Node.js ESM Strictness:** Enforced `"type": "module"` natively to silence all runtime typeless warnings, with clean native imports.
 
 ### Official Documents & New Validations
@@ -31,78 +48,78 @@ Histórico de alterações de todas as versões do projecto **moz-utils** (TypeS
 
 ## 0.2.0
 
-> **Versão minor — Nova funcionalidade: Códigos Postais Legados**
+> **Minor version — New feature: Legacy Postal Codes**
 
-### Novas funcionalidades
-- Adicionado suporte ao sistema clássico (legado) de códigos postais de Moçambique, historicamente gerido pelos **Correios de Moçambique** — base de dados com 100 códigos de 4 dígitos organizados por Província e Localidade.
-- Funções de validação e consulta implementadas em todas as 5 linguagens:
-  - `isValidPostalCode` / `is_valid_postal_code` — verifica se o código pertence à tabela oficial.
-  - `getPostalCodeLocality` / `get_postal_code_locality` — retorna a localidade do código.
-  - `getPostalCodeProvince` / `get_postal_code_province` — retorna a província do código.
+### New Features
+- Added support for Mozambique's classic (legacy) postal code system, historically managed by **Correios de Moçambique** — a database containing 100 4-digit codes organized by Province and Locality.
+- Validation and lookup functions implemented across all 5 languages:
+  - `isValidPostalCode` / `is_valid_postal_code` — checks if the code belongs to the official table.
+  - `getPostalCodeLocality` / `get_postal_code_locality` — returns the code's locality.
+  - `getPostalCodeProvince` / `get_postal_code_province` — returns the code's province.
 
-### Documentação e exemplos
-- Todos os ficheiros `README.md` (raiz, ts, dart, python, php, kotlin) atualizados com exemplos de utilização de códigos postais.
-- Criado ficheiro oficial de exemplo em Dart (`dart/example/example.dart`) exigido pelo pub.dev.
-- Documentação dartdoc adicionada à classe `MozUtils` e construtor público ocultado.
-- Referências de instalação atualizadas para `0.2.0` em toda a documentação.
+### Documentation and Examples
+- All `README.md` files (root, ts, dart, python, php, kotlin) updated with postal code usage examples.
+- Created an official Dart example file (`dart/example/example.dart`) as required by pub.dev.
+- Dartdoc documentation added to the `MozUtils` class and the public constructor hidden.
+- Installation references updated to `0.2.0` across the entire documentation.
 
-### Segurança
-- Auditoria completa de segurança — zero vulnerabilidades em todas as stacks.
-- Pacotes PHP, Python e Kotlin confirmados sem dependências externas de runtime.
+### Security
+- Comprehensive security audit — zero vulnerabilities across all stacks.
+- PHP, Python, and Kotlin packages confirmed to have no external runtime dependencies.
 
 ---
 
 ## 0.1.3
 
-> **Versão patch — Internacionalização e Segurança**
+> **Patch version — Internationalization and Security**
 
-### Alterações
-- Internacionalização: tradução da documentação, metadados e workflows para Inglês.
-- Adição da secção Quick Installation ao `README.md` raiz para facilitar a adopção rápida.
-- Adição de workflow customizado do CodeQL com compilação explícita do Kotlin para análise de segurança do código.
+### Changes
+- Internationalization: documentation, metadata, and workflows translated to English.
+- Added Quick Installation section to the root `README.md` to facilitate rapid adoption.
+- Added a custom CodeQL workflow with explicit Kotlin compilation for code security analysis.
 
 ---
 
 ## 0.1.2
 
-> **Versão patch — Build e Simplificação**
+> **Patch version — Build and Simplification**
 
-### Alterações
-- Atualização sincronizada da versão dos pacotes em todos os ecossistemas (TS, Dart, Python, PHP, Kotlin) para 0.1.2.
-- Remoção do escopo `@iradoweck/` do pacote NPM para simplificar o uso como `moz-utils`.
+### Changes
+- Synchronized package version update across all ecosystems (TS, Dart, Python, PHP, Kotlin) to 0.1.2.
+- Removed the `@iradoweck/` scope from the NPM package to simplify its usage as `moz-utils`.
 
 ---
 
 ## 0.1.1
 
-> **Versão patch — Publicação e CI**
+> **Patch version — Publication and CI**
 
-### Alterações
-- Adição do `composer.json` na raiz para suporte ao Packagist.
-- Definição de permissões mínimas de leitura nos workflows do GitHub Actions (segurança).
-- Preparação dos metadados de publicação nos registos oficiais: NPM, PyPI, Packagist, Pub.dev, e JitPack.
-- Atualização da política de segurança (`SECURITY.md`) em Português.
-- Correção de compatibilidade do Gradle com Kotlin na CI (Gradle 8.7).
-- Adição de testes unitários nativos para Python, PHP, Dart e Kotlin.
-- Atualização da configuração da CI do GitHub Actions.
+### Changes
+- Added `composer.json` at the root for Packagist support.
+- Defined minimum read permissions in GitHub Actions workflows (security).
+- Prepared publication metadata across official registries: NPM, PyPI, Packagist, Pub.dev, and JitPack.
+- Updated security policy (`SECURITY.md`).
+- Fixed Gradle compatibility with Kotlin in CI (Gradle 8.7).
+- Added native unit tests for Python, PHP, Dart, and Kotlin.
+- Updated GitHub Actions CI configuration.
 
 ---
 
 ## 0.1.0
 
-> **Lançamento inicial**
+> **Initial Release**
 
-### Funcionalidades
-- Validação de NUIT (Número Único de Identificação Tributária) seguindo o algoritmo Módulo 11 da Autoridade Tributária.
-- Classificação de entidades com base no primeiro dígito do NUIT (Singular, Equiparada, Colectiva, Público).
-- Validação do BI (Bilhete de Identidade) moçambicano — 12 dígitos + 1 letra.
-- Validação e identificação de operadoras móveis (Vodacom, Tmcel, Movitel).
-- Formatação de números de telemóvel no padrão internacional (+258 XX XXX XXXX).
-- Geração de links de conversa para WhatsApp com mensagens pré-preenchidas.
-- Formatação monetária oficial em Meticais (MZN) — separador de milhares por espaço, separador decimal por vírgula.
-- Base de dados geográfica completa e offline (Províncias, Distritos, Postos Administrativos e Bairros).
+### Features
+- NUIT (Número Único de Identificação Tributária) validation following the Tax Authority's Modulo 11 algorithm.
+- Entity classification based on the first digit of the NUIT (Individual, Equivalent, Corporate, Public).
+- Mozambican BI (Identity Card) validation — 12 digits + 1 letter.
+- Mobile operator validation and identification (Vodacom, Tmcel, Movitel).
+- Mobile phone number formatting to the international standard (+258 XX XXX XXXX).
+- Generation of WhatsApp chat links with pre-filled messages.
+- Official currency formatting in Meticais (MZN) — thousands separated by spaces, decimal separated by a comma.
+- Complete, offline geographic database (Provinces, Districts, Administrative Posts, and Neighborhoods).
 
-### Ecossistemas suportados
+### Supported Ecosystems
 - TypeScript / JavaScript (NPM)
 - Dart / Flutter (Pub.dev)
 - Python (PyPI)

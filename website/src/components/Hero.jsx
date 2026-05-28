@@ -1,7 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Terminal, Code, Cpu } from 'lucide-react';
 
 export default function Hero() {
+  const { t } = useTranslation();
+  
   const scrollToSimulator = () => {
     document.getElementById('simulator')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -21,7 +24,7 @@ export default function Hero() {
         </div>
         
         <h1 style={{ fontSize: '4rem', marginBottom: '16px', letterSpacing: '-1px' }}>
-          moz-<span className="text-neon">utils</span>
+          {t('hero.title1')}<span className="text-neon">{t('hero.title2')}</span>
         </h1>
         
         <p style={{ 
@@ -31,14 +34,13 @@ export default function Hero() {
           margin: '0 auto 40px auto',
           lineHeight: '1.6'
         }}>
-          A biblioteca open-source definitiva para software em Moçambique.
-          Validações de NUIT, BI, parsing de telemóveis, novos CEPs e mais, disponível para <strong style={{color: 'white'}}>TypeScript, PHP, Python, Kotlin e Dart</strong>.
+          {t('hero.description')}
         </p>
         
         <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
           <button onClick={scrollToSimulator} className="btn-primary">
             <Terminal size={20} />
-            Testar no Simulador
+            {t('hero.cta')}
           </button>
           <a href="https://github.com/iradoweck/moz-utils" target="_blank" rel="noreferrer" className="btn-primary" style={{ backgroundColor: 'white', color: 'black', borderColor: 'white' }}>
             <Code size={20} />

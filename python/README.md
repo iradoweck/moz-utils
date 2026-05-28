@@ -111,13 +111,13 @@ from moz_utils import (
 is_valid_new_cep("0101-01")  # True
 
 # Intelligent Suggestion Engine (Supports Legacy -> New Transition)
-# Search by the old code "3100" (Nampula HQ) or by a neighborhood
+# Search by the old code "3100" (Nampula) or by a neighborhood
 suggest_ceps("3100")
-suggest_ceps("Malhangalene")
+suggest_ceps("Namutequeliua")
 
 # The Legacy
-is_valid_postal_code("1100")            # True
-get_postal_code_locality("1100")        # "Maputo ECP (HQ)"
+is_valid_postal_code("3100")            # True
+get_postal_code_locality("3100")        # "Nampula"
 ```
 
 ---

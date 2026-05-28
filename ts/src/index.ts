@@ -899,6 +899,7 @@ export function isValidNewCEP(cep: string): boolean {
  */
 export function suggestCEPs(input: string): CEPInfo[] {
   const cleaned = input.trim();
+  const lowerCleaned = cleaned.toLowerCase();
 
   // 1. Se já for um formato de novo CEP, filtramos os que batem com o input
   if (isValidNewCEP(cleaned)) {
@@ -913,6 +914,14 @@ export function suggestCEPs(input: string): CEPInfo[] {
     }
   }
 
-  // 3. Caso não encontre correspondência
+  // 3. Pesquisa por nome da localidade (ex: "Namutequeliua")
+  if (lowerCleaned.length > 2) {
+    const byLocality = newCEPData.filter(c => c.locality.toLowerCase().includes(lowerCleaned));
+    if (byLocality.length > 0) {
+      return byLocality;
+    }
+  }
+
+  // 4. Caso não encontre correspondência
   return [];
 }

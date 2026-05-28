@@ -3969,5 +3969,17 @@ const List<Map<String, String>> newCEPData = [
     "province": "Niassa",
     "district": "Lago",
     "locality": "Metangula (Sede)"
+  },
+  {
+    "cep": "0909-09",
+    "province": "Nampula",
+    "district": "Nampula",
+    "locality": "Namutequeliua"
+  },
+  {
+    "cep": "0909-01",
+    "province": "Nampula",
+    "district": "Nampula",
+    "locality": "Anchilo"
   }
 ];

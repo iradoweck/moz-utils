@@ -88,13 +88,13 @@ import 'package:moz_utils/moz_utils.dart';
 MozUtils.isValidNewCEP('0101-01');  // true
 
 // Intelligent Suggestion Engine (Supports Legacy -> New Transition)
-// Search by the old code "3100" (Nampula HQ) or by a neighborhood
+// Search by the old code "3100" (Nampula) or by a neighborhood
 MozUtils.suggestCEPs('3100');
-MozUtils.suggestCEPs('Malhangalene');
+MozUtils.suggestCEPs('Namutequeliua');
 
 // The Legacy
-MozUtils.isValidPostalCode('1100');            // true
-MozUtils.getPostalCodeLocality('1100');        // "Maputo ECP (HQ)"
+MozUtils.isValidPostalCode('3100');            // true
+MozUtils.getPostalCodeLocality('3100');        // "Nampula"
 ```
 
 ---

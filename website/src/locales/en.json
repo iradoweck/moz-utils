@@ -1,0 +1,121 @@
+{
+  "nav": {
+    "home": "Home",
+    "docs": "Documentation",
+    "insights": "Insights",
+    "community": "Community",
+    "changelog": "Changelog",
+    "donate": "Donate"
+  },
+  "hero": {
+    "title1": "moz-",
+    "title2": "utils",
+    "description": "The ultimate open-source library for software in Mozambique. NUIT, BI validation, mobile parsing, new CEPs and more, available for TypeScript, PHP, Python, Kotlin and Dart.",
+    "cta": "Test in Simulator"
+  },
+  "footer": {
+    "developedBy": "Developed by Edmilson Muacigaro & Community | Powered By ZEDECK's IT...",
+    "openSource": "Open Source under AGPL-3.0-or-later License",
+    "donatePrimary": "Support via GitHub Sponsors",
+    "donateSecondary": "One-time Donation (PayPal)"
+  },
+  "home": {
+    "simulatorTitle": "Live",
+    "simulatorTitleLive": "Simulator",
+    "simulatorDesc": "Test all library functionalities directly in your browser."
+  },
+  "motionDemo": {
+    "title": "How it Works",
+    "desc": "Real-time feedback for your forms.",
+    "label": "Validate NUIT",
+    "valid": "✓ Valid NUIT",
+    "invalid": "✗ Invalid NUIT (requires 9 digits)"
+  },
+  "installation": {
+    "title": "Quick Installation",
+    "desc": "An open-source project available for the 5 major ecosystems.",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "joinCommunity": "Join our Community"
+  },
+  "simulator": {
+    "catEntities": "Entities",
+    "catLogistics": "Logistics",
+    "catOthers": "Others",
+    "titleEntities": "Entity Validation",
+    "titleLogistics": "Geographic and Postal Data",
+    "titleOthers": "Miscellaneous Tools",
+    "tabs": {
+      "nuit": "NUIT",
+      "bi": "ID (BI)",
+      "dire": "DIRE",
+      "passport": "Passport",
+      "license": "License",
+      "province": "Provinces",
+      "new_cep": "New CEP",
+      "legacy_postal": "Legacy",
+      "migration": "Migration",
+      "phone": "Phone",
+      "whatsapp": "WhatsApp URL",
+      "money": "Currency (MZN)"
+    },
+    "placeholders": {
+      "nuit": "Type a NUIT (e.g. 400000008)",
+      "bi": "Type a National ID (e.g. 123456789123A)",
+      "dire": "Type a DIRE (e.g. 00008312C)",
+      "passport": "Type a Passport (e.g. AO1234567)",
+      "license": "Type a Driver's License (e.g. M123456)",
+      "province": "Province ID (e.g. npl (Nampula))",
+      "legacy_postal": "Legacy postal code (e.g. 3100)",
+      "new_cep": "New CEP (e.g. 0909-09)",
+      "migration": "Locality or code (e.g. Namutequeliua, 3100)",
+      "phone": "Mobile number (e.g. 841234567)",
+      "whatsapp": "Mobile number for WA link",
+      "money": "Monetary value (e.g. 1500.50)"
+    },
+    "results": {
+      "nuitValid": "Valid NUIT. Entity:",
+      "nuitInvalid": "Invalid NUIT",
+      "biValid": "Valid ID",
+      "biInvalid": "Invalid ID",
+      "direValid": "Valid DIRE",
+      "direInvalid": "Invalid DIRE",
+      "passportValid": "Valid Passport",
+      "passportInvalid": "Invalid Passport",
+      "licenseValid": "Valid Driver's License",
+      "licenseInvalid": "Invalid Driver's License",
+      "districts": "Districts",
+      "provNotFound": "Province not found.",
+      "legacyValid": "Valid:",
+      "legacyInvalid": "Invalid Legacy Code",
+      "cepValid": "Valid Format!",
+      "cepInvalid": "Invalid (E.g.: XXXX-XX)",
+      "cepMatches": "Matching CEP(s):",
+      "cepNotFound": "No CEP found.",
+      "phoneInvalid": "Invalid Phone",
+      "moneyInvalid": "Invalid Value",
+      "url": "URL:"
+    }
+  },
+  "changelog_page": {
+    "title": "Changelog",
+    "description": "Track all news, fixes, and updates in every version of ",
+    "current_stacks": "Current Stack Versions",
+    "global_history": "Global History",
+    "view_less": "View less",
+    "view_all": "View all versions"
+  },
+  "insights_page": {
+    "description": "Real-time usage statistics, downloads, and our contributor ranking.",
+    "github_stars": "GitHub Stars",
+    "forks": "Forks",
+    "downloads_npm": "NPM Downloads",
+    "downloads_packagist": "Packagist Downloads",
+    "downloads_pypi": "PyPI Downloads",
+    "downloads_pub": "Pub.dev Downloads",
+    "top_contributors": "Top Contributors",
+    "commits": "commits",
+    "creator_maintainer": "Creator / Maintainer",
+    "loading_contributors": "Loading contributors..."
+  }
+}
