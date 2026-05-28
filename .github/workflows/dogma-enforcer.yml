@@ -1,0 +1,67 @@
+name: Base 10 Dogma Enforcer
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  enforce-base-10:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Check Base 10 Versioning Dogma
+        run: |
+          echo "Checking versioning files for Base 10 compliance..."
+          
+          # A helper function to check a version string
+          check_version() {
+            local file=$1
+            local version=$2
+            
+            if [[ -z "$version" ]]; then
+              return 0
+            fi
+            
+            echo "Checking $file: $version"
+            
+            IFS='.' read -r major minor patch <<< "$version"
+            
+            if (( minor > 9 )) || (( patch > 9 )); then
+              echo "::error file=$file::Sacrilege detected in $file! Version $version breaks the Base 10 Dogmatic Law (Minor and Patch cannot exceed 9). Please use scripts/bump.mjs to safely increment versions."
+              exit 1
+            fi
+          }
+          
+          # Check TS
+          if [[ -f ts/package.json ]]; then
+            ts_ver=$(grep -oP '"version": "\K\d+\.\d+\.\d+' ts/package.json || true)
+            check_version "ts/package.json" "$ts_ver"
+          fi
+          
+          # Check Website
+          if [[ -f website/package.json ]]; then
+            web_ver=$(grep -oP '"version": "\K\d+\.\d+\.\d+' website/package.json || true)
+            check_version "website/package.json" "$web_ver"
+          fi
+          
+          # Check Python
+          if [[ -f python/setup.py ]]; then
+            py_ver=$(grep -oP 'version="\K\d+\.\d+\.\d+' python/setup.py || true)
+            check_version "python/setup.py" "$py_ver"
+          fi
+          
+          # Check Dart
+          if [[ -f dart/pubspec.yaml ]]; then
+            dart_ver=$(grep -oP '^version: \K\d+\.\d+\.\d+' dart/pubspec.yaml || true)
+            check_version "dart/pubspec.yaml" "$dart_ver"
+          fi
+          
+          # Check Kotlin
+          if [[ -f kotlin/build.gradle.kts ]]; then
+            kt_ver=$(grep -oP 'version = "\K\d+\.\d+\.\d+' kotlin/build.gradle.kts || true)
+            check_version "kotlin/build.gradle.kts" "$kt_ver"
+          fi
+          
+          echo "✅ All versions conform to the Base 10 Dogmatic Law!"
