@@ -32,7 +32,8 @@ const stackVersions = [
   { name: 'Website', version: extractVersion(websiteConfig, /"version":\s*"([^"]+)"/) },
 ];
 
-const ChangelogSection = ({ title, markdown, limit, icon: Icon }) => {
+const ChangelogSection = ({ titleKey, titleFallback, markdown, limit, icon: Icon }) => {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
 
   // Split markdown by version headings
@@ -48,7 +49,7 @@ const ChangelogSection = ({ title, markdown, limit, icon: Icon }) => {
     <div className="glass-panel" style={{ padding: '40px', marginBottom: '30px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px', borderBottom: '1px solid var(--panel-border)', paddingBottom: '16px' }}>
         <Icon color="var(--neon-green)" size={28} />
-        <h2 style={{ margin: 0, fontSize: '1.5rem' }}>{title}</h2>
+        <h2 style={{ margin: 0, fontSize: '1.5rem' }}>{titleKey ? t(titleKey) : titleFallback}</h2>
       </div>
       
       <div className="markdown-body" style={{ 
@@ -100,9 +101,9 @@ const ChangelogSection = ({ title, markdown, limit, icon: Icon }) => {
             }}
           >
             {expanded ? (
-              <>Ver menos <ChevronUp size={20} /></>
+              <>{t('changelog_page.view_less')} <ChevronUp size={20} /></>
             ) : (
-              <>Ver todas as versões <ChevronDown size={20} /></>
+              <>{t('changelog_page.view_all')} <ChevronDown size={20} /></>
             )}
           </button>
         </div>
@@ -117,9 +118,9 @@ export default function Changelog() {
   return (
     <div className="container animate-fade-up" style={{ padding: '60px 20px', maxWidth: '900px' }}>
       <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-        <h1 style={{ fontSize: '3rem', marginBottom: '16px' }}>{t('nav.changelog') || 'Changelog'}</h1>
+        <h1 style={{ fontSize: '3rem', marginBottom: '16px' }}>{t('nav.changelog')}</h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '800px', margin: '0 auto' }}>
-          Acompanha todas as novidades, correções e atualizações em cada versão da <strong className="text-neon">moz-utils</strong>.
+          {t('changelog_page.description')} <strong className="text-neon">moz-utils</strong>.
         </p>
       </div>
 
@@ -127,7 +128,7 @@ export default function Changelog() {
       <div className="glass-panel" style={{ padding: '30px', marginBottom: '40px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px', borderBottom: '1px solid var(--panel-border)', paddingBottom: '16px' }}>
           <Layers color="var(--neon-green)" size={28} />
-          <h2 style={{ margin: 0, fontSize: '1.5rem' }}>Versões Atuais das Stacks</h2>
+          <h2 style={{ margin: 0, fontSize: '1.5rem' }}>{t('changelog_page.current_stacks')}</h2>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '16px' }}>
           {stackVersions.map(stack => (
@@ -139,12 +140,12 @@ export default function Changelog() {
         </div>
       </div>
 
-      <ChangelogSection title="Histórico Geral (Global)" markdown={changelogGlobal} limit={1} icon={Globe} />
-      <ChangelogSection title="TypeScript" markdown={changelogTs} limit={1} icon={Code} />
-      <ChangelogSection title="Python" markdown={changelogPython} limit={1} icon={Terminal} />
-      <ChangelogSection title="PHP" markdown={changelogPhp} limit={1} icon={Box} />
-      <ChangelogSection title="Dart" markdown={changelogDart} limit={1} icon={Box} />
-      <ChangelogSection title="Kotlin" markdown={changelogKotlin} limit={1} icon={Box} />
+      <ChangelogSection titleKey="changelog_page.global_history" titleFallback="Histórico Geral (Global)" markdown={changelogGlobal} limit={1} icon={Globe} />
+      <ChangelogSection titleFallback="TypeScript" markdown={changelogTs} limit={1} icon={Code} />
+      <ChangelogSection titleFallback="Python" markdown={changelogPython} limit={1} icon={Terminal} />
+      <ChangelogSection titleFallback="PHP" markdown={changelogPhp} limit={1} icon={Box} />
+      <ChangelogSection titleFallback="Dart" markdown={changelogDart} limit={1} icon={Box} />
+      <ChangelogSection titleFallback="Kotlin" markdown={changelogKotlin} limit={1} icon={Box} />
 
     </div>
   );

@@ -96,5 +96,13 @@
       "moneyInvalid": "Invalid Value",
       "url": "URL:"
     }
+  },
+  "changelog_page": {
+    "title": "Changelog",
+    "description": "Track all news, fixes, and updates in every version of ",
+    "current_stacks": "Current Stack Versions",
+    "global_history": "Global History",
+    "view_less": "View less",
+    "view_all": "View all versions"
   }
 }
