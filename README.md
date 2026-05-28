@@ -141,7 +141,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
     
     // Auto-fallback and suggestions for legacy postal codes
     const suggestions = suggestCEPs('3100');
-    console.log(suggestions[0]); // { cep: '0909-01', locality: 'Anchilo', ... }
+    console.log(suggestions[0]); // { cep: '0909-09', locality: 'Namutequeliua', district: 'Nampula', province: 'Nampula' }
     ```
 
 ---

@@ -107,13 +107,13 @@ import {
 isValidNewCEP('0101-01');  // true
 
 // Intelligent Suggestion Engine (Supports Legacy -> New Transition)
-// Search by the old code "3100" (Nampula HQ) or by a neighborhood
+// Search by the old code "3100" (Nampula) or by a neighborhood
 suggestCEPs('3100');
-suggestCEPs('Malhangalene');
+suggestCEPs('Namutequeliua');
 
 // The Legacy
-isValidPostalCode('1100');            // true
-getPostalCodeLocality('1100');        // "Maputo ECP (HQ)"
+isValidPostalCode('3100');            // true
+getPostalCodeLocality('3100');        // "Nampula"
 ```
 
 ---
