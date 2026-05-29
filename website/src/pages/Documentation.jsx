@@ -5,17 +5,18 @@ import MarkdownRenderer from '../components/docs/MarkdownRenderer';
 import { Book, Compass, Download, Phone, CreditCard, Landmark, ShieldCheck, Mail, ChevronRight, ChevronLeft } from 'lucide-react';
 
 const DOCS_PAGES = [
-  { id: 'overview', file: 'overview.md', icon: <Compass size={16} />, label: 'Overview' },
-  { id: 'installation', file: 'installation.md', icon: <Download size={16} />, label: 'Installation' },
-  { id: 'phones', file: 'phones.md', icon: <Phone size={16} />, label: 'Phones & Mobile' },
-  { id: 'documents', file: 'documents.md', icon: <CreditCard size={16} />, label: 'Identity Documents' },
-  { id: 'currency', file: 'currency.md', icon: <Landmark size={16} />, label: 'Currency (MZN)' },
-  { id: 'geography', file: 'geography.md', icon: <Book size={16} />, label: 'Geography & Districts' },
-  { id: 'postal', file: 'postal.md', icon: <Mail size={16} />, label: 'Postal Codes (CEP)' },
+  { id: 'overview', icon: <Compass size={16} />, label: 'Overview' },
+  { id: 'installation', icon: <Download size={16} />, label: 'Installation' },
+  { id: 'phones', icon: <Phone size={16} />, label: 'Phones & Mobile' },
+  { id: 'documents', icon: <CreditCard size={16} />, label: 'Identity Documents' },
+  { id: 'currency', icon: <Landmark size={16} />, label: 'Currency (MZN)' },
+  { id: 'geography', icon: <Book size={16} />, label: 'Geography & Districts' },
+  { id: 'postal', icon: <Mail size={16} />, label: 'Postal Codes (CEP)' },
 ];
 
 export default function Documentation() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language?.startsWith('pt') ? 'pt' : 'en';
   useSEO(t('docs_page.title', 'Documentation'), t('docs_page.description', 'Comprehensive guide on how to use moz-utils across all supported ecosystems.'));
 
   const [activeDoc, setActiveDoc] = useState('overview');
@@ -27,23 +28,23 @@ export default function Documentation() {
   const prevPage = activeIndex > 0 ? DOCS_PAGES.find((_, i) => i === activeIndex - 1) ?? null : null;
   const nextPage = activeIndex < DOCS_PAGES.length - 1 ? DOCS_PAGES.find((_, i) => i === activeIndex + 1) ?? null : null;
 
-  // Fetch Markdown file
+  // Fetch Markdown file — language-aware (*.pt.md or *.en.md)
   useEffect(() => {
     const page = DOCS_PAGES.find(p => p.id === activeDoc);
     if (!page) return;
 
-    fetch(`/docs/${page.file}`)
-      .then(res => {
-        if (!res.ok) {
-          // Fallback for GitHub Pages where base is /moz-utils/
-          return fetch(`/moz-utils/docs/${page.file}`);
-        }
-        return res;
-      })
-      .then(res => {
-        if (!res.ok) throw new Error('Not found');
-        return res.text();
-      })
+    const localizedFile = `${page.id}.${lang}.md`;
+    const fallbackFile = `${page.id}.en.md`;
+
+    const tryFetch = (path) => fetch(path).then(res => {
+      if (!res.ok) throw new Error('not found');
+      return res.text();
+    });
+
+    tryFetch(`/docs/${localizedFile}`)
+      .catch(() => tryFetch(`/moz-utils/docs/${localizedFile}`))
+      .catch(() => tryFetch(`/docs/${fallbackFile}`))
+      .catch(() => tryFetch(`/moz-utils/docs/${fallbackFile}`))
       .then(text => {
         setContent(text);
 
@@ -63,7 +64,7 @@ export default function Documentation() {
         window.scrollTo({ top: 0, behavior: 'auto' });
       })
       .catch(() => setContent('# Page Not Found\nWe could not load this documentation page.'));
-  }, [activeDoc]);
+  }, [activeDoc, lang]);
 
   // Track scroll for active heading in TOC
   useEffect(() => {
