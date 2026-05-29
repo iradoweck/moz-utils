@@ -14,8 +14,10 @@
     "cta": "Testar no Simulador"
   },
   "footer": {
+    "sponsoredBy": "Patrocinado e suportado por",
+    "developedByShort": "e Desenvolvido por Edmilson Muacigaro & Comunidade",
     "developedBy": "Desenvolvido por Edmilson Muacigaro & Comunidade | Powered By ZEDECK's IT...",
-    "openSource": "Open Source sob Licença AGPL-3.0-or-later",
+    "openSource": "Open Source sob Licença AGPL-3.0",
     "donatePrimary": "Apoiar via GitHub Sponsors",
     "donateSecondary": "Doação Única (PayPal)"
   },
@@ -116,6 +118,45 @@
     "top_contributors": "Top Contribuidores",
     "commits": "commits",
     "creator_maintainer": "Criador / Maintainer",
-    "loading_contributors": "A carregar contribuidores..."
+    "loading_contributors": "A carregar contribuidores...",
+    "loading_insights": "A carregar dados de insights…",
+    "open_closed_issues": "Issues Abertas / Fechadas",
+    "open_merged_prs": "PRs Abertos / Merged",
+    "total_downloads": "Total de Downloads",
+    "downloads_by_ecosystem": "Downloads por Ecossistema",
+    "npm_weekly_trend": "Tendência Semanal NPM",
+    "last_8_weeks": "Últimas 8 semanas de downloads NPM",
+    "no_trend_data": "Nenhum dado de tendência disponível ainda.",
+    "leads_with": "lidera com",
+    "of_all_downloads": "de todos os downloads",
+    "ecosystem_health": "Saúde do Ecossistema",
+    "recent_activity": "Atividade Recente",
+    "want_to_contribute": "Queres tornar-te num contribuidor?",
+    "contribute_desc": "Esta secção irá apresentar contribuidores assim que a comunidade começar a crescer. Sê o primeiro a contribuir e vê o teu nome destacado aqui!",
+    "read_contrib_guide": "Ler o Guia de Contribuição"
+  },
+  "docs_page": {
+    "title": "Documentação",
+    "description": "Guia completo de como usar o moz-utils em todos os ecossistemas suportados.",
+    "on_this_page": "Nesta Página",
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Próximo"
+    },
+    "menu": {
+      "title": "Índice",
+      "overview": "Visão Geral",
+      "installation": "Instalação",
+      "phones": "Telefones & Mobile",
+      "documents": "Documentos de Identidade",
+      "currency": "Moeda (MZN)",
+      "geography": "Geografia & Distritos",
+      "sanitization": "Saneamento",
+      "postal": "Códigos Postais (CEP)",
+      "examples": "Casos de Uso",
+      "errors": "Guia de Erros",
+      "contributing": "Contribuição",
+      "faq": "FAQ"
+    }
   }
 }

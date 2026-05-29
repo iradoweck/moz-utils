@@ -149,3 +149,17 @@ h1, h2, h3 {
 .text-error {
   color: #ff3366;
 }
+@media (max-width: 700px) { .desktop-sidebar { display: none !important; } }
+
+@media (max-width: 900px) { .desktop-toc { display: none !important; } }
+
+
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar { display: none; }
+/* Hide scrollbar for IE, Edge and Firefox */
+* { -ms-overflow-style: none; scrollbar-width: none; }
+html { scroll-behavior: smooth; }
+
+@media (min-width: 768px) { .footer-layout { flex-direction: row !important; justify-content: space-between !important; align-items: flex-start !important; } .footer-links-container { align-items: flex-end !important; } }

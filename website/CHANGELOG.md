@@ -1,27 +1,35 @@
-# Changelog: moz-utils (Website & Portal)
+# Website Changelog — moz-utils
 
-All notable changes to the Official Website and Spa will be documented in this file.
+Histórico de alterações e novidades específicas para o portal oficial do `moz-utils`.
 
-## [0.1.4] - 2026-05-28
+---
 
-### Added & Fixed
-- **Stable Routing:** Eliminated 404 Not Found errors on GitHub Pages by migrating the application to HashRouter (`/#/`) and correctly configuring the Vite base path.
-- **Robust Insights Data:** Removed unstable public CORS proxies. The dashboard now consumes a reliable, auto-generated `stats.json` file.
-- **Resilient UI Fetching:** Implemented asynchronous progressive loading and a strict 4-second timeout (`AbortController`) to prevent the Insights page from freezing during network delays.
-- **CI/CD Pipeline Fix:** Resolved a critical build failure in GitHub Actions by ensuring the TypeScript library (`ts`) is fully installed and compiled before building the React website.
+## 0.1.4
 
-## [0.1.3] - 2026-05-28
+> **Patch version — Insights & SEO Overhaul, CI/CD Hardening**
 
-### Added
-- **Insights Page Overhaul & i18n:**
-  - Fully internationalized (English and Portuguese) using `react-i18next`.
-  - Added real-time download metrics fetching from PyPI and Pub.dev (using a CORS proxy).
-  - Implemented dynamic display for GitHub Stars and Forks (auto-hides if the count is less than 3).
-  - Enhanced contributors section with a dedicated "Criador / Maintainer" badge for repository creators instead of raw commit counts.
-- **Internationalization (i18n):** Native support for Portuguese and English across all pages (Changelog, Insights, Home).
-- **New SPA Architecture:** Rebuilt with React and Vite for faster, client-side routing.
-- **Unified Simulator:**
-  - Modernized layout merging legacy tools into a clean, 3-category UI.
-  - Real-time validation connected directly to the `moz-utils` TypeScript library.
-- **Community & Documentation Pages:** Dedicated pages for community guidelines, insights, and comprehensive documentation.
-- **Monetization integration:** GitHub Sponsors and PayPal badges available globally.
+### Insights
+- **Estatísticas ao Vivo Melhoradas:** A página de Insights passou a consumir e consolidar métricas híbridas (estáticas via `stats.json` e dinâmicas via GitHub Search API).
+- **Cartões Inteligentes:** Issues Abertas/Fechadas e PRs Abertos/Merged agora são apresentados no mesmo cartão, ocultando-se se não houver dados.
+- **Resiliência Local:** Implementado um *fallback* seguro para desenvolvimento local (descarrega o `stats.json` de produção se falhar localmente).
+
+### SEO & Internacionalização
+- Implementação massiva de SEO (`react-helmet-async`, `sitemap.xml`, `robots.txt`, tags Open Graph).
+- Adicionadas chaves de tradução PT/EN em falta no ecrã de Insights para suportar a internacionalização.
+
+### CI/CD e Segurança
+- O `deploy-website.yml` foi fortificado com injeção de `GITHUB_TOKEN` nas chamadas à API (evitando bloqueios de limites de requisição).
+- Scripts baseados em `jq` agora possuem tratamento robusto para não falharem se o PyPI ou outras fontes não retornarem os dados no formato esperado.
+- Corrigido o `React Error #31` derivado da desserialização do objeto `author` do GitHub.
+- Removido alerta do `CodeQL` por importação não utilizada (`BarChart3`).
+
+---
+
+## 0.1.3
+
+> **Patch version — Novo Website SPA Multilingue**
+
+- Migração de HTML estático para um portal moderno em React (`vite` + `react-router-dom`).
+- Lançamento do Simulador Interativo, testando a biblioteca nativa compilada no browser.
+- Implementação de HashRouter para suporte a GitHub Pages.
+- Internacionalização PT e EN.
