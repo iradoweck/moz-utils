@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChevronDown, ChevronUp, Layers, Terminal, Globe, Code, Box } from 'lucide-react';
+import { ChevronDown, ChevronUp, Layers, Terminal, Globe, Code, Box, Tag } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { useSEO } from '../hooks/useSEO';
 
@@ -114,6 +114,19 @@ const ChangelogSection = ({ titleKey, titleFallback, markdown, limit, icon: Icon
 
 export default function Changelog() {
   const { t } = useTranslation();
+  const [githubTags, setGithubTags] = useState([]);
+
+  useEffect(() => {
+    fetch('https://api.github.com/repos/iradoweck/moz-utils/tags?per_page=5')
+      .then(res => res.ok ? res.json() : [])
+      .then(data => {
+        if (Array.isArray(data)) {
+          setGithubTags(data);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   useSEO(
     'Changelog',
     'Version history and release notes for moz-utils across all stacks: TypeScript, Python, PHP, Dart, Kotlin, and the official website.'
@@ -134,7 +147,7 @@ export default function Changelog() {
           <Layers color="var(--neon-green)" size={28} />
           <h2 style={{ margin: 0, fontSize: '1.5rem' }}>{t('changelog_page.current_stacks')}</h2>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '16px', marginBottom: '40px' }}>
           {stackVersions.map(stack => (
             <div key={stack.name} style={{ background: 'rgba(0,0,0,0.3)', padding: '16px', borderRadius: '12px', textAlign: 'center', border: '1px solid var(--panel-border)' }}>
               <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '8px' }}>{stack.name}</div>
@@ -142,6 +155,45 @@ export default function Changelog() {
             </div>
           ))}
         </div>
+
+        {githubTags.length > 0 && (
+          <>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px', borderBottom: '1px solid var(--panel-border)', paddingBottom: '16px' }}>
+              <Tag color="var(--neon-green)" size={24} />
+              <h3 style={{ margin: 0, fontSize: '1.2rem' }}>GitHub Releases (Tags)</h3>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '16px' }}>
+              {githubTags.map(tag => (
+                <a 
+                  key={tag.name} 
+                  href={`https://github.com/iradoweck/moz-utils/releases/tag/${tag.name}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ 
+                    display: 'block', 
+                    background: 'rgba(0,0,0,0.3)', 
+                    padding: '16px', 
+                    borderRadius: '12px', 
+                    textAlign: 'center', 
+                    border: '1px solid var(--panel-border)',
+                    textDecoration: 'none',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--neon-green)';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--panel-border)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  <div style={{ color: 'var(--text-primary)', fontSize: '1.1rem', fontWeight: 'bold', fontFamily: 'monospace' }}>{tag.name}</div>
+                </a>
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
       <ChangelogSection titleKey="changelog_page.global_history" titleFallback="Histórico Geral (Global)" markdown={changelogGlobal} limit={1} icon={Globe} />

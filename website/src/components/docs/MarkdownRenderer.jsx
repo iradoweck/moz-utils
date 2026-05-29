@@ -7,6 +7,16 @@ import 'highlight.js/styles/atom-one-dark.css'; // Good dark theme for code bloc
 
 // Extensão personalizada do renderer
 export default function MarkdownRenderer({ content }) {
+  // Track occurrence counts to make duplicate heading IDs unique within this render
+  const headingCounters = new Map();
+
+  const makeUniqueId = (rawId) => {
+    if (!rawId) return rawId;
+    const count = (headingCounters.get(rawId) || 0) + 1;
+    headingCounters.set(rawId, count);
+    return count === 1 ? rawId : `${rawId}-${count - 1}`;
+  };
+
   return (
     <div className="markdown-body" style={{ 
       color: 'var(--text-primary)', 
@@ -18,21 +28,22 @@ export default function MarkdownRenderer({ content }) {
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw, rehypeHighlight]}
         components={{
-          h1: ({node, ...props}) => <h1 style={{ color: 'var(--neon-green)', borderBottom: '1px solid var(--panel-border)', paddingBottom: '12px', marginTop: '40px', marginBottom: '24px' }} {...props} />,
-          h2: ({node, ...props}) => {
-            // Generate id from text for anchor links
-            const id = node.children[0]?.value?.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-            return <h2 id={id} style={{ color: '#fff', marginTop: '40px', marginBottom: '16px' }} {...props} />
+          h1: ({node, children, id, className}) => <h1 id={id} className={className} style={{ color: 'var(--neon-green)', borderBottom: '1px solid var(--panel-border)', paddingBottom: '12px', marginTop: '40px', marginBottom: '24px' }}>{children}</h1>,
+          h2: ({node, children, className}) => {
+            const rawId = node.children[0]?.value?.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+            const id = makeUniqueId(rawId);
+            return <h2 id={id} className={className} style={{ color: '#fff', marginTop: '40px', marginBottom: '16px' }}>{children}</h2>;
           },
-          h3: ({node, ...props}) => {
-            const id = node.children[0]?.value?.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-            return <h3 id={id} style={{ color: '#e2e8f0', marginTop: '32px', marginBottom: '16px' }} {...props} />
+          h3: ({node, children, className}) => {
+            const rawId = node.children[0]?.value?.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+            const id = makeUniqueId(rawId);
+            return <h3 id={id} className={className} style={{ color: '#e2e8f0', marginTop: '32px', marginBottom: '16px' }}>{children}</h3>;
           },
-          a: ({node, ...props}) => <a style={{ color: 'var(--neon-green)', textDecoration: 'none' }} {...props} />,
-          p: ({node, ...props}) => <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }} {...props} />,
-          ul: ({node, ...props}) => <ul style={{ marginBottom: '16px', paddingLeft: '24px', color: 'var(--text-secondary)' }} {...props} />,
-          li: ({node, ...props}) => <li style={{ marginBottom: '8px' }} {...props} />,
-          code: ({node, inline, className, children, ...props}) => {
+          a: ({node, children, href, className, target, rel}) => <a href={href} target={target} rel={rel} className={className} style={{ color: 'var(--neon-green)', textDecoration: 'none' }}>{children}</a>,
+          p: ({node, children, className}) => <p className={className} style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>{children}</p>,
+          ul: ({node, children, className}) => <ul className={className} style={{ marginBottom: '16px', paddingLeft: '24px', color: 'var(--text-secondary)' }}>{children}</ul>,
+          li: ({node, children, className}) => <li className={className} style={{ marginBottom: '8px' }}>{children}</li>,
+          code: ({node, inline, className, children}) => {
             // For inline code (not wrapped in pre), or code that has no specific block properties
             if (inline || !className) {
               return <code style={{ 
@@ -42,32 +53,31 @@ export default function MarkdownRenderer({ content }) {
                 color: '#f472b6',
                 fontFamily: 'monospace',
                 fontSize: '0.9em'
-              }} {...props}>{children}</code>
+              }}>{children}</code>
             }
             // Block code is handled inside <pre>
-            return <code className={className} style={{ fontFamily: 'monospace', fontSize: '0.9rem' }} {...props}>{children}</code>
+            return <code className={className} style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}>{children}</code>
           },
-          pre: ({node, ...props}) => (
-            <div style={{ position: 'relative', marginBottom: '24px', marginTop: '16px' }}>
+          pre: ({node, children, className}) => (
+            <div className={className} style={{ position: 'relative', marginBottom: '24px', marginTop: '16px' }}>
               <pre style={{
                 background: '#111',
                 padding: '16px',
                 borderRadius: '8px',
                 overflowX: 'auto',
                 border: '1px solid var(--panel-border)'
-              }} {...props} />
+              }}>{children}</pre>
             </div>
           ),
-          blockquote: ({node, ...props}) => (
-            <blockquote style={{
+          blockquote: ({node, children, className}) => (
+            <blockquote className={className} style={{
               borderLeft: '4px solid var(--neon-green)',
               paddingLeft: '16px',
               color: 'var(--text-secondary)',
               fontStyle: 'italic',
               margin: '24px 0',
-              background: 'rgba(0,255,136,0.05)',
-              padding: '16px'
-            }} {...props} />
+              background: 'rgba(0,255,136,0.05)'
+            }}>{children}</blockquote>
           )
         }}
       >

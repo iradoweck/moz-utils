@@ -47,16 +47,20 @@ export default function Documentation() {
       .catch(() => tryFetch(`/moz-utils/docs/${fallbackFile}`))
       .then(text => {
         setContent(text);
+        setActiveHeading(''); // Reset TOC highlight on page change
 
-        // Extract headings for Table of Contents
+        // Extract headings — must mirror MarkdownRenderer's makeUniqueId logic
         const extractedHeadings = [];
+        const seenIds = {};
         const lines = text.split('\n');
         lines.forEach(line => {
           const match = line.match(/^(#{2,3})\s+(.*)/);
           if (match) {
             const level = match[1].length;
             const textContent = match[2].replace(/[\[\]]/g, '').replace(/\(.*\)/g, '');
-            const id = textContent.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+            const rawId = textContent.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+            seenIds[rawId] = (seenIds[rawId] || 0) + 1;
+            const id = seenIds[rawId] === 1 ? rawId : `${rawId}-${seenIds[rawId] - 1}`;
             extractedHeadings.push({ id, text: textContent, level });
           }
         });
