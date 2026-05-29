@@ -3,70 +3,31 @@
 Change history for all versions of the **moz-utils** project (TypeScript, Dart, Python, PHP, and Kotlin).
 ---
 
-## 0.3.4
-
-> **Patch version — Documentation Realism, UX Polish & Internationalisation**
-
-### Documentation Portal
-- **Hyper-Realistic Markdown Docs:** Rewrote all documentation pages (`phones.md`, `documents.md`, `currency.md`, `geography.md`, `postal.md`) with real-world, contextual examples deeply rooted in Mozambican geography — cities like **Nampula**, **Beira**, **Maputo**, and neighbourhoods like **Namutequeliua** are now first-class citizens in every code example.
-- **Multi-Language Code Alignment:** All code snippets were audited against the live source (`index.ts`, `MozUtils.php`, `moz_utils.dart`, `moz_utils.py`, Kotlin) and now faithfully reflect the exact API signature across all 5 supported languages (TypeScript, Python, PHP, Dart, Kotlin).
-
-### Documentation UX
-- **Docusaurus-Style Pagination:** Added `Previous` / `Next` navigation cards at the bottom of each documentation section, allowing readers to navigate sequentially through the full guide without interruption.
-- **Table of Contents (TOC) — Icon Upgrade:** Section headings (`##`) now display a `ChevronRight` icon, while sub-headings (`###`) display an em-dash (`—`), both colour-coded reactively as the reader scrolls.
-- **Smooth Anchor Scrolling:** TOC links now calculate the element offset minus the navbar height (100px) before calling `window.scrollTo`, ensuring headings are never hidden behind the sticky navbar.
-- **Docs Page — Footer-Free Layout:** The global site footer is now conditionally hidden on the `/docs` route, creating a distraction-free, immersive reading environment.
-- **Responsive Sidebar/TOC Breakpoints:** Recalibrated breakpoints — left sidebar hides below `700px`, right TOC hides below `900px` — making the docs fully usable on tablets and wide-mobile viewports.
-
-### Footer Redesign
-- **Zedeck's IT Logo:** Integrated the official Zedeck's IT icon inline within the footer's attribution line — displayed at 24px height alongside the sponsorship and authorship text.
-- **Simplified Layout:** The footer text is now a single centred line: `Sponsored and supported by [Logo] and Developed by Edmilson Muacigaro & Community`, with the AGPL-3.0 notice immediately below in the project's signature neon green.
-- **Donation Buttons Preserved:** The GitHub Sponsors and PayPal buttons remain intact below the attribution line.
-
-### Internationalisation
-- **New i18n Keys — Both Locales (EN/PT):**
-  - `footer.sponsoredBy` — "Sponsored and supported by" / "Patrocinado e suportado por"
-  - `footer.developedByShort` — authorship short-form
-  - `footer.openSource` — AGPL-3.0 notice
-  - `docs_page.on_this_page` — TOC section title
-  - `docs_page.pagination.previous` — Prev button label
-  - `docs_page.pagination.next` — Next button label
-- All previously hardcoded UI strings in `Documentation.jsx` and `Footer.jsx` are now driven by `react-i18next`.
-
-### UX & Global Styles
-- **Invisible Scrollbar:** Applied `::-webkit-scrollbar { display: none }`, `-ms-overflow-style: none`, and `scrollbar-width: none` globally via `index.css`, hiding the scrollbar across all browsers while fully preserving scroll functionality.
-- **Smooth Scrolling:** Added `html { scroll-behavior: smooth }` globally.
-
-### Security
-- **Prototype Injection Fix:** Replaced direct bracket-index access `DOCS_PAGES[activeIndex - 1]` in `Documentation.jsx` with a safe `.find((_, i) => i === ...)` pattern, eliminating the ESLint/Semgrep warning about potential prototype pollution via computed property access.
-
----
-
-## 0.3.3
-
-> **Patch version — SEO Overhaul, CI/CD Hardening & Documentation Preps**
-
-### Official Website
-- **SEO & Discoverability:** Massive SEO improvement with dynamic `react-helmet-async`, dynamic canonical URLs, automated Open Graph generation, and localized JSON-LD schemas.
-- **Insights Enhancements:** Insights now render Issues (Open/Closed) and PRs (Open/Merged) intelligently via live GitHub API fetches with a robust local fallback mechanism. Fixed all React state warnings.
-- **Documentation Prep:** Prepared infrastructure to launch a fully redesigned interactive documentation portal with live playgrounds.
-
-### Core Infrastructure & CI/CD
-- **Hardened CI/CD Pipelines:** Resilient API requests across all actions. The `deploy-website.yml` now injects `GITHUB_TOKEN` specifically to prevent rate-limit 403 blocks during dependency analysis, and uses strict `jq` fallbacks for unavailable upstream data (e.g., PyPI delays).
-
----
-
 ## 0.3.2
 
-> **Patch version — Stable SPA Routing and Automated Insights Pipeline**
+> **Minor version — The New Community Portal, Official Documents & Interactive Documentation**
 
 ### Core Infrastructure & CI/CD
-- **Automated Insights (Cron Job):** Resurrected the `fetch-insights.yml` workflow. Live metrics from PyPI and Dart pub.dev are now reliably extracted via the server background (bypassing CORS restrictions) and injected into `stats.json`.
-- **Pipeline Optimization:** Streamlined the GitHub Pages lifecycle by removing duplicate workflows and solidifying the `deploy-website.yml` action to guarantee atomic deployments on the `main` branch.
+- **Global Polyglot Translation:** The entire mono-repo (TypeScript, Python, PHP, Dart, Kotlin) is now strictly standardized in English (variables, docstrings, exceptions).
+- **Automated Insights (Cron Job):** Live metrics from PyPI and Dart pub.dev are reliably extracted via server background to bypass CORS.
+- **Hardened CI/CD Pipelines:** Resilient API requests across all actions. `deploy-website.yml` now injects `GITHUB_TOKEN` to prevent rate-limit 403 blocks.
+- **Node.js ESM Strictness:** Enforced `"type": "module"` natively to silence runtime warnings.
 
-### Official Website
-- **Robust Routing:** Migrated the portal to HashRouter to completely eradicate `404 Not Found` responses natively generated by GitHub Pages.
-- **Asynchronous Data Shield:** Re-architected the Insights fetching engine with progressive asynchronous state loading and strict HTTP timeouts (`AbortController`), ensuring zero UI blockages during unstable network conditions.
+### Validations & Geography
+- **Official Documents:** Complete support for validating DIRE (`isValidDIRE`), Passports (`isValidPassport`), and Driving Licenses (`isValidDrivingLicense`).
+- **New CEP Engine & Suggestions:** Added `isValidNewCEP` for geo-referenced postal codes and `suggestCEPs` to instantly translate legacy codes.
+- **Financial Ecosystem:** Added `getMobileWallet` to map mobile accounts (M-Pesa, e-Mola, mKesh) by operator.
+- **Geographic Coverage:** Inserted comprehensive data for Nampula province (Nampula ECP, Namutequeliua, Anchilo).
+
+### Official Website & Documentation
+- **New SPA Architecture:** Migrated to a React Single Page Application (SPA) using `react-router-dom` (HashRouter) to eradicate 404 errors.
+- **Internationalisation (i18n):** Native support for English and Portuguese across the entire site and documentation (`react-i18next`).
+- **Hyper-Realistic Documentation:** Rewrote all guides with contextual Mozambican examples (e.g., Maputo, Nampula) and multi-language code snippets.
+- **Documentation UX:** Docusaurus-style pagination, dynamic Table of Contents (TOC), smooth anchor scrolling, and a distraction-free layout.
+- **Interactive Pages:** 
+  - *Insights:* Real-time dashboard fetching NPM, Packagist, PyPI, and Pub.dev metrics.
+  - *Changelog:* Dedicated on-site version history across all stacks.
+  - *Geographic Simulators:* Real-time UI to test Legacy/New Postal Codes and districts.
 
 ---
 
