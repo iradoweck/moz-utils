@@ -3,6 +3,45 @@
 Change history for all versions of the **moz-utils** project (TypeScript, Dart, Python, PHP, and Kotlin).
 ---
 
+## 0.3.4
+
+> **Patch version — Documentation Realism, UX Polish & Internationalisation**
+
+### Documentation Portal
+- **Hyper-Realistic Markdown Docs:** Rewrote all documentation pages (`phones.md`, `documents.md`, `currency.md`, `geography.md`, `postal.md`) with real-world, contextual examples deeply rooted in Mozambican geography — cities like **Nampula**, **Beira**, **Maputo**, and neighbourhoods like **Namutequeliua** are now first-class citizens in every code example.
+- **Multi-Language Code Alignment:** All code snippets were audited against the live source (`index.ts`, `MozUtils.php`, `moz_utils.dart`, `moz_utils.py`, Kotlin) and now faithfully reflect the exact API signature across all 5 supported languages (TypeScript, Python, PHP, Dart, Kotlin).
+
+### Documentation UX
+- **Docusaurus-Style Pagination:** Added `Previous` / `Next` navigation cards at the bottom of each documentation section, allowing readers to navigate sequentially through the full guide without interruption.
+- **Table of Contents (TOC) — Icon Upgrade:** Section headings (`##`) now display a `ChevronRight` icon, while sub-headings (`###`) display an em-dash (`—`), both colour-coded reactively as the reader scrolls.
+- **Smooth Anchor Scrolling:** TOC links now calculate the element offset minus the navbar height (100px) before calling `window.scrollTo`, ensuring headings are never hidden behind the sticky navbar.
+- **Docs Page — Footer-Free Layout:** The global site footer is now conditionally hidden on the `/docs` route, creating a distraction-free, immersive reading environment.
+- **Responsive Sidebar/TOC Breakpoints:** Recalibrated breakpoints — left sidebar hides below `700px`, right TOC hides below `900px` — making the docs fully usable on tablets and wide-mobile viewports.
+
+### Footer Redesign
+- **Zedeck's IT Logo:** Integrated the official Zedeck's IT icon inline within the footer's attribution line — displayed at 24px height alongside the sponsorship and authorship text.
+- **Simplified Layout:** The footer text is now a single centred line: `Sponsored and supported by [Logo] and Developed by Edmilson Muacigaro & Community`, with the AGPL-3.0 notice immediately below in the project's signature neon green.
+- **Donation Buttons Preserved:** The GitHub Sponsors and PayPal buttons remain intact below the attribution line.
+
+### Internationalisation
+- **New i18n Keys — Both Locales (EN/PT):**
+  - `footer.sponsoredBy` — "Sponsored and supported by" / "Patrocinado e suportado por"
+  - `footer.developedByShort` — authorship short-form
+  - `footer.openSource` — AGPL-3.0 notice
+  - `docs_page.on_this_page` — TOC section title
+  - `docs_page.pagination.previous` — Prev button label
+  - `docs_page.pagination.next` — Next button label
+- All previously hardcoded UI strings in `Documentation.jsx` and `Footer.jsx` are now driven by `react-i18next`.
+
+### UX & Global Styles
+- **Invisible Scrollbar:** Applied `::-webkit-scrollbar { display: none }`, `-ms-overflow-style: none`, and `scrollbar-width: none` globally via `index.css`, hiding the scrollbar across all browsers while fully preserving scroll functionality.
+- **Smooth Scrolling:** Added `html { scroll-behavior: smooth }` globally.
+
+### Security
+- **Prototype Injection Fix:** Replaced direct bracket-index access `DOCS_PAGES[activeIndex - 1]` in `Documentation.jsx` with a safe `.find((_, i) => i === ...)` pattern, eliminating the ESLint/Semgrep warning about potential prototype pollution via computed property access.
+
+---
+
 ## 0.3.3
 
 > **Patch version — SEO Overhaul, CI/CD Hardening & Documentation Preps**

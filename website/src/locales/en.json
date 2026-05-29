@@ -14,8 +14,10 @@
     "cta": "Test in Simulator"
   },
   "footer": {
+    "sponsoredBy": "Sponsored and supported by",
+    "developedByShort": "and Developed by Edmilson Muacigaro & Community",
     "developedBy": "Developed by Edmilson Muacigaro & Community | Powered By ZEDECK's IT...",
-    "openSource": "Open Source under AGPL-3.0-or-later License",
+    "openSource": "Open Source under AGPL-3.0 License",
     "donatePrimary": "Support via GitHub Sponsors",
     "donateSecondary": "One-time Donation (PayPal)"
   },
@@ -136,6 +138,11 @@
   "docs_page": {
     "title": "Documentation",
     "description": "Comprehensive guide on how to use moz-utils across all supported ecosystems.",
+    "on_this_page": "On this page",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
     "menu": {
       "title": "Contents",
       "overview": "Overview",

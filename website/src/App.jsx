@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -9,6 +9,9 @@ import CommunityPage from './pages/CommunityPage';
 import Changelog from './pages/Changelog';
 
 function App() {
+  const location = useLocation();
+  const isDocsPage = location.pathname === '/docs';
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
@@ -23,7 +26,7 @@ function App() {
         </Routes>
       </main>
 
-      <Footer />
+      {!isDocsPage && <Footer />}
     </div>
   );
 }
