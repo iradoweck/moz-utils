@@ -1,5 +1,5 @@
-/// Dados do Código de Endereçamento Postal (CEP) de Moçambique.
-/// Gerado automaticamente.
+// Dados do Código de Endereçamento Postal (CEP) de Moçambique.
+// Gerado automaticamente.
 
 const Map<String, Map<String, String>> legacyPostalCodes = {
   "1100": {

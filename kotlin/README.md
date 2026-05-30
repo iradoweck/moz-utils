@@ -23,7 +23,7 @@ Built impeccably for the Kotlin ecosystem, this package is more than a library â
 Add the dependency to your `build.gradle.kts`:
 
 ```kotlin
-implementation("com.edmilsonmuacigarro:moz-utils:0.3.0")
+implementation("com.edmilsonmuacigarro:moz-utils:0.3.2")
 ```
 
 ---

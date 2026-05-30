@@ -5,7 +5,7 @@
     "version": "0.3.2",
     "license": "AGPL-3.0-or-later",
     "keywords": ["mozambique", "nuit", "bi", "mzn", "metical", "provincia", "distritos", "mocambique", "telecom", "validation"],
-    "homepage": "https://github.com/iradoweck/moz-utils/tree/main/php",
+    "homepage": "https://iradoweck.github.io/moz-utils/",
     "autoload": {
         "psr-4": {
             "Iradoweck\\MozUtils\\": "src/"

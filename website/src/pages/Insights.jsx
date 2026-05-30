@@ -209,28 +209,25 @@ export default function Insights() {
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{t('insights_page.forks')}</p>
           </div>
         )}
-        {((liveGH?.issues?.open > 0 || liveGH?.issues?.closed > 0) || (stats?.github?.open_issues > 0)) && (
-          <div className="glass-panel" style={{ textAlign: 'center' }}>
-            <CircleDot size={28} color="#ff9f0a" style={{ margin: '0 auto 12px auto' }} />
-            <h2 style={{ fontSize: '2rem', margin: '0' }}>
-              <span style={{ color: '#ff9f0a' }}>{liveGH?.issues?.open ?? (stats?.github?.open_issues ?? 0)}</span>
-              <span style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', margin: '0 4px' }}>/</span>
-              <span style={{ color: 'var(--text-secondary)' }}>{liveGH?.issues?.closed ?? 0}</span>
-            </h2>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px' }}>{t('insights_page.open_closed_issues')}</p>
-          </div>
-        )}
-        {((liveGH?.prs?.open > 0 || liveGH?.prs?.merged > 0) || (stats?.github?.open_prs > 0)) && (
-          <div className="glass-panel" style={{ textAlign: 'center' }}>
-            <GitPullRequest size={28} color="#bf5af2" style={{ margin: '0 auto 12px auto' }} />
-            <h2 style={{ fontSize: '2rem', margin: '0' }}>
-              <span style={{ color: '#bf5af2' }}>{liveGH?.prs?.open ?? (stats?.github?.open_prs ?? 0)}</span>
-              <span style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', margin: '0 4px' }}>/</span>
-              <span style={{ color: 'var(--neon-green)' }}>{liveGH?.prs?.merged ?? 0}</span>
-            </h2>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px' }}>{t('insights_page.open_merged_prs')}</p>
-          </div>
-        )}
+        <div className="glass-panel" style={{ textAlign: 'center' }}>
+          <CircleDot size={28} color="#ff9f0a" style={{ margin: '0 auto 12px auto' }} />
+          <h2 style={{ fontSize: '2rem', margin: '0' }}>
+            <span style={{ color: '#ff9f0a' }}>{liveGH?.issues?.open ?? (stats?.github?.open_issues ?? 0)}</span>
+            <span style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', margin: '0 4px' }}>/</span>
+            <span style={{ color: 'var(--text-secondary)' }}>{liveGH?.issues?.closed ?? 0}</span>
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px' }}>{t('insights_page.open_closed_issues')}</p>
+        </div>
+
+        <div className="glass-panel" style={{ textAlign: 'center' }}>
+          <GitPullRequest size={28} color="#bf5af2" style={{ margin: '0 auto 12px auto' }} />
+          <h2 style={{ fontSize: '2rem', margin: '0' }}>
+            <span style={{ color: '#bf5af2' }}>{liveGH?.prs?.open ?? (stats?.github?.open_prs ?? 0)}</span>
+            <span style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', margin: '0 4px' }}>/</span>
+            <span style={{ color: 'var(--neon-green)' }}>{liveGH?.prs?.merged ?? 0}</span>
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px' }}>{t('insights_page.open_merged_prs')}</p>
+        </div>
         <div className="glass-panel" style={{ textAlign: 'center' }}>
           <Download size={28} color="var(--neon-green)" style={{ margin: '0 auto 12px auto' }} />
           <h2 style={{ fontSize: '2rem', margin: '0' }}>{total.toLocaleString()}</h2>
