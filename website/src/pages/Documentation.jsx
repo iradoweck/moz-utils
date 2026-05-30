@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSEO } from '../hooks/useSEO';
 import MarkdownRenderer from '../components/docs/MarkdownRenderer';
-import { Book, Compass, Download, Phone, CreditCard, Landmark, ShieldCheck, Mail, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Book, Compass, Download, Phone, CreditCard, Landmark, Mail, ChevronRight, ChevronLeft } from 'lucide-react';
 
 const DOCS_PAGES = [
   { id: 'overview', icon: <Compass size={16} />, label: 'Overview' },
