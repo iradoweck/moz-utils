@@ -1,5 +1,6 @@
 import React from 'react';
-import { MessageSquare, Users, AlertCircle } from 'lucide-react';
+import { MessageSquare, Users, AlertCircle, Briefcase } from 'lucide-react';
+import Giscus from '@giscus/react';
 import { useTranslation } from 'react-i18next';
 import { useSEO } from '../hooks/useSEO';
 
@@ -36,7 +37,7 @@ export default function CommunityPage() {
           </p>
         </a>
 
-        <div className="glass-panel" style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
+        <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
           <Users size={48} color="var(--neon-green)" />
           <div style={{ flex: 1 }}>
             <h3>Want to become a Maintainer?</h3>
@@ -44,6 +45,37 @@ export default function CommunityPage() {
               We are always looking for Mozambican talent to help maintain the TypeScript, PHP, Python, Dart, and Kotlin libraries. Contribute actively and join the Core Team!
             </p>
           </div>
+        </div>
+
+        <a href="https://edmilsonmuacigarro.com" target="_blank" rel="noreferrer" className="glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap', textDecoration: 'none', color: 'inherit' }}>
+          <Briefcase size={48} color="#00b4d8" />
+          <div style={{ flex: 1 }}>
+            <h3>Business & Partnerships</h3>
+            <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>
+              Are you from a company or startup and want to implement moz-utils? Let's talk business. Reach out to the author.
+            </p>
+          </div>
+        </a>
+      </div>
+
+      <div style={{ marginTop: '60px' }}>
+        <h2 style={{ textAlign: 'center', marginBottom: '32px', fontSize: '2rem' }}>Live Community Forum</h2>
+        <div className="glass-panel" style={{ padding: '32px' }}>
+          <Giscus
+            id="community-forum"
+            repo="iradoweck/moz-utils"
+            repoId="R_kgDOSjDxow"
+            category="General"
+            categoryId="DIC_kwDOSjDxo84C9pTy"
+            mapping="pathname"
+            term="Welcome to the moz-utils Community!"
+            reactionsEnabled="1"
+            emitMetadata="0"
+            inputPosition="top"
+            theme="transparent_dark"
+            lang="en"
+            loading="lazy"
+          />
         </div>
       </div>
     </div>
