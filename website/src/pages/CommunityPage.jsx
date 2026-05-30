@@ -112,7 +112,7 @@ export default function CommunityPage() {
       <div ref={forumRef} className="glass-panel" style={{ padding: '40px 20px', scrollMarginTop: '80px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
           <h2 style={{ fontSize: '1.8rem', margin: 0 }}>
-            {activeCategory === 'General' ? 'Discussão Geral' : `Tópico: ${activeCategory}`}
+            {activeCategory === 'General' ? t('community_page.general_discussion') : `${t('community_page.topic')}: ${activeCategory}`}
           </h2>
           {activeCategory !== 'General' && (
             <button 
@@ -120,7 +120,7 @@ export default function CommunityPage() {
               className="btn-primary"
               style={{ padding: '6px 12px', fontSize: '0.85rem' }}
             >
-              Voltar ao Geral
+              {t('community_page.back_to_general')}
             </button>
           )}
         </div>

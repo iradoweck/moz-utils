@@ -167,6 +167,9 @@
     "b2b_cta": "Contact for Business",
     "giscus_loading": "Loading discussion forum...",
     "topics_title": "Discussion Topics",
+    "general_discussion": "General Discussion",
+    "topic": "Topic",
+    "back_to_general": "Back to General",
     "topics": {
       "qa": { "title": "Q&A", "desc": "Stuck on validating a NUIT? Ask the community for help." },
       "ideas": { "title": "Ideas", "desc": "Suggest new validations, banks, or API integrations." },

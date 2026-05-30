@@ -167,6 +167,9 @@
     "b2b_cta": "Contacto Comercial",
     "giscus_loading": "A carregar o fórum de discussão...",
     "topics_title": "Tópicos de Discussão",
+    "general_discussion": "Discussão Geral",
+    "topic": "Tópico",
+    "back_to_general": "Voltar ao Geral",
     "topics": {
       "qa": { "title": "Dúvidas (Q&A)", "desc": "Preso a validar um NUIT? Peça ajuda à comunidade." },
       "ideas": { "title": "Ideias", "desc": "Sugira novas validações, bancos ou integrações de APIs." },
