@@ -158,5 +158,20 @@
       "contributing": "Contribuição",
       "faq": "FAQ"
     }
+  },
+  "community_page": {
+    "title": "Comunidade",
+    "description": "Junte-se à discussão oficial. Tire dúvidas, proponha funcionalidades e ajude a construir a fundação digital moçambicana.",
+    "b2b_title": "Empresas & Parcerias",
+    "b2b_description": "É um gestor, empresa ou instituição interessada em integrar o moz-utils ou propor uma parceria? Não precisa de usar o fórum de programadores.",
+    "b2b_cta": "Contacto Comercial",
+    "giscus_loading": "A carregar o fórum de discussão...",
+    "topics_title": "Tópicos de Discussão",
+    "topics": {
+      "qa": { "title": "Dúvidas (Q&A)", "desc": "Preso a validar um NUIT? Peça ajuda à comunidade." },
+      "ideas": { "title": "Ideias", "desc": "Sugira novas validações, bancos ou integrações de APIs." },
+      "showcase": { "title": "Projetos (Showcase)", "desc": "Mostre o que tem construído usando o moz-utils." },
+      "announcements": { "title": "Anúncios", "desc": "Atualizações oficiais e novidades do ecossistema." }
+    }
   }
 }

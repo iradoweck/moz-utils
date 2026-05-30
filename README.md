@@ -105,7 +105,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
     ```yaml
     # Add to your pubspec.yaml
     dependencies:
-      moz_utils: ^0.3.0
+      moz_utils: ^0.3.2
     ```
 
 === "Kotlin"
@@ -115,7 +115,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
         maven { url = uri("https://jitpack.io") }
     }
     dependencies {
-        implementation("com.github.iradoweck:moz-utils:v0.3.0")
+        implementation("com.github.iradoweck:moz-utils:v0.3.2")
     }
     ```
 
@@ -158,6 +158,18 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
 * The mathematical implementation of NUIT validation.
 * Code style and naming conventions.
 * Writing unit tests to maintain parity across ecosystems.
+
+---
+
+## 💬 Official Community & Forum
+
+<p align="justify">
+  We have a dedicated Community Portal integrated directly into our official website. Whether you have questions, ideas, want to showcase your projects, or propose B2B partnerships, everything happens there natively through GitHub Discussions.
+</p>
+
+👉 **[Join the Community Discussions](https://iradoweck.github.io/moz-utils/#/community)**
+
+---
 
 ## 👥 Authors and Contributors
 

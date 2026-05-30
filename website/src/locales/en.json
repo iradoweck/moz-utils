@@ -158,5 +158,20 @@
       "contributing": "Contributing",
       "faq": "FAQ"
     }
+  },
+  "community_page": {
+    "title": "Community",
+    "description": "Join the official discussion. Ask questions, propose features, and help build the Mozambican digital foundation.",
+    "b2b_title": "Enterprise & Partnerships",
+    "b2b_description": "Are you a project manager, company, or institution looking to integrate moz-utils or propose a partnership? You don't need to use the developer forum.",
+    "b2b_cta": "Contact for Business",
+    "giscus_loading": "Loading discussion forum...",
+    "topics_title": "Discussion Topics",
+    "topics": {
+      "qa": { "title": "Q&A", "desc": "Stuck on validating a NUIT? Ask the community for help." },
+      "ideas": { "title": "Ideas", "desc": "Suggest new validations, banks, or API integrations." },
+      "showcase": { "title": "Showcase", "desc": "Show off what you've built using moz-utils." },
+      "announcements": { "title": "Announcements", "desc": "Official updates and ecosystem news." }
+    }
   }
 }
