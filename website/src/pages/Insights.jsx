@@ -214,7 +214,7 @@ export default function Insights() {
           <h2 style={{ fontSize: '2rem', margin: '0' }}>
             <span style={{ color: '#ff9f0a' }}>{liveGH?.issues?.open ?? (stats?.github?.open_issues ?? 0)}</span>
             <span style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', margin: '0 4px' }}>/</span>
-            <span style={{ color: 'var(--text-secondary)' }}>{liveGH?.issues?.closed ?? 0}</span>
+            <span style={{ color: 'var(--text-secondary)' }}>{liveGH?.issues?.closed || (stats?.github?.closed_issues ?? 0)}</span>
           </h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px' }}>{t('insights_page.open_closed_issues')}</p>
         </div>
@@ -224,7 +224,7 @@ export default function Insights() {
           <h2 style={{ fontSize: '2rem', margin: '0' }}>
             <span style={{ color: '#bf5af2' }}>{liveGH?.prs?.open ?? (stats?.github?.open_prs ?? 0)}</span>
             <span style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', margin: '0 4px' }}>/</span>
-            <span style={{ color: 'var(--neon-green)' }}>{liveGH?.prs?.merged ?? 0}</span>
+            <span style={{ color: 'var(--neon-green)' }}>{liveGH?.prs?.merged || (stats?.github?.merged_prs ?? 0)}</span>
           </h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px' }}>{t('insights_page.open_merged_prs')}</p>
         </div>
