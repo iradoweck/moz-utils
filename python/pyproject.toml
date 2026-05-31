@@ -23,3 +23,15 @@ Homepage = "https://iradoweck.github.io/moz-utils/"
 Documentation = "https://iradoweck.github.io/moz-utils/#/docs/overview"
 Repository = "https://github.com/iradoweck/moz-utils.git"
 "Bug Tracker" = "https://github.com/iradoweck/moz-utils/issues"
+
+[tool.pyright]
+exclude = [
+    "**/__pyrefly_virtual__/**",
+    "**/*.md",
+    "**/*.mdx"
+]
+ignore = [
+    "**/__pyrefly_virtual__/**",
+    "**/*.md",
+    "**/*.mdx"
+]

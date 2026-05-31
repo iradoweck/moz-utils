@@ -1,0 +1,14 @@
+{
+  "ignore": [
+    "**/__pyrefly_virtual__/**",
+    "**/*.md",
+    "**/*.mdx",
+    "**/node_modules/**"
+  ],
+  "exclude": [
+    "**/__pyrefly_virtual__/**",
+    "**/*.md",
+    "**/*.mdx",
+    "**/node_modules/**"
+  ]
+}
