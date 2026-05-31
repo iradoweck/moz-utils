@@ -2,11 +2,13 @@ import { isValidDIRE, isValidPassport, isValidDrivingLicense } from './src/index
 
 console.log('--- Testando DIRE ---');
 // Válidos
-console.log('00008312C (valid):', isValidDIRE('00008312C'));
+console.log('00008312C (legado valid):', isValidDIRE('00008312C'));
+console.log('12C00008312C (legado alternativo valid):', isValidDIRE('12C00008312C'));
+console.log('120345678A (moderno SENAMI valid):', isValidDIRE('120345678A'));
 console.log(' 00008312-c  (com espaços, hífen e minúscula - valid):', isValidDIRE(' 00008312-c  '));
 // Invalids
 console.log('0000831C (dígitos insuficientes - invalid):', isValidDIRE('0000831C'));
-console.log('000083123C (dígitos a mais - invalid):', isValidDIRE('000083123C'));
+console.log('0000831234C (dígitos a mais - invalid):', isValidDIRE('0000831234C'));
 console.log('A0008312C (letra no início - invalid):', isValidDIRE('A0008312C'));
 
 console.log('\n--- Testando Passaporte ---');
@@ -23,9 +25,12 @@ console.log('\n--- Testando Carta de Condução ---');
 console.log('M12345 (1 letra, 5 dígitos - valid):', isValidDrivingLicense('M12345'));
 console.log('M123456 (1 letra, 6 dígitos - valid):', isValidDrivingLicense('M123456'));
 console.log('M1234567 (1 letra, 7 dígitos - valid):', isValidDrivingLicense('M1234567'));
+console.log('MP1234567 (moderno INATRO 2 letras, 7 dígitos - valid):', isValidDrivingLicense('MP1234567'));
 console.log('m-123456 (hífen e minúscula - valid):', isValidDrivingLicense('m-123456'));
+console.log('mp-1234567 (hífen moderno - valid):', isValidDrivingLicense('mp-1234567'));
 // Invalids
 console.log('123456 (sem letra - invalid):', isValidDrivingLicense('123456'));
 console.log('M1234 (4 dígitos - invalid):', isValidDrivingLicense('M1234'));
 console.log('M12345678 (8 dígitos - invalid):', isValidDrivingLicense('M12345678'));
-console.log('MM123456 (duas letras - invalid):', isValidDrivingLicense('MM123456'));
+console.log('MP123456 (moderno com 6 dígitos - invalid):', isValidDrivingLicense('MP123456'));
+console.log('MMM1234567 (três letras - invalid):', isValidDrivingLicense('MMM1234567'));

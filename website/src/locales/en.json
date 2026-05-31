@@ -64,9 +64,9 @@
     "placeholders": {
       "nuit": "Type a NUIT (e.g. 400000008)",
       "bi": "Type a National ID (e.g. 123456789123A)",
-      "dire": "Type a DIRE (e.g. 00008312C)",
+      "dire": "Type a DIRE (e.g. 120345678A)",
       "passport": "Type a Passport (e.g. AO1234567)",
-      "license": "Type a Driver's License (e.g. M123456)",
+      "license": "Type a Driving License (e.g. MP1234567)",
       "province": "Province ID (e.g. npl (Nampula))",
       "legacy_postal": "Legacy postal code (e.g. 3100)",
       "new_cep": "New CEP (e.g. 0909-09)",

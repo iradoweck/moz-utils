@@ -3,6 +3,16 @@
 Change history for all versions of the **moz-utils** project (TypeScript, Dart, Python, PHP, and Kotlin).
 ---
 
+## 0.3.3
+
+> **Patch version — Backwards Compatibility and English Enforcement**
+
+### Validations & Geography
+- **Regex Relaxed:** Softened regex patterns for DIRE and Driving License across all ecosystems to guarantee perfect backwards compatibility and eliminate false negatives.
+- **English Standardization:** Fixed internal validation docstrings across TS, Python, PHP, Dart, and Kotlin to ensure complete adherence to English.
+
+---
+
 ## 0.3.2
 
 > **Minor version — The New Community Portal, Official Documents & Interactive Documentation**

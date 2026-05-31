@@ -215,6 +215,27 @@ test('Província de 3311', MozUtils::getPostalCodeProvince('3311'), 'Niassa');
 test('Localidade de inválido', MozUtils::getPostalCodeLocality('9999'), null);
 test('Província de inválido', MozUtils::getPostalCodeProvince('9999'), null);
 
+// --- DIRE ---
+echo "\n🛂 TESTES DO DIRE\n";
+echo str_repeat("─", 50) . "\n";
+
+test('DIRE legado 1 → válido', MozUtils::isValidDIRE('00008312C'), true);
+test('DIRE legado 2 → válido', MozUtils::isValidDIRE('12C00008312C'), true);
+test('DIRE moderno → válido', MozUtils::isValidDIRE('120345678A'), true);
+test('DIRE curto → inválido', MozUtils::isValidDIRE('0000831C'), false);
+test('DIRE inválido', MozUtils::isValidDIRE('A0008312C'), false);
+
+// --- Carta de Condução ---
+echo "\n🚗 TESTES DA CARTA DE CONDUÇÃO\n";
+echo str_repeat("─", 50) . "\n";
+
+test('Carta legada 1 → válido', MozUtils::isValidDrivingLicense('M123456'), true);
+test('Carta moderna → válido', MozUtils::isValidDrivingLicense('MP1234567'), true);
+test('Carta com traço → válido', MozUtils::isValidDrivingLicense('m-123456'), true);
+test('Carta moderna com traço → válido', MozUtils::isValidDrivingLicense('mp-1234567'), true);
+test('Carta sem letra → inválido', MozUtils::isValidDrivingLicense('123456'), false);
+test('Carta com muitas letras → inválido', MozUtils::isValidDrivingLicense('MMM1234567'), false);
+
 // --- RESULTADO ---
 echo "\n" . str_repeat("═", 50) . "\n";
 echo "📊 RESULTADO: $passed passaram, $failed falharam (Total: " . ($passed + $failed) . ")\n";

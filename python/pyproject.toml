@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "moz-utils"
-version = "0.3.2"
+version = "0.3.3"
 description = "Funções de utilidade para Moçambique. Validação de NUIT, documentos e formatação de telefones."
 readme = "README.md"
 license = "AGPL-3.0-or-later"

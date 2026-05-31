@@ -1347,17 +1347,18 @@ object MozUtils {
     }
 
     /**
-     * Valida o DIRE (Documento de Identificação de Residente Estrangeiro) de Moçambique.
-     * Formato: Exatamente 8 dígitos seguidos de uma única letra.
+     * Validates the Mozambican DIRE (Documento de Identificação de Residente Estrangeiro).
+     * Supports the modern SENAMI format (9 digits + 1 letter, e.g., 120345678A)
+     * as well as legacy formats (e.g., 00008312C or 12C00008312C).
      */
     fun isValidDIRE(dire: String): Boolean {
         val cleaned = dire.replace(Regex("[\\s\\-]"), "").uppercase()
-        return Regex("^\\d{8}[A-Z]$").matches(cleaned)
+        return Regex("^(?:\\d{8}[A-Z]|\\d{2}[A-Z]\\d{8}[A-Z0-9]|\\d{9}[A-Z])$").matches(cleaned)
     }
 
     /**
      * Validates the Mozambican Passport.
-     * Formato: Exatamente 2 letras seguidas de 7 dígitos numéricos.
+     * Official format: Exactly 2 letters followed by 7 numeric digits (E.g.: AO1234567).
      */
     fun isValidPassport(passport: String): Boolean {
         val cleaned = passport.replace(Regex("[\\s\\-]"), "").uppercase()
@@ -1365,12 +1366,13 @@ object MozUtils {
     }
 
     /**
-     * Validates the Mozambican Driving License.
-     * Formato: 1 letra seguida de 5 a 7 dígitos numéricos.
+     * Validates the Mozambican Driving License (Carta de Condução).
+     * Supports the modern INATRO biometric format (2 letters + 7 digits, e.g., MP1234567)
+     * as well as legacy formats (e.g., M123456).
      */
     fun isValidDrivingLicense(license: String): Boolean {
         val cleaned = license.replace(Regex("[\\s\\-]"), "").uppercase()
-        return Regex("^[A-Z]\\d{5,7}$").matches(cleaned)
+        return Regex("^(?:[A-Z]\\d{5,7}|\\d{12}[A-Z]|[A-Z]{2}\\d{7})$").matches(cleaned)
     }
 
     /**

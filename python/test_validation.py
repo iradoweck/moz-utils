@@ -10,7 +10,9 @@ from moz_utils import (
     get_all_districts,
     is_valid_postal_code,
     get_postal_code_locality,
-    get_postal_code_province
+    get_postal_code_province,
+    is_valid_dire,
+    is_valid_driving_license
 )
 
 def generate_valid_nuit(first8: str) -> str:
@@ -150,6 +152,21 @@ class TestMozUtils(unittest.TestCase):
         self.assertEqual(get_postal_code_province('3311'), 'Niassa')
         self.assertIsNone(get_postal_code_locality('9999'))
         self.assertIsNone(get_postal_code_province('9999'))
+
+    def test_dire_validation(self):
+        self.assertTrue(is_valid_dire('00008312C'))
+        self.assertTrue(is_valid_dire('12C00008312C'))
+        self.assertTrue(is_valid_dire('120345678A'))
+        self.assertFalse(is_valid_dire('0000831C'))
+        self.assertFalse(is_valid_dire('A0008312C'))
+
+    def test_driving_license_validation(self):
+        self.assertTrue(is_valid_driving_license('M123456'))
+        self.assertTrue(is_valid_driving_license('MP1234567'))
+        self.assertTrue(is_valid_driving_license('m-123456'))
+        self.assertTrue(is_valid_driving_license('mp-1234567'))
+        self.assertFalse(is_valid_driving_license('123456'))
+        self.assertFalse(is_valid_driving_license('MMM1234567'))
 
 if __name__ == '__main__':
     unittest.main()

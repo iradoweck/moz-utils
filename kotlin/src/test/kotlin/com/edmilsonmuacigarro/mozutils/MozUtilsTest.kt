@@ -166,4 +166,23 @@ class MozUtilsTest {
         assertNull(MozUtils.getPostalCodeLocality("9999"))
         assertNull(MozUtils.getPostalCodeProvince("9999"))
     }
+
+    @Test
+    fun testDIRE() {
+        assertTrue(MozUtils.isValidDIRE("00008312C"))
+        assertTrue(MozUtils.isValidDIRE("12C00008312C"))
+        assertTrue(MozUtils.isValidDIRE("120345678A"))
+        assertFalse(MozUtils.isValidDIRE("0000831C"))
+        assertFalse(MozUtils.isValidDIRE("A0008312C"))
+    }
+
+    @Test
+    fun testDrivingLicense() {
+        assertTrue(MozUtils.isValidDrivingLicense("M123456"))
+        assertTrue(MozUtils.isValidDrivingLicense("MP1234567"))
+        assertTrue(MozUtils.isValidDrivingLicense("m-123456"))
+        assertTrue(MozUtils.isValidDrivingLicense("mp-1234567"))
+        assertFalse(MozUtils.isValidDrivingLicense("123456"))
+        assertFalse(MozUtils.isValidDrivingLicense("MMM1234567"))
+    }
 }

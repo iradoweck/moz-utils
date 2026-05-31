@@ -75,15 +75,24 @@ from moz_utils import is_valid_bi
 print(is_valid_bi("123456789123A")) # True
 ```
 
-## Passaporte e DIRE
+## Passaporte, DIRE e Carta de Condução
 
-Outros documentos como Passaportes e DIRE (Documento de Identificação de Residente Estrangeiro) também podem ser validados.
+Outros documentos como Passaportes, DIRE (Documento de Identificação de Residente Estrangeiro) e a Carta de Condução também podem ser validados. A biblioteca suporta a retrocompatibilidade dos formatos.
+
+Para o **DIRE**, é suportado o formato legado (ex: `00008312C` ou `12C00008312C`) e o novo formato do SENAMI (9 dígitos e 1 letra, ex: `120345678A`).
+Para a **Carta de Condução**, é suportado o formato legado (ex: `M123456` ou `123456789123A`) e o novo formato biométrico do INATRO (2 letras e 7 dígitos, ex: `MP1234567`).
 
 ### TypeScript
 ```ts
 import { isValidPassport, isValidDIRE, isValidDrivingLicense } from 'moz-utils';
 
 console.log(isValidPassport("AO1234567")); // true
+
+// Validação de DIRE (Legado e Moderno)
 console.log(isValidDIRE("00008312C"));    // true
+console.log(isValidDIRE("120345678A"));   // true
+
+// Validação da Carta de Condução (Legado e Moderno)
 console.log(isValidDrivingLicense("M123456")); // true
+console.log(isValidDrivingLicense("MP1234567")); // true
 ```

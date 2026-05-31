@@ -138,12 +138,13 @@ export function isValidBI(bi: string): boolean {
 }
 
 /**
- * Valida o DIRE (Documento de Identificação de Residente Estrangeiro) de Moçambique.
- * Official format: Exactly 8 digits followed by a single letter (E.g.: 00008312C).
+ * Validates the Mozambican DIRE (Documento de Identificação de Residente Estrangeiro).
+ * Supports the modern SENAMI format (9 digits + 1 letter, e.g., 120345678A)
+ * as well as legacy formats (e.g., 00008312C or 12C00008312C).
  */
 export function isValidDIRE(dire: string): boolean {
   const cleaned = dire.replace(/[\s\-]/g, '').toUpperCase();
-  return /^\d{8}[A-Z]$/.test(cleaned);
+  return /^(?:\d{8}[A-Z]|\d{2}[A-Z]\d{8}[A-Z0-9]|\d{9}[A-Z])$/.test(cleaned);
 }
 
 /**
@@ -156,12 +157,13 @@ export function isValidPassport(passport: string): boolean {
 }
 
 /**
- * Validates the Mozambican Driving License.
- * Formato oficial: 1 letra (indicativo de província) seguida de 5 a 7 dígitos numéricos (E.g.: M123456).
+ * Validates the Mozambican Driving License (Carta de Condução).
+ * Supports the modern INATRO biometric format (2 letters + 7 digits, e.g., MP1234567)
+ * as well as legacy formats (e.g., M123456).
  */
 export function isValidDrivingLicense(license: string): boolean {
   const cleaned = license.replace(/[\s\-]/g, '').toUpperCase();
-  return /^[A-Z]\d{5,7}$/.test(cleaned);
+  return /^(?:[A-Z]\d{5,7}|\d{12}[A-Z]|[A-Z]{2}\d{7})$/.test(cleaned);
 }
 
 /**

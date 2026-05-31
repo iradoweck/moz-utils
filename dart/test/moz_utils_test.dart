@@ -403,4 +403,52 @@ void main() {
       expect(MozUtils.getPostalCodeProvince('9999'), isNull);
     });
   });
+
+  group('Testes do DIRE', () {
+    test('DIRE legado 1 → valid', () {
+      expect(MozUtils.isValidDIRE('00008312C'), isTrue);
+    });
+
+    test('DIRE legado 2 → valid', () {
+      expect(MozUtils.isValidDIRE('12C00008312C'), isTrue);
+    });
+
+    test('DIRE moderno → valid', () {
+      expect(MozUtils.isValidDIRE('120345678A'), isTrue);
+    });
+
+    test('DIRE curto → invalid', () {
+      expect(MozUtils.isValidDIRE('0000831C'), isFalse);
+    });
+
+    test('DIRE invalid', () {
+      expect(MozUtils.isValidDIRE('A0008312C'), isFalse);
+    });
+  });
+
+  group('Testes da Carta de Condução', () {
+    test('Carta legada 1 → valid', () {
+      expect(MozUtils.isValidDrivingLicense('M123456'), isTrue);
+    });
+
+    test('Carta moderna → valid', () {
+      expect(MozUtils.isValidDrivingLicense('MP1234567'), isTrue);
+    });
+
+    test('Carta com traço → valid', () {
+      expect(MozUtils.isValidDrivingLicense('m-123456'), isTrue);
+    });
+
+    test('Carta moderna com traço → valid', () {
+      expect(MozUtils.isValidDrivingLicense('mp-1234567'), isTrue);
+    });
+
+    test('Carta sem letra → invalid', () {
+      expect(MozUtils.isValidDrivingLicense('123456'), isFalse);
+    });
+
+    test('Carta com muitas letras → invalid', () {
+      expect(MozUtils.isValidDrivingLicense('MMM1234567'), isFalse);
+    });
+  });
 }
