@@ -3,21 +3,22 @@
 Change history for all versions of the **moz-utils** project (TypeScript, Dart, Python, PHP, and Kotlin).
 ---
 
-## 0.3.5
 
-> **Patch version — Fix CI NUIT Tests**
 
-- **Tests:** Fixed `generateValidNUIT` test helper to use the new weights so CI passes.
 
----
 
 ## 0.3.4
 
-> **Patch version — The True NUIT Algorithm & Currency Parser**
+> **Patch version — The True NUIT Algorithm, Fixes & Currency Parser**
 
 ### Core Logic & Mathematical Fixes
 - **NUIT Algorithm Correction:** Discovered and implemented the true Mozambican NUIT algorithm (weights `8, 9, 4, 5, 6, 7, 8, 9` instead of standard Modulo 11). Fixed across all 5 languages. Validates real-world corporate and individual NUITs perfectly.
 - **Financial Parser:** Added the `parseMZN` function to clean and parse "dirty" string inputs (e.g., `"1.500,00 MT"`, `"1 500,00MZN"`, `"1,500.00"`) directly into raw database floats across all ecosystems.
+
+### Tests & CI
+- **Tests:** Fixed `generateValidNUIT` test helper to use the new weights so CI passes for Dart and Python.
+- **E2E:** Added Playwright E2E tests for the Vite website and Simulators.
+- **Security:** Resolved CodeQL false positive warnings by ignoring node_modules.
 
 ### Simulators & Website
 - **Money Simulator:** The interactive money simulator now processes values through `parseMZN` to prove its resilience before formatting to UI standards.

@@ -2,13 +2,14 @@ import 'package:test/test.dart';
 import 'package:moz_utils/moz_utils.dart';
 
 String generateValidNUIT(String first8) {
+  final weights = [8, 9, 4, 5, 6, 7, 8, 9];
   int sum = 0;
   for (int i = 0; i < 8; i++) {
-    sum += int.parse(first8[i]) * (9 - i);
+    sum += int.parse(first8[i]) * weights[i];
   }
-  int remainder = sum % 11;
-  int checkDigit = remainder <= 1 ? 0 : 11 - remainder;
-  return '$first8$checkDigit';
+  final remainder = sum % 11;
+  final checkMap = "01234567891";
+  return '$first8${checkMap[remainder]}';
 }
 
 void main() {

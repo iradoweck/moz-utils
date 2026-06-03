@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.4] - 2026-06-03
+
+### Changed
+- **NUIT Algorithm Correction:** Discovered and implemented the true Mozambican NUIT algorithm (weights `8, 9, 4, 5, 6, 7, 8, 9` instead of standard Modulo 11). Fixed across all 5 languages. Validates real-world corporate and individual NUITs perfectly.
+- **Financial Parser:** Added the `parseMZN` function to clean and parse "dirty" string inputs (e.g., `"1.500,00 MT"`, `"1 500,00MZN"`, `"1,500.00"`) directly into raw database floats across all ecosystems.
+- **Tests (Dart & Python):** Fixed test suites to use the new NUIT algorithm and fixed the mock generator. 
+- **Website (Simulators):** The interactive money simulator now processes values through `parseMZN`. NUIT Simulator is fully functional with the new mathematical weights.
+- **E2E Testing:** Added Playwright E2E tests for the simulators.
+- **CodeQL Security:** Excluded node_modules from scans to resolve false positive alerts.
+
 ## [0.3.3] - 2026-05-31
 
 ### Changed
