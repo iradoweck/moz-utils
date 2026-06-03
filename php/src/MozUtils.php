@@ -82,13 +82,14 @@ class MozUtils
         if (preg_match('/^(\d)\1{8}$/', $cleaned)) return false;
         if (!preg_match('/^[1-5]/', $cleaned)) return false;
 
+        $weights = [8, 9, 4, 5, 6, 7, 8, 9];
         $sum = 0;
         for ($i = 0; $i < 8; $i++) {
-            $sum += ((int)$cleaned[$i]) * (9 - $i);
+            $sum += ((int)$cleaned[$i]) * $weights[$i];
         }
 
-        $remainder = $sum % 11;
-        $expectedDigit = $remainder <= 1 ? 0 : 11 - $remainder;
+        $checkIdx = $sum % 11;
+        $expectedDigit = (int)("01234567891"[$checkIdx]);
 
         return ((int)$cleaned[8]) === $expectedDigit;
     }
@@ -143,6 +144,42 @@ class MozUtils
         $formatted = number_format($absolute, 2, ',', ' ');
 
         return "{$sign}{$formatted} {$currency}";
+    }
+
+    /**
+     * Parses a formatted MZN string back into a float.
+     */
+    public static function parseMZN(string $value): ?float
+    {
+        $clean = preg_replace('/[^\d.,\-]/', '', $value);
+        if ($clean === '' || $clean === '-') return null;
+
+        $lastComma = strrpos($clean, ',');
+        $lastDot = strrpos($clean, '.');
+
+        if ($lastComma !== false && $lastDot !== false) {
+            if ($lastComma > $lastDot) {
+                $clean = str_replace(',', '.', str_replace('.', '', $clean));
+            } else {
+                $clean = str_replace(',', '', $clean);
+            }
+        } elseif ($lastComma !== false) {
+            $parts = explode(',', $clean);
+            if (count($parts) === 2 && strlen($parts[1]) !== 3) {
+                $clean = str_replace(',', '.', $clean);
+            } else {
+                $clean = str_replace(',', '', $clean);
+            }
+        } elseif ($lastDot !== false) {
+            $parts = explode('.', $clean);
+            if (count($parts) === 2 && strlen($parts[1]) === 3) {
+                $clean = str_replace('.', '', $clean);
+            } elseif (count($parts) > 2) {
+                $clean = str_replace('.', '', $clean);
+            }
+        }
+
+        return (float)$clean;
     }
 
     /**

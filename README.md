@@ -115,9 +115,33 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
         maven { url = uri("https://jitpack.io") }
     }
     dependencies {
-        implementation("com.github.iradoweck:moz-utils:v0.3.3")
+        implementation("com.github.iradoweck:moz-utils:v0.3.4")
     }
     ```
+
+---
+
+## 🧮 O Algoritmo NUIT (A Verdadeira Fórmula Moçambicana)
+
+Ao contrário do NIF de Portugal (que usa multiplicadores de 9 a 2), a Autoridade Tributária de Moçambique utiliza a seguinte matriz de pesos para calcular o Módulo 11 do NUIT.
+
+**A Fórmula e os Pesos Oficiais:**
+```text
+NUIT a Validar: 401626638
+
+Posição:   1   2   3   4   5   6   7   8
+Dígitos:   4   0   1   6   2   6   6   3
+Pesos:     8   9   4   5   6   7   8   9
+           |   |   |   |   |   |   |   |
+Mult:     32 + 0 + 4 +30 +12 +42 +48 +27 = 195 (Soma)
+
+Cálculo do Módulo 11:
+1. Resto = Soma % 11
+   195 % 11 = 8
+2. O "Resto" é o Índice (Posição 0 a 10) na string de controlo "01234567891".
+3. A 8ª posição de "01234567891" é '8'.
+4. Como o 9º dígito do NUIT (Dígito de Controlo) é '8', o NUIT é Válido!
+```
 
 ---
 
@@ -131,13 +155,16 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
     ```typescript
     import { 
       isValidNUIT, isValidDIRE, isValidMozambicanPhone,
-      suggestCEPs, formatMZN 
+      suggestCEPs, formatMZN, parseMZN 
     } from 'moz-utils';
     
-    console.log(isValidNUIT('123456789')); // true
+    // NUIT e Documentos
+    console.log(isValidNUIT('401626638')); // true (Algoritmo Moz-Mod11)
     console.log(isValidDIRE(' 00008312-c ')); // true (auto-sanitized)
-    console.log(formatMZN(1500));          // "1 500,00 MT"
-    console.log(isValidMozambicanPhone('+258 841234567')); // true
+    
+    // Tratamento de Dinheiro de "Sujo" para "BD" e depois para "UI"
+    const dbValue = parseMZN('1.500,00 MT'); // 1500.00 (float puro para a BD)
+    console.log(formatMZN(dbValue));         // "1 500,00 MT" (padrão oficial de exibição)
     
     // Auto-fallback and suggestions for legacy postal codes
     const suggestions = suggestCEPs('3100');

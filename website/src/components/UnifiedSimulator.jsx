@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { 
   isValidNUIT, getNUITEntityType, isValidBI, isValidDIRE, isValidPassport, isValidDrivingLicense,
   getDistrictsByProvince, isValidPostalCode, getPostalCodeLocality, getPostalCodeProvince, isValidNewCEP, suggestCEPs,
-  isValidMozambicanPhone, getMobileOperator, getMobileWallet, formatMZN, buildWhatsAppUrl
+  isValidMozambicanPhone, getMobileOperator, getMobileWallet, formatMZN, parseMZN, buildWhatsAppUrl
 } from 'moz-utils';
 import { CheckCircle2, XCircle, Users, Map, Settings } from 'lucide-react';
 
@@ -135,8 +135,8 @@ export default function UnifiedSimulator() {
         othersResult = t('simulator.results.phoneInvalid');
       }
     } else if (activeTabOthers === 'money') {
-      const numValue = parseFloat(inputValue);
-      if (!isNaN(numValue)) {
+      const numValue = parseMZN(inputValue);
+      if (numValue !== null) {
         othersValid = true;
         othersResult = `${formatMZN(numValue)}`;
       } else {

@@ -71,11 +71,12 @@ def is_valid_nuit(nuit: Union[str, int]) -> bool:
     if not re.match(r'^[1-5]', cleaned):
         return False
 
-    total_sum = sum(int(cleaned[i]) * (9 - i) for i in range(8))
-    remainder = total_sum % 11
-    expected_digit = 0 if remainder <= 1 else 11 - remainder
+    weights = [8, 9, 4, 5, 6, 7, 8, 9]
+    total_sum = sum(int(cleaned[i]) * weights[i] for i in range(8))
+    check_idx = total_sum % 11
+    check_map = "01234567891"
 
-    return int(cleaned[8]) == expected_digit
+    return cleaned[8] == check_map[check_idx]
 
 def get_nuit_entity_type(nuit: Union[str, int]) -> Optional[str]:
     """Classifies the entity type based on the first digit of the NUIT."""
@@ -103,11 +104,6 @@ def format_mzn(value: float, currency: str = 'MT') -> str:
     """
     Formats a monetary value in Meticais following the official standard of Mozambique.
 
-    Padrão oficial (SI + AT):
-    - Thousands separator: space
-    - Decimal separator: comma
-    - Symbol after the value, separated by a space
-
     Args:
         value: Valor numérico
         currency: 'MT' (nacional) ou 'MZN' (ISO 4217)
@@ -125,6 +121,41 @@ def format_mzn(value: float, currency: str = 'MT') -> str:
     formatted = formatted.replace(',', ' ').replace('.', ',')
 
     return f"{sign}{formatted} {currency}"
+
+def parse_mzn(value: str) -> Optional[float]:
+    """
+    Parses a Mozambican currency string into a raw float number for the database.
+    Handles inputs like "1.500,00 MT", "1 500,00MZN", "1,500.00", etc.
+    """
+    clean = re.sub(r'[^\d.,\-]', '', value)
+    if not clean or clean == '-':
+        return None
+
+    last_comma = clean.rfind(',')
+    last_dot = clean.rfind('.')
+
+    if last_comma > -1 and last_dot > -1:
+        if last_comma > last_dot:
+            clean = clean.replace('.', '').replace(',', '.')
+        else:
+            clean = clean.replace(',', '')
+    elif last_comma > -1:
+        parts = clean.split(',')
+        if len(parts) == 2 and len(parts[1]) != 3:
+            clean = clean.replace(',', '.')
+        else:
+            clean = clean.replace(',', '')
+    elif last_dot > -1:
+        parts = clean.split('.')
+        if len(parts) == 2 and len(parts[1]) == 3:
+            clean = clean.replace('.', '')
+        elif len(parts) > 2:
+            clean = clean.replace('.', '')
+
+    try:
+        return float(clean)
+    except ValueError:
+        return None
 
 def build_whatsapp_url(phone: str, message: str = "") -> str:
     """Generates a WhatsApp contact URL with a pre-formatted message."""

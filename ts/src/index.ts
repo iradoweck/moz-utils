@@ -93,16 +93,17 @@ export function isValidNUIT(nuit: string | number): boolean {
   // Validação do Primeiro Dígito (1 a 5)
   if (!/^[1-5]/.test(cleaned)) return false
 
-  // Validação do Dígito de Controlo (Módulo 11)
+  // Validação do Dígito de Controlo (Módulo 11) - Algoritmo Moçambicano (Pesos: 8, 9, 4, 5, 6, 7, 8, 9)
+  const weights = [8, 9, 4, 5, 6, 7, 8, 9]
   let sum = 0
   for (let i = 0; i < 8; i++) {
-    sum += parseInt(cleaned.charAt(i), 10) * (9 - i)
+    sum += parseInt(cleaned.charAt(i), 10) * weights[i]
   }
 
-  const remainder = sum % 11
-  const expectedDigit = remainder <= 1 ? 0 : 11 - remainder
-
-  return parseInt(cleaned.charAt(8), 10) === expectedDigit
+  const checkIdx = sum % 11
+  const checkMap = "01234567891"
+  
+  return cleaned.charAt(8) === checkMap[checkIdx]
 }
 
 /**
@@ -182,16 +183,60 @@ export function isValidDrivingLicense(license: string): boolean {
  * formatMZN(1500)           // "1 500,00 MT"
  * formatMZN(1500, 'MZN')   // "1 500,00 MZN"
  * formatMZN(0.5)            // "0,50 MT"
- * formatMZN(1000000)        // "1 000 000,00 MT"
  */
 export function formatMZN(value: number, currency: 'MT' | 'MZN' = 'MT'): string {
-  const [integerPart, decimalPart] = Math.abs(value).toFixed(2).split('.')
-  const sign = value < 0 ? '-' : ''
+  // Format to standard: "1 500,00 MT"
+  const formattedNumber = new Intl.NumberFormat('pt-MZ', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    useGrouping: true,
+  }).format(value)
 
-  // Group digits in blocks of 3 from right to left, separated by a space
-  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+  // O Intl no JS substitui às vezes o grouping separator por No-Break Space ou espaço regular.
+  // Vamos assegurar que é um espaço regular para evitar problemas de comparação em alguns testes.
+  const cleanFormatted = formattedNumber.replace(/\u00A0|\u202F/g, ' ')
+  
+  return `${cleanFormatted} ${currency}`
+}
 
-  return `${sign}${formattedInteger},${decimalPart} ${currency}`
+/**
+ * Parses a Mozambican currency string into a raw float number for the database.
+ * Handles inputs like "1.500,00 MT", "1 500,00MZN", "1,500.00", etc.
+ *
+ * @param value The dirty currency string
+ * @returns The parsed float number, or null if invalid
+ */
+export function parseMZN(value: string): number | null {
+  let clean = value.replace(/[^\d.,\-]/g, '');
+  if (!clean || clean === '-') return null;
+
+  const lastComma = clean.lastIndexOf(',');
+  const lastDot = clean.lastIndexOf('.');
+
+  if (lastComma > -1 && lastDot > -1) {
+    if (lastComma > lastDot) {
+      clean = clean.replace(/\./g, '').replace(',', '.');
+    } else {
+      clean = clean.replace(/,/g, '');
+    }
+  } else if (lastComma > -1) {
+    const parts = clean.split(',');
+    if (parts.length === 2 && parts[1].length !== 3) {
+      clean = clean.replace(',', '.');
+    } else {
+      clean = clean.replace(/,/g, '');
+    }
+  } else if (lastDot > -1) {
+    const parts = clean.split('.');
+    if (parts.length === 2 && parts[1].length === 3) {
+      clean = clean.replace('.', '');
+    } else if (parts.length > 2) {
+      clean = clean.replace(/\./g, '');
+    }
+  }
+
+  const result = parseFloat(clean);
+  return isNaN(result) ? null : result;
 }
 
 /**

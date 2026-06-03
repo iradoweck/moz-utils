@@ -81,15 +81,16 @@ object MozUtils {
         if (cleaned.matches(Regex("^(\\d)\\1{8}$"))) return false
         if (!cleaned.matches(Regex("^[1-5].*"))) return false
 
+        val weights = intArrayOf(8, 9, 4, 5, 6, 7, 8, 9)
         var sum = 0
         for (i in 0 until 8) {
-            sum += Character.getNumericValue(cleaned[i]) * (9 - i)
+            sum += Character.getNumericValue(cleaned[i]) * weights[i]
         }
 
-        val remainder = sum % 11
-        val expectedDigit = if (remainder <= 1) 0 else 11 - remainder
+        val checkIdx = sum % 11
+        val expectedDigit = "01234567891"[checkIdx]
 
-        return Character.getNumericValue(cleaned[8]) == expectedDigit
+        return cleaned[8] == expectedDigit
     }
 
     /**
@@ -142,6 +143,32 @@ object MozUtils {
         val result = formatted.replace(",", " ").replace(".", ",")
 
         return "$sign$result $currency"
+    }
+
+    /**
+     * Parses a formatted string value back to a Double.
+     *
+     * @param value The formatted string (e.g., "1 500,00 MT")
+     * @return Double value or null if invalid
+     */
+    fun parseMZN(value: String): Double? {
+        var clean = value.replace(Regex("[^\\d.,\\-]"), "")
+        if (clean.isEmpty() || clean == "-") return null
+        val lastComma = clean.lastIndexOf(',')
+        val lastDot = clean.lastIndexOf('.')
+        if (lastComma > -1 && lastDot > -1) {
+            if (lastComma > lastDot) clean = clean.replace(".", "").replace(',', '.')
+            else clean = clean.replace(",", "")
+        } else if (lastComma > -1) {
+            val parts = clean.split(',')
+            if (parts.size == 2 && parts[1].length != 3) clean = clean.replace(',', '.')
+            else clean = clean.replace(",", "")
+        } else if (lastDot > -1) {
+            val parts = clean.split('.')
+            if (parts.size == 2 && parts[1].length == 3) clean = clean.replace(".", "")
+            else if (parts.size > 2) clean = clean.replace(".", "")
+        }
+        return clean.toDoubleOrNull()
     }
 
     /**

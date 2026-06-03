@@ -71,15 +71,15 @@ class MozUtils {
     if (RegExp(r'^(\d)\1{8}$').hasMatch(cleaned)) return false;
     if (!RegExp(r'^[1-5]').hasMatch(cleaned)) return false;
 
+    List<int> weights = [8, 9, 4, 5, 6, 7, 8, 9];
     int sum = 0;
     for (int i = 0; i < 8; i++) {
-      sum += int.parse(cleaned[i]) * (9 - i);
+      sum += int.parse(cleaned[i]) * weights[i];
     }
 
-    int remainder = sum % 11;
-    int expectedDigit = remainder <= 1 ? 0 : 11 - remainder;
+    int checkIdx = sum % 11;
 
-    return int.parse(cleaned[8]) == expectedDigit;
+    return cleaned[8] == "01234567891"[checkIdx];
   }
 
   /// Classifies the entity type based on the first digit of the NUIT.
@@ -130,6 +130,36 @@ class MozUtils {
     }
 
     return '$sign${buffer.toString()},$decimalPart $currency';
+  }
+
+  /// Parses a formatted MZN string into a double.
+  static double? parseMZN(String value) {
+    String clean = value.replaceAll(RegExp(r'[^\d.,\-]'), '');
+    if (clean.isEmpty || clean == '-') return null;
+    int lastComma = clean.lastIndexOf(',');
+    int lastDot = clean.lastIndexOf('.');
+    if (lastComma > -1 && lastDot > -1) {
+      if (lastComma > lastDot) {
+        clean = clean.replaceAll('.', '').replaceAll(',', '.');
+      } else {
+        clean = clean.replaceAll(',', '');
+      }
+    } else if (lastComma > -1) {
+      var parts = clean.split(',');
+      if (parts.length == 2 && parts[1].length != 3) {
+        clean = clean.replaceAll(',', '.');
+      } else {
+        clean = clean.replaceAll(',', '');
+      }
+    } else if (lastDot > -1) {
+      var parts = clean.split('.');
+      if (parts.length == 2 && parts[1].length == 3) {
+        clean = clean.replaceAll('.', '');
+      } else if (parts.length > 2) {
+        clean = clean.replaceAll('.', '');
+      }
+    }
+    return double.tryParse(clean);
   }
 
   /// Generates a WhatsApp contact URL with a pre-formatted message.

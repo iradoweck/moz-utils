@@ -154,3 +154,28 @@ The code lives and breathes the freedom of Open Source. Licensed under **AGPL-3.
 <p align="center">
   Developed by <b>Open Source Contributors</b> & supported by <b>Edmilson Muacigarro</b>
 </p>
+
+
+---
+
+## 🧮 O Algoritmo NUIT (A Verdadeira Fórmula Moçambicana)
+
+Ao contrário do NIF de Portugal (que usa multiplicadores de 9 a 2), a Autoridade Tributária de Moçambique utiliza a seguinte matriz de pesos para calcular o Módulo 11 do NUIT.
+
+**A Fórmula e os Pesos Oficiais:**
+```text
+NUIT a Validar: 401626638
+
+Posição:   1   2   3   4   5   6   7   8
+Dígitos:   4   0   1   6   2   6   6   3
+Pesos:     8   9   4   5   6   7   8   9
+           |   |   |   |   |   |   |   |
+Mult:     32 + 0 + 4 +30 +12 +42 +48 +27 = 195 (Soma)
+
+Cálculo do Módulo 11:
+1. Resto = Soma % 11
+   195 % 11 = 8
+2. O "Resto" é o Índice (Posição 0 a 10) na string de controlo "01234567891".
+3. A 8ª posição de "01234567891" é '8'.
+4. Como o 9º dígito do NUIT (Dígito de Controlo) é '8', o NUIT é Válido!
+```

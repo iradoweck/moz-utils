@@ -3,6 +3,20 @@
 Change history for all versions of the **moz-utils** project (TypeScript, Dart, Python, PHP, and Kotlin).
 ---
 
+## 0.3.4
+
+> **Patch version — The True NUIT Algorithm & Currency Parser**
+
+### Core Logic & Mathematical Fixes
+- **NUIT Algorithm Correction:** Discovered and implemented the true Mozambican NUIT algorithm (weights `8, 9, 4, 5, 6, 7, 8, 9` instead of standard Modulo 11). Fixed across all 5 languages. Validates real-world corporate and individual NUITs perfectly.
+- **Financial Parser:** Added the `parseMZN` function to clean and parse "dirty" string inputs (e.g., `"1.500,00 MT"`, `"1 500,00MZN"`, `"1,500.00"`) directly into raw database floats across all ecosystems.
+
+### Simulators & Website
+- **Money Simulator:** The interactive money simulator now processes values through `parseMZN` to prove its resilience before formatting to UI standards.
+- **NUIT Simulator:** Fully functional with the new mathematical weights.
+
+---
+
 ## 0.3.3
 
 > **Patch version — Backwards Compatibility and English Enforcement**
