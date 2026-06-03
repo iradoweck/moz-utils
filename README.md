@@ -115,7 +115,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
         maven { url = uri("https://jitpack.io") }
     }
     dependencies {
-        implementation("com.github.iradoweck:moz-utils:v0.3.4")
+        implementation("com.github.iradoweck:moz-utils:v0.3.5")
     }
     ```
 

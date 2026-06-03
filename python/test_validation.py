@@ -16,12 +16,11 @@ from moz_utils import (
 )
 
 def generate_valid_nuit(first8: str) -> str:
-    total_sum = 0
-    for i in range(8):
-        total_sum += int(first8[i]) * (9 - i)
-    remainder = total_sum % 11
-    check_digit = 0 if remainder <= 1 else 11 - remainder
-    return first8 + str(check_digit)
+    weights = [8, 9, 4, 5, 6, 7, 8, 9]
+    s = sum(int(first8[i]) * weights[i] for i in range(8))
+    remainder = s % 11
+    check_map = "01234567891"
+    return first8 + check_map[remainder]
 
 class TestMozUtils(unittest.TestCase):
     def setUp(self):

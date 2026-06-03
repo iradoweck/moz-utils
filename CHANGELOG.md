@@ -3,6 +3,14 @@
 Change history for all versions of the **moz-utils** project (TypeScript, Dart, Python, PHP, and Kotlin).
 ---
 
+## 0.3.5
+
+> **Patch version — Fix CI NUIT Tests**
+
+- **Tests:** Fixed `generateValidNUIT` test helper to use the new weights so CI passes.
+
+---
+
 ## 0.3.4
 
 > **Patch version — The True NUIT Algorithm & Currency Parser**
