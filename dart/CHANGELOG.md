@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.6] - 2026-06-03
+
+### Fixed
+- **Registries Conflict:** Bumped version to 0.3.6 to resolve immutable publish rejections on NPM and Pub.dev caused by previous tags.
+- **Kotlin Tests:** Fixed Kotlin `generateValidNUIT` test helper to use the true weights (`8, 9, 4, 5, 6, 7, 8, 9`) so CI passes correctly on all 5 stacks.
+
 ## [0.3.4] - 2026-06-03
 
 ### Changed

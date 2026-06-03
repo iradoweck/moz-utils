@@ -5,14 +5,16 @@ import kotlin.test.*
 class MozUtilsTest {
 
     private fun generateValidNUIT(first8: String): String {
+        val weights = intArrayOf(8, 9, 4, 5, 6, 7, 8, 9)
         var sum = 0
         for (i in 0 until 8) {
-            sum += Character.getNumericValue(first8[i]) * (9 - i)
+            sum += Character.getNumericValue(first8[i]) * weights[i]
         }
         val remainder = sum % 11
-        val checkDigit = if (remainder <= 1) 0 else 11 - remainder
-        return first8 + checkDigit.toString()
+        val checkMap = "01234567891"
+        return first8 + checkMap[remainder]
     }
+
 
     @Test
     fun testNuitValidacao() {

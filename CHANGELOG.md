@@ -7,6 +7,16 @@ Change history for all versions of the **moz-utils** project (TypeScript, Dart, 
 
 
 
+## 0.3.6
+
+> **Patch version — Kotlin Test Fixes & Registries Integrity**
+
+### Fixes
+- **Kotlin Tests:** Fixed Kotlin `generateValidNUIT` test helper to use the true NUIT weights so CI passes for JVM.
+- **Registries:** Version bumped to bypass NPM/Pub.dev immutable publish restrictions.
+
+---
+
 ## 0.3.4
 
 > **Patch version — The True NUIT Algorithm, Fixes & Currency Parser**
