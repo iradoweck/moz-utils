@@ -16,7 +16,7 @@
     "i18next": "^26.3.0",
     "lucide-react": "^1.17.0",
     "moz-utils": "file:../ts",
-    "react": "^19.2.6",
+    "react": "^19.2.7",
     "react-dom": "^19.2.6",
     "react-i18next": "^17.0.8",
     "react-markdown": "^10.1.0",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.60.0",
-    "@types/react": "^19.2.14",
+    "@types/react": "^19.2.16",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^10.3.0",
