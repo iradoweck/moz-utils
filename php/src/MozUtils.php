@@ -80,7 +80,7 @@ class MozUtils
 
         if (strlen($cleaned) !== 9) return false;
         if (preg_match('/^(\d)\1{8}$/', $cleaned)) return false;
-        if (!preg_match('/^[1-5]/', $cleaned)) return false;
+        if (!preg_match('/^[1-9]/', $cleaned)) return false;
 
         $weights = [8, 9, 4, 5, 6, 7, 8, 9];
         $sum = 0;
@@ -104,11 +104,15 @@ class MozUtils
 
         $firstDigit = $cleaned[0];
         $types = [
-            '1' => 'Singular (Cidadãos nacionais/estrangeiros e ENI)',
-            '2' => 'Singular (Cidadãos nacionais/estrangeiros e ENI)',
-            '3' => 'Equiparada (Heranças Jacentes, Consórcios)',
-            '4' => 'Colectiva (Sociedades por Quotas, SA, Lda, Associações)',
-            '5' => 'Público (Instituições do Estado e Ministérios)'
+            '1' => 'Pessoas Singulares',
+            '2' => 'Pessoas Singulares',
+            '3' => 'Pessoas Singulares',
+            '4' => 'Pessoas Colectivas',
+            '5' => 'Pessoas Colectivas',
+            '6' => 'Entidades Equiparadas',
+            '7' => 'Estado / Públicas',
+            '8' => 'Outras Entidades',
+            '9' => 'Entidades Estrangeiras'
         ];
 
         return $types[$firstDigit] ?? null;

@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.7] - 2026-06-03
+
+### Added
+- **Name Sanitization:** Added `isValidName` and `sanitizeName` to safely validate and clean personal names.
+- **Document Sanitization:** Added `sanitizeDocumentField` and `sanitizeAlphanumericField`.
+- **Financial Normalization:** Implemented `parseMZN` to cleanly extract numeric values from dirty formatted strings (e.g. "1.500,00 MT" -> 1500.00).
+
+### Changed
+- **NUIT Categories (Decree 28/2012):** Aligned NUIT prefixes completely with the Mozambican Tax Authority. NUITs starting with digits 1 through 9 are now correctly accepted and classified (e.g., `Pessoas Singulares`, `Pessoas Colectivas`, `Entidades Equiparadas`, `Estado / Públicas`, etc.).
+
 ## [0.3.6] - 2026-06-03
 
 ### Fixed

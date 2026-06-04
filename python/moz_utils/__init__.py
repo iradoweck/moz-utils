@@ -68,7 +68,7 @@ def is_valid_nuit(nuit: Union[str, int]) -> bool:
         return False
     if re.match(r'^(\d)\1{8}$', cleaned):
         return False
-    if not re.match(r'^[1-5]', cleaned):
+    if not re.match(r'^[1-9]', cleaned):
         return False
 
     weights = [8, 9, 4, 5, 6, 7, 8, 9]
@@ -86,11 +86,15 @@ def get_nuit_entity_type(nuit: Union[str, int]) -> Optional[str]:
 
     first_digit = cleaned[0]
     types = {
-        '1': 'Singular (Cidadãos nacionais/estrangeiros e ENI)',
-        '2': 'Singular (Cidadãos nacionais/estrangeiros e ENI)',
-        '3': 'Equiparada (Heranças Jacentes, Consórcios)',
-        '4': 'Colectiva (Sociedades por Quotas, SA, Lda, Associações)',
-        '5': 'Público (Instituições do Estado e Ministérios)'
+        '1': 'Pessoas Singulares',
+        '2': 'Pessoas Singulares',
+        '3': 'Pessoas Singulares',
+        '4': 'Pessoas Colectivas',
+        '5': 'Pessoas Colectivas',
+        '6': 'Entidades Equiparadas',
+        '7': 'Estado / Públicas',
+        '8': 'Outras Entidades',
+        '9': 'Entidades Estrangeiras'
     }
 
     return types.get(first_digit)

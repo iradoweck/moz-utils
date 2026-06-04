@@ -90,8 +90,8 @@ export function isValidNUIT(nuit: string | number): boolean {
   if (cleaned.length !== 9) return false
   if (/^(\d)\1{8}$/.test(cleaned)) return false
 
-  // Validação do Primeiro Dígito (1 a 5)
-  if (!/^[1-5]/.test(cleaned)) return false
+  // Validação do Primeiro Dígito (1 a 9)
+  if (!/^[1-9]/.test(cleaned)) return false
 
   // Validação do Dígito de Controlo (Módulo 11) - Algoritmo Moçambicano (Pesos: 8, 9, 4, 5, 6, 7, 8, 9)
   const weights = [8, 9, 4, 5, 6, 7, 8, 9]
@@ -119,11 +119,15 @@ export function getNUITEntityType(nuit: string | number): string | null {
 
   const firstDigit = cleaned.charAt(0)
   const types: Record<string, string> = {
-    '1': 'Singular (Cidadãos nacionais/estrangeiros e ENI)',
-    '2': 'Singular (Cidadãos nacionais/estrangeiros e ENI)',
-    '3': 'Equiparada (Heranças Jacentes, Consórcios)',
-    '4': 'Colectiva (Sociedades por Quotas, SA, Lda, Associações)',
-    '5': 'Público (Instituições do Estado e Ministérios)'
+    '1': 'Pessoas Singulares',
+    '2': 'Pessoas Singulares',
+    '3': 'Pessoas Singulares',
+    '4': 'Pessoas Colectivas',
+    '5': 'Pessoas Colectivas',
+    '6': 'Entidades Equiparadas',
+    '7': 'Estado / Públicas',
+    '8': 'Outras Entidades',
+    '9': 'Entidades Estrangeiras'
   }
 
   return types[firstDigit] ?? null

@@ -31,8 +31,7 @@ class MozUtilsTest {
         assertTrue(MozUtils.isValidNUIT(nuitPublico), "Valid Public NUIT")
 
         assertFalse(MozUtils.isValidNUIT("012345678"), "NUIT that starts with 0 → invalid")
-        assertFalse(MozUtils.isValidNUIT("612345678"), "NUIT that starts with 6 → invalid")
-        assertFalse(MozUtils.isValidNUIT("912345678"), "NUIT that starts with 9 → invalid")
+
         assertFalse(MozUtils.isValidNUIT("1234"), "NUIT with less than 9 digits → invalid")
         assertFalse(MozUtils.isValidNUIT("1234567890"), "NUIT with more than 9 digits → invalid")
         assertFalse(MozUtils.isValidNUIT("111111111"), "NUIT with repeated digits → invalid")
@@ -47,11 +46,15 @@ class MozUtilsTest {
         val nuitCollective = generateValidNUIT("40000000")
         val nuitPublico = generateValidNUIT("50000000")
 
-        assertEquals("Singular (Cidadãos nacionais/estrangeiros e ENI)", MozUtils.getNUITEntityType(nuitSingular))
-        assertEquals("Singular (Cidadãos nacionais/estrangeiros e ENI)", MozUtils.getNUITEntityType(nuitSingular2))
-        assertEquals("Equiparada (Heranças Jacentes, Consórcios)", MozUtils.getNUITEntityType(nuitEquivalent))
-        assertEquals("Colectiva (Sociedades por Quotas, SA, Lda, Associações)", MozUtils.getNUITEntityType(nuitCollective))
-        assertEquals("Público (Instituições do Estado e Ministérios)", MozUtils.getNUITEntityType(nuitPublico))
+        assertEquals("Pessoas Singulares", MozUtils.getNUITEntityType(nuitSingular))
+        assertEquals("Pessoas Singulares", MozUtils.getNUITEntityType(nuitSingular2))
+        assertEquals("Pessoas Singulares", MozUtils.getNUITEntityType(nuitEquivalent))
+        assertEquals("Pessoas Colectivas", MozUtils.getNUITEntityType(nuitCollective))
+        assertEquals("Pessoas Colectivas", MozUtils.getNUITEntityType(nuitPublico))
+        assertEquals("Entidades Equiparadas", MozUtils.getNUITEntityType(generateValidNUIT("60000000")))
+        assertEquals("Estado / Públicas", MozUtils.getNUITEntityType(generateValidNUIT("70000000")))
+        assertEquals("Outras Entidades", MozUtils.getNUITEntityType(generateValidNUIT("80000000")))
+        assertEquals("Entidades Estrangeiras", MozUtils.getNUITEntityType(generateValidNUIT("90000000")))
         assertNull(MozUtils.getNUITEntityType("000000000"))
     }
 

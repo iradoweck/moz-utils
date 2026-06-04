@@ -51,8 +51,20 @@ Identification and validation of Mozambican 9-digit numbers (starting with 82, 8
 ### 2. Postal Codes (Legacy vs New CEP)
 
 The ecosystem implements the **New Mozambican CEP System** (6 digits `XXXX-XX`).
-More than just a list, we built an intelligent suggestion logic:
 - If a user inputs an old postal code (e.g., `3100`), the library automatically translates and suggests an *array* of corresponding New CEPs (e.g., `0909-01`, `0909-02`), allowing you to build perfect frontend dropdown menus for the end user to choose the exact neighborhood.
+
+### 3. Name & Document Sanitization
+
+Clean up dirty user input from forms before saving to your database:
+- `isValidName`: Strictly validates Mozambican names (allowing apostrophes and hyphens).
+- `sanitizeName`: Automatically normalizes spacing and forces perfect Title Case or UPPERCASE.
+- `sanitizeDocumentField` & `sanitizeAlphanumericField`: Effortlessly strips invalid characters from BI or NUIT inputs.
+
+### 4. Financial Toolkit (Metical)
+
+Parse and format monetary values natively:
+- `formatMZN(1500)` -> `"1 500,00 MT"`
+- `parseMZN("1.500,00 MT")` -> `1500.00`
 
 ---
 
@@ -105,7 +117,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
     ```yaml
     # Add to your pubspec.yaml
     dependencies:
-      moz_utils: ^0.3.3
+      moz_utils: ^0.3.7
     ```
 
 === "Kotlin"
@@ -115,7 +127,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
         maven { url = uri("https://jitpack.io") }
     }
     dependencies {
-        implementation("com.github.iradoweck:moz-utils:v0.3.5")
+        implementation("com.github.iradoweck:moz-utils:v0.3.7")
     }
     ```
 

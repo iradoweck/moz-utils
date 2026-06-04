@@ -7,6 +7,20 @@ Change history for all versions of the **moz-utils** project (TypeScript, Dart, 
 
 
 
+## 0.3.7
+
+> **Feature Update — Strict NUIT Tax Compliance & Name Sanitization**
+
+### Added
+- **Personal Name Validation:** Exposed `isValidName` and `sanitizeName` across all languages.
+- **Document Extractors:** Exposed `sanitizeDocumentField` and `sanitizeAlphanumericField`.
+- **Financial Tooling:** Added `parseMZN` to parse "dirty" Metical strings into raw database numbers.
+
+### Changed
+- **NUIT AT Decree Compliance:** Implemented exact entity prefix classifications per Decree n. 28/2012. NUITs starting with any digit from 1 to 9 are fully supported and cleanly mapped to "Pessoas Singulares", "Estado / Públicas", etc.
+
+---
+
 ## 0.3.6
 
 > **Patch version — Kotlin Test Fixes & Registries Integrity**

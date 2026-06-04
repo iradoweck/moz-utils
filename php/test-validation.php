@@ -19,13 +19,15 @@ function test($name, $actual, $expected) {
 }
 
 function generateValidNUIT($first8) {
+    $weights = [8, 9, 4, 5, 6, 7, 8, 9];
     $sum = 0;
     for ($i = 0; $i < 8; $i++) {
-        $sum += intval($first8[$i]) * (9 - $i);
+        $sum += intval($first8[$i]) * $weights[$i];
     }
     $remainder = $sum % 11;
-    $checkDigit = $remainder <= 1 ? 0 : 11 - $remainder;
-    return $first8 . strval($checkDigit);
+    $checkMap = "01234567891";
+    $checkDigit = $checkMap[$remainder];
+    return $first8 . $checkDigit;
 }
 
 // --- NUIT: Validação Módulo 11 ---
@@ -51,8 +53,6 @@ test('NUIT Colectiva válido', MozUtils::isValidNUIT($nuitColectiva), true);
 test('NUIT Público válido', MozUtils::isValidNUIT($nuitPublico), true);
 
 test('NUIT que começa com 0 → inválido', MozUtils::isValidNUIT('012345678'), false);
-test('NUIT que começa com 6 → inválido', MozUtils::isValidNUIT('612345678'), false);
-test('NUIT que começa com 9 → inválido', MozUtils::isValidNUIT('912345678'), false);
 test('NUIT com menos de 9 dígitos → inválido', MozUtils::isValidNUIT('1234'), false);
 test('NUIT com mais de 9 dígitos → inválido', MozUtils::isValidNUIT('1234567890'), false);
 test('NUIT com dígitos repetidos → inválido', MozUtils::isValidNUIT('111111111'), false);
@@ -62,11 +62,15 @@ test('NUIT com dígito de controlo errado', MozUtils::isValidNUIT(substr($nuitSi
 echo "\n📋 TESTES DE CLASSIFICAÇÃO DO NUIT\n";
 echo str_repeat("─", 50) . "\n";
 
-test('Tipo 1 → Singular', MozUtils::getNUITEntityType($nuitSingular), 'Singular (Cidadãos nacionais/estrangeiros e ENI)');
-test('Tipo 2 → Singular', MozUtils::getNUITEntityType($nuitSingular2), 'Singular (Cidadãos nacionais/estrangeiros e ENI)');
-test('Tipo 3 → Equiparada', MozUtils::getNUITEntityType($nuitEquiparada), 'Equiparada (Heranças Jacentes, Consórcios)');
-test('Tipo 4 → Colectiva', MozUtils::getNUITEntityType($nuitColectiva), 'Colectiva (Sociedades por Quotas, SA, Lda, Associações)');
-test('Tipo 5 → Público', MozUtils::getNUITEntityType($nuitPublico), 'Público (Instituições do Estado e Ministérios)');
+test('Tipo 1 → Pessoas Singulares', MozUtils::getNUITEntityType($nuitSingular), 'Pessoas Singulares');
+test('Tipo 2 → Pessoas Singulares', MozUtils::getNUITEntityType($nuitSingular2), 'Pessoas Singulares');
+test('Tipo 3 → Pessoas Singulares', MozUtils::getNUITEntityType($nuitEquiparada), 'Pessoas Singulares');
+test('Tipo 4 → Pessoas Colectivas', MozUtils::getNUITEntityType($nuitColectiva), 'Pessoas Colectivas');
+test('Tipo 5 → Pessoas Colectivas', MozUtils::getNUITEntityType($nuitPublico), 'Pessoas Colectivas');
+test('Tipo 6 → Entidades Equiparadas', MozUtils::getNUITEntityType(generateValidNUIT('60000000')), 'Entidades Equiparadas');
+test('Tipo 7 → Estado / Públicas', MozUtils::getNUITEntityType(generateValidNUIT('70000000')), 'Estado / Públicas');
+test('Tipo 8 → Outras Entidades', MozUtils::getNUITEntityType(generateValidNUIT('80000000')), 'Outras Entidades');
+test('Tipo 9 → Entidades Estrangeiras', MozUtils::getNUITEntityType(generateValidNUIT('90000000')), 'Entidades Estrangeiras');
 test('NUIT inválido → null', MozUtils::getNUITEntityType('000000000'), null);
 
 // --- Telefones ---

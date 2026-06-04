@@ -69,7 +69,7 @@ class MozUtils {
 
     if (cleaned.length != 9) return false;
     if (RegExp(r'^(\d)\1{8}$').hasMatch(cleaned)) return false;
-    if (!RegExp(r'^[1-5]').hasMatch(cleaned)) return false;
+    if (!RegExp(r'^[1-9]').hasMatch(cleaned)) return false;
 
     List<int> weights = [8, 9, 4, 5, 6, 7, 8, 9];
     int sum = 0;
@@ -89,11 +89,15 @@ class MozUtils {
 
     final firstDigit = cleaned[0];
     const types = {
-      '1': 'Singular (Cidadãos nacionais/estrangeiros e ENI)',
-      '2': 'Singular (Cidadãos nacionais/estrangeiros e ENI)',
-      '3': 'Equiparada (Heranças Jacentes, Consórcios)',
-      '4': 'Colectiva (Sociedades por Quotas, SA, Lda, Associações)',
-      '5': 'Público (Instituições do Estado e Ministérios)'
+      '1': 'Pessoas Singulares',
+      '2': 'Pessoas Singulares',
+      '3': 'Pessoas Singulares',
+      '4': 'Pessoas Colectivas',
+      '5': 'Pessoas Colectivas',
+      '6': 'Entidades Equiparadas',
+      '7': 'Estado / Públicas',
+      '8': 'Outras Entidades',
+      '9': 'Entidades Estrangeiras'
     };
 
     return types[firstDigit];

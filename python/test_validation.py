@@ -38,19 +38,21 @@ class TestMozUtils(unittest.TestCase):
         self.assertTrue(is_valid_nuit(self.nuit_publico))
         
         self.assertFalse(is_valid_nuit('012345678'))
-        self.assertFalse(is_valid_nuit('612345678'))
-        self.assertFalse(is_valid_nuit('912345678'))
         self.assertFalse(is_valid_nuit('1234'))
         self.assertFalse(is_valid_nuit('1234567890'))
         self.assertFalse(is_valid_nuit('111111111'))
         self.assertFalse(is_valid_nuit(self.nuit_singular[:-1] + '9'))
 
     def test_nuit_classification(self):
-        self.assertEqual(get_nuit_entity_type(self.nuit_singular), 'Singular (Cidadãos nacionais/estrangeiros e ENI)')
-        self.assertEqual(get_nuit_entity_type(self.nuit_singular2), 'Singular (Cidadãos nacionais/estrangeiros e ENI)')
-        self.assertEqual(get_nuit_entity_type(self.nuit_equiparada), 'Equiparada (Heranças Jacentes, Consórcios)')
-        self.assertEqual(get_nuit_entity_type(self.nuit_colectiva), 'Colectiva (Sociedades por Quotas, SA, Lda, Associações)')
-        self.assertEqual(get_nuit_entity_type(self.nuit_publico), 'Público (Instituições do Estado e Ministérios)')
+        self.assertEqual(get_nuit_entity_type(self.nuit_singular), 'Pessoas Singulares')
+        self.assertEqual(get_nuit_entity_type(self.nuit_singular2), 'Pessoas Singulares')
+        self.assertEqual(get_nuit_entity_type(self.nuit_equiparada), 'Pessoas Singulares')
+        self.assertEqual(get_nuit_entity_type(self.nuit_colectiva), 'Pessoas Colectivas')
+        self.assertEqual(get_nuit_entity_type(self.nuit_publico), 'Pessoas Colectivas')
+        self.assertEqual(get_nuit_entity_type(generate_valid_nuit('60000000')), 'Entidades Equiparadas')
+        self.assertEqual(get_nuit_entity_type(generate_valid_nuit('70000000')), 'Estado / Públicas')
+        self.assertEqual(get_nuit_entity_type(generate_valid_nuit('80000000')), 'Outras Entidades')
+        self.assertEqual(get_nuit_entity_type(generate_valid_nuit('90000000')), 'Entidades Estrangeiras')
         self.assertIsNone(get_nuit_entity_type('000000000'))
 
     def test_phone_validation(self):

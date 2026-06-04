@@ -36,7 +36,7 @@ poetry add moz-utils
 
 ## 🚀 API Reference Guide
 
-### 1. Documents and Citizen Identity
+### 1. Identity & Documents
 
 ```python
 from moz_utils import (
@@ -51,9 +51,10 @@ from moz_utils import (
 # National ID (12 digits + 1 letter)
 is_valid_bi("110101234567A")  # True
 
-# NUIT - Unique Tax Identification Number
-is_valid_nuit("123456789")    # True
-get_nuit_entity_type("400000006")  # "Collective (Quotas Companies...)"
+# NUIT - Unique Tax Identification Number (Per AT Decree n. 28/2012)
+is_valid_nuit("401626638")    # True
+get_nuit_entity_type("400000006")  # "Pessoas Colectivas"
+get_nuit_entity_type("100000008")  # "Pessoas Singulares"
 
 # DIRE - Foreign Resident Identification Document
 is_valid_dire("00008312C")    # True
@@ -65,7 +66,47 @@ is_valid_driving_license("M123456")   # True
 
 ---
 
-### 2. Financial Ecosystem and Telecommunications
+### 2. Name & String Sanitization
+
+Clean up dirty user input from forms before saving to your database:
+
+```python
+from moz_utils import (
+    is_valid_name,
+    sanitize_name,
+    sanitize_document_field,
+    sanitize_alphanumeric_field
+)
+
+is_valid_name("Edmilson O'Brian-Muacigarro") # True
+is_valid_name("Edmilson 123")                # False
+
+sanitize_name("  EDMILSON  muacigarro ")    # "Edmilson Muacigarro"
+sanitize_name("João", all_caps=True)        # "JOÃO"
+
+sanitize_document_field("123 456-789")       # "123456789"
+sanitize_alphanumeric_field("110 101 a")     # "110101A"
+```
+
+---
+
+### 3. Financial Toolkit (Metical)
+
+```python
+from moz_utils import format_mzn, parse_mzn
+
+# Format database floats into official AT formats
+format_mzn(1500)          # "1 500,00 MT"
+format_mzn(50000, "MZN")  # "50 000,00 MZN"
+
+# Parse dirty strings back into database floats
+parse_mzn("1.500,00 MT")  # 1500.00
+parse_mzn("1 500,00MZN")  # 1500.00
+```
+
+---
+
+### 4. Financial Ecosystem and Telecommunications
 
 Deep mapping of the Mozambican digital circulatory system — identifies operators and the pulse of associated mobile wallets.
 
