@@ -62,6 +62,21 @@ Thumbs.db
 *~
 
 # ===============================
-# Meta (The user joke request!)
+# Automation & Temporary Files
 # ===============================
-.gitignore
+/*.js
+/*.txt
+!website/eslint.config.js
+!website/vite.config.js
+
+# Playwright reports
+website/playwright-report/
+website/test-results/
+
+# TS Scripts & Temp
+ts/scripts/exported_data.json
+ts/temp.txt
+ts/test-validation.js
+ts/generate_cep_data.js
+
+.geminignore
