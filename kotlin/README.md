@@ -5,6 +5,12 @@
 </p>
 
 <p align="center">
+  <a href="https://jitpack.io/#iradoweck/moz-utils">
+    <img src="https://jitpack.io/v/iradoweck/moz-utils.svg" alt="JitPack Version" />
+  </a>
+</p>
+
+<p align="center">
   <i>The digital foundation of Mozambican identity. The definitive Swiss army knife for validations, postal codes, and financial ecosystems in Mozambique, natively ported to the Kotlin ecosystem.</i>
 </p>
 

@@ -82,13 +82,13 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
 
 ## 🌍 Ecosystems and Usage Examples
 
-| Ecosystem | Folder | Package Manager | Primary Use Case |
+| Ecosystem | Folder | Package Manager | Status & Tracking (Insígnias) |
 | :--- | :--- | :--- | :--- |
-| **[TypeScript / JS](./ts)** | `/ts` | NPM / PNPM / Yarn | React Web, Next.js, Node.js, Express |
-| **[Python](./python)** | `/python` | Pip / Poetry | Django, FastAPI, Data Science |
-| **[PHP](./php)** | `/php` | Composer | Laravel, Symfony, WordPress |
-| **[Dart](./dart)** | `/dart` | Pub | Flutter (Mobile Applications) |
-| **[Kotlin / Java](./kotlin)**| `/kotlin` | Gradle / Maven | Native Android, Spring Boot |
+| **[TypeScript / JS](./ts)** | `/ts` | NPM / PNPM | [![NPM Version](https://img.shields.io/npm/v/moz-utils?color=cb3837&logo=npm)](https://www.npmjs.com/package/moz-utils) [![NPM Downloads](https://img.shields.io/npm/dt/moz-utils)](https://www.npmjs.com/package/moz-utils) |
+| **[Python](./python)** | `/python` | Pip / Poetry | [![PyPI Version](https://img.shields.io/pypi/v/moz-utils?color=3776ab&logo=python&logoColor=white)](https://pypi.org/project/moz-utils/) [![PyPI Downloads](https://img.shields.io/pypi/dm/moz-utils)](https://pypi.org/project/moz-utils/) |
+| **[PHP](./php)** | `/php` | Composer | [![Packagist Version](https://img.shields.io/packagist/v/iradoweck/moz-utils?color=777bb3&logo=php&logoColor=white)](https://packagist.org/packages/iradoweck/moz-utils) [![Packagist Downloads](https://img.shields.io/packagist/dt/iradoweck/moz-utils)](https://packagist.org/packages/iradoweck/moz-utils) |
+| **[Dart](./dart)** | `/dart` | Pub | [![Pub Version](https://img.shields.io/pub/v/moz_utils?color=0175c2&logo=dart&logoColor=white)](https://pub.dev/packages/moz_utils) [![Pub Points](https://img.shields.io/pub/points/moz_utils)](https://pub.dev/packages/moz_utils) |
+| **[Kotlin / Java](./kotlin)**| `/kotlin` | Gradle / Maven | [![JitPack Version](https://jitpack.io/v/iradoweck/moz-utils.svg)](https://jitpack.io/#iradoweck/moz-utils) |
 
 ---
 

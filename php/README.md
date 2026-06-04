@@ -5,6 +5,15 @@
 </p>
 
 <p align="center">
+  <a href="https://packagist.org/packages/iradoweck/moz-utils">
+    <img src="https://img.shields.io/packagist/v/iradoweck/moz-utils?color=777bb3&logo=php&logoColor=white" alt="Packagist Version" />
+  </a>
+  <a href="https://packagist.org/packages/iradoweck/moz-utils">
+    <img src="https://img.shields.io/packagist/dt/iradoweck/moz-utils" alt="Packagist Downloads" />
+  </a>
+</p>
+
+<p align="center">
   <i>The digital foundation of Mozambican identity. The definitive Swiss army knife for validations, postal codes, and financial ecosystems in Mozambique, natively ported to the PHP ecosystem.</i>
 </p>
 

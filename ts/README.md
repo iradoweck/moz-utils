@@ -5,6 +5,15 @@
 </p>
 
 <p align="center">
+  <a href="https://www.npmjs.com/package/moz-utils">
+    <img src="https://img.shields.io/npm/v/moz-utils?color=cb3837&logo=npm" alt="NPM Version" />
+  </a>
+  <a href="https://www.npmjs.com/package/moz-utils">
+    <img src="https://img.shields.io/npm/dt/moz-utils" alt="NPM Downloads" />
+  </a>
+</p>
+
+<p align="center">
   <i>The digital foundation of Mozambican identity. The definitive Swiss army knife for validations, postal codes, and financial ecosystems in Mozambique, natively in TypeScript.</i>
 </p>
 

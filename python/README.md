@@ -5,6 +5,15 @@
 </p>
 
 <p align="center">
+  <a href="https://pypi.org/project/moz-utils/">
+    <img src="https://img.shields.io/pypi/v/moz-utils?color=3776ab&logo=python&logoColor=white" alt="PyPI Version" />
+  </a>
+  <a href="https://pypi.org/project/moz-utils/">
+    <img src="https://img.shields.io/pypi/dm/moz-utils" alt="PyPI Downloads" />
+  </a>
+</p>
+
+<p align="center">
   <i>The digital foundation of Mozambican identity. The definitive Swiss army knife for validations, postal codes, and financial ecosystems in Mozambique, natively ported to the Python ecosystem.</i>
 </p>
 

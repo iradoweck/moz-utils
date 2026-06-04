@@ -5,6 +5,15 @@
 </p>
 
 <p align="center">
+  <a href="https://pub.dev/packages/moz_utils">
+    <img src="https://img.shields.io/pub/v/moz_utils?color=0175c2&logo=dart&logoColor=white" alt="Pub Version" />
+  </a>
+  <a href="https://pub.dev/packages/moz_utils">
+    <img src="https://img.shields.io/pub/points/moz_utils" alt="Pub Points" />
+  </a>
+</p>
+
+<p align="center">
   <i>The digital foundation of Mozambican identity. The definitive Swiss army knife for validations, postal codes, and financial ecosystems in Mozambique, natively ported to the Dart ecosystem.</i>
 </p>
 

@@ -76,7 +76,6 @@ website/test-results/
 # TS Scripts & Temp
 ts/scripts/exported_data.json
 ts/temp.txt
-ts/test-validation.js
 ts/generate_cep_data.js
 
 .geminignore
