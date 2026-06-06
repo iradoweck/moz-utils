@@ -14,6 +14,6 @@ jobs:
     steps:
     - uses: actions/first-interaction@v3
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        issue-message: "Thank you for opening your first issue in the Moz-Utils repository! We appreciate your contribution to the Mozambican software development ecosystem. Our team will review it shortly."
-        pr-message: "Welcome to the Moz-Utils project! Thank you for submitting your first Pull Request. Our CI suite is verifying your changes, and we will review your contribution soon."
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        issue_message: "Thank you for opening your first issue in the Moz-Utils repository! We appreciate your contribution to the Mozambican software development ecosystem. Our team will review it shortly."
+        pr_message: "Welcome to the Moz-Utils project! Thank you for submitting your first Pull Request. Our CI suite is verifying your changes, and we will review your contribution soon."
