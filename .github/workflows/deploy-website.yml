@@ -62,13 +62,16 @@ jobs:
           REPO_INFO=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/iradoweck/moz-utils || echo '{}')
           STARS=$(echo "$REPO_INFO" | jq '.stargazers_count // 0' || echo '0')
           FORKS=$(echo "$REPO_INFO" | jq '.forks_count // 0' || echo '0')
-          OPEN_ISSUES=$(echo "$REPO_INFO" | jq '.open_issues_count // 0' || echo '0')
+          OPEN_ISSUES_COUNT=$(echo "$REPO_INFO" | jq '.open_issues_count // 0' || echo '0')
           LICENSE=$(echo "$REPO_INFO" | jq -r '.license.spdx_id // "N/A"' || echo 'N/A')
           LANG=$(echo "$REPO_INFO" | jq -r '.language // "N/A"' || echo 'N/A')
 
           # Fetch Open and Merged Pull Requests count
           OPEN_PRS=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/search/issues?q=repo:iradoweck/moz-utils+type:pr+state:open" | jq '.total_count // 0' || echo '0')
           MERGED_PRS=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/search/issues?q=repo:iradoweck/moz-utils+type:pr+is:merged" | jq '.total_count // 0' || echo '0')
+          
+          # Calculate True Open Issues (Total Open Issues Count - Open PRs)
+          OPEN_ISSUES=$(node -e "console.log(Math.max(0, $OPEN_ISSUES_COUNT - $OPEN_PRS))")
           
           # Fetch Closed Issues count
           CLOSED_ISSUES=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/search/issues?q=repo:iradoweck/moz-utils+type:issue+state:closed" | jq '.total_count // 0' || echo '0')
