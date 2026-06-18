@@ -49,10 +49,10 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "node test-validation.js"
+    "test": "vitest run"
   },
-  "dependencies": {},
   "devDependencies": {
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
   }
 }
