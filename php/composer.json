@@ -2,9 +2,20 @@
     "name": "iradoweck/moz-utils",
     "description": "Funções de utilidade para Moçambique. Validação de NUIT, documentos e formatação de telefones.",
     "type": "library",
-    "version": "0.3.7",
+    "version": "0.4.0",
     "license": "AGPL-3.0-or-later",
-    "keywords": ["mozambique", "nuit", "bi", "mzn", "metical", "provincia", "distritos", "mocambique", "telecom", "validation"],
+    "keywords": [
+        "mozambique",
+        "nuit",
+        "bi",
+        "mzn",
+        "metical",
+        "provincia",
+        "distritos",
+        "mocambique",
+        "telecom",
+        "validation"
+    ],
     "homepage": "https://iradoweck.github.io/moz-utils/",
     "autoload": {
         "psr-4": {

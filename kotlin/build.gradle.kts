@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.edmilsonmuacigarro"
-version = "0.3.7" // x-release-please-version
+version = "0.4.0" // x-release-please-version
 
 repositories {
     mavenCentral()

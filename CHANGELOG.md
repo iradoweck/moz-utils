@@ -7,6 +7,65 @@ Change history for all versions of the **moz-utils** project (TypeScript, Dart, 
 
 
 
+## [0.4.0](https://github.com/iradoweck/moz-utils/compare/moz-utils-v0.3.7...moz-utils-v0.4.0) (2026-06-18)
+
+
+### Features
+
+* adiciona helpers de distritos e províncias nos 5 ecossistemas ([ee4483a](https://github.com/iradoweck/moz-utils/commit/ee4483a16f986ddf3e1151eb5b490009c402c2bd))
+* adiciona validação de códigos postais legados de Moçambique e bump para v0.2.0 ([f6a8466](https://github.com/iradoweck/moz-utils/commit/f6a84662ad9c4a2d11f5ec8b1984ca32227422a2))
+* adicionar bairro Namutequeliua e corrigir dados geográficos nas 5 linguagens ([9be85c0](https://github.com/iradoweck/moz-utils/commit/9be85c09c5f7640580c1c37c80d8476f97cac827))
+* atualiza validacoes de telefone/NUIT/BI, formatacao monetaria e provincias ([6f531e8](https://github.com/iradoweck/moz-utils/commit/6f531e87d0215f0e1dba6fef0f47355ba07a981e))
+* build interactive landing page with Vite and React ([e62491d](https://github.com/iradoweck/moz-utils/commit/e62491d8a730af623f5edd99196cb8f5c9c86145))
+* complete website i18n, sync Nampula CEP data across all stacks, and enhance UnifiedSimulator logic ([c8a713b](https://github.com/iradoweck/moz-utils/commit/c8a713b189b62a3af712faa60acb9f809f627b57))
+* complete website i18n, sync Nampula CEP data across all stacks, and enhance UnifiedSimulator logic ([3779ca9](https://github.com/iradoweck/moz-utils/commit/3779ca93387eaff51d8f50d38b1bb5fe173833d2))
+* **docs:** add bilingual markdown pages (PT/EN) and rich overview home ([a0796a2](https://github.com/iradoweck/moz-utils/commit/a0796a216b34e087042fcc0c3e52d6d5e73aee6a))
+* evolução para @iradoweck/moz-utils (NUIT, BI, Províncias) ([85e8a8e](https://github.com/iradoweck/moz-utils/commit/85e8a8ec1244d365cb0b6f42c165fc6e5631c2be))
+* evolução para arquitetura multi-linguagem (TS, PHP, Dart, Python, Kotlin) ([95e8032](https://github.com/iradoweck/moz-utils/commit/95e80320d720dca54285c6e679b98ec6d309ca14))
+* implement Dogmatic Base 10 versioning enforcer and automated script ([60e8d02](https://github.com/iradoweck/moz-utils/commit/60e8d022a9332a1ec090461cf45a79747f947bfd))
+* **insights:** enrich page with trend chart, download breakdown, ecosystem health, commits feed, and contributor invite CTA ([08dc6e9](https://github.com/iradoweck/moz-utils/commit/08dc6e933978bd325035560e5716f3fa57815277))
+* massive moz-utils ecosystem update (New SPA Portal, i18n, Real-Time Metrics and CI/CD) ([1f7e577](https://github.com/iradoweck/moz-utils/commit/1f7e57727202ac322c99a46244b6a27cea5a97dc))
+* redesign homepage UI, add unified simulator and ecosystem terminal, internationalize home page ([8b71a80](https://github.com/iradoweck/moz-utils/commit/8b71a805a32192259f595159e75127220b0d13ca))
+* release v0.3.0 - Official Docs, New CEP, OS Governance & Security ([7afe78c](https://github.com/iradoweck/moz-utils/commit/7afe78ca06ceeab7f7b6f8521acd87d75ae47b24))
+* restructure architecture, implement modern test suites and ci/cd automation ([52f630b](https://github.com/iradoweck/moz-utils/commit/52f630bad34acd0be4446bd8e6c41824d9c5d00f))
+* **website:** add PyPI and Pub.dev download metrics to Insights ([aee9da1](https://github.com/iradoweck/moz-utils/commit/aee9da1ade940c79b50fc01af45bd551dbf4606f))
+* **website:** conditionally hide stars/forks and customize creator badges ([b40a0d6](https://github.com/iradoweck/moz-utils/commit/b40a0d64921e6ed6b82d9df9cd3ea19effdf9b2a))
+* **website:** display individual stack versions and limit changelog history to 5 items with expansion button ([9d65788](https://github.com/iradoweck/moz-utils/commit/9d65788314758d1c864883edcb99576e548f9ad7))
+* **website:** fetch and display closed issues and merged prs metrics ([1b7ed8f](https://github.com/iradoweck/moz-utils/commit/1b7ed8fa9b2fb6ef17cd7f1f09cf2374eec90741))
+* **website:** fetch real analytics for Insights page ([28187a7](https://github.com/iradoweck/moz-utils/commit/28187a7890bea1989b8dde06dbdce51b3b103979))
+* **website:** fetch real-time download metrics directly from NPM, PyPI and Packagist APIs ([83d6c71](https://github.com/iradoweck/moz-utils/commit/83d6c7143611582cf979e6bbbf345d2aaaced7ed))
+* **website:** full SEO overhaul — meta tags, Open Graph, JSON-LD, sitemap, robots.txt, per-page titles, and English translations ([4b09f91](https://github.com/iradoweck/moz-utils/commit/4b09f91c5140aceb2fd6554d1d06e6ec8cfccba5))
+* **website:** implement native single-page community forum using giscus ([ca51377](https://github.com/iradoweck/moz-utils/commit/ca51377a1f50a41746682397f8b745645555b34a))
+* **website:** integrate Giscus for native GitHub Discussions community ([cc57e9b](https://github.com/iradoweck/moz-utils/commit/cc57e9bc9647f2e1dacb97b0ad6ec9c89179b963))
+* **website:** internationalize changelog page ([432bbb4](https://github.com/iradoweck/moz-utils/commit/432bbb481ab887cfd1c0d0bd722faf438ed829be))
+* **website:** stabilize SPA routing, CI/CD pipelines, and automated Insights fetching ([8f55f19](https://github.com/iradoweck/moz-utils/commit/8f55f19f259f2fbfac940c782ffa532010e29b53))
+
+
+### Bug Fixes
+
+* **actions:** add github token to api calls and make jq parsing robust against rate limits ([9cceb71](https://github.com/iradoweck/moz-utils/commit/9cceb71f47b768d886001dc1788d25056f08e8e1))
+* **ci:** downgrade kotlin para 2.3.20 (codeql) e atualiza gradle para 8.14.4 ([5785b16](https://github.com/iradoweck/moz-utils/commit/5785b160c5cd2e6b8dafbc19c41020b63c0176a4))
+* **core:** Correct NUIT algorithm and add parseMZN parser (v0.3.4) ([689b084](https://github.com/iradoweck/moz-utils/commit/689b08474a58ca5946ce53d79375418864076323))
+* correção no mapeamento de prefixos das operadoras e validação regex ([9ca449b](https://github.com/iradoweck/moz-utils/commit/9ca449bcdb2f90db2cd38ce5c40c7821f256c6bf))
+* **dart:** resolve syntax errors and class closure issues ([8e1de44](https://github.com/iradoweck/moz-utils/commit/8e1de4480565d8d1f112a5ead5e2c0be4d23a4d2))
+* **kotlin:** Correct NUIT test algorithm and bump to v0.3.6 ([d7fd321](https://github.com/iradoweck/moz-utils/commit/d7fd321dfacdaa5a85a4b9772a21d1cb2f47bd52))
+* **php:** resolve syntax errors and mismatched keys in tests ([86a9e23](https://github.com/iradoweck/moz-utils/commit/86a9e23c44dc8c321c16dc76dcdb4092a7cf699f))
+* Release v0.3.0 - CEPs and Document Validations ([3917bbe](https://github.com/iradoweck/moz-utils/commit/3917bbe0ec1ae4f0e6aa23525677136b1e8fd970))
+* resolve CodeQL syntax and escaping issues ([13a6b97](https://github.com/iradoweck/moz-utils/commit/13a6b97e98387bef24064a678224e0556feeda12))
+* resolve duplicate heading ids, add github tags to changelog, fix stats.json 404 ([63c1650](https://github.com/iradoweck/moz-utils/commit/63c165035d5a99c43199f1d616a6ae34578c7972))
+* resolve post-release issues (docs, insights, pub.dev) ([e936e9d](https://github.com/iradoweck/moz-utils/commit/e936e9d1ae76a73202205622c17ee9e47e977e45))
+* **tests:** Update NUIT test generators and bump to v0.3.5 ([b7f982f](https://github.com/iradoweck/moz-utils/commit/b7f982f981dd3826428c8e120d6540aa79b5a1ef))
+* update kotlin test assertions to match correct return values ([4ec4dc1](https://github.com/iradoweck/moz-utils/commit/4ec4dc1fe929fce3533fc3acb29d56628b4c04c4))
+* update python and dart tests to match portuguese string returns ([e457fee](https://github.com/iradoweck/moz-utils/commit/e457fee75f4317c028b163966dabca4b602c8fdc))
+* **website:** avoid constructing JSX within try-catch ([06eda6c](https://github.com/iradoweck/moz-utils/commit/06eda6cb57898e84fc563547c8dcfa776ad9925b))
+* **website:** consume internal stats.json generated by github actions ([f50f4df](https://github.com/iradoweck/moz-utils/commit/f50f4df91711a23cc1e2ddb359c406b88230932c))
+* **website:** fix React Error 31 when rendering author object from live github API ([08907da](https://github.com/iradoweck/moz-utils/commit/08907dac95be22c0a5c5959422e52c4e0a828baf))
+* **website:** harden insights page and resolve CORS/Rate Limit errors ([910a545](https://github.com/iradoweck/moz-utils/commit/910a545f3dbc9f5621d2f0789a777039b45c2b25))
+* **website:** internationalize hardcoded strings in community page ([90ca31f](https://github.com/iradoweck/moz-utils/commit/90ca31f4e1fdb80395ac9ca63bc41fc8c75d0c96))
+* **website:** remove unused BarChart3 import to resolve CodeQL alert ([a8c76bb](https://github.com/iradoweck/moz-utils/commit/a8c76bba784c30a75567b1e22f356842e164042b))
+* **website:** resolve CodeQL warnings and remove unused imports ([9c8ac71](https://github.com/iradoweck/moz-utils/commit/9c8ac71f50d0775b23838e2af8ca7a676871d71a))
+* **website:** use corsproxy to bypass CORS for Python and Dart metrics ([a175937](https://github.com/iradoweck/moz-utils/commit/a175937b27aa5416a09833ae4c6a0ce90bf6f54e))
+
 ## 0.3.7
 
 > **Feature Update — Strict NUIT Tax Compliance & Name Sanitization**
