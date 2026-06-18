@@ -8,6 +8,9 @@
     "Zedecks IT (https://github.com/zedecks)"
   ],
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=24.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/iradoweck/moz-utils.git",
