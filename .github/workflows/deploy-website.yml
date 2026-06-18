@@ -90,7 +90,7 @@ jobs:
           PHP_DL=$(echo "$PHP_INFO" | jq '.package.downloads.total // 0' || echo '0')
 
           # Python (PyPI) Downloads
-          PY_INFO=$(curl -s https://pypistats.org/api/packages/moz-utils/recent || echo '{"data":{"last_month":0}}')
+          PY_INFO=$(curl -s https://pypistats.org/api/packages/moz_utils/recent || echo '{"data":{"last_month":0}}')
           PY_DL=$(echo "$PY_INFO" | jq '.data.last_month // 0' || echo '0')
 
           # Dart (pub.dev)
