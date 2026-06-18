@@ -1,42 +1,67 @@
-# Changelog: moz-utils (Python)
+# Changelog — moz-utils
 
-All notable changes to this project will be documented in this file.
+Change history for all versions of the **moz-utils** project.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+---
 
-## [0.3.4] - 2026-06-03
+## [0.3.8] - 2026-06-18
+- chore(release): Bump to 0.3.8 to surpass registry lock and enforce Base 10 Absolute Parity logic.
 
-### Changed
-- **NUIT Algorithm Correction:** Discovered and implemented the true Mozambican NUIT algorithm (weights `8, 9, 4, 5, 6, 7, 8, 9` instead of standard Modulo 11). Fixed across all 5 languages. Validates real-world corporate and individual NUITs perfectly.
-- **Financial Parser:** Added the `parseMZN` function to clean and parse "dirty" string inputs (e.g., `"1.500,00 MT"`, `"1 500,00MZN"`, `"1,500.00"`) directly into raw database floats across all ecosystems.
-- **Tests (Dart & Python):** Fixed test suites to use the new NUIT algorithm and fixed the mock generator. 
-- **Website (Simulators):** The interactive money simulator now processes values through `parseMZN`. NUIT Simulator is fully functional with the new mathematical weights.
-- **E2E Testing:** Added Playwright E2E tests for the simulators.
-- **CodeQL Security:** Excluded node_modules from scans to resolve false positive alerts.
+## [0.3.7] - 2026-06-18
+- refactor: Implementation of the Enterprise Release Cycle (Stable, LTS, EOL).
+- chore: Transition to Apache License 2.0.
 
-## [0.3.3] - 2026-05-31
+## [0.3.4] - 2026-06-18
+- fix: Corrected the true NUIT algorithm weights (8, 9, 4, 5, 6, 7, 8, 9).
+- feat: Added `parseMZN` function to clean financial strings into floats.
+- test: Added Playwright E2E tests for the website and simulators.
 
-### Changed
-- **Regex Relaxed:** Softened regex patterns for DIRE and Driving License to prevent false negatives and guarantee perfect backwards compatibility.
-- **English Standardization:** Fixed all internal validation docstrings across the polyglot stacks to strictly follow English documentation requirements.
+## [0.3.3] - 2026-06-03
+- fix: Relaxed DIRE and Driving License regex for better compatibility.
+- refactor: Standardized validation docstrings to strictly English across all stacks.
 
 ## [0.3.2] - 2026-05-28
+- feat: Migrated the website to a React SPA with `react-router-dom`.
+- feat: Added native i18n support (English/Portuguese) to the website.
+- feat: Added official document validators (DIRE, Passports, Driving Licenses).
+- feat: Implemented New CEP Engine (`isValidNewCEP`, `suggestCEPs`).
+- feat: Added mobile wallet mapper (`getMobileWallet`).
 
-### Added
-- **New CEP Engine & Intelligent Suggestions:**
-  - `is_valid_new_cep`: Full support for the geo-referenced system (e.g., `0101-01`).
-  - `suggest_ceps`: Transactional engine that translates legacy postal codes to the new format instantly.
-- **Financial Ecosystem:**
-  - `get_mobile_wallet`: Mapping of mobile accounts (M-Pesa, e-Mola, mKesh) by operator.
-- **New National Validations:**
-  - `is_valid_dire`: For Foreign Resident Identification Document (DIRE).
-  - `is_valid_passport`: For passports.
-  - `is_valid_driving_license`: For Mozambican driving licenses.
+## [0.3.1] - 2026-05-27
+- feat: New Community Portal with Q&A and debates on the website.
+- feat: New Insights dashboard fetching live data from NPM and PyPI.
+- feat: Real-time geographic simulators for Legacy/New Postal Codes.
+- feat: Integrated Nampula province coverage (Nampula ECP, Namutequeliua, Anchilo).
 
-### Global Security (OS Governance)
-- Active implementation of GitHub Actions for static analysis and malware prevention via CodeQL.
-- Dependabot globally configured for updates.
+## [0.3.0] - 2026-05-27
+- refactor: 100% codebase translation to English (variables, docstrings, exceptions).
+- feat: Added offline support for the New Postal Addressing Code (6 digits).
+- feat: Legacy Postal Mapping with fallback to the new CEP regions.
+- feat: Added interactive CLI emulator (`emulator.ts`).
+- chore: Implemented GitHub Templates, Code of Conduct, and CI Bots.
 
-## [0.2.0] - Previous Release
-- Foundational logic (NUIT, BI, Phones, Legacy Postal Codes).
+## [0.2.0] - 2026-05-26
+- feat: Added support for Mozambique's classic 4-digit postal code system.
+- feat: Validation functions `isValidPostalCode`, `getPostalCodeLocality`, `getPostalCodeProvince`.
+- docs: Updated all READMEs with postal code examples.
+
+## [0.1.3] - 2026-05-23
+- docs: Translated metadata and workflows to English.
+- chore: Added Quick Installation sections and custom CodeQL workflows.
+
+## [0.1.2] - 2026-05-23
+- chore: Synchronized package versions to 0.1.2.
+- chore: Removed `@iradoweck/` scope from NPM package to simplify usage as `moz-utils`.
+
+## [0.1.1] - 2026-05-22
+- chore: Added `composer.json` for Packagist support.
+- test: Added native unit tests for Python, PHP, Dart, and Kotlin.
+- chore: Prepared publication metadata across NPM, PyPI, Packagist, Pub.dev, and JitPack.
+
+## [0.1.0] - 2026-05-20
+- feat: Initial Release.
+- feat: NUIT validation (Modulo 11).
+- feat: Mozambican BI validation.
+- feat: Mobile operator validation and phone number formatting.
+- feat: Currency formatting in Meticais (MZN).
+- feat: Complete offline geographic database.

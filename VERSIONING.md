@@ -1,26 +1,51 @@
-# Dogmatic Decimal Versioning Law (Base 10)
+# Architecture of Versioning & Enterprise Release Cycle
 
-The **moz-utils** ecosystem strictly rejects elastic traditional semantic versioning. Instead, it adheres to an immutable **numerical dogma** based strictly on Base 10 mathematics to ensure absolute predictability and elegant progression.
+The **moz-utils** ecosystem rejects chaotic semantic versioning. It adheres to an immutable **numerical dogma** (Base 10) combined with an **Enterprise Release Cycle** (Stable/LTS/EOL) to ensure absolute predictability and commercial-grade stability.
 
-## 1. Official Format
-All versions strictly follow the anatomy: `X.Y.Z` (Major.Minor.Patch)
+---
 
-## 2. Increment Dogma (The Rule of 9)
+## 1. The Base 10 Dogma
+
+All versions follow the anatomy: `X.Y.Z` (Major.Minor.Patch).
+
 The sacred limit of any decimal place (Y or Z) is **9**.
 
-* **Patch Evolution (Z):** Whenever the Patch reaches the value 10 (e.g., from `0.1.9` needing one more fix), the Minor (Y) is automatically incremented by `+1` and the Patch must unconditionally reset to `0` (becoming `0.2.0`).
-* **Minor Evolution (Y):** Whenever the Minor reaches the value 10 (e.g., from `0.9.x`), the Major (X) is incremented by `+1` and the Minor must unconditionally reset to `0` (becoming `1.0.0`).
+* **Patch Evolution (Z):** Whenever the Patch reaches 10 (e.g., from `0.1.9` needing a fix), the Minor (Y) increments by `+1` and the Patch unconditionally resets to `0` (becoming `0.2.0`).
+* **Minor Evolution (Y):** Whenever the Minor reaches 10 (e.g., from `0.9.x`), the Major (X) increments by `+1` and the Minor unconditionally resets to `0` (becoming `1.0.0`).
 
-## 3. Module Independence
-There is no monosyllabic global version that dictates every package simultaneously. Each supported stack and library (`ts`, `php`, `python`, `kotlin`, `dart`, `website`) possesses its own **independent version timeline**. They evolve at their own independent pace, depending on the ecosystem's specific fixes and needs.
+## 2. Absolute Package Parity
 
-## 4. The Global Main Gear
-The Global versioning (which governs the GitHub Releases and the main Changelog) acts as the **"Main Gear"**.
+There is no module independence in versioning. **Every supported stack** (`ts`, `php`, `python`, `kotlin`, `dart`) **shares the exact same version simultaneously**. 
+If a bug is patched in Python, bumping the version from `0.3.3` to `0.3.4`, all other stacks automatically sync to `0.3.4` in the same release. This ensures a developer writing in Dart has the exact same mathematical guarantees as a developer writing in Node.js.
 
-1. Whenever there is an official release cycle (whether it includes updates to just one stack or multiple stacks simultaneously), the Global version advances exactly **+1 Patch**, strictly respecting the Base 10 dogma.
-2. If the combined stack changes justify a heavier leap (e.g., major architectural rewrites), the Global version can step up by +1 Minor (resetting the Patch to 0), following the exact same Base 10 rules.
+*(Note: The Website has its own independent deployment timeline, but its releases contribute to the global repository version).*
 
-*Example:* 
-- Stack `ts` advances from `0.3.1` to `0.3.2`.
-- Stack `php` remains at `0.1.5`.
-- The Global Version encapsulates this release and advances from `0.4.0` to `0.4.1`.
+---
+
+## 3. Enterprise Release Cycle (Stable, LTS, EOL)
+
+To support corporate environments and critical infrastructure (e.g., banking gateways, telecom routing), the release cycle is divided into three strict phases:
+
+### 🟢 Stable (Active Release)
+The current, cutting-edge version of the project.
+* Receives all new features, geographical data updates, and bug fixes.
+* Deployed directly from the `devlab` branch into `main`.
+
+### 🟡 LTS (Long Term Support)
+When the Stable version makes a significant architectural leap (e.g., `0.3.x` to `0.4.0`), the old line becomes an **LTS** version.
+* **Duration:** An LTS version is supported for a minimum of **3 to 6 months**.
+* **Capacity:** The ecosystem supports a maximum of **2 simultaneous LTS versions**.
+* **Scope:** LTS versions receive **NO new features**. They only receive critical security patches and hotfixes via dedicated Git branches (e.g., `lts-v0.2`).
+* **The 5% Warning Rule:** When the oldest active LTS version enters the final **5%** of its defined lifespan, a critical deprecation warning is triggered across the ecosystem, instructing developers to migrate to the next LTS or Stable version.
+
+### 🔴 EOL (End of Life)
+Once the LTS lifespan expires, or when a 3rd LTS is pushed (breaching the maximum limit of 2), the oldest LTS transitions to End of Life.
+* **Scope:** No updates, no security patches, and no technical support. Unsafe for production use.
+
+---
+
+### Example Workflow
+1. **0.4.x** is the `Stable` version.
+2. **0.3.x** is the primary `LTS` version (receiving backported security fixes).
+3. **0.2.x** is the secondary `LTS` version (in its final 5% lifespan, triggering warnings).
+4. **0.1.x** is `EOL` (obsolete).

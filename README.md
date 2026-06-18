@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <a href="https://www.gnu.org/licenses/agpl-3.0">
-    <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" alt="License: AGPL v3" />
+  <a href="https://www.apache.org/licenses/LICENSE-2.0">
+    <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License: Apache 2.0" />
   </a>
   <a href="http://makeapullrequest.com">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome" />
@@ -36,6 +36,20 @@
 | **Calling Code (DDI)** | `+258` |
 | **Official Language** | Portuguese (pt-MZ) |
 | **Official Currency** | Metical (`MZN` / `MT`) |
+
+---
+
+## 🔄 Enterprise Release Cycle
+
+The **moz-utils** ecosystem follows a rigorous **Stable/LTS/EOL** policy to ensure enterprise-grade reliability, alongside the Base 10 versioning dogma.
+
+| Version | Status | Release Date | End of Life (EOL) |
+| :--- | :--- | :--- | :--- |
+| **0.3.x** | 🟢 **Stable** | May 27, 2026 | Until 0.4.0 is released |
+| **0.2.x** | 🔴 **EOL** | May 26, 2026 | Immediate (Replaced rapidly) |
+| **0.1.x** | 🔴 **EOL** | May 20, 2026 | Immediate (Replaced rapidly) |
+
+> **Note:** Future LTS (Long Term Support) versions will be supported for a minimum of **3 to 6 months**. The ecosystem retains a maximum of 2 active LTS lines simultaneously. An automatic deprecation warning will trigger when an LTS reaches its final 5% lifespan.
 
 ---
 
@@ -105,7 +119,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
     ```yaml
     # Add to your pubspec.yaml
     dependencies:
-      moz_utils: ^0.3.3
+      moz_utils: ^0.3.8
     ```
 
 === "Kotlin"
@@ -115,7 +129,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
         maven { url = uri("https://jitpack.io") }
     }
     dependencies {
-        implementation("com.github.iradoweck:moz-utils:v0.3.5")
+        implementation("com.github.iradoweck:moz-utils:v0.3.8")
     }
     ```
 
@@ -218,7 +232,18 @@ Cálculo do Módulo 11:
 
 ## 📄 License
 
-This project is licensed under the **AGPL-3.0-or-later** license.
+This project is licensed under the **Apache License 2.0**. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+## 💖 Sponsor & Donate
+
+<p align="justify">
+  If this library has saved you hours of parsing obscure algorithms and geographic data, consider supporting its continuous development! 
+</p>
+
+- **PayPal:** [Donate via PayPal](#) *(Add your link here)*
+- **Binance (Crypto):** [Donate via Binance Pay](#) *(Add your ID/link here)*
 
 ---
 

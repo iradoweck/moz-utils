@@ -24,7 +24,7 @@ Add the dependency to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  moz_utils: ^0.3.3
+  moz_utils: ^0.3.8
 ```
 
 ---

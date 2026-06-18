@@ -130,7 +130,6 @@ export default function CommunityPage() {
           repo="iradoweck/moz-utils"
           repoId="R_kgDOSjDxow"
           category={activeCategory}
-          categoryId="" // Deixe vazio temporariamente se não souber o ID
           mapping="specific"
           term={`Community Debate: ${activeCategory}`}
           reactionsEnabled="1"

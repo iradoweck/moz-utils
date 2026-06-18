@@ -1,13 +1,13 @@
 {
   "name": "moz-utils",
-  "version": "0.3.4",
+  "version": "0.3.8",
   "description": "Utility functions for Mozambique — validation of NUIT, BI, documents, and phone number formatting",
   "type": "module",
   "author": "Edmilson Muacigarro <contacto@edmilsonmuacigarro.com> (https://edmilsonmuacigarro.com)",
   "contributors": [
     "Zedecks IT (https://github.com/zedecks)"
   ],
-  "license": "AGPL-3.0-or-later",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/iradoweck/moz-utils.git",
@@ -19,10 +19,16 @@
   "homepage": "https://iradoweck.github.io/moz-utils/",
   "keywords": [
     "mozambique",
+    "mz",
     "nuit",
+    "dire",
+    "postal-code",
+    "cep",
+    "m-pesa",
+    "vodacom",
+    "metical",
     "bi",
     "mzn",
-    "metical",
     "provincia",
     "distritos",
     "mocambique",

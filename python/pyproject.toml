@@ -4,14 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "moz-utils"
-version = "0.3.4"
+version = "0.3.8"
 description = "Funções de utilidade para Moçambique. Validação de NUIT, documentos e formatação de telefones."
 readme = "README.md"
-license = "AGPL-3.0-or-later"
+license = "Apache-2.0"
 requires-python = ">=3.8"
-keywords = ["mozambique", "nuit", "bi", "mzn", "metical", "provincia", "distritos", "mocambique", "telecom", "validation"]
+keywords = ["mozambique", "mz", "nuit", "dire", "postal-code", "cep", "m-pesa", "vodacom", "metical"]
 authors = [
-  { name="Edmilson Muacigarro", email="contacto@edmilsonmuacigarro.com" }
+    {name = "Edmilson Muacigarro (@iradoweck)", email = "hello@edmilsonmuacigarro.com"}
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
