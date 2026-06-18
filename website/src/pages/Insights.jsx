@@ -6,32 +6,45 @@ import {
   Package, Clock, Award, Globe
 } from 'lucide-react';
 import { useSEO } from '../hooks/useSEO';
+import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 // ─────────────────────────────────────────────
 // Mini bar chart rendered with pure CSS/HTML
 // ─────────────────────────────────────────────
 function TrendChart({ data }) {
   if (!data || data.length === 0) return null;
-  const max = Math.max(...data.map(d => d.count), 1);
+  
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '60px', padding: '0 4px' }}>
-      {data.map((d, i) => {
-        const height = Math.max((d.count / max) * 100, 4);
-        return (
-          <div
-            key={i}
-            title={`Week of ${d.week}: ${d.count} downloads`}
-            style={{
-              flex: 1,
-              height: `${height}%`,
-              background: `rgba(0, 255, 136, ${0.3 + (height / 100) * 0.7})`,
-              borderRadius: '3px 3px 0 0',
-              transition: 'all 0.3s ease',
-              cursor: 'default',
-            }}
+    <div style={{ width: '100%', height: '120px', marginTop: '16px' }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data}>
+          <defs>
+            <linearGradient id="colorDownloads" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="var(--neon-green)" stopOpacity={0.4}/>
+              <stop offset="95%" stopColor="var(--neon-green)" stopOpacity={0}/>
+            </linearGradient>
+          </defs>
+          <XAxis 
+            dataKey="day" 
+            hide={true} 
           />
-        );
-      })}
+          <Tooltip 
+            contentStyle={{ backgroundColor: 'rgba(10, 10, 10, 0.9)', border: '1px solid var(--neon-green)', borderRadius: '8px', color: 'white' }}
+            itemStyle={{ color: 'var(--neon-green)', fontWeight: 'bold' }}
+            labelStyle={{ color: 'var(--text-secondary)', marginBottom: '4px' }}
+            cursor={{ stroke: 'rgba(0, 255, 136, 0.2)', strokeWidth: 2 }}
+          />
+          <Area 
+            type="monotone" 
+            dataKey="downloads" 
+            stroke="var(--neon-green)" 
+            strokeWidth={2}
+            fillOpacity={1} 
+            fill="url(#colorDownloads)" 
+            name="Downloads"
+          />
+        </AreaChart>
+      </ResponsiveContainer>
     </div>
   );
 }
@@ -141,20 +154,31 @@ export default function Insights() {
   }, []);
 
   // Load live GitHub data (CORS-safe: public API)
+  // Load live GitHub data and Live NPM Trend Data
   useEffect(() => {
     const REPO = 'iradoweck/moz-utils';
     Promise.allSettled([
       fetch(`https://api.github.com/repos/${REPO}`),
-      fetch(`https://api.github.com/repos/${REPO}/commits?per_page=5`)
-    ]).then(async ([repoRes, commitsRes]) => {
+      fetch(`https://api.github.com/repos/${REPO}/commits?per_page=5`),
+      fetch(`https://api.npmjs.org/downloads/range/last-month/moz-utils`)
+    ]).then(async ([repoRes, commitsRes, npmRes]) => {
       const repo = repoRes.status === 'fulfilled' && repoRes.value.ok ? await repoRes.value.json() : null;
       const commits = commitsRes.status === 'fulfilled' && commitsRes.value.ok ? await commitsRes.value.json() : [];
       
+      let liveNpmTrend = [];
+      if (npmRes.status === 'fulfilled' && npmRes.value.ok) {
+        const npmData = await npmRes.value.json();
+        if (npmData && npmData.downloads) {
+          liveNpmTrend = npmData.downloads;
+        }
+      }
+
       setLiveGH({ 
         repo, 
         commits: Array.isArray(commits) ? commits : (commits.items || []),
-        issues: { open: 0, closed: 0 }, // Removed live fetch due to 403 rate limits, fallback to stats.json
-        prs: { open: 0, merged: 0 } // Removed live fetch due to 403 rate limits, fallback to stats.json
+        issues: { open: 0, closed: 0 },
+        prs: { open: 0, merged: 0 },
+        npmTrend: liveNpmTrend
       });
     });
   }, []);
@@ -163,7 +187,7 @@ export default function Insights() {
   const total = dl.total ?? ((dl.ts || 0) + (dl.php || 0) + (dl.python || 0) + (dl.dart || 0));
   const gh = liveGH?.repo || {};
   const contributors = stats?.contributors || [];
-  const trend = stats?.npm_trend || [];
+  const trend = (liveGH?.npmTrend && liveGH.npmTrend.length > 0) ? liveGH.npmTrend : (stats?.npm_trend || []);
   const ecosystem = stats?.ecosystem || {};
   const recentCommits = liveGH?.commits || stats?.recent_commits || [];
 
@@ -290,7 +314,7 @@ export default function Insights() {
             <>
               <TrendChart data={trend} />
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginTop: '8px', textAlign: 'center' }}>
-                {t('insights_page.last_8_weeks')}
+                {t('insights_page.last_month_npm')}
               </p>
             </>
           ) : (

@@ -38,33 +38,58 @@ jobs:
           }
           
           # Check TS
+          ts_ver=""
           if [[ -f ts/package.json ]]; then
             ts_ver=$(grep -oP '"version": "\K\d+\.\d+\.\d+' ts/package.json || true)
             check_version "ts/package.json" "$ts_ver"
           fi
           
-          # Check Website
-          if [[ -f website/package.json ]]; then
-            web_ver=$(grep -oP '"version": "\K\d+\.\d+\.\d+' website/package.json || true)
-            check_version "website/package.json" "$web_ver"
-          fi
-          
           # Check Python
+          py_ver=""
           if [[ -f python/pyproject.toml ]]; then
             py_ver=$(grep -oP 'version\s*=\s*"\K\d+\.\d+\.\d+' python/pyproject.toml || true)
             check_version "python/pyproject.toml" "$py_ver"
           fi
           
+          # Check PHP
+          php_ver=""
+          if [[ -f php/composer.json ]]; then
+            php_ver=$(grep -oP '"version": "\K\d+\.\d+\.\d+' php/composer.json || true)
+            check_version "php/composer.json" "$php_ver"
+          fi
+          
           # Check Dart
+          dart_ver=""
           if [[ -f dart/pubspec.yaml ]]; then
             dart_ver=$(grep -oP '^version: \K\d+\.\d+\.\d+' dart/pubspec.yaml || true)
             check_version "dart/pubspec.yaml" "$dart_ver"
           fi
           
           # Check Kotlin
+          kt_ver=""
           if [[ -f kotlin/build.gradle.kts ]]; then
             kt_ver=$(grep -oP 'version = "\K\d+\.\d+\.\d+' kotlin/build.gradle.kts || true)
             check_version "kotlin/build.gradle.kts" "$kt_ver"
           fi
           
-          echo "✅ All versions conform to the Base 10 Dogmatic Law!"
+          echo "✅ Base 10 Limit Verification Passed!"
+          
+          echo "Checking Absolute Parity Law across ecosystems..."
+          # Extract non-empty versions into an array
+          versions=()
+          for v in "$ts_ver" "$py_ver" "$php_ver" "$dart_ver" "$kt_ver"; do
+            if [[ -n "$v" ]]; then
+              versions+=("$v")
+            fi
+          done
+          
+          # Check if all elements in the array are identical
+          first_ver="${versions[0]}"
+          for v in "${versions[@]}"; do
+            if [[ "$v" != "$first_ver" ]]; then
+               echo "::error::Sacrilege! Absolute Parity Broken. Expected version $first_ver everywhere, but found divergent versions ($ts_ver, $py_ver, $php_ver, $dart_ver, $kt_ver). Ensure all stacks share the exact same version!"
+               exit 1
+            fi
+          done
+
+          echo "✅ All versions conform to the Base 10 Dogmatic Law and Absolute Parity!"

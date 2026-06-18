@@ -33,8 +33,6 @@ env/
 vendor/
 composer.lock
 *.log
-.phpunit.cache/
-phpunit.result.cache
 
 # ===============================
 # Dart / Flutter
@@ -64,14 +62,18 @@ Thumbs.db
 *~
 
 # ===============================
-# Automation & Temporary Files
+# Meta (The user joke request!)
 # ===============================
-/.scratch/
-.geminignore
+.gitignore
 
-# Playwright reports
+# ===============================
+# Gemini AI & Scratch
+# ===============================
+.geminignore
+.scratch/
+
+# ===============================
+# Playwright Test Reports
+# ===============================
 website/playwright-report/
 website/test-results/
-
-# Artefactos Específicos
-ts/scripts/exported_data.json

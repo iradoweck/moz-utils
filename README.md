@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <a href="https://www.gnu.org/licenses/agpl-3.0">
-    <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" alt="License: AGPL v3" />
+  <a href="https://www.apache.org/licenses/LICENSE-2.0">
+    <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License: Apache 2.0" />
   </a>
   <a href="http://makeapullrequest.com">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome" />
@@ -39,6 +39,20 @@
 
 ---
 
+## 🔄 Enterprise Release Cycle
+
+The **moz-utils** ecosystem follows a rigorous **Stable/LTS/EOL** policy to ensure enterprise-grade reliability, alongside the Base 10 versioning dogma.
+
+| Version | Status | Release Date | End of Life (EOL) |
+| :--- | :--- | :--- | :--- |
+| **0.3.x** | 🟢 **Stable** | May 27, 2026 | Until 0.4.0 is released |
+| **0.2.x** | 🔴 **EOL** | May 26, 2026 | Immediate (Replaced rapidly) |
+| **0.1.x** | 🔴 **EOL** | May 20, 2026 | Immediate (Replaced rapidly) |
+
+> **Note:** Future LTS (Long Term Support) versions will be supported for a minimum of **3 to 6 months**. The ecosystem retains a maximum of 2 active LTS lines simultaneously. An automatic deprecation warning will trigger when an LTS reaches its final 5% lifespan.
+
+---
+
 ## 🗺️ Workflows and Architecture
 
 All heavy technical logic (NUIT mathematics, document Regex validation, and Mozambique maps) has been isolated. To read detailed technical documentation on how algorithms work and the structure of Mozambican geographical databases, check out our official document:
@@ -51,20 +65,8 @@ Identification and validation of Mozambican 9-digit numbers (starting with 82, 8
 ### 2. Postal Codes (Legacy vs New CEP)
 
 The ecosystem implements the **New Mozambican CEP System** (6 digits `XXXX-XX`).
+More than just a list, we built an intelligent suggestion logic:
 - If a user inputs an old postal code (e.g., `3100`), the library automatically translates and suggests an *array* of corresponding New CEPs (e.g., `0909-01`, `0909-02`), allowing you to build perfect frontend dropdown menus for the end user to choose the exact neighborhood.
-
-### 3. Name & Document Sanitization
-
-Clean up dirty user input from forms before saving to your database:
-- `isValidName`: Strictly validates Mozambican names (allowing apostrophes and hyphens).
-- `sanitizeName`: Automatically normalizes spacing and forces perfect Title Case or UPPERCASE.
-- `sanitizeDocumentField` & `sanitizeAlphanumericField`: Effortlessly strips invalid characters from BI or NUIT inputs.
-
-### 4. Financial Toolkit (Metical)
-
-Parse and format monetary values natively:
-- `formatMZN(1500)` -> `"1 500,00 MT"`
-- `parseMZN("1.500,00 MT")` -> `1500.00`
 
 ---
 
@@ -82,13 +84,13 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
 
 ## 🌍 Ecosystems and Usage Examples
 
-| Ecosystem | Folder | Package Manager | Status & Tracking (Insígnias) |
+| Ecosystem | Folder | Package Manager | Primary Use Case |
 | :--- | :--- | :--- | :--- |
-| **[TypeScript / JS](./ts)** | `/ts` | NPM / PNPM | [![NPM Version](https://img.shields.io/npm/v/moz-utils?color=cb3837&logo=npm)](https://www.npmjs.com/package/moz-utils) [![NPM Downloads](https://img.shields.io/npm/dt/moz-utils)](https://www.npmjs.com/package/moz-utils) |
-| **[Python](./python)** | `/python` | Pip / Poetry | [![PyPI Version](https://img.shields.io/pypi/v/moz-utils?color=3776ab&logo=python&logoColor=white)](https://pypi.org/project/moz-utils/) [![PyPI Downloads](https://img.shields.io/pypi/dm/moz-utils)](https://pypi.org/project/moz-utils/) |
-| **[PHP](./php)** | `/php` | Composer | [![Packagist Version](https://img.shields.io/packagist/v/iradoweck/moz-utils?color=777bb3&logo=php&logoColor=white)](https://packagist.org/packages/iradoweck/moz-utils) [![Packagist Downloads](https://img.shields.io/packagist/dt/iradoweck/moz-utils)](https://packagist.org/packages/iradoweck/moz-utils) |
-| **[Dart](./dart)** | `/dart` | Pub | [![Pub Version](https://img.shields.io/pub/v/moz_utils?color=0175c2&logo=dart&logoColor=white)](https://pub.dev/packages/moz_utils) [![Pub Points](https://img.shields.io/pub/points/moz_utils)](https://pub.dev/packages/moz_utils) |
-| **[Kotlin / Java](./kotlin)**| `/kotlin` | Gradle / Maven | [![JitPack Version](https://jitpack.io/v/iradoweck/moz-utils.svg)](https://jitpack.io/#iradoweck/moz-utils) |
+| **[TypeScript / JS](./ts)** | `/ts` | NPM / PNPM / Yarn | React Web, Next.js, Node.js, Express |
+| **[Python](./python)** | `/python` | Pip / Poetry | Django, FastAPI, Data Science |
+| **[PHP](./php)** | `/php` | Composer | Laravel, Symfony, WordPress |
+| **[Dart](./dart)** | `/dart` | Pub | Flutter (Mobile Applications) |
+| **[Kotlin / Java](./kotlin)**| `/kotlin` | Gradle / Maven | Native Android, Spring Boot |
 
 ---
 
@@ -117,7 +119,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
     ```yaml
     # Add to your pubspec.yaml
     dependencies:
-      moz_utils: ^0.3.7
+      moz_utils: ^0.3.8
     ```
 
 === "Kotlin"
@@ -127,7 +129,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
         maven { url = uri("https://jitpack.io") }
     }
     dependencies {
-        implementation("com.github.iradoweck:moz-utils:v0.3.7")
+        implementation("com.github.iradoweck:moz-utils:v0.3.8")
     }
     ```
 
@@ -230,7 +232,18 @@ Cálculo do Módulo 11:
 
 ## 📄 License
 
-This project is licensed under the **AGPL-3.0-or-later** license.
+This project is licensed under the **Apache License 2.0**. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+## 💖 Sponsor & Donate
+
+<p align="justify">
+  If this library has saved you hours of parsing obscure algorithms and geographic data, consider supporting its continuous development! 
+</p>
+
+- **PayPal:** [Donate via PayPal](#) *(Add your link here)*
+- **Binance (Crypto):** [Donate via Binance Pay](#) *(Add your ID/link here)*
 
 ---
 

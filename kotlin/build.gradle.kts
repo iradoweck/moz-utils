@@ -1,10 +1,10 @@
 plugins {
-    kotlin("jvm") version "2.3.20"
+    kotlin("jvm") version "2.3.21"
     id("maven-publish")
 }
 
 group = "com.edmilsonmuacigarro"
-version = "0.3.7" // x-release-please-version
+version = "0.3.8"
 
 repositories {
     mavenCentral()

@@ -79,7 +79,7 @@ object MozUtils {
 
         if (cleaned.length != 9) return false
         if (cleaned.matches(Regex("^(\\d)\\1{8}$"))) return false
-        if (!cleaned.matches(Regex("^[1-9].*"))) return false
+        if (!cleaned.matches(Regex("^[1-5].*"))) return false
 
         val weights = intArrayOf(8, 9, 4, 5, 6, 7, 8, 9)
         var sum = 0
@@ -102,15 +102,11 @@ object MozUtils {
 
         val firstDigit = cleaned[0].toString()
         val types = mapOf(
-            "1" to "Pessoas Singulares",
-            "2" to "Pessoas Singulares",
-            "3" to "Pessoas Singulares",
-            "4" to "Pessoas Colectivas",
-            "5" to "Pessoas Colectivas",
-            "6" to "Entidades Equiparadas",
-            "7" to "Estado / Públicas",
-            "8" to "Outras Entidades",
-            "9" to "Entidades Estrangeiras"
+            "1" to "Singular (National/Foreign citizens and ENI)",
+            "2" to "Singular (National/Foreign citizens and ENI)",
+            "3" to "Equivalent (Inheritances, Consortiums)",
+            "4" to "Collective (Limited Companies, SA, Lda, Associations)",
+            "5" to "Public (State Institutions and Ministries)"
         )
 
         return types[firstDigit]
