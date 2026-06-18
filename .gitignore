@@ -33,6 +33,8 @@ env/
 vendor/
 composer.lock
 *.log
+.phpunit.cache/
+phpunit.result.cache
 
 # ===============================
 # Dart / Flutter
@@ -65,14 +67,11 @@ Thumbs.db
 # Automation & Temporary Files
 # ===============================
 /.scratch/
+.geminignore
 
 # Playwright reports
 website/playwright-report/
 website/test-results/
 
-# TS Scripts & Temp
+# Artefactos Específicos
 ts/scripts/exported_data.json
-ts/temp.txt
-ts/generate_cep_data.js
-
-.geminignore
