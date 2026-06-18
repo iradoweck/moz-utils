@@ -89,9 +89,10 @@ jobs:
           PHP_INFO=$(curl -s https://packagist.org/packages/iradoweck/moz-utils.json || echo '{"package":{"downloads":{"total":0}}}')
           PHP_DL=$(echo "$PHP_INFO" | jq '.package.downloads.total // 0' || echo '0')
 
-          # Python (PyPI) Downloads
-          PY_INFO=$(curl -s https://pypistats.org/api/packages/moz_utils/recent || echo '{"data":{"last_month":0}}')
-          PY_DL=$(echo "$PY_INFO" | jq '.data.last_month // 0' || echo '0')
+          # Python (PyPI) Downloads (Proxy via shields.io to bypass GitHub Actions IP blocks)
+          SHIELDS_PY=$(curl -s https://img.shields.io/pypi/dm/moz_utils.json || echo '{"value":"0"}')
+          RAW_VAL=$(echo "$SHIELDS_PY" | jq -r '.value // "0"')
+          PY_DL=$(node -e "const val = '$RAW_VAL'.replace('/month', ''); let num = parseFloat(val); if(val.includes('k')) num *= 1000; else if(val.includes('M')) num *= 1000000; console.log(Math.round(num || 0));")
 
           # Dart (pub.dev)
           DART_INFO=$(curl -s https://pub.dev/api/packages/moz_utils/metrics || echo '{"score":{"downloadCount30Days":0}}')
