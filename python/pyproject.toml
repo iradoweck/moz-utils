@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "moz-utils"
-version = "0.3.8"
+version = "0.3.9"
 description = "Funções de utilidade para Moçambique. Validação de NUIT, documentos e formatação de telefones."
 readme = "README.md"
 license = "Apache-2.0"

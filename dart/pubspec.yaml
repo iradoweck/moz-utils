@@ -1,6 +1,6 @@
 name: moz_utils
 description: Funções de utilidade para Moçambique. Validação de NUIT, documentos e formatação de telefones.
-version: 0.3.8
+version: 0.3.9
 homepage: https://iradoweck.github.io/moz-utils/
 repository: https://github.com/iradoweck/moz-utils/tree/main/dart
 issue_tracker: https://github.com/iradoweck/moz-utils/issues
