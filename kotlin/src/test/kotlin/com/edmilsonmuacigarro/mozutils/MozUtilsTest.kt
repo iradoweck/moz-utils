@@ -5,13 +5,14 @@ import kotlin.test.*
 class MozUtilsTest {
 
     private fun generateValidNUIT(first8: String): String {
+        val weights = intArrayOf(8, 9, 4, 5, 6, 7, 8, 9)
         var sum = 0
         for (i in 0 until 8) {
-            sum += Character.getNumericValue(first8[i]) * (9 - i)
+            sum += Character.getNumericValue(first8[i]) * weights[i]
         }
         val remainder = sum % 11
-        val checkDigit = if (remainder <= 1) 0 else 11 - remainder
-        return first8 + checkDigit.toString()
+        val expectedDigit = "01234567891"[remainder]
+        return first8 + expectedDigit
     }
 
     @Test
@@ -45,11 +46,11 @@ class MozUtilsTest {
         val nuitCollective = generateValidNUIT("40000000")
         val nuitPublico = generateValidNUIT("50000000")
 
-        assertEquals("Singular (Cidadãos nacionais/estrangeiros e ENI)", MozUtils.getNUITEntityType(nuitSingular))
-        assertEquals("Singular (Cidadãos nacionais/estrangeiros e ENI)", MozUtils.getNUITEntityType(nuitSingular2))
-        assertEquals("Equiparada (Heranças Jacentes, Consórcios)", MozUtils.getNUITEntityType(nuitEquivalent))
-        assertEquals("Colectiva (Sociedades por Quotas, SA, Lda, Associações)", MozUtils.getNUITEntityType(nuitCollective))
-        assertEquals("Público (Instituições do Estado e Ministérios)", MozUtils.getNUITEntityType(nuitPublico))
+        assertEquals("Singular (National/Foreign citizens and ENI)", MozUtils.getNUITEntityType(nuitSingular))
+        assertEquals("Singular (National/Foreign citizens and ENI)", MozUtils.getNUITEntityType(nuitSingular2))
+        assertEquals("Equivalent (Inheritances, Consortiums)", MozUtils.getNUITEntityType(nuitEquivalent))
+        assertEquals("Collective (Limited Companies, SA, Lda, Associations)", MozUtils.getNUITEntityType(nuitCollective))
+        assertEquals("Public (State Institutions and Ministries)", MozUtils.getNUITEntityType(nuitPublico))
         assertNull(MozUtils.getNUITEntityType("000000000"))
     }
 

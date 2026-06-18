@@ -102,11 +102,11 @@ object MozUtils {
 
         val firstDigit = cleaned[0].toString()
         val types = mapOf(
-            "1" to "Singular (Cidadãos nacionais/estrangeiros e ENI)",
-            "2" to "Singular (Cidadãos nacionais/estrangeiros e ENI)",
-            "3" to "Equiparada (Heranças Jacentes, Consórcios)",
-            "4" to "Colectiva (Sociedades por Quotas, SA, Lda, Associações)",
-            "5" to "Público (Instituições do Estado e Ministérios)"
+            "1" to "Singular (National/Foreign citizens and ENI)",
+            "2" to "Singular (National/Foreign citizens and ENI)",
+            "3" to "Equivalent (Inheritances, Consortiums)",
+            "4" to "Collective (Limited Companies, SA, Lda, Associations)",
+            "5" to "Public (State Institutions and Ministries)"
         )
 
         return types[firstDigit]
