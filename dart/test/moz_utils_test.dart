@@ -44,13 +44,7 @@ void main() {
       expect(MozUtils.isValidNUIT('012345678'), isFalse);
     });
 
-    test('NUIT that starts with 6 → invalid', () {
-      expect(MozUtils.isValidNUIT('612345678'), isFalse);
-    });
 
-    test('NUIT that starts with 9 → invalid', () {
-      expect(MozUtils.isValidNUIT('912345678'), isFalse);
-    });
 
     test('NUIT with less than 9 digits → invalid', () {
       expect(MozUtils.isValidNUIT('1234'), isFalse);
@@ -76,24 +70,40 @@ void main() {
     final nuitCollective = generateValidNUIT('40000000');
     final nuitPublico = generateValidNUIT('50000000');
 
-    test('Type 1 → Singular', () {
-      expect(MozUtils.getNUITEntityType(nuitSingular), equals('Singular (Cidadãos nacionais/estrangeiros e ENI)'));
+    test('Type 1 → Pessoas Singulares', () {
+      expect(MozUtils.getNUITEntityType(nuitSingular), equals('Pessoas Singulares'));
     });
 
-    test('Type 2 → Singular', () {
-      expect(MozUtils.getNUITEntityType(nuitSingular2), equals('Singular (Cidadãos nacionais/estrangeiros e ENI)'));
+    test('Type 2 → Pessoas Singulares', () {
+      expect(MozUtils.getNUITEntityType(nuitSingular2), equals('Pessoas Singulares'));
     });
 
-    test('Type 3 → Equivalent', () {
-      expect(MozUtils.getNUITEntityType(nuitEquivalent), equals('Equiparada (Heranças Jacentes, Consórcios)'));
+    test('Type 3 → Pessoas Singulares', () {
+      expect(MozUtils.getNUITEntityType(nuitEquivalent), equals('Pessoas Singulares'));
     });
 
-    test('Type 4 → Collective', () {
-      expect(MozUtils.getNUITEntityType(nuitCollective), equals('Colectiva (Sociedades por Quotas, SA, Lda, Associações)'));
+    test('Type 4 → Pessoas Colectivas', () {
+      expect(MozUtils.getNUITEntityType(nuitCollective), equals('Pessoas Colectivas'));
     });
 
-    test('Type 5 → Public', () {
-      expect(MozUtils.getNUITEntityType(nuitPublico), equals('Público (Instituições do Estado e Ministérios)'));
+    test('Type 5 → Pessoas Colectivas', () {
+      expect(MozUtils.getNUITEntityType(nuitPublico), equals('Pessoas Colectivas'));
+    });
+
+    test('Type 6 → Entidades Equiparadas', () {
+      expect(MozUtils.getNUITEntityType(generateValidNUIT('60000000')), equals('Entidades Equiparadas'));
+    });
+
+    test('Type 7 → Estado / Públicas', () {
+      expect(MozUtils.getNUITEntityType(generateValidNUIT('70000000')), equals('Estado / Públicas'));
+    });
+
+    test('Type 8 → Outras Entidades', () {
+      expect(MozUtils.getNUITEntityType(generateValidNUIT('80000000')), equals('Outras Entidades'));
+    });
+
+    test('Type 9 → Entidades Estrangeiras', () {
+      expect(MozUtils.getNUITEntityType(generateValidNUIT('90000000')), equals('Entidades Estrangeiras'));
     });
 
     test('NUIT invalid → null', () {

@@ -23,7 +23,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v6
       with:
-        node-version: 20
+        node-version: 24
         cache: 'npm'
         cache-dependency-path: ts/package.json
 
@@ -43,16 +43,26 @@ jobs:
       with:
         python-version: '3.12'
 
+    - name: Install dependencies (Python)
+      run: pip install -e .[dev]
+      working-directory: python
+
     - name: Run validation tests (Python)
-      run: python python/test_validation.py
+      run: pytest
+      working-directory: python
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: '8.3'
 
+    - name: Install dependencies (PHP)
+      run: composer install
+      working-directory: php
+
     - name: Run validation tests (PHP)
-      run: php php/test-validation.php
+      run: vendor/bin/phpunit tests/ValidationTest.php
+      working-directory: php
 
     - name: Setup Dart
       uses: dart-lang/setup-dart@v1
@@ -74,7 +84,7 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v6
       with:
-        gradle-version: '8.7'
+        gradle-version: '8.14.4'
 
     - name: Run validation tests (Kotlin)
       run: gradle test

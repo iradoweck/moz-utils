@@ -12,7 +12,6 @@ import changelogDart from '../../../dart/CHANGELOG.md?raw';
 import changelogKotlin from '../../../kotlin/CHANGELOG.md?raw';
 
 import tsConfig from '../../../ts/package.json?raw';
-import websiteConfig from '../../package.json?raw';
 import phpConfig from '../../../php/composer.json?raw';
 import pythonConfig from '../../../python/pyproject.toml?raw';
 import dartConfig from '../../../dart/pubspec.yaml?raw';
@@ -29,7 +28,6 @@ const stackVersions = [
   { name: 'Python', version: extractVersion(pythonConfig, /version\s*=\s*"([^"]+)"/) },
   { name: 'Dart', version: extractVersion(dartConfig, /^version:\s*([^\s]+)/m) },
   { name: 'Kotlin', version: extractVersion(kotlinConfig, /version\s*=\s*"([^"]+)"/) },
-  { name: 'Website', version: extractVersion(websiteConfig, /"version":\s*"([^"]+)"/) },
 ];
 
 const ChangelogSection = ({ titleKey, titleFallback, markdown, limit, icon: Icon }) => {

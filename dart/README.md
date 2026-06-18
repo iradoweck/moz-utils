@@ -5,6 +5,15 @@
 </p>
 
 <p align="center">
+  <a href="https://pub.dev/packages/moz_utils">
+    <img src="https://img.shields.io/pub/v/moz_utils?color=0175c2&logo=dart&logoColor=white" alt="Pub Version" />
+  </a>
+  <a href="https://pub.dev/packages/moz_utils">
+    <img src="https://img.shields.io/pub/points/moz_utils" alt="Pub Points" />
+  </a>
+</p>
+
+<p align="center">
   <i>The digital foundation of Mozambican identity. The definitive Swiss army knife for validations, postal codes, and financial ecosystems in Mozambique, natively ported to the Dart ecosystem.</i>
 </p>
 
@@ -31,7 +40,7 @@ dependencies:
 
 ## 🚀 API Reference Guide
 
-### 1. Documents and Citizen Identity
+### 1. Identity & Documents
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
@@ -39,9 +48,10 @@ import 'package:moz_utils/moz_utils.dart';
 // National ID (12 digits + 1 letter)
 MozUtils.isValidBI('110101234567A');  // true
 
-// NUIT - Unique Tax Identification Number
-MozUtils.isValidNUIT('123456789');    // true
-MozUtils.getNUITEntityType('400000006');  // "Collective (Quotas Companies...)"
+// NUIT - Unique Tax Identification Number (Per AT Decree n. 28/2012)
+MozUtils.isValidNUIT('401626638');    // true
+MozUtils.getNUITEntityType('400000006');  // "Pessoas Colectivas"
+MozUtils.getNUITEntityType('100000008');  // "Pessoas Singulares"
 
 // DIRE - Foreign Resident Identification Document
 MozUtils.isValidDIRE('00008312C');    // true
@@ -53,7 +63,42 @@ MozUtils.isValidDrivingLicense('M123456');   // true
 
 ---
 
-### 2. Financial Ecosystem and Telecommunications
+### 2. Name & String Sanitization
+
+Clean up dirty user input from forms before saving to your database:
+
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+MozUtils.isValidName("Edmilson O'Brian-Muacigarro"); // true
+MozUtils.isValidName("Edmilson 123");                // false
+
+MozUtils.sanitizeName("  EDMILSON  muacigarro ");    // "Edmilson Muacigarro"
+MozUtils.sanitizeName("João", allCaps: true);        // "JOÃO"
+
+MozUtils.sanitizeDocumentField("123 456-789");       // "123456789"
+MozUtils.sanitizeAlphanumericField("110 101 a");     // "110101A"
+```
+
+---
+
+### 3. Financial Toolkit (Metical)
+
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+// Format database floats into official AT formats
+MozUtils.formatMZN(1500);          // "1 500,00 MT"
+MozUtils.formatMZN(50000, 'MZN');  // "50 000,00 MZN"
+
+// Parse dirty strings back into database floats
+MozUtils.parseMZN("1.500,00 MT");  // 1500.00
+MozUtils.parseMZN("1 500,00MZN");  // 1500.00
+```
+
+---
+
+### 4. Financial Ecosystem and Telecommunications
 
 Deep mapping of the Mozambican digital circulatory system — identifies operators and the pulse of associated mobile wallets.
 
