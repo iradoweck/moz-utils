@@ -65,3 +65,15 @@ Thumbs.db
 # Meta (The user joke request!)
 # ===============================
 .gitignore
+
+# ===============================
+# Gemini AI & Scratch
+# ===============================
+.geminignore
+.scratch/
+
+# ===============================
+# Playwright Test Reports
+# ===============================
+website/playwright-report/
+website/test-results/
