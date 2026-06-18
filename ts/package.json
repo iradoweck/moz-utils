@@ -43,10 +43,13 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "node test-validation.js"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint ."
   },
-  "dependencies": {},
   "devDependencies": {
-    "typescript": "^6.0.3"
+    "eslint": "^10.5.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
   }
 }

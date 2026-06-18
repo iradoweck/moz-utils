@@ -64,10 +64,7 @@ Thumbs.db
 # ===============================
 # Automation & Temporary Files
 # ===============================
-/*.js
-/*.txt
-!website/eslint.config.js
-!website/vite.config.js
+/.scratch/
 
 # Playwright reports
 website/playwright-report/
