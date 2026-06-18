@@ -176,8 +176,8 @@ export default function Insights() {
       setLiveGH({ 
         repo, 
         commits: Array.isArray(commits) ? commits : (commits.items || []),
-        issues: { open: repo?.open_issues_count || 0, closed: 0 },
-        prs: { open: 0, merged: 0 },
+        issues: undefined,
+        prs: undefined,
         npmTrend: liveNpmTrend
       });
     });
