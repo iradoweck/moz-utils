@@ -11,7 +11,7 @@ on:
       - 'website/**'
       - '.github/workflows/deploy-website.yml'
   schedule:
-    - cron: '0 */12 * * *' # Correr de 12 em 12 horas para atualizar os stats
+    - cron: '30 22 * * *' # Atualiza todos os dias as 00h30 de Mocambique (22:30 UTC)
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
@@ -90,7 +90,7 @@ jobs:
           PHP_DL=$(echo "$PHP_INFO" | jq '.package.downloads.total // 0' || echo '0')
 
           # Python (PyPI) Downloads
-          PY_INFO=$(curl -s https://pypistats.org/api/packages/moz-utils/recent || echo '{"data":{"last_month":0}}')
+          PY_INFO=$(curl -s https://pypistats.org/api/packages/moz_utils/recent || echo '{"data":{"last_month":0}}')
           PY_DL=$(echo "$PY_INFO" | jq '.data.last_month // 0' || echo '0')
 
           # Dart (pub.dev)
