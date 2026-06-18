@@ -121,27 +121,20 @@ export default function Insights() {
         } catch (e) {}
 
         if (!data) {
-          const res = await fetch('https://raw.githubusercontent.com/iradoweck/moz-utils/gh-pages/stats.json');
+          const res = await fetch('https://iradoweck.github.io/moz-utils/stats.json');
           if (res.ok) data = await res.json();
         }
 
         if (!data) data = { downloads: { ts: 0, php: 0, python: 0, dart: 0 }, ecosystem: {} };
 
-        // Real-time fetching from Registries
-        const [npmRes, pypiRes, packagistRes] = await Promise.allSettled([
-          fetch('https://api.npmjs.org/downloads/point/last-month/moz-utils').then(r => r.json()),
-          fetch('https://pypistats.org/api/packages/moz-utils/recent').then(r => r.json()),
-          fetch('https://packagist.org/packages/iradoweck/moz-utils.json').then(r => r.json())
-        ]);
-
-        if (npmRes.status === 'fulfilled' && npmRes.value?.downloads) {
-          data.downloads.ts = npmRes.value.downloads;
-        }
-        if (pypiRes.status === 'fulfilled' && pypiRes.value?.data?.last_month) {
-          data.downloads.python = pypiRes.value.data.last_month;
-        }
-        if (packagistRes.status === 'fulfilled' && packagistRes.value?.package?.downloads?.total) {
-          data.downloads.php = packagistRes.value.package.downloads.total;
+        // Real-time fetching from Registries (NPM only, others use stats.json to avoid CORS)
+        try {
+          const npmRes = await fetch('https://api.npmjs.org/downloads/point/last-month/moz-utils').then(r => r.json());
+          if (npmRes && npmRes.downloads) {
+            data.downloads.ts = npmRes.downloads;
+          }
+        } catch (e) {
+          console.warn('Failed to fetch live NPM stats', e);
         }
 
         setStats(data);
@@ -153,8 +146,7 @@ export default function Insights() {
     fetchStats();
   }, []);
 
-  // Load live GitHub data (CORS-safe: public API)
-  // Load live GitHub data and Live NPM Trend Data
+  // Load live GitHub data (with fallback to stats.json if rate-limited) and Live NPM Trend Data
   useEffect(() => {
     const REPO = 'iradoweck/moz-utils';
     Promise.allSettled([
@@ -162,8 +154,16 @@ export default function Insights() {
       fetch(`https://api.github.com/repos/${REPO}/commits?per_page=5`),
       fetch(`https://api.npmjs.org/downloads/range/last-month/moz-utils`)
     ]).then(async ([repoRes, commitsRes, npmRes]) => {
-      const repo = repoRes.status === 'fulfilled' && repoRes.value.ok ? await repoRes.value.json() : null;
-      const commits = commitsRes.status === 'fulfilled' && commitsRes.value.ok ? await commitsRes.value.json() : [];
+      let repo = null;
+      let commits = [];
+      
+      // Only use GitHub API data if response is 200 OK (avoids 403 Rate Limit or 404)
+      if (repoRes.status === 'fulfilled' && repoRes.value.ok) {
+        repo = await repoRes.value.json();
+      }
+      if (commitsRes.status === 'fulfilled' && commitsRes.value.ok) {
+        commits = await commitsRes.value.json();
+      }
       
       let liveNpmTrend = [];
       if (npmRes.status === 'fulfilled' && npmRes.value.ok) {
@@ -176,7 +176,7 @@ export default function Insights() {
       setLiveGH({ 
         repo, 
         commits: Array.isArray(commits) ? commits : (commits.items || []),
-        issues: { open: 0, closed: 0 },
+        issues: { open: repo?.open_issues_count || 0, closed: 0 },
         prs: { open: 0, merged: 0 },
         npmTrend: liveNpmTrend
       });
