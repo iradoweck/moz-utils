@@ -74,7 +74,7 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v6
       with:
-        gradle-version: '8.7'
+        gradle-version: '8.14.4'
 
     - name: Run validation tests (Kotlin)
       run: gradle test
