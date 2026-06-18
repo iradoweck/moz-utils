@@ -24,6 +24,9 @@ Documentation = "https://iradoweck.github.io/moz-utils/#/docs/overview"
 Repository = "https://github.com/iradoweck/moz-utils.git"
 "Bug Tracker" = "https://github.com/iradoweck/moz-utils/issues"
 
+[project.optional-dependencies]
+dev = ["pytest"]
+
 [tool.pyright]
 exclude = [
     "**/__pyrefly_virtual__/**",
