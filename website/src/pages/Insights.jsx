@@ -121,7 +121,7 @@ export default function Insights() {
         } catch (e) {}
 
         if (!data) {
-          const res = await fetch('https://raw.githubusercontent.com/iradoweck/moz-utils/gh-pages/stats.json');
+          const res = await fetch('https://iradoweck.github.io/moz-utils/stats.json');
           if (res.ok) data = await res.json();
         }
 
