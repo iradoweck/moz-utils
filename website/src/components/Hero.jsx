@@ -31,12 +31,12 @@ export default function Hero() {
         <p style={{ 
           fontSize: '1.4rem', 
           color: 'var(--text-secondary)', 
-          maxWidth: '650px', 
+          maxWidth: '750px', 
           margin: '0 auto 48px auto',
           lineHeight: '1.6',
           fontWeight: '400'
         }}>
-          A biblioteca de validação open-source definitiva. Validando NUIT, BI, CEPs e Telemóveis com precisão absoluta.
+          A fundação open-source definitiva para software em Moçambique. Muito além de simples validações: algoritmos matemáticos rigorosos, inteligência de operadoras, dados geográficos estruturados e formatação financeira, perfeitamente integrados em 5 ecossistemas nativos.
         </p>
         
         <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
