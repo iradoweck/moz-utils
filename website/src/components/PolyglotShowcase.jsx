@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Terminal, CheckCircle2 } from 'lucide-react';
+import SpotlightCard from './SpotlightCard';
 
 const codeSnippets = {
   TypeScript: `import { validateNUIT } from 'moz-utils';
@@ -49,51 +50,53 @@ export default function PolyglotShowcase() {
           </p>
         </div>
 
-        <div style={{ maxWidth: '800px', margin: '0 auto', background: 'var(--panel-bg)', border: '1px solid var(--panel-border)', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 20px 40px var(--shadow-color)', backdropFilter: 'blur(10px)' }}>
-          {/* Tabs */}
-          <div style={{ display: 'flex', borderBottom: '1px solid var(--panel-border)', background: 'var(--overlay-1)', overflowX: 'auto' }}>
-            {Object.keys(codeSnippets).map(lang => (
-              <button
-                key={lang}
-                onClick={() => setActiveTab(lang)}
-                style={{
-                  padding: '16px 24px',
-                  background: activeTab === lang ? 'var(--overlay-2)' : 'transparent',
-                  border: 'none',
-                  borderBottom: activeTab === lang ? '2px solid var(--neon-green)' : '2px solid transparent',
-                  color: activeTab === lang ? 'var(--neon-green)' : 'var(--text-secondary)',
-                  fontWeight: activeTab === lang ? 'bold' : 'normal',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                  flexShrink: 0
-                }}
-              >
-                {lang}
-              </button>
-            ))}
-          </div>
-
-          {/* Code Window */}
-          <div style={{ padding: '24px', background: 'var(--dark-bg)', position: 'relative' }}>
-            <div style={{ position: 'absolute', top: '16px', right: '16px', display: 'flex', gap: '8px' }}>
-              <div style={{ width: 12, height: 12, borderRadius: '50%', background: 'var(--error-text)' }} />
-              <div style={{ width: 12, height: 12, borderRadius: '50%', background: 'var(--warning-bg)' }} />
-              <div style={{ width: 12, height: 12, borderRadius: '50%', background: 'var(--success-bg)' }} />
+        <SpotlightCard>
+          <div style={{ maxWidth: '800px', margin: '0 auto', background: 'var(--panel-bg)', border: '1px solid var(--panel-border)', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 20px 40px var(--shadow-color)', backdropFilter: 'blur(10px)' }}>
+            {/* Tabs */}
+            <div style={{ display: 'flex', borderBottom: '1px solid var(--panel-border)', background: 'var(--overlay-1)', overflowX: 'auto' }}>
+              {Object.keys(codeSnippets).map(lang => (
+                <button
+                  key={lang}
+                  onClick={() => setActiveTab(lang)}
+                  style={{
+                    padding: '16px 24px',
+                    background: activeTab === lang ? 'var(--overlay-2)' : 'transparent',
+                    border: 'none',
+                    borderBottom: activeTab === lang ? '2px solid var(--neon-green)' : '2px solid transparent',
+                    color: activeTab === lang ? 'var(--neon-green)' : 'var(--text-secondary)',
+                    fontWeight: activeTab === lang ? 'bold' : 'normal',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    flexShrink: 0
+                  }}
+                >
+                  {lang}
+                </button>
+              ))}
             </div>
-            
-            <pre style={{ margin: 0, marginTop: '16px', fontFamily: 'monospace', fontSize: '1rem', color: 'var(--text-primary)', whiteSpace: 'pre-wrap', minHeight: '120px' }}>
-              <code>
-                {codeSnippets[activeTab]}
-              </code>
-            </pre>
-          </div>
 
-          {/* Footer of snippet */}
-          <div style={{ padding: '16px 24px', background: 'var(--overlay-1)', borderTop: '1px solid var(--panel-border)', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <CheckCircle2 size={20} color="var(--neon-green)" />
-            <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>100% Cobertura de Testes Unitários em todas as Stacks</span>
+            {/* Code Window */}
+            <div style={{ padding: '24px', background: 'var(--dark-bg)', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: '16px', right: '16px', display: 'flex', gap: '8px' }}>
+                <div style={{ width: 12, height: 12, borderRadius: '50%', background: 'var(--error-text)' }} />
+                <div style={{ width: 12, height: 12, borderRadius: '50%', background: 'var(--warning-bg)' }} />
+                <div style={{ width: 12, height: 12, borderRadius: '50%', background: 'var(--success-bg)' }} />
+              </div>
+              
+              <pre style={{ margin: 0, marginTop: '16px', fontFamily: 'monospace', fontSize: '1rem', color: 'var(--text-primary)', whiteSpace: 'pre-wrap', minHeight: '120px' }}>
+                <code>
+                  {codeSnippets[activeTab]}
+                </code>
+              </pre>
+            </div>
+
+            {/* Footer of snippet */}
+            <div style={{ padding: '16px 24px', background: 'var(--overlay-1)', borderTop: '1px solid var(--panel-border)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <CheckCircle2 size={20} color="var(--neon-green)" />
+              <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>100% Cobertura de Testes Unitários em todas as Stacks</span>
+            </div>
           </div>
-        </div>
+        </SpotlightCard>
 
       </div>
     </section>

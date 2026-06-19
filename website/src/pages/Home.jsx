@@ -2,8 +2,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSEO } from '../hooks/useSEO';
 import Hero from '../components/Hero';
-import MotionDemo from '../components/MotionDemo';
-import PolyglotShowcase from '../components/PolyglotShowcase';
 import UnifiedSimulator from '../components/UnifiedSimulator';
 import CommunityCTA from '../components/CommunityCTA';
 import Footer from '../components/Footer';
@@ -12,7 +10,6 @@ export default function Home() {
   return (
     <div>
       <Hero />
-      <PolyglotShowcase />
       
       {/* Central de Testes (Simulador Unificado) */}
       <section style={{ padding: '80px 0', background: 'var(--body-bg-gradient)' }}>
