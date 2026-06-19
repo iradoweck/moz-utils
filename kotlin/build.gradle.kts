@@ -25,7 +25,7 @@ publishing {
             pom {
                 name.set("moz-utils")
                 description.set("Funções de utilidade para Moçambique. Validação de NUIT, documentos e formatação de telefones.")
-                url.set("https://iradoweck.github.io/moz-utils/")
+                url.set("https://iradoweck.github.io/moz-utils")
                 licenses {
                     license {
                         name.set("The Apache License, Version 2.0")
@@ -43,7 +43,7 @@ publishing {
                 scm {
                     connection.set("scm:git:git://github.com/iradoweck/moz-utils.git")
                     developerConnection.set("scm:git:ssh://github.com/iradoweck/moz-utils.git")
-                    url.set("https://github.com/iradoweck/moz-utils/")
+                    url.set("https://github.com/iradoweck/moz-utils")
                 }
             }
         }

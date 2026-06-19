@@ -33,7 +33,7 @@ export default function GeoSimulator() {
             <p>Província Encontrada! Distritos ({districts.length}):</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '12px' }}>
               {districts.map(d => (
-                <span key={d} style={{ background: 'rgba(0,255,136,0.1)', padding: '4px 12px', borderRadius: '16px', fontSize: '0.9rem' }}>
+                <span key={d} style={{ background: 'var(--success-bg)', padding: '4px 12px', borderRadius: '16px', fontSize: '0.9rem' }}>
                   {d}
                 </span>
               ))}
@@ -67,7 +67,7 @@ export default function GeoSimulator() {
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '200px', overflowY: 'auto' }}>
               {suggestions.map((cep, i) => (
-                <div key={i} style={{ background: 'rgba(255,255,255,0.05)', padding: '8px', borderRadius: '4px', fontSize: '0.9rem' }}>
+                <div key={i} style={{ background: 'var(--overlay-1)', padding: '8px', borderRadius: '4px', fontSize: '0.9rem' }}>
                   <strong>{cep.cep}</strong> - {cep.locality} ({cep.district}, {cep.province})
                 </div>
               ))}
@@ -93,7 +93,7 @@ export default function GeoSimulator() {
   });
 
   return (
-    <section id="geo-simulator" style={{ padding: '60px 0', backgroundColor: 'rgba(0,0,0,0.2)' }}>
+    <section id="geo-simulator" style={{ padding: '60px 0', backgroundColor: 'var(--overlay-3)' }}>
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>
@@ -140,8 +140,8 @@ export default function GeoSimulator() {
               marginTop: '24px', 
               padding: '16px', 
               borderRadius: '8px',
-              backgroundColor: 'rgba(0,0,0,0.3)',
-              borderLeft: `4px solid ${resultJSX.props?.className === 'text-error' ? '#ff3366' : 'var(--neon-green)'}`
+              backgroundColor: 'var(--overlay-3)',
+              borderLeft: `4px solid ${resultJSX.props?.className === 'text-error' ? 'var(--error-text)' : 'var(--neon-green)'}`
             }}>
               {resultJSX}
             </div>

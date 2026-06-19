@@ -22,7 +22,7 @@
         "telecom",
         "validation"
     ],
-    "homepage": "https://iradoweck.github.io/moz-utils/",
+    "homepage": "https://iradoweck.github.io/moz-utils",
     "autoload": {
         "psr-4": {
             "Iradoweck\\MozUtils\\": "src/"

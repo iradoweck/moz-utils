@@ -133,12 +133,12 @@ export default function Documentation() {
                   textAlign: 'left',
                   cursor: 'pointer',
                   color: activeDoc === item.id ? 'var(--neon-green)' : 'var(--text-secondary)',
-                  backgroundColor: activeDoc === item.id ? 'rgba(0, 255, 136, 0.1)' : 'transparent',
+                  backgroundColor: activeDoc === item.id ? 'var(--success-bg)' : 'transparent',
                   fontWeight: activeDoc === item.id ? '600' : 'normal',
                   transition: 'all 0.2s ease',
                   fontSize: '0.9rem'
                 }}
-                onMouseOver={e => { if (activeDoc !== item.id) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'; }}
+                onMouseOver={e => { if (activeDoc !== item.id) e.currentTarget.style.backgroundColor = 'var(--overlay-1)'; }}
                 onMouseOut={e => { if (activeDoc !== item.id) e.currentTarget.style.backgroundColor = 'transparent'; }}
               >
                 {item.icon}
@@ -174,7 +174,7 @@ export default function Documentation() {
                 alignItems: 'center',
                 gap: '12px',
                 padding: '20px 24px',
-                background: 'rgba(255,255,255,0.03)',
+                background: 'var(--overlay-1)',
                 border: '1px solid var(--panel-border)',
                 borderRadius: '12px',
                 cursor: 'pointer',
@@ -183,8 +183,8 @@ export default function Documentation() {
                 transition: 'all 0.2s ease',
                 textDecoration: 'none'
               }}
-              onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--neon-green)'; e.currentTarget.style.background = 'rgba(0,255,136,0.05)'; }}
-              onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--panel-border)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}
+              onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--neon-green)'; e.currentTarget.style.background = 'var(--success-bg)'; }}
+              onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--panel-border)'; e.currentTarget.style.background = 'var(--overlay-1)'; }}
             >
               <ChevronLeft size={20} style={{ color: 'var(--neon-green)', flexShrink: 0 }} />
               <div>
@@ -210,7 +210,7 @@ export default function Documentation() {
                 justifyContent: 'flex-end',
                 gap: '12px',
                 padding: '20px 24px',
-                background: 'rgba(255,255,255,0.03)',
+                background: 'var(--overlay-1)',
                 border: '1px solid var(--panel-border)',
                 borderRadius: '12px',
                 cursor: 'pointer',
@@ -218,8 +218,8 @@ export default function Documentation() {
                 textAlign: 'right',
                 transition: 'all 0.2s ease'
               }}
-              onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--neon-green)'; e.currentTarget.style.background = 'rgba(0,255,136,0.05)'; }}
-              onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--panel-border)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}
+              onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--neon-green)'; e.currentTarget.style.background = 'var(--success-bg)'; }}
+              onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--panel-border)'; e.currentTarget.style.background = 'var(--overlay-1)'; }}
             >
               <div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}>

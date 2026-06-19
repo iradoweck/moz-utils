@@ -79,7 +79,7 @@ export default function MotionDemo() {
             margin: '0 auto', 
             padding: '40px',
             transition: 'all 0.5s ease',
-            borderColor: isValid === true ? 'var(--neon-green)' : (isValid === false ? '#ff3366' : 'var(--panel-border)'),
+            borderColor: isValid === true ? 'var(--neon-green)' : (isValid === false ? 'var(--error-text)' : 'var(--panel-border)'),
             boxShadow: isValid === true ? '0 0 20px rgba(0, 255, 136, 0.2)' : (isValid === false ? '0 0 20px rgba(255, 51, 102, 0.2)' : 'none')
           }}
         >
@@ -91,9 +91,9 @@ export default function MotionDemo() {
             <div 
               style={{
                 width: '100%',
-                background: 'rgba(0,0,0,0.5)',
-                border: `1px solid ${isValid === true ? 'var(--neon-green)' : (isValid === false ? '#ff3366' : 'var(--panel-border)')}`,
-                color: 'white',
+                background: 'var(--overlay-3)',
+                border: `1px solid ${isValid === true ? 'var(--neon-green)' : (isValid === false ? 'var(--error-text)' : 'var(--panel-border)')}`,
+                color: 'var(--text-primary)',
                 padding: '16px',
                 borderRadius: '8px',
                 fontSize: '1.5rem',
@@ -120,7 +120,7 @@ export default function MotionDemo() {
           
           <div style={{ textAlign: 'left', marginTop: '12px', minHeight: '24px' }}>
             {isValid === true && <span style={{ color: 'var(--neon-green)', fontWeight: 'bold' }}>{t('motionDemo.valid')}</span>}
-            {isValid === false && inputValue.length > 0 && <span style={{ color: '#ff3366', fontWeight: 'bold' }}>{t('motionDemo.invalid')}</span>}
+            {isValid === false && inputValue.length > 0 && <span style={{ color: 'var(--error-text)', fontWeight: 'bold' }}>{t('motionDemo.invalid')}</span>}
           </div>
         </div>
       </div>

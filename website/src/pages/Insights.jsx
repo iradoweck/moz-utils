@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useSEO } from '../hooks/useSEO';
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import WorldDownloadsMap from '../components/WorldDownloadsMap';
 
 // ─────────────────────────────────────────────
 // Mini bar chart rendered with pure CSS/HTML
@@ -29,7 +30,7 @@ function TrendChart({ data }) {
             hide={true} 
           />
           <Tooltip 
-            contentStyle={{ backgroundColor: 'rgba(10, 10, 10, 0.9)', border: '1px solid var(--neon-green)', borderRadius: '8px', color: 'white' }}
+            contentStyle={{ backgroundColor: 'var(--nav-bg)', border: '1px solid var(--neon-green)', borderRadius: '8px', color: 'var(--text-primary)' }}
             itemStyle={{ color: 'var(--neon-green)', fontWeight: 'bold' }}
             labelStyle={{ color: 'var(--text-secondary)', marginBottom: '4px' }}
             cursor={{ stroke: 'rgba(0, 255, 136, 0.2)', strokeWidth: 2 }}
@@ -65,7 +66,7 @@ function EcosystemBadge({ name, registry, healthy, url }) {
         alignItems: 'center',
         gap: '12px',
         padding: '16px 20px',
-        borderLeft: `3px solid ${healthy ? 'var(--neon-green)' : '#ff3366'}`,
+        borderLeft: `3px solid ${healthy ? 'var(--neon-green)' : 'var(--error-text)'}`,
         transition: 'transform 0.2s ease',
       }}
         onMouseEnter={e => e.currentTarget.style.transform = 'translateX(4px)'}
@@ -84,8 +85,8 @@ function EcosystemBadge({ name, registry, healthy, url }) {
           fontSize: '0.75rem',
           padding: '3px 10px',
           borderRadius: '10px',
-          background: healthy ? 'rgba(0,255,136,0.15)' : 'rgba(255,51,102,0.15)',
-          color: healthy ? 'var(--neon-green)' : '#ff3366',
+          background: healthy ? 'var(--success-bg)' : 'var(--error-bg)',
+          color: healthy ? 'var(--neon-green)' : 'var(--error-text)',
           fontWeight: 'bold',
         }}>
           {healthy ? 'ONLINE' : 'DOWN'}
@@ -296,7 +297,7 @@ export default function Insights() {
                     <span style={{ color: 'var(--text-secondary)' }}>{label}</span>
                     <span style={{ fontWeight: 'bold' }}>{count.toLocaleString()}</span>
                   </div>
-                  <div style={{ height: '8px', background: 'rgba(255,255,255,0.08)', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ height: '8px', background: 'var(--overlay-hover)', borderRadius: '4px', overflow: 'hidden' }}>
                     <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: '4px', transition: 'width 1s ease' }} />
                   </div>
                 </div>
@@ -314,7 +315,7 @@ export default function Insights() {
             <>
               <TrendChart data={trend} />
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginTop: '8px', textAlign: 'center' }}>
-                {t('insights_page.last_month_npm')}
+                {t('insights_page.last_8_weeks', 'Last 8 weeks of NPM downloads')}
               </p>
             </>
           ) : (
@@ -324,7 +325,7 @@ export default function Insights() {
             <div style={{
               marginTop: '16px',
               padding: '12px 16px',
-              background: 'rgba(0,255,136,0.05)',
+              background: 'var(--success-bg)',
               borderRadius: '8px',
               borderLeft: '3px solid var(--neon-green)'
             }}>
@@ -337,6 +338,11 @@ export default function Insights() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* ── Section 2.5: Live Global Downloads ── */}
+      <div style={{ marginBottom: '48px' }}>
+        <WorldDownloadsMap />
       </div>
 
       {/* ── Section 3: Ecosystem Health ── */}
@@ -395,7 +401,7 @@ export default function Insights() {
                   <code style={{
                     fontSize: '0.75rem',
                     color: 'var(--neon-green)',
-                    background: 'rgba(0,255,136,0.1)',
+                    background: 'var(--success-bg)',
                     padding: '2px 8px',
                     borderRadius: '4px',
                     flexShrink: 0
@@ -424,7 +430,7 @@ export default function Insights() {
               <div key={idx} className="glass-panel" style={{
                 textAlign: 'center',
                 padding: '24px 12px',
-                backgroundColor: idx % 2 === 0 ? 'rgba(0,255,136,0.05)' : 'rgba(255,255,255,0.02)'
+                backgroundColor: idx % 2 === 0 ? 'var(--success-bg)' : 'var(--overlay-1)'
               }}>
                 <img
                   src={c.avatar}
@@ -434,7 +440,7 @@ export default function Insights() {
                 <h4 style={{ margin: '0 0 8px 0', fontSize: '1rem', wordBreak: 'break-all' }}>@{c.login}</h4>
                 {['iradoweck', 'zedeckmuacy'].includes(c.login.toLowerCase()) ? (
                   <span style={{
-                    background: 'rgba(255,215,0,0.2)',
+                    background: 'var(--warning-bg)',
                     padding: '4px 12px',
                     borderRadius: '12px',
                     fontSize: '0.8rem',
@@ -445,7 +451,7 @@ export default function Insights() {
                   </span>
                 ) : (
                   <span style={{
-                    background: 'rgba(0,0,0,0.5)',
+                    background: 'var(--overlay-3)',
                     padding: '4px 12px',
                     borderRadius: '12px',
                     fontSize: '0.8rem',

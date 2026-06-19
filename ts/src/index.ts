@@ -301,7 +301,7 @@ export function getAllDistricts(): District[] {
  * Rejects digits and most special characters.
  *
  * @example
- * isValidName('Edmilson Muacigarro') // true
+ * isValidName('Formiga Antonio') // true
  * isValidName('João O\'Brian')       // true
  * isValidName('Jean-Pierre')         // true
  * isValidName('ABC123')              // false
@@ -324,7 +324,7 @@ export function isValidName(name: string): boolean {
  * @returns Sanitized name string
  *
  * @example
- * sanitizeName('  edmilson   muacigarro  ')         // 'Edmilson Muacigarro'
+ * sanitizeName('  formiga   antonio  ')         // 'Formiga Antonio'
  * sanitizeName('JOÃO o\'BRIAN', { allCaps: true })  // 'JOÃO O\'BRIAN'
  * sanitizeName('jean-pierre dupont')                 // 'Jean-Pierre Dupont'
  */

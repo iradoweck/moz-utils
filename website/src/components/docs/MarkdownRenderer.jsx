@@ -10,14 +10,14 @@ const CodeTabsWidget = ({ labels, children }) => {
   
   return (
     <div className="code-tabs-widget" style={{ marginBottom: '24px', marginTop: '16px', border: '1px solid var(--panel-border)', borderRadius: '8px', overflow: 'hidden' }}>
-      <div className="tab-buttons" style={{ display: 'flex', background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid var(--panel-border)', overflowX: 'auto' }}>
+      <div className="tab-buttons" style={{ display: 'flex', background: 'var(--overlay-1)', borderBottom: '1px solid var(--panel-border)', overflowX: 'auto' }}>
         {labels.map((label, i) => (
           <button
             key={i}
             onClick={() => setActive(i)}
             style={{
               padding: '12px 24px',
-              background: active === i ? 'rgba(0,255,136,0.1)' : 'transparent',
+              background: active === i ? 'var(--success-bg)' : 'transparent',
               border: 'none',
               borderBottom: active === i ? '2px solid var(--neon-green)' : '2px solid transparent',
               color: active === i ? 'var(--neon-green)' : 'var(--text-secondary)',
@@ -69,12 +69,12 @@ export default function MarkdownRenderer({ content }) {
           h2: ({node, children, className}) => {
             const rawId = node.children[0]?.value?.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
             const id = makeUniqueId(rawId);
-            return <h2 id={id} className={className} style={{ color: '#fff', marginTop: '40px', marginBottom: '16px' }}>{children}</h2>;
+            return <h2 id={id} className={className} style={{ color: 'var(--text-primary)', marginTop: '40px', marginBottom: '16px' }}>{children}</h2>;
           },
           h3: ({node, children, className}) => {
             const rawId = node.children[0]?.value?.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
             const id = makeUniqueId(rawId);
-            return <h3 id={id} className={className} style={{ color: '#e2e8f0', marginTop: '32px', marginBottom: '16px' }}>{children}</h3>;
+            return <h3 id={id} className={className} style={{ color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>{children}</h3>;
           },
           a: ({node, children, href, className, target, rel}) => <a href={href} target={target} rel={rel} className={className} style={{ color: 'var(--neon-green)', textDecoration: 'none' }}>{children}</a>,
           p: ({node, children, className}) => <p className={className} style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>{children}</p>,
@@ -84,7 +84,7 @@ export default function MarkdownRenderer({ content }) {
             // For inline code (not wrapped in pre), or code that has no specific block properties
             if (inline || !className) {
               return <code style={{ 
-                background: 'rgba(255,255,255,0.1)', 
+                background: 'var(--overlay-2)', 
                 padding: '2px 6px', 
                 borderRadius: '4px',
                 color: '#f472b6',
@@ -113,7 +113,7 @@ export default function MarkdownRenderer({ content }) {
               color: 'var(--text-secondary)',
               fontStyle: 'italic',
               margin: '24px 0',
-              background: 'rgba(0,255,136,0.05)'
+              background: 'var(--success-bg)'
             }}>{children}</blockquote>
           ),
           div: ({node, className, children, ...props}) => {

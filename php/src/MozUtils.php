@@ -1182,7 +1182,7 @@ class MozUtils
      * @param bool   $allCaps
      * @return string
      *
-     * @example MozUtils::sanitizeName('edmilson muacigarro')       // 'Edmilson Muacigarro'
+     * @example MozUtils::sanitizeName('formiga antonio')       // 'Formiga Antonio'
      * @example MozUtils::sanitizeName('JOÃO', true)               // 'JOÃO'
      * @example MozUtils::sanitizeName('jean-pierre dupont')       // 'Jean-Pierre Dupont'
      */

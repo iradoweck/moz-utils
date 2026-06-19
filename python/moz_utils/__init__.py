@@ -1117,7 +1117,7 @@ def is_valid_name(name: str) -> bool:
     Rejects digits and most special characters.
 
     Examples:
-        is_valid_name('Edmilson Muacigarro')  # True
+        is_valid_name('Formiga Antonio')  # True
         is_valid_name('João O\'Brian')         # True
         is_valid_name('Jean-Pierre')           # True
         is_valid_name('ABC123')                # False
@@ -1151,7 +1151,7 @@ def sanitize_name(name: str, all_caps: bool = False) -> str:
         Sanitized name string.
 
     Examples:
-        sanitize_name('  edmilson   muacigarro  ')    # 'Edmilson Muacigarro'
+        sanitize_name('  formiga   antonio  ')    # 'Formiga Antonio'
         sanitize_name('JOÃO', all_caps=True)          # 'JOÃO'
         sanitize_name('jean-pierre dupont')            # 'Jean-Pierre Dupont'
     """

@@ -128,14 +128,14 @@ export default function Simulator() {
               marginTop: '24px', 
               padding: '16px', 
               borderRadius: '8px',
-              backgroundColor: 'rgba(0,0,0,0.3)',
+              backgroundColor: 'var(--overlay-3)',
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
-              borderLeft: `4px solid ${isValid ? 'var(--neon-green)' : '#ff3366'}`
+              borderLeft: `4px solid ${isValid ? 'var(--neon-green)' : 'var(--error-text)'}`
             }}>
               {isValid ? <CheckCircle2 color="var(--neon-green)" /> : <XCircle color="#ff3366" />}
-              <span style={{ color: isValid ? 'var(--neon-green)' : '#ff3366', fontWeight: '500' }}>
+              <span style={{ color: isValid ? 'var(--neon-green)' : 'var(--error-text)', fontWeight: '500' }}>
                 {resultText}
               </span>
             </div>

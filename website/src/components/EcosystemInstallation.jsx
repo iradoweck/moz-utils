@@ -44,7 +44,7 @@ export default function EcosystemInstallation() {
             {/* Window Header / Tabs */}
             <div style={{ 
               display: 'flex', 
-              backgroundColor: 'rgba(0,0,0,0.4)', 
+              backgroundColor: 'var(--overlay-3)', 
               borderBottom: '1px solid var(--panel-border)',
               overflowX: 'auto',
               scrollbarWidth: 'none'
@@ -57,7 +57,7 @@ export default function EcosystemInstallation() {
                     background: 'transparent',
                     border: 'none',
                     borderBottom: activeTab === eco.name ? '2px solid var(--neon-green)' : '2px solid transparent',
-                    color: activeTab === eco.name ? 'white' : 'var(--text-secondary)',
+                    color: activeTab === eco.name ? 'var(--text-primary)' : 'var(--text-secondary)',
                     padding: '12px 20px',
                     cursor: 'pointer',
                     fontWeight: 'bold',
@@ -82,14 +82,14 @@ export default function EcosystemInstallation() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', overflowX: 'auto' }}>
                 <Terminal size={20} color="var(--neon-green)" style={{ flexShrink: 0 }} />
                 <code style={{ color: 'var(--text-primary)', fontSize: '1.1rem', fontFamily: 'monospace' }}>
-                  <span style={{ color: '#ff3366' }}>$</span> {getActiveCommand()}
+                  <span style={{ color: 'var(--error-text)' }}>$</span> {getActiveCommand()}
                 </code>
               </div>
               
               <button 
                 onClick={handleCopy}
                 style={{ 
-                  background: 'rgba(255,255,255,0.05)', 
+                  background: 'var(--overlay-1)', 
                   border: '1px solid var(--panel-border)', 
                   color: copied ? 'var(--neon-green)' : 'var(--text-secondary)',
                   cursor: 'pointer',

@@ -11,10 +11,10 @@ license = "Apache-2.0"
 requires-python = ">=3.8"
 keywords = ["mozambique", "mz", "nuit", "dire", "postal-code", "cep", "m-pesa", "vodacom", "metical"]
 authors = [
-    {name = "Edmilson Muacigarro (@iradoweck)", email = "contacto@edmilsonmuacigarro.com"}
+    {name = "Edmilson Muacigarro"}
 ]
 maintainers = [
-    {name = "Edmilson Muacigarro", email = "contacto@edmilsonmuacigarro.com"}
+    {name = "Edmilson Muacigarro"}
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -22,10 +22,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://iradoweck.github.io/moz-utils/"
-Documentation = "https://iradoweck.github.io/moz-utils/#/docs/overview"
-Repository = "https://github.com/iradoweck/moz-utils.git"
-"Bug Tracker" = "https://github.com/iradoweck/moz-utils/issues"
+Homepage = "https://iradoweck.github.io/moz-utils"
+Repository = "https://github.com/iradoweck/moz-utils"
 
 [project.optional-dependencies]
 dev = ["pytest"]

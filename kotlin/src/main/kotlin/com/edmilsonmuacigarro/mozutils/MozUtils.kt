@@ -1147,7 +1147,7 @@ object MozUtils {
      * Checks whether a string is a valid personal name.
      * Accepts Unicode letters, spaces, hyphens, and apostrophes.
      *
-     * @sample isValidName("Edmilson Muacigarro") // true
+     * @sample isValidName("Formiga Antonio") // true
      * @sample isValidName("Jean-Pierre")          // true
      * @sample isValidName("ABC123")               // false
      */
@@ -1163,7 +1163,7 @@ object MozUtils {
      * By default converts to Title Case. Pass allCaps = true to force UPPERCASE.
      * Strips digits and most special characters.
      *
-     * @sample sanitizeName("  edmilson   muacigarro  ")        // "Edmilson Muacigarro"
+     * @sample sanitizeName("  formiga   antonio  ")        // "Formiga Antonio"
      * @sample sanitizeName("JOÃO", allCaps = true)             // "JOÃO"
      * @sample sanitizeName("jean-pierre dupont")              // "Jean-Pierre Dupont"
      */

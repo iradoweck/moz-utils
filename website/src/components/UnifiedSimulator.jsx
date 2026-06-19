@@ -70,7 +70,7 @@ export default function UnifiedSimulator() {
             <p style={{ margin: '0 0 8px 0', fontSize: '0.9rem' }}>{t('simulator.results.districts')} ({districts.length}):</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
               {districts.slice(0, 15).map(d => (
-                <span key={d} style={{ background: 'rgba(0,255,136,0.1)', padding: '2px 8px', borderRadius: '8px', fontSize: '0.75rem' }}>{d}</span>
+                <span key={d} style={{ background: 'var(--success-bg)', padding: '2px 8px', borderRadius: '8px', fontSize: '0.75rem' }}>{d}</span>
               ))}
               {districts.length > 15 && <span style={{ fontSize: '0.75rem' }}>...</span>}
             </div>
@@ -109,7 +109,7 @@ export default function UnifiedSimulator() {
             <p style={{ color: 'var(--neon-green)', fontWeight: '500', margin: '0 0 8px 0', fontSize: '0.9rem' }}>{suggestions.length} {t('simulator.results.cepMatches')}</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', maxHeight: '150px', overflowY: 'auto' }}>
               {suggestions.slice(0, 5).map((cep, i) => (
-                <div key={i} style={{ background: 'rgba(255,255,255,0.05)', padding: '4px', borderRadius: '4px', fontSize: '0.8rem' }}>
+                <div key={i} style={{ background: 'var(--overlay-1)', padding: '4px', borderRadius: '4px', fontSize: '0.8rem' }}>
                   <strong>{cep.cep}</strong> - {cep.locality}
                 </div>
               ))}
@@ -170,7 +170,7 @@ export default function UnifiedSimulator() {
         {/* Sidebar */}
         <div style={{ 
           flex: '1 1 200px', 
-          backgroundColor: 'rgba(0,0,0,0.4)', 
+          backgroundColor: 'var(--overlay-3)', 
           borderRight: '1px solid var(--panel-border)',
           display: 'flex',
           flexDirection: 'column',
@@ -184,7 +184,7 @@ export default function UnifiedSimulator() {
                 background: 'transparent',
                 border: 'none',
                 borderRight: activeCategory === cat.id ? '3px solid var(--neon-green)' : '3px solid transparent',
-                backgroundColor: activeCategory === cat.id ? 'rgba(0,255,136,0.05)' : 'transparent',
+                backgroundColor: activeCategory === cat.id ? 'var(--success-bg)' : 'transparent',
                 color: activeCategory === cat.id ? 'var(--neon-green)' : 'var(--text-secondary)',
                 padding: '16px 24px',
                 textAlign: 'left',
@@ -243,12 +243,12 @@ export default function UnifiedSimulator() {
 
               {inputValue && (
                 <div style={{ 
-                  padding: '16px', borderRadius: '8px', backgroundColor: 'rgba(0,0,0,0.3)',
+                  padding: '16px', borderRadius: '8px', backgroundColor: 'var(--overlay-3)',
                   display: 'flex', alignItems: 'center', gap: '12px',
-                  borderLeft: `4px solid ${entitiesValid ? 'var(--neon-green)' : '#ff3366'}`
+                  borderLeft: `4px solid ${entitiesValid ? 'var(--neon-green)' : 'var(--error-text)'}`
                 }}>
                   {entitiesValid ? <CheckCircle2 color="var(--neon-green)" /> : <XCircle color="#ff3366" />}
-                  <span style={{ color: entitiesValid ? 'var(--neon-green)' : '#ff3366', fontWeight: '500' }}>
+                  <span style={{ color: entitiesValid ? 'var(--neon-green)' : 'var(--error-text)', fontWeight: '500' }}>
                     {entitiesResult}
                   </span>
                 </div>
@@ -285,8 +285,8 @@ export default function UnifiedSimulator() {
 
               {inputValue && logisticsJSX && (
                 <div style={{ 
-                  padding: '16px', borderRadius: '8px', backgroundColor: 'rgba(0,0,0,0.3)',
-                  borderLeft: `4px solid ${logisticsError ? '#ff3366' : 'var(--neon-green)'}`
+                  padding: '16px', borderRadius: '8px', backgroundColor: 'var(--overlay-3)',
+                  borderLeft: `4px solid ${logisticsError ? 'var(--error-text)' : 'var(--neon-green)'}`
                 }}>
                   {logisticsJSX}
                 </div>
@@ -321,12 +321,12 @@ export default function UnifiedSimulator() {
 
               {inputValue && (
                 <div style={{ 
-                  padding: '16px', borderRadius: '8px', backgroundColor: 'rgba(0,0,0,0.3)',
+                  padding: '16px', borderRadius: '8px', backgroundColor: 'var(--overlay-3)',
                   display: 'flex', alignItems: 'center', gap: '12px',
-                  borderLeft: `4px solid ${othersValid ? 'var(--neon-green)' : '#ff3366'}`
+                  borderLeft: `4px solid ${othersValid ? 'var(--neon-green)' : 'var(--error-text)'}`
                 }}>
                   {othersValid ? <CheckCircle2 color="var(--neon-green)" /> : <XCircle color="#ff3366" />}
-                  <span style={{ color: othersValid ? 'var(--neon-green)' : '#ff3366', fontWeight: '500', wordBreak: 'break-all' }}>
+                  <span style={{ color: othersValid ? 'var(--neon-green)' : 'var(--error-text)', fontWeight: '500', wordBreak: 'break-all' }}>
                     {othersResult}
                   </span>
                 </div>

@@ -1269,7 +1269,7 @@ class MozUtils {
 /// Accepts Unicode letters, spaces, hyphens, and apostrophes.
 ///
 /// ```dart
-/// isValidName('Edmilson Muacigarro') // true
+/// isValidName('Formiga Antonio') // true
 /// isValidName('Jean-Pierre')         // true
 /// isValidName('ABC123')              // false
 /// ```
@@ -1286,7 +1286,7 @@ static bool isValidName(String name) {
 /// Strips digits and most special characters.
 ///
 /// ```dart
-/// sanitizeName('  edmilson   muacigarro  ')        // 'Edmilson Muacigarro'
+/// sanitizeName('  formiga   antonio  ')        // 'Formiga Antonio'
 /// sanitizeName('JOÃO', allCaps: true)              // 'JOÃO'
 /// sanitizeName('jean-pierre dupont')               // 'Jean-Pierre Dupont'
 /// ```

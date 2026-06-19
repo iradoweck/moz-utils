@@ -3,33 +3,33 @@ import { useTranslation } from 'react-i18next';
 import { useSEO } from '../hooks/useSEO';
 import Hero from '../components/Hero';
 import MotionDemo from '../components/MotionDemo';
-import EcosystemInstallation from '../components/EcosystemInstallation';
+import PolyglotShowcase from '../components/PolyglotShowcase';
 import UnifiedSimulator from '../components/UnifiedSimulator';
+import CommunityCTA from '../components/CommunityCTA';
+import Footer from '../components/Footer';
 
 export default function Home() {
-  const { t } = useTranslation();
-  useSEO(
-    'Mozambique Utility Library',
-    'Validate Mozambican NUIT, BI, phone numbers, postal codes (CEP), and explore geographic data. Open-source for TypeScript, Python, PHP, Dart, and Kotlin.'
-  );
-  
   return (
-    <>
+    <div>
       <Hero />
-      <MotionDemo />
+      <PolyglotShowcase />
       
-      <section id="simulator" style={{ padding: '60px 20px', backgroundColor: 'rgba(0,0,0,0.2)' }}>
+      {/* Central de Testes (Simulador Unificado) */}
+      <section style={{ padding: '80px 0', background: 'var(--body-bg-gradient)' }}>
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>{t('home.simulatorTitle')} <span className="text-neon">{t('home.simulatorTitleLive')}</span></h2>
-            <p style={{ color: 'var(--text-secondary)' }}>{t('home.simulatorDesc')}</p>
+            <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>Central de <span className="text-neon">Testes Universais</span></h2>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
+              Valide NUITs, BIs, Códigos Postais e Números de Telemóvel em tempo real usando a nossa lógica matemática agnóstica. O que passa aqui, passa em qualquer stack.
+            </p>
           </div>
-          
           <UnifiedSimulator />
         </div>
       </section>
 
-      <EcosystemInstallation />
-    </>
+      <CommunityCTA />
+      
+      <Footer />
+    </div>
   );
 }

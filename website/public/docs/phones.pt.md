@@ -140,6 +140,6 @@ As operadoras de telecomunicações em Moçambique adquirem blocos numéricos es
 
 - **Vodacom**: Começa por `84` ou `85` (A Carteira M-Pesa está associada a estes números).
 - **Tmcel**: Começa por `82` ou `83` (A Carteira mKesh está associada a estes números).
-- **Movitel**: Começa por `86` ou `87` (A Carteira e-Mola está associada a estes números).
+- **Movitel**: Começa por `86`, `87` ou `88` (A Carteira e-Mola está associada a estes números).
 
 Quando a validação ou a extração da operadora é executada, a string é limpa de espaços e prefixos internacionais (`+258`, `00258`), e a expressão regular verifica se o número restante possui exatamente 9 dígitos e se o prefixo coincide com um bloco oficialmente alocado.

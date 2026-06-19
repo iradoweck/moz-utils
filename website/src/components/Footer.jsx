@@ -38,7 +38,7 @@ export default function Footer() {
         <a href="https://github.com/sponsors/iradoweck" target="_blank" rel="noreferrer" className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Heart size={16} fill="currentColor" /> {t('footer.donatePrimary', 'Sponsor')}
         </a>
-        <a href="https://paypal.me/iradoweck" target="_blank" rel="noreferrer" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid var(--text-secondary)', padding: '12px 24px', borderRadius: '4px', color: 'white', textDecoration: 'none' }}>
+        <a href="https://paypal.me/iradoweck" target="_blank" rel="noreferrer" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid var(--text-secondary)', padding: '12px 24px', borderRadius: '4px', color: 'var(--text-primary)', textDecoration: 'none' }}>
           <CreditCard size={16} /> {t('footer.donateSecondary', 'PayPal')}
         </a>
       </div>

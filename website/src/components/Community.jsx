@@ -11,7 +11,7 @@ export default function Community() {
   };
 
   return (
-    <section style={{ padding: '60px 0', backgroundColor: 'rgba(0,0,0,0.3)' }}>
+    <section style={{ padding: '60px 0', backgroundColor: 'var(--overlay-3)' }}>
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>

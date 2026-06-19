@@ -86,11 +86,11 @@ export default function CommunityPage() {
         background: 'linear-gradient(90deg, rgba(0, 255, 136, 0.05) 0%, rgba(10, 10, 10, 0) 100%)'
       }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
-          <div style={{ padding: '12px', background: 'rgba(0, 255, 136, 0.1)', borderRadius: '12px' }}>
+          <div style={{ padding: '12px', background: 'var(--success-bg)', borderRadius: '12px' }}>
             <Briefcase size={28} color="var(--neon-green)" />
           </div>
           <div>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '12px', color: 'white' }}>
+            <h2 style={{ fontSize: '1.5rem', marginBottom: '12px', color: 'var(--text-primary)' }}>
               {t('community_page.b2b_title')}
             </h2>
             <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', marginBottom: '20px' }}>

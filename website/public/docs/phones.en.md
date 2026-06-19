@@ -133,6 +133,6 @@ Telecommunication operators in Mozambique acquire specific number blocks through
 
 - **Vodacom**: Starts with `84` or `85` (M-Pesa Wallet is associated with these numbers).
 - **Tmcel**: Starts with `82` or `83` (mKesh Wallet is associated with these numbers).
-- **Movitel**: Starts with `86` or `87` (e-Mola Wallet is associated with these numbers).
+- **Movitel**: Starts with `86`, `87` or `88` (e-Mola Wallet is associated with these numbers).
 
 When validation or operator extraction is executed, the string is cleaned of spaces and international prefixes (`+258`, `00258`), and a regular expression verifies if the remaining number has exactly 9 digits and if the prefix matches an officially allocated block.
