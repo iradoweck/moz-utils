@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSEO } from '../hooks/useSEO';
 import Hero from '../components/Hero';
 import FeaturesGrid from '../components/FeaturesGrid';
+import WhatItDoes from '../components/WhatItDoes';
 import PolyglotShowcase from '../components/PolyglotShowcase';
 import EcosystemInstallation from '../components/EcosystemInstallation';
 import UnifiedSimulator from '../components/UnifiedSimulator';
@@ -23,7 +24,10 @@ export default function Home() {
       {/* 2. Features Grid */}
       <FeaturesGrid />
       
-      {/* 3. Polyglot Showcase */}
+      {/* 3. O que faz e como faz */}
+      <WhatItDoes />
+      
+      {/* 4. Polyglot Showcase */}
       <PolyglotShowcase />
       
       {/* 4. Quick Install */}
