@@ -2,16 +2,35 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSEO } from '../hooks/useSEO';
 import Hero from '../components/Hero';
+import FeaturesGrid from '../components/FeaturesGrid';
+import PolyglotShowcase from '../components/PolyglotShowcase';
+import EcosystemInstallation from '../components/EcosystemInstallation';
 import UnifiedSimulator from '../components/UnifiedSimulator';
 import CommunityCTA from '../components/CommunityCTA';
 import Footer from '../components/Footer';
 
 export default function Home() {
+  const { t } = useTranslation();
+  useSEO(
+    'Mozambique Utility Library',
+    'Validate Mozambican NUIT, BI, phone numbers, postal codes (CEP), and explore geographic data. Open-source for TypeScript, Python, PHP, Dart, and Kotlin.'
+  );
+
   return (
     <div>
+      {/* 1. Hero */}
       <Hero />
       
-      {/* Central de Testes (Simulador Unificado) */}
+      {/* 2. Features Grid */}
+      <FeaturesGrid />
+      
+      {/* 3. Polyglot Showcase */}
+      <PolyglotShowcase />
+      
+      {/* 4. Quick Install */}
+      <EcosystemInstallation />
+      
+      {/* 5. Central de Testes (Simulador Unificado) */}
       <section style={{ padding: '80px 0', background: 'var(--body-bg-gradient)' }}>
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
@@ -24,8 +43,10 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 6. Comunidade */}
       <CommunityCTA />
       
+      {/* 7. Footer */}
       <Footer />
     </div>
   );

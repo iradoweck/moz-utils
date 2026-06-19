@@ -91,10 +91,10 @@ body {
   transition: background 0.5s ease, color 0.5s ease;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3 {
   margin: 0;
   font-weight: 700;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.5px;
 }
 
 /* Glassmorphism */
@@ -126,39 +126,39 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-block;
 }
 
-/* Buttons - Next.js Elite Aesthetic */
+/* Buttons */
 .btn-primary {
   background: var(--neon-green-gradient);
-  color: var(--dark-bg) !important;
-  border: 1px solid transparent;
-  padding: 14px 32px;
-  border-radius: 9999px;
-  font-weight: 700;
-  font-size: 1.1rem;
+  color: var(--btn-primary-text) !important;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.05rem;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  box-shadow: 0 4px 14px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px var(--neon-green-glow);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 30px var(--neon-green-glow);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px var(--neon-green-glow);
 }
 
 .btn-secondary {
   background-color: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--panel-border);
+  color: var(--text-primary);
+  border: 1px solid var(--text-secondary);
   padding: 12px 28px;
-  border-radius: 9999px;
+  border-radius: 12px;
   font-weight: 600;
   font-size: 1.05rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -167,7 +167,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-secondary:hover {
   border-color: var(--text-primary);
-  color: var(--text-primary);
+  background-color: var(--panel-border);
 }
 
 /* Inputs */
@@ -283,40 +283,6 @@ h1, h2, h3, h4, h5, h6 {
 html { scroll-behavior: smooth; }
 
 @media (min-width: 768px) { 
-  .footer-layout { flex-direction: row !important; justify-content: space-between !important; align-items: flex-start !important; }
-
-/* Spotlight Card Utilities */
-.spotlight-wrapper {
-  position: relative;
-  overflow: hidden;
-  border-radius: 16px;
-  background: var(--panel-bg);
-  border: 1px solid var(--panel-border);
-  box-shadow: 0 8px 32px var(--shadow-color);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  isolation: isolate;
-}
-
-.spotlight-wrapper:hover {
-  border-color: rgba(0, 255, 136, 0.4);
-  box-shadow: 0 12px 40px var(--shadow-color);
-  transform: translateY(-2px);
-}
-
-.spotlight-glow {
-  position: absolute;
-  pointer-events: none;
-  inset: -1px;
-  transition: opacity 0.3s ease;
-  z-index: 0;
-}
-
-.spotlight-content {
-  position: relative;
-  z-index: 1;
-  height: 100%;
-} 
+  .footer-layout { flex-direction: row !important; justify-content: space-between !important; align-items: flex-start !important; } 
   .footer-links-container { align-items: flex-end !important; } 
 }

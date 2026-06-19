@@ -6,7 +6,6 @@ import {
   isValidMozambicanPhone, getMobileOperator, getMobileWallet, formatMZN, parseMZN, buildWhatsAppUrl
 } from 'moz-utils';
 import { CheckCircle2, XCircle, Users, Map, Settings } from 'lucide-react';
-import SpotlightCard from './SpotlightCard';
 
 export default function UnifiedSimulator() {
   const { t } = useTranslation();
@@ -165,7 +164,6 @@ export default function UnifiedSimulator() {
   });
 
   return (
-    <SpotlightCard>
     <div className="glass-panel" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         
@@ -339,6 +337,5 @@ export default function UnifiedSimulator() {
         </div>
       </div>
     </div>
-    </SpotlightCard>
   );
 }
