@@ -81,7 +81,7 @@ console.log(url); // "https://wa.me/258841234567?text=Hello%21"
 Telecommunication operators in Mozambique acquire specific number blocks through the INCM. We map operators using this offline logic:
 - **Vodacom**: Starts with `84` or `85`.
 - **Tmcel**: Starts with `82` or `83`.
-- **Movitel**: Starts with `86` or `87`.
+- **Movitel**: Starts with `86`,`87` or `88`.
 
 ---
 
