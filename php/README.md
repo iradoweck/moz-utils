@@ -1,35 +1,39 @@
-<h1 align="center">moz-utils</h1>
+# moz-utils (PHP)
 
-<p align="center">
-  <b>PHP (Laravel/Symfony)</b>
-</p>
+The definitive, zero-dependency, offline-first open-source library for software built in or for **Mozambique**.
 
-<p align="center">
-  <a href="https://packagist.org/packages/iradoweck/moz-utils">
-    <img src="https://img.shields.io/packagist/v/iradoweck/moz-utils?color=777bb3&logo=php&logoColor=white" alt="Packagist Version" />
-  </a>
-  <a href="https://packagist.org/packages/iradoweck/moz-utils">
-    <img src="https://img.shields.io/packagist/dt/iradoweck/moz-utils" alt="Packagist Downloads" />
-  </a>
-</p>
+[![Packagist](https://img.shields.io/packagist/v/iradoweck/moz-utils?label=Packagist&color=F28D1A)](https://packagist.org/packages/iradoweck/moz-utils)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](https://github.com/iradoweck/moz-utils/blob/main/LICENSE)
+[![Website](https://img.shields.io/badge/Docs-Website-blue)](https://iradoweck.github.io/moz-utils/)
 
-<p align="center">
-  <i>The digital foundation of Mozambican identity. The definitive Swiss army knife for validations, postal codes, and financial ecosystems in Mozambique, natively ported to the PHP ecosystem.</i>
-</p>
+> **Author:** Edmilson Muacigarro (@iradoweck)  
+> **Official Documentation:** [iradoweck.github.io/moz-utils](https://iradoweck.github.io/moz-utils/)  
+> **GitHub Repository:** [iradoweck/moz-utils](https://github.com/iradoweck/moz-utils)
 
 ---
 
-## 📜 The Vision
+## 🌍 The Vision
 
-In Mozambique, digital accuracy is the foundation of the future. From the pulse of mobile wallets in the squares to the rigorous structure of the National ID (BI), **moz-utils** exists to ensure that every piece of data that crosses your backend (Laravel, Symfony, WordPress) is validated, structured, and authentic.
+When developing applications for Mozambique, engineers constantly solve the exact same problems from scratch:
+- 🔎 **Is this NUIT valid?** — The Tax Authority uses a Modulo 11 algorithm. A single wrong digit and your backend fails silently.
+- 📱 **Is this number Vodacom, Tmcel or Movitel?** — The prefix rules are operator-specific and rarely documented publicly.
+- 🗺️ **What is the new CEP for Namutequeliua, Nampula?** — The new 6-digit postal system has low adoption. We built the first offline database for it.
+- 🪪 **Is this BI / DIRE / Passport valid?** — Every identity document has a strict format.
 
-Built impeccably for the PHP ecosystem, this package is more than a library — it is the open-source validation infrastructure our country deserves. Clean code, tested, and poetically engineered for Mozambique.
+`moz-utils` solves all of this **out-of-the-box**, with **zero runtime dependencies**, **offline-first algorithms**, and **strict privacy** (we don't send data anywhere).
+
+---
+
+## 💻 System Requirements
+
+- **PHP**: `>= 8.3`
+- **Ecosystem**: Laravel, Symfony, WordPress, or raw scripts. Takes full advantage of the strict Type Hinting system introduced in PHP 8.3.
 
 ---
 
 ## 📦 Installation
 
-Install using Composer:
+Install via Composer:
 
 ```bash
 composer require iradoweck/moz-utils
@@ -37,162 +41,130 @@ composer require iradoweck/moz-utils
 
 ---
 
-## 🚀 API Reference Guide
+## 🚀 Comprehensive Usage Guide
 
-### 1. Identity & Documents
+### 📱 Phones & Mobile
 
-```php
-use Zedeck\MozUtils\MozUtils;
-
-// National ID (12 digits + 1 letter)
-MozUtils::isValidBI('110101234567A');  // true
-
-// NUIT - Unique Tax Identification Number (Per AT Decree n. 28/2012)
-MozUtils::isValidNUIT('401626638');    // true
-MozUtils::getNUITEntityType('400000006');  // "Pessoas Colectivas"
-MozUtils::getNUITEntityType('100000008');  // "Pessoas Singulares"
-
-// DIRE - Foreign Resident Identification Document
-MozUtils::isValidDIRE('00008312C');    // true
-
-// Passport and Driving License
-MozUtils::isValidPassport('AO1234567');       // true
-MozUtils::isValidDrivingLicense('M123456');   // true
-```
-
----
-
-### 2. Name & String Sanitization
-
-Clean up dirty user input from forms before saving to your database:
-
-```php
-use Zedeck\MozUtils\MozUtils;
-
-MozUtils::isValidName("Edmilson O'Brian-Muacigarro"); // true
-MozUtils::isValidName("Edmilson 123");                // false
-
-MozUtils::sanitizeName("  EDMILSON  muacigarro ");    // "Edmilson Muacigarro"
-MozUtils::sanitizeName("João", true);                 // "JOÃO"
-
-MozUtils::sanitizeDocumentField("123 456-789");       // "123456789"
-MozUtils::sanitizeAlphanumericField("110 101 a");     // "110101A"
-```
-
----
-
-### 3. Financial Toolkit (Metical)
-
-```php
-use Zedeck\MozUtils\MozUtils;
-
-// Format database floats into official AT formats
-MozUtils::formatMZN(1500);          // "1 500,00 MT"
-MozUtils::formatMZN(50000, 'MZN');  // "50 000,00 MZN"
-
-// Parse dirty strings back into database floats
-MozUtils::parseMZN("1.500,00 MT");  // 1500.00
-MozUtils::parseMZN("1 500,00MZN");  // 1500.00
-```
-
----
-
-### 4. Financial Ecosystem and Telecommunications
-
-Deep mapping of the Mozambican digital circulatory system — identifies operators and the pulse of associated mobile wallets.
+Validating and extracting information from Mozambican mobile numbers. Fully supports Vodacom, Tmcel, and Movitel.
 
 ```php
 use MozUtils\MozUtils;
 
-// Validation and Formatting
-MozUtils::isValidMozambicanPhone('841234567');  // true
-MozUtils::formatMozambicanPhone('841234567');   // "+258 84 123 4567"
+// Validation
+var_dump(MozUtils::isValidMozambicanPhone("841234567"));       // bool(true)
+var_dump(MozUtils::isValidMozambicanPhone("+258 82 123 4567")); // bool(true)
+var_dump(MozUtils::isValidMozambicanPhone("811234567"));        // bool(false)
 
-// Telecom and Financial Intelligence
-MozUtils::getMobileOperator('841234567');  // "Vodacom"
-MozUtils::getMobileWallet('841234567');    // "M-Pesa"
-MozUtils::getMobileWallet('821234567');    // "mKesh"
-MozUtils::getMobileWallet('861234567');    // "e-Mola"
+// Operator & Wallet Extraction
+echo MozUtils::getMobileOperator("841234567"); // "Vodacom"
+echo MozUtils::getMobileWallet("861234567");   // "e-Mola"
 
-// Social Connections
-MozUtils::buildWhatsAppUrl('841234567', 'Hello, Mozambique!'); 
-// "https://wa.me/258841234567?text=Hello%2C%20Mozambique%21"
+// Formatting
+echo MozUtils::formatMozambicanPhone("84 123 4567"); // "+258841234567"
+
+// WhatsApp Links
+$url = MozUtils::buildWhatsAppUrl("841234567", "Hello!");
+echo $url; // "https://wa.me/258841234567?text=Hello%21"
 ```
+
+#### ⚙️ Under the Hood: Operator Prefixes
+Telecommunication operators in Mozambique acquire specific number blocks through the INCM. We map operators using this offline logic:
+- **Vodacom**: Starts with `84` or `85`.
+- **Tmcel**: Starts with `82` or `83`.
+- **Movitel**: Starts with `86` or `87`.
 
 ---
 
-### 3. Postal Codes (Legacy and New CEP)
+### 🪪 Identity Documents
 
-A graceful transition between the past and the future: from the old post office stations to the geo-referenced New CEP.
+Validating documents prevents fraudulent registrations in systems deployed in Maputo, Nampula, or any other province.
 
 ```php
 use MozUtils\MozUtils;
 
-// The Future (New CEP: Province, District, and Locality)
-MozUtils::isValidNewCEP('0101-01');  // true
+// NUIT (Tax ID)
+var_dump(MozUtils::isValidNUIT("400000008")); // bool(true)
+echo MozUtils::getNUITEntityType("400000008"); // "Singular" (Individual)
 
-// Intelligent Suggestion Engine (Supports Legacy -> New Transition)
-// Search by the old code "3100" (Nampula) or by a neighborhood
-MozUtils::suggestCEPs('3100');
-MozUtils::suggestCEPs('Namutequeliua');
+// BI (Identity Card)
+var_dump(MozUtils::isValidBI("123456789123A")); // bool(true)
 
-// The Legacy
-MozUtils::isValidPostalCode('3100');            // true
-MozUtils::getPostalCodeLocality('3100');        // "Nampula"
+// Passports, DIRE & Driving License
+var_dump(MozUtils::isValidPassport("AO1234567")); // bool(true)
+var_dump(MozUtils::isValidDIRE("120345678A"));   // bool(true)
+var_dump(MozUtils::isValidDrivingLicense("MP1234567")); // bool(true)
 ```
+
+#### ⚙️ Under the Hood: The NUIT Algorithm
+Unlike other tax numbers that use descending multipliers, the Mozambican Tax Authority uses a specific fixed matrix of weights `[8, 9, 4, 5, 6, 7, 8, 9]` to calculate the Modulo 11 for the NUIT. `moz-utils` replicates this exact mathematical equation offline.
 
 ---
 
-### 4. National Geography and Finances
+### 💰 Currency (MZN)
+
+Format numbers into the official Metical standard.
 
 ```php
 use MozUtils\MozUtils;
 
-// Monumental Value
-MozUtils::formatMZN(1250.5);         // "1 250,50 MT"
-
-// Full Geography
-$provinces = MozUtils::getMozambiqueProvinces();
-$nampulaDistricts = MozUtils::getDistrictsByProvince('npl');
+echo MozUtils::formatMZN(1500); // "1 500,00 MT"
+echo MozUtils::formatMZN(2500000.5); // "2 500 000,50 MT"
 ```
 
 ---
 
-## 🤝 Rules of Conduct and Contribution
+### 🗺️ Geography & Districts
 
-This is not just any project. It is a project of national pride. We ask for excellence in code, compassion with colleagues, and the ambition to make the Mozambican web world-class. Read our `CODE_OF_CONDUCT.md` in the project root.
+An offline database containing all 11 provinces and 161 districts of Mozambique.
 
-## 📄 License
+```php
+use MozUtils\MozUtils;
 
-The code lives and breathes the freedom of Open Source. Licensed under **AGPL-3.0-or-later**.
+// Get districts for a specific province
+$maputoDistricts = MozUtils::getDistrictsByProvince("Maputo");
+print_r($maputoDistricts); // ["Boane", "Magude", "Manhiça", "Marracuene", ...]
 
----
-
-<p align="center">
-  Developed by <b>Open Source Contributors</b> & supported by <b>Edmilson Muacigarro</b>
-</p>
-
-
----
-
-## 🧮 O Algoritmo NUIT (A Verdadeira Fórmula Moçambicana)
-
-Ao contrário do NIF de Portugal (que usa multiplicadores de 9 a 2), a Autoridade Tributária de Moçambique utiliza a seguinte matriz de pesos para calcular o Módulo 11 do NUIT.
-
-**A Fórmula e os Pesos Oficiais:**
-```text
-NUIT a Validar: 401626638
-
-Posição:   1   2   3   4   5   6   7   8
-Dígitos:   4   0   1   6   2   6   6   3
-Pesos:     8   9   4   5   6   7   8   9
-           |   |   |   |   |   |   |   |
-Mult:     32 + 0 + 4 +30 +12 +42 +48 +27 = 195 (Soma)
-
-Cálculo do Módulo 11:
-1. Resto = Soma % 11
-   195 % 11 = 8
-2. O "Resto" é o Índice (Posição 0 a 10) na string de controlo "01234567891".
-3. A 8ª posição de "01234567891" é '8'.
-4. Como o 9º dígito do NUIT (Dígito de Controlo) é '8', o NUIT é Válido!
+// Get all 161 districts in a flat array
+$allDistricts = MozUtils::getAllDistricts();
 ```
+
+---
+
+### 📬 Postal Codes (CEP)
+
+Mozambique recently transitioned from the classic 4-digit code to a modern 6-digit CEP (`XXXX-XX`). `moz-utils` supports both!
+
+```php
+use MozUtils\MozUtils;
+
+// Modern CEP
+var_dump(MozUtils::isValidNewCEP("3100-05")); // bool(true)
+
+// Autocomplete / Suggestion Engine
+$results = MozUtils::suggestCEPs("namutequeliua");
+print_r($results[0]); 
+// ['cep' => '3100-05', 'province' => 'Nampula', 'district' => 'Nampula', 'locality' => 'Namutequeliua']
+
+// Legacy Postal Codes
+var_dump(MozUtils::isValidPostalCode("3100")); // bool(true)
+echo MozUtils::getPostalCodeLocality("3100"); // "Nampula"
+```
+
+#### ⚙️ Under the Hood: The New CEP
+The New Postal Addressing Code (CEP) abandons the old 4-digit system in favor of a geospatial alphanumeric format (`XXXX-XX`). We ported the entire official geographic mapping tree to provide instant autocomplete.
+
+---
+
+## 🛠️ Troubleshooting
+
+- **My NUIT fails validation, but the user swears it's real!**
+  *Cause:* The Mozambican NUIT uses a Check Digit generated through a Modulo 11 algorithm. `moz-utils` does not make exceptions to the mathematical algorithm. If your system accepts mathematically invalid NUITs, your company might face integration issues with the government's e-Tributação systems.
+  
+- **Names Returning Empty to the Database (Sanitize)**
+  *Cause:* The `sanitizeName()` function aggressively strips mathematical characters and numbers. Always run `isValidName()` **before** sanitizing and saving to the database to ensure the string contains actual alphabetical characters.
+
+---
+
+## 📜 License
+
+This project is licensed under the **AGPL-3.0 License** - see the LICENSE file for details.

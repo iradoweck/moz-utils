@@ -1,186 +1,190 @@
-<h1 align="center">moz-utils</h1>
+# moz-utils (TypeScript)
 
-<p align="center">
-  <b>TypeScript & JavaScript (Node.js/Browser)</b>
-</p>
+The definitive, zero-dependency, offline-first open-source library for software built in or for **Mozambique**.
 
-<p align="center">
-  <a href="https://www.npmjs.com/package/moz-utils">
-    <img src="https://img.shields.io/npm/v/moz-utils?color=cb3837&logo=npm" alt="NPM Version" />
-  </a>
-  <a href="https://www.npmjs.com/package/moz-utils">
-    <img src="https://img.shields.io/npm/dt/moz-utils" alt="NPM Downloads" />
-  </a>
-</p>
+[![npm](https://img.shields.io/npm/v/moz-utils?label=npm&color=00ff88)](https://www.npmjs.com/package/moz-utils)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](https://github.com/iradoweck/moz-utils/blob/main/LICENSE)
+[![Website](https://img.shields.io/badge/Docs-Website-blue)](https://iradoweck.github.io/moz-utils/)
 
-<p align="center">
-  <i>The digital foundation of Mozambican identity. The definitive Swiss army knife for validations, postal codes, and financial ecosystems in Mozambique, natively in TypeScript.</i>
-</p>
+> **Author:** Edmilson Muacigarro (@iradoweck)  
+> **Official Documentation:** [iradoweck.github.io/moz-utils](https://iradoweck.github.io/moz-utils/)  
+> **GitHub Repository:** [iradoweck/moz-utils](https://github.com/iradoweck/moz-utils)
 
 ---
 
-## 📜 The Vision
+## 🌍 The Vision
 
-In Mozambique, digital accuracy is the foundation of the future. From the pulse of mobile wallets in the squares to the rigorous structure of the National ID (BI), **moz-utils** exists to ensure that every piece of data that crosses your frontend (React, Vue, Angular) or backend (Node.js) is validated, structured, and authentic.
+When developing applications for Mozambique, engineers constantly solve the exact same problems from scratch:
+- 🔎 **Is this NUIT valid?** — The Tax Authority uses a Modulo 11 algorithm. A single wrong digit and your backend fails silently.
+- 📱 **Is this number Vodacom, Tmcel or Movitel?** — The prefix rules are operator-specific and rarely documented publicly.
+- 🗺️ **What is the new CEP for Namutequeliua, Nampula?** — The new 6-digit postal system has low adoption. We built the first offline database for it.
+- 🪪 **Is this BI / DIRE / Passport valid?** — Every identity document has a strict format.
 
-Built as the "Source of Truth" for the MozUtils ecosystem, this package is more than a library — it is the open-source validation infrastructure our country deserves. Clean code, strongly typed, and poetically engineered for Mozambique.
+`moz-utils` solves all of this **out-of-the-box**, with **zero runtime dependencies**, **offline-first algorithms**, and **strict privacy** (we don't send data anywhere).
+
+---
+
+## 💻 System Requirements
+
+This package is strictly compiled as an **ES Module (ESM)**. 
+- **Node.js**: `>= 24.0.0`
+- **TypeScript**: `>= 6.0` (For development/compilation)
+- **Ecosystem**: Fully compatible with Browsers (ESM), Edge Runtimes (Cloudflare Workers, Vercel Edge), and modern Node.js.
+
+*Note: If you encounter `require() of ES Module is not supported`, ensure your `package.json` has `"type": "module"` and your `tsconfig.json` uses `"moduleResolution": "Node16"` or `"Bundler"`.*
 
 ---
 
 ## 📦 Installation
 
+Install via npm, yarn, or pnpm:
+
 ```bash
 npm install moz-utils
-# or
-yarn add moz-utils
-# or
-pnpm add moz-utils
 ```
 
 ---
 
-## 🚀 API Reference Guide
+## 🚀 Comprehensive Usage Guide
 
-### 1. Documents and Citizen Identity
+### 📱 Phones & Mobile
 
-```typescript
-import { 
-  isValidBI, 
-  isValidNUIT, 
-  getNUITEntityType,
-  isValidDIRE,
-  isValidPassport,
-  isValidDrivingLicense
-} from 'moz-utils';
-
-// National ID (12 digits + 1 letter)
-isValidBI('110101234567A');  // true
-
-// NUIT - Unique Tax Identification Number
-isValidNUIT('123456789');    // true
-getNUITEntityType('400000006');  // "Collective (Quotas Companies...)"
-
-// DIRE - Foreign Resident Identification Document
-isValidDIRE('00008312C');    // true
-
-// Passport and Driving License
-isValidPassport('AO1234567');       // true
-isValidDrivingLicense('M123456');   // true
-```
-
----
-
-### 2. Financial Ecosystem and Telecommunications
-
-Deep mapping of the Mozambican digital circulatory system — identifies operators and the pulse of associated mobile wallets.
+Validating and extracting information from Mozambican mobile numbers. Fully supports Vodacom, Tmcel, and Movitel.
 
 ```typescript
 import { 
   isValidMozambicanPhone, 
-  formatMozambicanPhone, 
-  getMobileOperator,
-  getMobileWallet,
-  buildWhatsAppUrl
+  getMobileOperator, 
+  getMobileWallet, 
+  formatMozambicanPhone,
+  buildWhatsAppUrl 
 } from 'moz-utils';
 
-// Validation and Formatting
-isValidMozambicanPhone('841234567');  // true
-formatMozambicanPhone('841234567');   // "+258 84 123 4567"
+// Validation
+console.log(isValidMozambicanPhone("841234567"));       // true
+console.log(isValidMozambicanPhone("+258 82 123 4567")); // true
+console.log(isValidMozambicanPhone("811234567"));        // false
 
-// Telecom and Financial Intelligence
-getMobileOperator('841234567');  // "Vodacom"
-getMobileWallet('841234567');    // "M-Pesa"
-getMobileWallet('821234567');    // "mKesh"
-getMobileWallet('861234567');    // "e-Mola"
+// Operator & Wallet Extraction
+console.log(getMobileOperator("841234567")); // "Vodacom"
+console.log(getMobileWallet("861234567"));   // "e-Mola"
 
-// Social Connections
-buildWhatsAppUrl('841234567', 'Hello, Mozambique!'); 
-// "https://wa.me/258841234567?text=Hello%2C%20Mozambique%21"
+// Formatting
+console.log(formatMozambicanPhone("84 123 4567")); // "+258841234567"
+
+// WhatsApp Links
+const url = buildWhatsAppUrl("841234567", "Hello!");
+console.log(url); // "https://wa.me/258841234567?text=Hello%21"
 ```
+
+#### ⚙️ Under the Hood: Operator Prefixes
+Telecommunication operators in Mozambique acquire specific number blocks through the INCM. We map operators using this offline logic:
+- **Vodacom**: Starts with `84` or `85`.
+- **Tmcel**: Starts with `82` or `83`.
+- **Movitel**: Starts with `86` or `87`.
 
 ---
 
-### 3. Postal Codes (Legacy and New CEP)
+### 🪪 Identity Documents
 
-A graceful transition between the past and the future: from the old post office stations to the geo-referenced New CEP.
+Validating documents prevents fraudulent registrations in systems deployed in Maputo, Nampula, or any other province.
 
 ```typescript
 import { 
-  isValidNewCEP,
-  suggestCEPs,
-  isValidPostalCode,
-  getPostalCodeLocality
+  isValidNUIT, 
+  getNUITEntityType, 
+  isValidBI, 
+  isValidPassport, 
+  isValidDIRE, 
+  isValidDrivingLicense 
 } from 'moz-utils';
 
-// The Future (New CEP: Province, District, and Locality)
-isValidNewCEP('0101-01');  // true
+// NUIT (Tax ID)
+console.log(isValidNUIT("400000008")); // true
+console.log(getNUITEntityType("400000008")); // "Singular" (Individual)
 
-// Intelligent Suggestion Engine (Supports Legacy -> New Transition)
-// Search by the old code "3100" (Nampula) or by a neighborhood
-suggestCEPs('3100');
-suggestCEPs('Namutequeliua');
+// BI (Identity Card)
+console.log(isValidBI("123456789123A")); // true
 
-// The Legacy
-isValidPostalCode('3100');            // true
-getPostalCodeLocality('3100');        // "Nampula"
+// Passports, DIRE & Driving License
+console.log(isValidPassport("AO1234567")); // true
+console.log(isValidDIRE("120345678A"));   // true
+console.log(isValidDrivingLicense("MP1234567")); // true
 ```
+
+#### ⚙️ Under the Hood: The NUIT Algorithm
+Unlike other tax numbers that use descending multipliers, the Mozambican Tax Authority uses a specific fixed matrix of weights `[8, 9, 4, 5, 6, 7, 8, 9]` to calculate the Modulo 11 for the NUIT. `moz-utils` replicates this exact mathematical equation offline.
 
 ---
 
-### 4. National Geography and Finances
+### 💰 Currency (MZN)
+
+Format numbers into the official Metical standard.
 
 ```typescript
-import { 
-  formatMZN,
-  getMozambiqueProvinces, 
-  getDistrictsByProvince 
-} from 'moz-utils';
+import { formatMZN } from 'moz-utils';
 
-// Monumental Value
-formatMZN(1250.5);         // "1 250.50 MT"
-
-// Full Geography
-const provinces = getMozambiqueProvinces();
-const nampulaDistricts = getDistrictsByProvince('npl');
+console.log(formatMZN(1500)); // "1 500,00 MT"
+console.log(formatMZN(2500000.5)); // "2 500 000,50 MT"
 ```
 
 ---
 
-## 🤝 Rules of Conduct and Contribution
+### 🗺️ Geography & Districts
 
-This is not just any project. It is a project of national pride. We ask for excellence in code, compassion with colleagues, and the ambition to make the Mozambican web world-class. Read our `CODE_OF_CONDUCT.md` in the project root.
+An offline database containing all 11 provinces and 161 districts of Mozambique.
 
-## 📄 License
+```typescript
+import { mozambiqueProvinces, getDistrictsByProvince, getAllDistricts } from 'moz-utils';
 
-The code lives and breathes the freedom of Open Source. Licensed under **AGPL-3.0-or-later**.
+// Loop through provinces
+mozambiqueProvinces.forEach(p => console.log(p.name)); 
 
----
+// Get districts for a specific province
+const maputoDistricts = getDistrictsByProvince("Maputo");
+console.log(maputoDistricts); // ["Boane", "Magude", "Manhiça", "Marracuene", ...]
 
-<p align="center">
-  Developed by <b>Open Source Contributors</b> & supported by <b>Edmilson Muacigarro</b>
-</p>
-
-
----
-
-## 🧮 O Algoritmo NUIT (A Verdadeira Fórmula Moçambicana)
-
-Ao contrário do NIF de Portugal (que usa multiplicadores de 9 a 2), a Autoridade Tributária de Moçambique utiliza a seguinte matriz de pesos para calcular o Módulo 11 do NUIT.
-
-**A Fórmula e os Pesos Oficiais:**
-```text
-NUIT a Validar: 401626638
-
-Posição:   1   2   3   4   5   6   7   8
-Dígitos:   4   0   1   6   2   6   6   3
-Pesos:     8   9   4   5   6   7   8   9
-           |   |   |   |   |   |   |   |
-Mult:     32 + 0 + 4 +30 +12 +42 +48 +27 = 195 (Soma)
-
-Cálculo do Módulo 11:
-1. Resto = Soma % 11
-   195 % 11 = 8
-2. O "Resto" é o Índice (Posição 0 a 10) na string de controlo "01234567891".
-3. A 8ª posição de "01234567891" é '8'.
-4. Como o 9º dígito do NUIT (Dígito de Controlo) é '8', o NUIT é Válido!
+// Get all 161 districts in a flat array
+const all = getAllDistricts();
 ```
+
+---
+
+### 📬 Postal Codes (CEP)
+
+Mozambique recently transitioned from the classic 4-digit code to a modern 6-digit CEP (`XXXX-XX`). `moz-utils` supports both!
+
+```typescript
+import { isValidNewCEP, suggestCEPs, isValidPostalCode, getPostalCodeLocality } from 'moz-utils';
+
+// Modern CEP
+console.log(isValidNewCEP("3100-05")); // true
+
+// Autocomplete / Suggestion Engine
+const results = suggestCEPs("namutequeliua");
+console.log(results[0]); 
+// { cep: "3100-05", province: "Nampula", district: "Nampula", locality: "Namutequeliua" }
+
+// Legacy Postal Codes
+console.log(isValidPostalCode("3100")); // true
+console.log(getPostalCodeLocality("3100")); // "Nampula"
+```
+
+#### ⚙️ Under the Hood: The New CEP
+The New Postal Addressing Code (CEP) abandons the old 4-digit system in favor of a geospatial alphanumeric format (`XXXX-XX`). We ported the entire official geographic mapping tree to provide instant autocomplete.
+
+---
+
+## 🛠️ Troubleshooting
+
+- **My NUIT fails validation, but the user swears it's real!**
+  *Cause:* The Mozambican NUIT uses a Check Digit generated through a Modulo 11 algorithm. `moz-utils` does not make exceptions to the mathematical algorithm. If your system accepts mathematically invalid NUITs, your company might face integration issues with the government's e-Tributação systems.
+  
+- **Names Returning Empty to the Database (Sanitize)**
+  *Cause:* The `sanitizeName()` function aggressively strips mathematical characters and numbers. Always run `isValidName()` **before** sanitizing and saving to the database to ensure the string contains actual alphabetical characters.
+
+---
+
+## 📜 License
+
+This project is licensed under the **AGPL-3.0 License** - see the LICENSE file for details.

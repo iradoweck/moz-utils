@@ -6,7 +6,8 @@ A biblioteca inclui uma base de dados offline com todas as províncias e distrit
 
 Aceda ao array completo de províncias diretamente. Isto ajuda a construir dropdowns robustos para utilizadores que selecionam a sua localização (ex: **Nampula**, **Zambézia**, **Sofala**).
 
-### TypeScript
+<div className="code-tabs" data-labels="TypeScript,Python">
+
 ```ts
 import { mozambiqueProvinces } from 'moz-utils';
 
@@ -17,18 +18,20 @@ console.log(mozambiqueProvinces[0]);
 console.log(mozambiqueProvinces[2].name); // "Nampula"
 ```
 
-### Python
 ```python
 from moz_utils import MOZAMBIQUE_PROVINCES
 
 print(MOZAMBIQUE_PROVINCES[2]) # Nampula
 ```
 
+</div>
+
 ## Obter Distritos por Província
 
 Passe um ID de província válido (como `npl` para **Nampula** ou `sof` para Sofala) para obter os seus distritos.
 
-### TypeScript
+<div className="code-tabs" data-labels="TypeScript,PHP,Dart,Kotlin">
+
 ```ts
 import { getDistrictsByProvince } from 'moz-utils';
 
@@ -37,7 +40,6 @@ console.log(distritosNampula);
 // ["Angoche", "Eráti", "Nampula (Cidade)", "Ribáuè", ...]
 ```
 
-### PHP
 ```php
 use MozUtils\MozUtils;
 
@@ -45,7 +47,6 @@ $distritosNampula = MozUtils::getDistrictsByProvince('npl');
 print_r($distritosNampula);
 ```
 
-### Dart
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
@@ -53,13 +54,14 @@ final distritos = getDistrictsByProvince('npl');
 print(distritos);
 ```
 
-### Kotlin
 ```kotlin
 import io.github.iradowect.moz_utils.MozUtils
 
 val distritos = MozUtils.getDistrictsByProvince("npl")
 println(distritos)
 ```
+
+</div>
 
 ## Obter Todos os Distritos
 

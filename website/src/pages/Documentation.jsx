@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSEO } from '../hooks/useSEO';
 import MarkdownRenderer from '../components/docs/MarkdownRenderer';
-import { Book, Compass, Download, Phone, CreditCard, Landmark, Mail, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Book, Compass, Download, Phone, CreditCard, Landmark, Mail, ChevronRight, ChevronLeft, Cpu, AlertTriangle } from 'lucide-react';
 
 const DOCS_PAGES = [
   { id: 'overview', icon: <Compass size={16} />, label: 'Overview' },
+  { id: 'requirements', icon: <Cpu size={16} />, label: 'Requirements' },
   { id: 'installation', icon: <Download size={16} />, label: 'Installation' },
   { id: 'phones', icon: <Phone size={16} />, label: 'Phones & Mobile' },
   { id: 'documents', icon: <CreditCard size={16} />, label: 'Identity Documents' },
   { id: 'currency', icon: <Landmark size={16} />, label: 'Currency (MZN)' },
   { id: 'geography', icon: <Book size={16} />, label: 'Geography & Districts' },
   { id: 'postal', icon: <Mail size={16} />, label: 'Postal Codes (CEP)' },
+  { id: 'troubleshooting', icon: <AlertTriangle size={16} />, label: 'Troubleshooting' },
 ];
 
 export default function Documentation() {

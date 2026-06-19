@@ -1,231 +1,187 @@
-<h1 align="center">moz-utils</h1>
+# moz-utils (Python)
 
-<p align="center">
-  <b>Python (Django/FastAPI)</b>
-</p>
+The definitive, zero-dependency, offline-first open-source library for software built in or for **Mozambique**.
 
-<p align="center">
-  <a href="https://pypi.org/project/moz-utils/">
-    <img src="https://img.shields.io/pypi/v/moz-utils?color=3776ab&logo=python&logoColor=white" alt="PyPI Version" />
-  </a>
-  <a href="https://pypi.org/project/moz-utils/">
-    <img src="https://img.shields.io/pypi/dm/moz-utils" alt="PyPI Downloads" />
-  </a>
-</p>
+[![PyPI](https://img.shields.io/pypi/v/moz-utils?label=PyPI&color=3776ab)](https://pypi.org/project/moz-utils/)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](https://github.com/iradoweck/moz-utils/blob/main/LICENSE)
+[![Website](https://img.shields.io/badge/Docs-Website-blue)](https://iradoweck.github.io/moz-utils/)
 
-<p align="center">
-  <i>The digital foundation of Mozambican identity. The definitive Swiss army knife for validations, postal codes, and financial ecosystems in Mozambique, natively ported to the Python ecosystem.</i>
-</p>
+> **Author:** Edmilson Muacigarro (@iradoweck)  
+> **Official Documentation:** [iradoweck.github.io/moz-utils](https://iradoweck.github.io/moz-utils/)  
+> **GitHub Repository:** [iradoweck/moz-utils](https://github.com/iradoweck/moz-utils)
 
 ---
 
-## 📜 The Vision
+## 🌍 The Vision
 
-In Mozambique, digital accuracy is the foundation of the future. From the pulse of mobile wallets in the squares to the rigorous structure of the National ID (BI), **moz-utils** exists to ensure that every piece of data that crosses your backend (Django, Flask, FastAPI) or Data Science script is validated, structured, and authentic.
+When developing applications for Mozambique, engineers constantly solve the exact same problems from scratch:
+- 🔎 **Is this NUIT valid?** — The Tax Authority uses a Modulo 11 algorithm. A single wrong digit and your backend fails silently.
+- 📱 **Is this number Vodacom, Tmcel or Movitel?** — The prefix rules are operator-specific and rarely documented publicly.
+- 🗺️ **What is the new CEP for Namutequeliua, Nampula?** — The new 6-digit postal system has low adoption. We built the first offline database for it.
+- 🪪 **Is this BI / DIRE / Passport valid?** — Every identity document has a strict format.
 
-Built impeccably for the Python ecosystem, this package is more than a library — it is the open-source validation infrastructure our country deserves. Clean code, tested, and poetically engineered for Mozambique.
+`moz-utils` solves all of this **out-of-the-box**, with **zero runtime dependencies**, **offline-first algorithms**, and **strict privacy** (we don't send data anywhere).
+
+---
+
+## 💻 System Requirements
+
+- **Python**: `>= 3.8`
+- **Ecosystem**: Natively tested on Django, FastAPI, Flask, and raw Data Science scripts (Jupyter/Pandas).
 
 ---
 
 ## 📦 Installation
 
-Install using `pip`:
+Install via pip:
 
 ```bash
 pip install moz-utils
 ```
 
-Or using `poetry`:
-
-```bash
-poetry add moz-utils
-```
-
 ---
 
-## 🚀 API Reference Guide
+## 🚀 Comprehensive Usage Guide
 
-### 1. Identity & Documents
+### 📱 Phones & Mobile
+
+Validating and extracting information from Mozambican mobile numbers. Fully supports Vodacom, Tmcel, and Movitel.
 
 ```python
 from moz_utils import (
-    is_valid_bi,
-    is_valid_nuit,
-    get_nuit_entity_type,
-    is_valid_dire,
-    is_valid_passport,
-    is_valid_driving_license
-)
-
-# National ID (12 digits + 1 letter)
-is_valid_bi("110101234567A")  # True
-
-# NUIT - Unique Tax Identification Number (Per AT Decree n. 28/2012)
-is_valid_nuit("401626638")    # True
-get_nuit_entity_type("400000006")  # "Pessoas Colectivas"
-get_nuit_entity_type("100000008")  # "Pessoas Singulares"
-
-# DIRE - Foreign Resident Identification Document
-is_valid_dire("00008312C")    # True
-
-# Passport and Driving License
-is_valid_passport("AO1234567")       # True
-is_valid_driving_license("M123456")   # True
-```
-
----
-
-### 2. Name & String Sanitization
-
-Clean up dirty user input from forms before saving to your database:
-
-```python
-from moz_utils import (
-    is_valid_name,
-    sanitize_name,
-    sanitize_document_field,
-    sanitize_alphanumeric_field
-)
-
-is_valid_name("Edmilson O'Brian-Muacigarro") # True
-is_valid_name("Edmilson 123")                # False
-
-sanitize_name("  EDMILSON  muacigarro ")    # "Edmilson Muacigarro"
-sanitize_name("João", all_caps=True)        # "JOÃO"
-
-sanitize_document_field("123 456-789")       # "123456789"
-sanitize_alphanumeric_field("110 101 a")     # "110101A"
-```
-
----
-
-### 3. Financial Toolkit (Metical)
-
-```python
-from moz_utils import format_mzn, parse_mzn
-
-# Format database floats into official AT formats
-format_mzn(1500)          # "1 500,00 MT"
-format_mzn(50000, "MZN")  # "50 000,00 MZN"
-
-# Parse dirty strings back into database floats
-parse_mzn("1.500,00 MT")  # 1500.00
-parse_mzn("1 500,00MZN")  # 1500.00
-```
-
----
-
-### 4. Financial Ecosystem and Telecommunications
-
-Deep mapping of the Mozambican digital circulatory system — identifies operators and the pulse of associated mobile wallets.
-
-```python
-from moz_utils import (
-    is_valid_mozambican_phone,
+    is_valid_mozambican_phone, 
+    get_mobile_operator, 
+    get_mobile_wallet, 
     format_mozambican_phone,
-    get_mobile_operator,
-    get_mobile_wallet,
-    build_whatsapp_url
+    build_whatsapp_url 
 )
 
-# Validation and Formatting
-is_valid_mozambican_phone("841234567")  # True
-format_mozambican_phone("841234567")   # "+258 84 123 4567"
+# Validation
+print(is_valid_mozambican_phone("841234567"))       # True
+print(is_valid_mozambican_phone("+258 82 123 4567")) # True
+print(is_valid_mozambican_phone("811234567"))        # False
 
-# Telecom and Financial Intelligence
-get_mobile_operator("841234567")  # "Vodacom"
-get_mobile_wallet("841234567")    # "M-Pesa"
-get_mobile_wallet("821234567")    # "mKesh"
-get_mobile_wallet("861234567")    # "e-Mola"
+# Operator & Wallet Extraction
+print(get_mobile_operator("841234567")) # "Vodacom"
+print(get_mobile_wallet("861234567"))   # "e-Mola"
 
-# Social Connections
-build_whatsapp_url("841234567", "Hello, Mozambique!") 
-# "https://wa.me/258841234567?text=Hello%2C%20Mozambique%21"
+# Formatting
+print(format_mozambican_phone("84 123 4567")) # "+258841234567"
+
+# WhatsApp Links
+url = build_whatsapp_url("841234567", "Hello!")
+print(url) # "https://wa.me/258841234567?text=Hello%21"
 ```
+
+#### ⚙️ Under the Hood: Operator Prefixes
+Telecommunication operators in Mozambique acquire specific number blocks through the INCM. We map operators using this offline logic:
+- **Vodacom**: Starts with `84` or `85`.
+- **Tmcel**: Starts with `82` or `83`.
+- **Movitel**: Starts with `86` or `87`.
 
 ---
 
-### 3. Postal Codes (Legacy and New CEP)
+### 🪪 Identity Documents
 
-A graceful transition between the past and the future: from the old post office stations to the geo-referenced New CEP.
+Validating documents prevents fraudulent registrations in systems deployed in Maputo, Nampula, or any other province.
 
 ```python
 from moz_utils import (
-    is_valid_new_cep,
-    suggest_ceps,
-    is_valid_postal_code,
-    get_postal_code_locality
+    is_valid_nuit, 
+    get_nuit_entity_type, 
+    is_valid_bi, 
+    is_valid_passport, 
+    is_valid_dire, 
+    is_valid_driving_license 
 )
 
-# The Future (New CEP: Province, District, and Locality)
-is_valid_new_cep("0101-01")  # True
+# NUIT (Tax ID)
+print(is_valid_nuit("400000008")) # True
+print(get_nuit_entity_type("400000008")) # "Singular" (Individual)
 
-# Intelligent Suggestion Engine (Supports Legacy -> New Transition)
-# Search by the old code "3100" (Nampula) or by a neighborhood
-suggest_ceps("3100")
-suggest_ceps("Namutequeliua")
+# BI (Identity Card)
+print(is_valid_bi("123456789123A")) # True
 
-# The Legacy
-is_valid_postal_code("3100")            # True
-get_postal_code_locality("3100")        # "Nampula"
+# Passports, DIRE & Driving License
+print(is_valid_passport("AO1234567")) # True
+print(is_valid_dire("120345678A"))   # True
+print(is_valid_driving_license("MP1234567")) # True
 ```
+
+#### ⚙️ Under the Hood: The NUIT Algorithm
+Unlike other tax numbers that use descending multipliers, the Mozambican Tax Authority uses a specific fixed matrix of weights `[8, 9, 4, 5, 6, 7, 8, 9]` to calculate the Modulo 11 for the NUIT. `moz-utils` replicates this exact mathematical equation offline.
 
 ---
 
-### 4. National Geography and Finances
+### 💰 Currency (MZN)
+
+Format numbers into the official Metical standard.
 
 ```python
-from moz_utils import (
-    format_mzn,
-    get_mozambique_provinces,
-    get_districts_by_province
-)
+from moz_utils import format_mzn
 
-# Monumental Value
-format_mzn(1250.5)         # "1 250,50 MT"
-
-# Full Geography
-provinces = get_mozambique_provinces()
-nampula_districts = get_districts_by_province("npl")
+print(format_mzn(1500)) # "1 500,00 MT"
+print(format_mzn(2500000.5)) # "2 500 000,50 MT"
 ```
 
 ---
 
-## 🤝 Rules of Conduct and Contribution
+### 🗺️ Geography & Districts
 
-This is not just any project. It is a project of national pride. We ask for excellence in code, compassion with colleagues, and the ambition to make the Mozambican web world-class. Read our `CODE_OF_CONDUCT.md` in the project root.
+An offline database containing all 11 provinces and 161 districts of Mozambique.
 
-## 📄 License
+```python
+from moz_utils import MOZAMBIQUE_PROVINCES, get_districts_by_province, get_all_districts
 
-The code lives and breathes the freedom of Open Source. Licensed under **AGPL-3.0-or-later**.
+# Loop through provinces
+for p in MOZAMBIQUE_PROVINCES:
+    print(p['name'])
 
----
+# Get districts for a specific province
+maputo_districts = get_districts_by_province("Maputo")
+print(maputo_districts) # ["Boane", "Magude", "Manhiça", "Marracuene", ...]
 
-<p align="center">
-  Developed by <b>Open Source Contributors</b> & supported by <b>Edmilson Muacigarro</b>
-</p>
-
-
----
-
-## 🧮 O Algoritmo NUIT (A Verdadeira Fórmula Moçambicana)
-
-Ao contrário do NIF de Portugal (que usa multiplicadores de 9 a 2), a Autoridade Tributária de Moçambique utiliza a seguinte matriz de pesos para calcular o Módulo 11 do NUIT.
-
-**A Fórmula e os Pesos Oficiais:**
-```text
-NUIT a Validar: 401626638
-
-Posição:   1   2   3   4   5   6   7   8
-Dígitos:   4   0   1   6   2   6   6   3
-Pesos:     8   9   4   5   6   7   8   9
-           |   |   |   |   |   |   |   |
-Mult:     32 + 0 + 4 +30 +12 +42 +48 +27 = 195 (Soma)
-
-Cálculo do Módulo 11:
-1. Resto = Soma % 11
-   195 % 11 = 8
-2. O "Resto" é o Índice (Posição 0 a 10) na string de controlo "01234567891".
-3. A 8ª posição de "01234567891" é '8'.
-4. Como o 9º dígito do NUIT (Dígito de Controlo) é '8', o NUIT é Válido!
+# Get all 161 districts in a flat array
+all_districts = get_all_districts()
 ```
+
+---
+
+### 📬 Postal Codes (CEP)
+
+Mozambique recently transitioned from the classic 4-digit code to a modern 6-digit CEP (`XXXX-XX`). `moz-utils` supports both!
+
+```python
+from moz_utils import is_valid_new_cep, suggest_ceps, is_valid_postal_code, get_postal_code_locality
+
+# Modern CEP
+print(is_valid_new_cep("3100-05")) # True
+
+# Autocomplete / Suggestion Engine
+results = suggest_ceps("namutequeliua")
+print(results[0]) 
+# {'cep': '3100-05', 'province': 'Nampula', 'district': 'Nampula', 'locality': 'Namutequeliua'}
+
+# Legacy Postal Codes
+print(is_valid_postal_code("3100")) # True
+print(get_postal_code_locality("3100")) # "Nampula"
+```
+
+#### ⚙️ Under the Hood: The New CEP
+The New Postal Addressing Code (CEP) abandons the old 4-digit system in favor of a geospatial alphanumeric format (`XXXX-XX`). We ported the entire official geographic mapping tree to provide instant autocomplete.
+
+---
+
+## 🛠️ Troubleshooting
+
+- **My NUIT fails validation, but the user swears it's real!**
+  *Cause:* The Mozambican NUIT uses a Check Digit generated through a Modulo 11 algorithm. `moz-utils` does not make exceptions to the mathematical algorithm. If your system accepts mathematically invalid NUITs, your company might face integration issues with the government's e-Tributação systems.
+  
+- **Names Returning Empty to the Database (Sanitize)**
+  *Cause:* The `sanitize_name()` function aggressively strips mathematical characters and numbers. Always run `is_valid_name()` **before** sanitizing and saving to the database to ensure the string contains actual alphabetical characters.
+
+---
+
+## 📜 License
+
+This project is licensed under the **AGPL-3.0 License** - see the LICENSE file for details.
