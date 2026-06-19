@@ -7,7 +7,6 @@ import PolyglotShowcase from '../components/PolyglotShowcase';
 import EcosystemInstallation from '../components/EcosystemInstallation';
 import UnifiedSimulator from '../components/UnifiedSimulator';
 import CommunityCTA from '../components/CommunityCTA';
-import Footer from '../components/Footer';
 
 export default function Home() {
   const { t } = useTranslation();
@@ -46,8 +45,6 @@ export default function Home() {
       {/* 6. Comunidade */}
       <CommunityCTA />
       
-      {/* 7. Footer */}
-      <Footer />
     </div>
   );
 }
