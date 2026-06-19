@@ -242,9 +242,6 @@ This project is licensed under the **Apache License 2.0**. See the [LICENSE](LIC
   If this library has saved you hours of parsing obscure algorithms and geographic data, consider supporting its continuous development! 
 </p>
 
-- **PayPal:** [Donate via PayPal](#) *(Add your link here)*
-- **Binance (Crypto):** [Donate via Binance Pay](#) *(Add your ID/link here)*
-
 ---
 
 <p align="center">
