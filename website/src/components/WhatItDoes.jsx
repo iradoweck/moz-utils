@@ -100,7 +100,7 @@ export default function WhatItDoes() {
                 <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--warning-bg)' }} />
                 <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--success-bg)' }} />
               </div>
-              <pre style={{ margin: 0, fontFamily: 'monospace', color: '#fff', fontSize: '0.95rem', overflowX: 'auto', whiteSpace: 'pre-wrap' }}>
+              <pre style={{ margin: 0, fontFamily: 'monospace', color: 'var(--text-primary)', fontSize: '0.95rem', overflowX: 'auto', whiteSpace: 'pre-wrap' }}>
                 <code>{activeCap.code}</code>
               </pre>
             </div>
