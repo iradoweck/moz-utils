@@ -62,13 +62,16 @@ jobs:
           REPO_INFO=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/iradoweck/moz-utils || echo '{}')
           STARS=$(echo "$REPO_INFO" | jq '.stargazers_count // 0' || echo '0')
           FORKS=$(echo "$REPO_INFO" | jq '.forks_count // 0' || echo '0')
-          OPEN_ISSUES=$(echo "$REPO_INFO" | jq '.open_issues_count // 0' || echo '0')
+          OPEN_ISSUES_COUNT=$(echo "$REPO_INFO" | jq '.open_issues_count // 0' || echo '0')
           LICENSE=$(echo "$REPO_INFO" | jq -r '.license.spdx_id // "N/A"' || echo 'N/A')
           LANG=$(echo "$REPO_INFO" | jq -r '.language // "N/A"' || echo 'N/A')
 
           # Fetch Open and Merged Pull Requests count
           OPEN_PRS=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/search/issues?q=repo:iradoweck/moz-utils+type:pr+state:open" | jq '.total_count // 0' || echo '0')
           MERGED_PRS=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/search/issues?q=repo:iradoweck/moz-utils+type:pr+is:merged" | jq '.total_count // 0' || echo '0')
+          
+          # Calculate True Open Issues (Total Open Issues Count - Open PRs)
+          OPEN_ISSUES=$(node -e "console.log(Math.max(0, $OPEN_ISSUES_COUNT - $OPEN_PRS))")
           
           # Fetch Closed Issues count
           CLOSED_ISSUES=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/search/issues?q=repo:iradoweck/moz-utils+type:issue+state:closed" | jq '.total_count // 0' || echo '0')
@@ -89,9 +92,10 @@ jobs:
           PHP_INFO=$(curl -s https://packagist.org/packages/iradoweck/moz-utils.json || echo '{"package":{"downloads":{"total":0}}}')
           PHP_DL=$(echo "$PHP_INFO" | jq '.package.downloads.total // 0' || echo '0')
 
-          # Python (PyPI) Downloads
-          PY_INFO=$(curl -s https://pypistats.org/api/packages/moz_utils/recent || echo '{"data":{"last_month":0}}')
-          PY_DL=$(echo "$PY_INFO" | jq '.data.last_month // 0' || echo '0')
+          # Python (PyPI) Downloads (Proxy via shields.io to bypass GitHub Actions IP blocks)
+          SHIELDS_PY=$(curl -s https://img.shields.io/pypi/dm/moz_utils.json || echo '{"value":"0"}')
+          RAW_VAL=$(echo "$SHIELDS_PY" | jq -r '.value // "0"')
+          PY_DL=$(node -e "const val = '$RAW_VAL'.replace('/month', ''); let num = parseFloat(val); if(val.includes('k')) num *= 1000; else if(val.includes('M')) num *= 1000000; console.log(Math.round(num || 0));")
 
           # Dart (pub.dev)
           DART_INFO=$(curl -s https://pub.dev/api/packages/moz_utils/metrics || echo '{"score":{"downloadCount30Days":0}}')
