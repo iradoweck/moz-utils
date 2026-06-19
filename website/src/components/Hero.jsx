@@ -14,24 +14,7 @@ export default function Hero() {
       <WorldMapNodes />
 
       <div className="container animate-fade-up" style={{ position: 'relative', zIndex: 10 }}>
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
-          <div className="animate-float" style={{ 
-            background: 'var(--panel-bg)', 
-            padding: '16px 24px', 
-            borderRadius: '30px',
-            boxShadow: '0 0 30px var(--shadow-color)',
-            border: '1px solid var(--panel-border)',
-            backdropFilter: 'blur(10px)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px'
-          }}>
-            <span style={{ fontSize: '1.2rem' }}>🇲🇿</span>
-            <span style={{ fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '0.5px' }}>
-              Open Source from Nampula, MZ
-            </span>
-          </div>
-        </div>
+
         
         <h1 style={{ 
           fontSize: '4.5rem', 
@@ -53,8 +36,7 @@ export default function Hero() {
           lineHeight: '1.6',
           fontWeight: '400'
         }}>
-          A biblioteca de validação open-source definitiva. Validando NUIT, BI, CEPs e Telemóveis com precisão absoluta. 
-          <strong style={{ color: 'var(--text-primary)', fontWeight: '600' }}> De Nampula para toda a África e o Mundo.</strong>
+          A biblioteca de validação open-source definitiva. Validando NUIT, BI, CEPs e Telemóveis com precisão absoluta.
         </p>
         
         <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -66,12 +48,21 @@ export default function Hero() {
           </a>
         </div>
 
-        <div style={{ marginTop: '60px', opacity: 0.8, display: 'flex', gap: '16px', justifyContent: 'center', alignItems: 'center' }}>
-          <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>Ecossistemas Suportados</span>
+        <div style={{ marginTop: '60px', opacity: 0.9, display: 'flex', gap: '24px', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>Ecossistemas</span>
           <div style={{ height: '1px', width: '40px', background: 'var(--panel-border)' }} />
-          <div style={{ display: 'flex', gap: '12px' }}>
-            {['TypeScript', 'Python', 'PHP', 'Dart', 'Kotlin'].map(lang => (
-              <span key={lang} style={{ color: 'var(--text-primary)', fontWeight: '500', fontSize: '0.9rem' }}>{lang}</span>
+          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+            {[
+              { name: 'TypeScript', icon: 'typescript/typescript-original.svg' },
+              { name: 'Python', icon: 'python/python-original.svg' },
+              { name: 'PHP', icon: 'php/php-original.svg' },
+              { name: 'Dart', icon: 'dart/dart-original.svg' },
+              { name: 'Kotlin', icon: 'kotlin/kotlin-original.svg' }
+            ].map(lang => (
+              <div key={lang.name} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--panel-bg)', padding: '8px 16px', borderRadius: '20px', border: '1px solid var(--panel-border)' }}>
+                <img src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${lang.icon}`} alt={lang.name} style={{ width: '20px', height: '20px' }} />
+                <span style={{ color: 'var(--text-primary)', fontWeight: '600', fontSize: '0.9rem' }}>{lang.name}</span>
+              </div>
             ))}
           </div>
         </div>
