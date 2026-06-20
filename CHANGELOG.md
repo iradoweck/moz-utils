@@ -8,11 +8,13 @@ Change history for all versions of the **moz-utils** project.
 > **Patch version — Elite Web Presence Phase 2**
 
 ### Features
-- Upgraded the website's Landing Page to an Elite design featuring a dynamic world map (`WorldMapNodes`) symbolizing Nampula's global reach.
+- Upgraded the website's Landing Page to an Elite design with modern gradients, glassmorphism, and a unified design system.
 - Added a `PolyglotShowcase` to the homepage, demonstrating simple usage across TS, Python, PHP, Dart, and Kotlin with interactive tabs.
 - Integrated GitHub API directly into the new `CommunityCTA` to display live project contributors.
-- Enhanced the Insights dashboard with a real-time simulated `WorldDownloadsMap`.
-- Refined theme handling for dark/light mode switches, ensuring textual contrast across the documentation renderer.
+- Achieved 100% Internationalization (i18n) across all pages (Portuguese and English) with native `react-i18next` integration.
+- Implemented a premium fluid fade transition system for language swapping, completely eliminating layout shifts.
+- Refactored `Documentation` to include asynchronous markdown fetch synchronization and smooth visual loading states.
+- Removed legacy and map-based components (`WorldMapNodes`, `WorldDownloadsMap`, `GeoSimulator`, `MotionDemo`) to optimize the build bundle and streamline the user experience.
 
 ---
 

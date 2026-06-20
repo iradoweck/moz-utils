@@ -8,9 +8,9 @@ The website is a React Single Page Application (SPA) powered by Vite. It serves 
 
 Key features include:
 - **Interactive Documentation**: Comprehensive guides on using `moz-utils` for Identity, Finance, and Geography.
-- **Geographic Simulators**: Real-time tools to convert legacy postal codes to the New CEP, and list districts by province.
+- **Unified Simulator**: A central test center to validate NUITs, BIs, Phone Numbers, and CEPs in real-time.
 - **Insights Dashboard**: Live metrics from NPM, PyPI, Packagist, Pub.dev, and GitHub.
-- **Internationalization (i18n)**: Fully translated into English and Portuguese.
+- **Seamless Internationalization (i18n)**: Fully translated into English and Portuguese, featuring fluid global cross-fade transitions without layout shifts.
 
 ## Running Locally
 
