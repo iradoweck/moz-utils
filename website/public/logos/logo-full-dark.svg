@@ -1,5 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 100" width="420" height="100">
   <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@800&amp;display=swap');
+      .logo-text {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 800;
+        font-size: 64px;
+        letter-spacing: -2px;
+      }
+    </style>
     <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
       <feGaussianBlur stdDeviation="4" result="blur" />
       <feComponentTransfer in="blur" result="glow1">
@@ -31,7 +40,7 @@
   </g>
   
   <!-- Text -->
-  <text x="110" y="72" font-family="Inter, system-ui, sans-serif" font-weight="900" font-size="64" letter-spacing="-2">
+  <text x="115" y="72" class="logo-text">
     <tspan fill="#ffffff">moz</tspan><tspan fill="#00ff88">-utils</tspan>
   </text>
 </svg>
