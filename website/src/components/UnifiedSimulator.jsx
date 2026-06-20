@@ -3,15 +3,18 @@ import { useTranslation } from 'react-i18next';
 import { 
   isValidNUIT, getNUITEntityType, isValidBI,
   getDistrictsByProvince, isValidNewCEP, suggestCEPs,
+  isValidPostalCode, getPostalCodeLocality, getPostalCodeProvince,
   isValidMozambicanPhone, getMobileOperator, getMobileWallet, formatMZN, parseMZN, buildWhatsAppUrl
 } from 'moz-utils';
-import { CreditCard, Fingerprint, Phone, MapPin, Map, Coins, MessageCircle, Terminal, CheckCircle2, XCircle } from 'lucide-react';
+import { CreditCard, Fingerprint, Phone, MapPin, Map, Coins, MessageCircle, Terminal, CheckCircle2, XCircle, ArrowRightLeft } from 'lucide-react';
 
 const validators = [
   { id: 'nuit', label: 'NUIT', icon: <CreditCard size={18} />, placeholder: 'Ex: 400000000' },
   { id: 'bi', label: 'B. Identidade', icon: <Fingerprint size={18} />, placeholder: 'Ex: 110100000000B' },
   { id: 'phone', label: 'Telefone', icon: <Phone size={18} />, placeholder: 'Ex: 841234567' },
-  { id: 'cep', label: 'Código Postal', icon: <Map size={18} />, placeholder: 'Ex: 1100' },
+  { id: 'cep', label: 'Novo CEP', icon: <Map size={18} />, placeholder: 'Ex: 1100' },
+  { id: 'legacy_cep', label: 'CEP Antigo', icon: <MapPin size={18} />, placeholder: 'Ex: 1100' },
+  { id: 'cep_migration', label: 'Migração CEP', icon: <ArrowRightLeft size={18} />, placeholder: 'Ex: Maputo' },
   { id: 'province', label: 'Distritos', icon: <MapPin size={18} />, placeholder: 'Ex: Maputo' },
   { id: 'money', label: 'Dinheiro', icon: <Coins size={18} />, placeholder: 'Ex: 1500.50' },
   { id: 'whatsapp', label: 'WhatsApp Link', icon: <MessageCircle size={18} />, placeholder: 'Ex: 841234567' }
@@ -51,11 +54,25 @@ export default function UnifiedSimulator() {
           if (valid) {
             const suggestions = suggestCEPs(inputValue);
             if (suggestions.length > 0) {
-              return { success: true, text: `CEP Válido: ${suggestions[0].locality} (${suggestions[0].province})` };
+              return { success: true, text: `Novo CEP Válido: ${suggestions[0].locality} (${suggestions[0].province})` };
             }
-            return { success: true, text: 'CEP Válido (Formato correto).' };
+            return { success: true, text: 'Novo CEP Válido (Formato correto).' };
           }
-          return { success: false, text: 'Código Postal Inválido.' };
+          return { success: false, text: 'Novo Código Postal Inválido.' };
+        }
+        case 'legacy_cep': {
+          const valid = isValidPostalCode(inputValue);
+          if (valid) {
+            return { success: true, text: `CEP Antigo Válido: ${getPostalCodeLocality(inputValue)} (${getPostalCodeProvince(inputValue)})` };
+          }
+          return { success: false, text: 'CEP Antigo Inválido.' };
+        }
+        case 'cep_migration': {
+          const suggestions = suggestCEPs(inputValue);
+          if (suggestions.length > 0) {
+            return { success: true, text: `Encontrados ${suggestions.length} locais:\n${suggestions.slice(0, 5).map(s => `${s.cep} - ${s.locality}`).join('\n')}${suggestions.length > 5 ? '\n...' : ''}` };
+          }
+          return { success: false, text: 'Nenhum CEP encontrado para esta localidade.' };
         }
         case 'province': {
           const districts = getDistrictsByProvince(inputValue);
