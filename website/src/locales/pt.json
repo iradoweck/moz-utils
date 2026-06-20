@@ -62,10 +62,10 @@
       "money": "Moeda (MZN)"
     },
     "placeholders": {
-      "nuit": "Digita um NUIT (ex: 400000001)",
-      "bi": "Digita um BI Nacional (ex: 110100000000B)",
+      "nuit": "Digita um NUIT (ex: 100000008)",
+      "bi": "Digita um BI Nacional (ex: 110101234567A)",
       "dire": "Digita um DIRE (ex: 120345678A)",
-      "passport": "Digita um Passaporte (ex: AO1234567)",
+      "passport": "Digita um Passaporte (ex: AB123456)",
       "license": "Digita uma Carta de Condução (ex: MP1234567)",
       "province": "ID Província (ex: npl (Nampula))",
       "legacy_postal": "Código antigo (ex: 3100)",

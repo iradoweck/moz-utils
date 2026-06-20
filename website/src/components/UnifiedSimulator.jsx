@@ -9,8 +9,8 @@ import {
 import { CreditCard, Fingerprint, Phone, MapPin, Map, Coins, MessageCircle, Terminal, CheckCircle2, XCircle, ArrowRightLeft } from 'lucide-react';
 
 const validators = [
-  { id: 'nuit', label: 'NUIT', icon: <CreditCard size={18} />, placeholder: 'Ex: 400000000' },
-  { id: 'bi', label: 'B. Identidade', icon: <Fingerprint size={18} />, placeholder: 'Ex: 110100000000B' },
+  { id: 'nuit', label: 'NUIT', icon: <CreditCard size={18} />, placeholder: 'Ex: 100000008' },
+  { id: 'bi', label: 'B. Identidade', icon: <Fingerprint size={18} />, placeholder: 'Ex: 110101234567A' },
   { id: 'phone', label: 'Telefone', icon: <Phone size={18} />, placeholder: 'Ex: 841234567' },
   { id: 'new_cep', label: 'Novo CEP', icon: <Map size={18} />, placeholder: 'Ex: 1100' },
   { id: 'legacy_postal', label: 'CEP Antigo', icon: <MapPin size={18} />, placeholder: 'Ex: 1100' },

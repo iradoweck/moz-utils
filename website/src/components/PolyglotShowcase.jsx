@@ -2,35 +2,35 @@ import React, { useState } from 'react';
 import { Terminal, CheckCircle2 } from 'lucide-react';
 
 const codeSnippets = {
-  TypeScript: `import { validateNUIT } from 'moz-utils';
+  TypeScript: `import { isValidNUIT } from 'moz-utils';
 
-const isValid = validateNUIT("123456789");
+const isValid = isValidNUIT("100000008");
 console.log(isValid ? "Valid NUIT!" : "Invalid");`,
   
-  Python: `from moz_utils import validate_nuit
+  Python: `from moz_utils import is_valid_nuit
 
-is_valid = validate_nuit("123456789")
+is_valid = is_valid_nuit("100000008")
 print("Valid NUIT!" if is_valid else "Invalid")`,
 
   PHP: `<?php
 require 'vendor/autoload.php';
 use MozUtils\\Validator;
 
-$isValid = Validator::validateNUIT("123456789");
+$isValid = Validator::isValidNUIT("100000008");
 echo $isValid ? "Valid NUIT!" : "Invalid";
 ?>`,
 
   Dart: `import 'package:moz_utils/moz_utils.dart';
 
 void main() {
-  final isValid = MozUtils.validateNUIT("123456789");
+  final isValid = MozUtils.isValidNUIT("100000008");
   print(isValid ? "Valid NUIT!" : "Invalid");
 }`,
 
   Kotlin: `import mz.co.mozutils.MozUtils
 
 fun main() {
-    val isValid = MozUtils.validateNUIT("123456789")
+    val isValid = MozUtils.isValidNUIT("100000008")
     println(if (isValid) "Valid NUIT!" else "Invalid")
 }`
 };

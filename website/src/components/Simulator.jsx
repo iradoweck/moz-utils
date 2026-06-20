@@ -105,11 +105,11 @@ export default function Simulator() {
 
           <div>
             <label className="input-label">
-              {activeTab === 'nuit' && 'Digita um NUIT (ex: 400000008)'}
-              {activeTab === 'bi' && 'Digita um BI (ex: 123456789123A)'}
-              {activeTab === 'dire' && 'Digita um DIRE (ex: 00008312C)'}
-              {activeTab === 'passport' && 'Digita um Passaporte (ex: AO1234567)'}
-              {activeTab === 'license' && 'Digita uma Carta de Condução (ex: M123456)'}
+              {activeTab === 'nuit' && 'Digita um NUIT (ex: 100000008)'}
+              {activeTab === 'bi' && 'Digita um BI (ex: 110101234567A)'}
+              {activeTab === 'dire' && 'Digita um DIRE (ex: 120345678A)'}
+              {activeTab === 'passport' && 'Digita um Passaporte (ex: AB123456)'}
+              {activeTab === 'license' && 'Digita uma Carta de Condução (ex: MP1234567)'}
               {activeTab === 'phone' && 'Digita um nº de telemóvel (ex: 841234567)'}
               {activeTab === 'whatsapp' && 'Digita um nº de telemóvel para gerar link WA'}
               {activeTab === 'money' && 'Digita um valor numérico (ex: 1500.50)'}

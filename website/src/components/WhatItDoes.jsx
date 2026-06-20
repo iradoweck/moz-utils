@@ -8,7 +8,11 @@ const capabilities = [
     title: 'Validação de NUIT',
     desc: 'Algoritmo Módulo 11 da AT',
     details: 'Não usamos apenas Expressões Regulares. A biblioteca aplica o algoritmo matemático oficial exigido pela Autoridade Tributária de Moçambique para calcular e validar o dígito de controlo do NUIT.',
-    code: `import { validateNUIT } from 'moz-utils';\n\n// Exemplo de uso\nconst isValid = validateNUIT('400000000');\nconsole.log(isValid); // true`
+    code: `import { isValidNUIT } from 'moz-utils';
+
+// Validação de NUIT Singular (Pessoa Física)
+const valid = isValidNUIT('100000008'); 
+console.log(valid); // true`
   },
   {
     id: 'bi',
@@ -16,7 +20,11 @@ const capabilities = [
     title: 'Validação de BI',
     desc: 'Suporte a vários formatos',
     details: 'Quer seja o BI antigo (12 números + 1 letra) ou as emissões mais modernas, a ferramenta verifica as estruturas e formatos estabelecidos pela DIC.',
-    code: `import { validateBI } from 'moz-utils';\n\n// Verifica a integridade da String\nconst check = validateBI('110100000000B'); \nconsole.log(check); // true`
+    code: `import { isValidBI } from 'moz-utils';
+
+// Verificação estrutural e de check-digit
+const check = isValidBI('110101234567A'); 
+console.log(check); // true`
   },
   {
     id: 'phone',
