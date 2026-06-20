@@ -44,7 +44,7 @@ export default function WhatItDoes() {
       <div className="container animate-fade-up">
         
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>O que faz e <span className="text-gradient">Como faz</span>?</h2>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>O que faz e <span className="text-neon">Como faz</span>?</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
             Não é mágica, é matemática pura. Veja os casos de uso reais que o moz-utils resolve para si.
           </p>

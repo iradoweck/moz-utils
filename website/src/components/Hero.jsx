@@ -25,7 +25,7 @@ export default function Hero() {
           textShadow: '0 0 40px var(--shadow-color)'
         }}>
           Mozambique Utilities<br/>
-          <span className="text-gradient">for Developers</span>
+          <span className="text-neon">for Developers</span>
         </h1>
         
         <p style={{ 

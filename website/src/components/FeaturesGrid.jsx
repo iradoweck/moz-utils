@@ -29,7 +29,7 @@ export default function FeaturesGrid() {
     <section style={{ padding: '80px 0', background: 'var(--body-bg-gradient)' }}>
       <div className="container animate-fade-up">
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>Porquê <span className="text-gradient">moz-utils?</span></h2>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>Porquê <span className="text-neon">moz-utils?</span></h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
             Desenhado para o mercado local com a engenharia e qualidade do mercado global.
           </p>
