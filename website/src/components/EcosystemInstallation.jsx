@@ -32,7 +32,7 @@ export default function EcosystemInstallation() {
     <section style={{ padding: '80px 20px', backgroundColor: 'rgba(0,255,136,0.02)' }}>
       <div className="container animate-fade-up">
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>{t('installation.title')}</h2>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }} className="text-neon">{t('installation.title')}</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto' }}>
             {t('installation.desc')}
           </p>
