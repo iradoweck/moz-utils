@@ -5,26 +5,35 @@
     "insights": "Insights",
     "community": "Community",
     "changelog": "Changelog",
-    "donate": "Donate"
+    "donate": "Donate",
+    "themeLight": "Switch to Light",
+    "themeDark": "Switch to Dark"
   },
   "hero": {
     "title1": "moz-",
     "title2": "utils",
-    "description": "The ultimate open-source library for software in Mozambique. NUIT, BI validation, mobile parsing, new CEPs and more, available for TypeScript, PHP, Python, Kotlin and Dart.",
-    "cta": "Test in Simulator"
+    "description": "The ultimate open-source validation library. Validating NUIT, National ID, Postal Codes and Mobile numbers with absolute precision.",
+    "cta": "Test in Simulator",
+    "title": "Mozambique Utilities",
+    "titleHighlight": "for Developers",
+    "btnDocs": "Explore Documentation",
+    "btnGithub": "View on GitHub",
+    "ecosystems": "Ecosystems"
   },
   "footer": {
     "sponsoredBy": "Sponsored and supported by",
-    "developedByShort": "and Developed by Edmilson Muacigaro & Community",
-    "developedBy": "Developed by Edmilson Muacigaro & Community | Powered By ZEDECK's IT...",
+    "developedByShort": "and Developed by Zedeck's IT & Community",
     "openSource": "Open Source under AGPL-3.0 License",
-    "donatePrimary": "Support via GitHub Sponsors",
-    "donateSecondary": "One-time Donation (PayPal)"
+    "donatePrimary": "Sponsor",
+    "donateSecondary": "PayPal"
   },
   "home": {
     "simulatorTitle": "Live",
     "simulatorTitleLive": "Simulator",
-    "simulatorDesc": "Test all library functionalities directly in your browser."
+    "simulatorDesc": "Test all library functionalities directly in your browser.",
+    "testCenterTitle": "Universal ",
+    "testCenterHighlight": "Testing Center",
+    "testCenterDesc": "Validate NUITs, BIs, Postal Codes, and Phone Numbers in real-time using our agnostic mathematical logic. What works here, works in any stack."
   },
   "motionDemo": {
     "title": "How it Works",
@@ -34,11 +43,11 @@
     "invalid": "✗ Invalid NUIT (requires 9 digits)"
   },
   "installation": {
-    "title": "Quick Installation",
-    "desc": "An open-source project available for the 5 major ecosystems.",
+    "title": "Ready for any Ecosystem.",
+    "desc": "Choose your preferred stack and install with a single command.",
     "copy": "Copy",
     "copied": "Copied!",
-    "joinCommunity": "Join our Community"
+    "joinCommunity": "Join the Community"
   },
   "simulator": {
     "catEntities": "Entities",
@@ -100,81 +109,190 @@
     }
   },
   "changelog_page": {
-    "title": "Changelog",
-    "description": "Track all news, fixes, and updates in every version of ",
-    "current_stacks": "Current Stack Versions",
+    "description": "Version history and release notes for",
+    "current_stacks": "Current Ecosystems",
     "global_history": "Global History",
-    "view_less": "View less",
-    "view_all": "View all versions"
+    "view_less": "View Less",
+    "view_all": "View All History"
   },
   "insights_page": {
-    "description": "Real-time usage statistics, downloads, and our contributor ranking.",
+    "description": "Live download stats, GitHub activity, contributor metrics, and ecosystem health for moz-utils across NPM, PyPI, Packagist, and pub.dev.",
+    "loading_insights": "Loading ecosystem insights...",
     "github_stars": "GitHub Stars",
     "forks": "Forks",
-    "downloads_npm": "NPM Downloads",
-    "downloads_packagist": "Packagist Downloads",
-    "downloads_pypi": "PyPI Downloads",
-    "downloads_pub": "Pub.dev Downloads",
-    "top_contributors": "Top Contributors",
-    "commits": "commits",
-    "creator_maintainer": "Creator / Maintainer",
-    "loading_contributors": "Loading contributors...",
-    "loading_insights": "Loading insights data…",
     "open_closed_issues": "Open / Closed Issues",
     "open_merged_prs": "Open / Merged PRs",
     "total_downloads": "Total Downloads",
     "downloads_by_ecosystem": "Downloads by Ecosystem",
     "npm_weekly_trend": "NPM Weekly Trend",
     "last_8_weeks": "Last 8 weeks of NPM downloads",
-    "no_trend_data": "No trend data available yet.",
+    "no_trend_data": "No trend data available",
     "leads_with": "leads with",
     "of_all_downloads": "of all downloads",
     "ecosystem_health": "Ecosystem Health",
     "recent_activity": "Recent Activity",
-    "want_to_contribute": "Want to become a contributor?",
-    "contribute_desc": "This section will display contributors once the community starts growing. Be the first to contribute and have your name featured here!",
-    "read_contrib_guide": "Read the Contribution Guide"
+    "top_contributors": "Top Contributors",
+    "creator_maintainer": "Creator / Maintainer",
+    "commits": "commits",
+    "want_to_contribute": "Want to Contribute?",
+    "contribute_desc": "The moz-utils project is 100% open-source and thrives on community help. Join us!",
+    "read_contrib_guide": "Read Contribution Guide",
+    "last_updated": "Last updated:",
+    "online": "ONLINE",
+    "down": "DOWN",
+    "unknown": "Unknown"
   },
   "docs_page": {
     "title": "Documentation",
     "description": "Comprehensive guide on how to use moz-utils across all supported ecosystems.",
-    "on_this_page": "On this page",
-    "pagination": {
-      "previous": "Previous",
-      "next": "Next"
-    },
     "menu": {
       "title": "Contents",
       "overview": "Overview",
+      "requirements": "Requirements",
       "installation": "Installation",
       "phones": "Phones & Mobile",
       "documents": "Identity Documents",
       "currency": "Currency (MZN)",
       "geography": "Geography & Districts",
-      "sanitization": "Sanitization",
       "postal": "Postal Codes (CEP)",
-      "examples": "Use Cases",
-      "errors": "Error Handling",
-      "contributing": "Contributing",
-      "faq": "FAQ"
-    }
+      "troubleshooting": "Troubleshooting"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "on_this_page": "On this page",
+    "not_found_markdown": "# Page Not Found\nWe could not load this documentation page."
   },
   "community_page": {
-    "title": "Community",
-    "description": "Join the official discussion. Ask questions, propose features, and help build the Mozambican digital foundation.",
-    "b2b_title": "Enterprise & Partnerships",
-    "b2b_description": "Are you a project manager, company, or institution looking to integrate moz-utils or propose a partnership? You don't need to use the developer forum.",
-    "b2b_cta": "Contact for Business",
-    "giscus_loading": "Loading discussion forum...",
-    "topics_title": "Discussion Topics",
+    "title": "Mozambican Open-Source Community",
+    "description": "Discuss ideas, ask questions, share projects built with moz-utils, and stay updated on the ecosystem's latest news.",
+    "topics_title": "Forum Topics",
+    "topics": {
+      "qa": {
+        "title": "Q&A",
+        "desc": "Have questions about implementing validations in your project? Ask here."
+      },
+      "ideas": {
+        "title": "Ideas & Features",
+        "desc": "Suggest new libraries and validations for the Mozambican ecosystem."
+      },
+      "showcase": {
+        "title": "Show and Tell",
+        "desc": "Share apps, websites, or systems you built using moz-utils."
+      },
+      "announcements": {
+        "title": "Official Announcements",
+        "desc": "New versions, new ecosystems, and crucial updates from the core team."
+      }
+    },
+    "b2b_title": "B2B Implementation & Enterprise Support",
+    "b2b_description": "Need help integrating moz-utils into your Bank, Insurance, or Public Institution software? Zedeck's IT offers direct consulting for large-scale implementations, Mozambican data compliance, and SLA updates.",
+    "b2b_cta": "Contact for B2B Support",
     "general_discussion": "General Discussion",
     "topic": "Topic",
-    "back_to_general": "Back to General",
-    "topics": {
-      "qa": { "title": "Q&A", "desc": "Stuck on validating a NUIT? Ask the community for help." },
-      "ideas": { "title": "Ideas", "desc": "Suggest new validations, banks, or API integrations." },
-      "showcase": { "title": "Showcase", "desc": "Show off what you've built using moz-utils." },
-      "announcements": { "title": "Announcements", "desc": "Official updates and ecosystem news." }
+    "back_to_general": "Back to General"
+  },
+  "what_it_does": {
+    "title": "What it does and ",
+    "titleHighlight": "How it does it?",
+    "desc": "It's not magic, it's pure math. Explore the real-world use cases that moz-utils solves for you.",
+    "cards": {
+      "nuit": {
+        "title": "NUIT Validation",
+        "desc": "Modulo 11 Algorithm from AT",
+        "details": "We don't just use Regular Expressions. The library applies the official mathematical algorithm required by the Mozambican Tax Authority to calculate and validate the NUIT check digit."
+      },
+      "bi": {
+        "title": "National ID (BI) Validation",
+        "desc": "Support for multiple formats",
+        "details": "Whether it's the old BI (12 numbers + 1 letter) or the most modern emissions, the tool verifies the structures and formats established by DIC."
+      },
+      "phone": {
+        "title": "Phones and Networks",
+        "desc": "Normalization and operator detection",
+        "details": "Automatically detects whether a number belongs to Tmcel, Vodacom, or Movitel. It also handles international prefixes (+258) and landline numbers."
+      },
+      "geo": {
+        "title": "Local Geography",
+        "desc": "Province Maps and Postal Codes",
+        "details": "Contains an integrated, high-performance (O(1)) database to query postal codes and map provinces to districts without needing internet access."
+      }
+    }
+  },
+  "polyglot_showcase": {
+    "title": "Write Once, ",
+    "titleHighlight": "Use Everywhere",
+    "desc": "The same clean and predictable API natively designed for the languages most loved by the community.",
+    "testCoverage": "100% Unit Test Coverage across all Stacks"
+  },
+  "community_cta": {
+    "title": "Join the ",
+    "titleHighlight": "Movement",
+    "desc": "Be part of the future of Mozambican development. Contribute code, improve documentation, or help spread `moz-utils` around the world.",
+    "loadingHeroes": "Loading Heroes...",
+    "btnContribute": "Become a Contributor",
+    "btnStar": "Drop a Star"
+  },
+  "features_grid": {
+    "title": "Why ",
+    "titleHighlight": "moz-utils?",
+    "desc": "Designed for the local market with the engineering and quality of the global market.",
+    "cards": [
+      {
+        "title": "100% Test Coverage",
+        "description": "Rigorous unit testing across all supported languages to ensure absolute precision in validating critical data."
+      },
+      {
+        "title": "Zero Dependencies",
+        "description": "Extremely lightweight packages that do not bloat your project. All code is native to the chosen language."
+      },
+      {
+        "title": "Embedded Geographic Data",
+        "description": "Full validation of Postal Codes (old and new) and offline mapping of Mozambique's Provinces and Districts."
+      },
+      {
+        "title": "Strict Typing",
+        "description": "Fully compatible with TypeScript, Dart with null-safety, and Kotlin, providing powerful autocomplete in your IDE."
+      }
+    ]
+  },
+  "unified_simulator": {
+    "choose": "Choose what to validate:",
+    "insertValue": "Enter the value to test",
+    "waitingInput": "Waiting for input...",
+    "error": "Error processing the entered value.",
+    "labels": {
+      "nuit": "NUIT",
+      "bi": "National ID",
+      "phone": "Phone",
+      "new_cep": "New CEP",
+      "legacy_postal": "Legacy CEP",
+      "migration": "CEP Migration",
+      "province": "Districts",
+      "money": "Money",
+      "whatsapp": "WhatsApp Link"
+    },
+    "results": {
+      "nuitValid": "Valid NUIT. Entity:",
+      "nuitInvalid": "Invalid NUIT.",
+      "biValid": "Valid BI and structurally correct.",
+      "biInvalid": "Invalid BI Format.",
+      "phoneValid": "Valid Number. Operator:",
+      "phoneInvalid": "Invalid phone number.",
+      "newCepValid": "Valid New CEP:",
+      "newCepValidFormat": "Valid New CEP (Correct format).",
+      "newCepInvalid": "Invalid New Postal Code.",
+      "legacyCepValid": "Valid Legacy CEP:",
+      "legacyCepInvalid": "Invalid Legacy CEP.",
+      "migrationFound": "Found",
+      "migrationNotFound": "No CEP found for this locality.",
+      "provinceFound": "Found",
+      "provinceNotFound": "Province not found.",
+      "moneyValid": "Formatted:",
+      "moneyInvalid": "Invalid value format.",
+      "whatsappValid": "Generated link:",
+      "whatsappInvalid": "Enter a valid phone first."
     }
   }
 }

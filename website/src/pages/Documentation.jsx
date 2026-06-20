@@ -25,6 +25,7 @@ export default function Documentation() {
   const [content, setContent] = useState('');
   const [headings, setHeadings] = useState([]);
   const [activeHeading, setActiveHeading] = useState('');
+  const [isFetching, setIsFetching] = useState(false);
 
   const activeIndex = DOCS_PAGES.findIndex(p => p.id === activeDoc);
   const prevPage = activeIndex > 0 ? DOCS_PAGES.find((_, i) => i === activeIndex - 1) ?? null : null;
@@ -34,6 +35,8 @@ export default function Documentation() {
   useEffect(() => {
     const page = DOCS_PAGES.find(p => p.id === activeDoc);
     if (!page) return;
+
+    setIsFetching(true);
 
     const localizedFile = `${page.id}.${lang}.md`;
     const fallbackFile = `${page.id}.en.md`;
@@ -49,6 +52,7 @@ export default function Documentation() {
       .catch(() => tryFetch(`/moz-utils/docs/${fallbackFile}`))
       .then(text => {
         setContent(text);
+        setIsFetching(false);
         setActiveHeading(''); // Reset TOC highlight on page change
 
         // Extract headings — must mirror MarkdownRenderer's makeUniqueId logic
@@ -69,7 +73,10 @@ export default function Documentation() {
         setHeadings(extractedHeadings);
         window.scrollTo({ top: 0, behavior: 'auto' });
       })
-      .catch(() => setContent('# Page Not Found\nWe could not load this documentation page.'));
+      .catch(() => {
+        setContent(t('docs_page.not_found_markdown', '# Page Not Found\nWe could not load this documentation page.'));
+        setIsFetching(false);
+      });
   }, [activeDoc, lang]);
 
   // Track scroll for active heading in TOC
@@ -150,7 +157,7 @@ export default function Documentation() {
       </aside>
 
       {/* ── Center Content (Markdown) ── */}
-      <main style={{ flex: 1, minWidth: 0 }}>
+      <main style={{ flex: 1, minWidth: 0, opacity: isFetching ? 0 : 1, transition: 'opacity 0.2s ease', transform: isFetching ? 'translateY(10px)' : 'translateY(0)' }}>
         <MarkdownRenderer content={content} />
 
         {/* ── Prev / Next Pagination ── */}

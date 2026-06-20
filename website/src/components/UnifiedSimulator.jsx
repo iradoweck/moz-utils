@@ -8,20 +8,21 @@ import {
 } from 'moz-utils';
 import { CreditCard, Fingerprint, Phone, MapPin, Map, Coins, MessageCircle, Terminal, CheckCircle2, XCircle, ArrowRightLeft } from 'lucide-react';
 
-const validators = [
-  { id: 'nuit', label: 'NUIT', icon: <CreditCard size={18} />, placeholder: 'Ex: 100000008' },
-  { id: 'bi', label: 'B. Identidade', icon: <Fingerprint size={18} />, placeholder: 'Ex: 110101234567A' },
-  { id: 'phone', label: 'Telefone', icon: <Phone size={18} />, placeholder: 'Ex: 841234567' },
-  { id: 'new_cep', label: 'Novo CEP', icon: <Map size={18} />, placeholder: 'Ex: 1100' },
-  { id: 'legacy_postal', label: 'CEP Antigo', icon: <MapPin size={18} />, placeholder: 'Ex: 1100' },
-  { id: 'migration', label: 'Migração CEP', icon: <ArrowRightLeft size={18} />, placeholder: 'Ex: Maputo' },
-  { id: 'province', label: 'Distritos', icon: <MapPin size={18} />, placeholder: 'Ex: Maputo' },
-  { id: 'money', label: 'Dinheiro', icon: <Coins size={18} />, placeholder: 'Ex: 1500.50' },
-  { id: 'whatsapp', label: 'WhatsApp Link', icon: <MessageCircle size={18} />, placeholder: 'Ex: 841234567' }
+const getValidators = (t) => [
+  { id: 'nuit', label: t('unified_simulator.labels.nuit'), icon: <CreditCard size={18} />, placeholder: t('simulator.placeholders.nuit') },
+  { id: 'bi', label: t('unified_simulator.labels.bi'), icon: <Fingerprint size={18} />, placeholder: t('simulator.placeholders.bi') },
+  { id: 'phone', label: t('unified_simulator.labels.phone'), icon: <Phone size={18} />, placeholder: t('simulator.placeholders.phone') },
+  { id: 'new_cep', label: t('unified_simulator.labels.new_cep'), icon: <Map size={18} />, placeholder: 'Ex: 1100' },
+  { id: 'legacy_postal', label: t('unified_simulator.labels.legacy_postal'), icon: <MapPin size={18} />, placeholder: 'Ex: 1100' },
+  { id: 'migration', label: t('unified_simulator.labels.migration'), icon: <ArrowRightLeft size={18} />, placeholder: 'Ex: Maputo' },
+  { id: 'province', label: t('unified_simulator.labels.province'), icon: <MapPin size={18} />, placeholder: 'Ex: Maputo' },
+  { id: 'money', label: t('unified_simulator.labels.money'), icon: <Coins size={18} />, placeholder: t('simulator.placeholders.money') },
+  { id: 'whatsapp', label: t('unified_simulator.labels.whatsapp'), icon: <MessageCircle size={18} />, placeholder: t('simulator.placeholders.whatsapp') }
 ];
 
 export default function UnifiedSimulator() {
   const { t } = useTranslation();
+  const validators = getValidators(t);
   const [activeValidator, setActiveValidator] = useState(validators[0]);
   const [inputValue, setInputValue] = useState('');
 
@@ -33,72 +34,72 @@ export default function UnifiedSimulator() {
       switch (activeValidator.id) {
         case 'nuit': {
           const valid = isValidNUIT(inputValue);
-          if (valid) return { success: true, text: `NUIT Válido. Entidade: ${getNUITEntityType(inputValue)}` };
-          return { success: false, text: 'NUIT Inválido.' };
+          if (valid) return { success: true, text: `${t('unified_simulator.results.nuitValid')} ${getNUITEntityType(inputValue)}` };
+          return { success: false, text: t('unified_simulator.results.nuitInvalid') };
         }
         case 'bi': {
           const valid = isValidBI(inputValue);
-          return { success: valid, text: valid ? 'BI Válido e estruturalmente correto.' : 'Formato de BI Inválido.' };
+          return { success: valid, text: valid ? t('unified_simulator.results.biValid') : t('unified_simulator.results.biInvalid') };
         }
         case 'phone': {
           const valid = isValidMozambicanPhone(inputValue);
           if (valid) {
             const op = getMobileOperator(inputValue);
             const wallet = getMobileWallet(inputValue);
-            return { success: true, text: `Número Válido. Operadora: ${op}. Carteira: ${wallet || 'Nenhuma'}` };
+            return { success: true, text: `${t('unified_simulator.results.phoneValid')} ${op}. Carteira: ${wallet || 'Nenhuma'}` };
           }
-          return { success: false, text: 'Número de telefone inválido.' };
+          return { success: false, text: t('unified_simulator.results.phoneInvalid') };
         }
         case 'new_cep': {
           const valid = isValidNewCEP(inputValue);
           if (valid) {
             const suggestions = suggestCEPs(inputValue);
             if (suggestions.length > 0) {
-              return { success: true, text: `Novo CEP Válido: ${suggestions[0].locality} (${suggestions[0].province})` };
+              return { success: true, text: `${t('unified_simulator.results.newCepValid')} ${suggestions[0].locality} (${suggestions[0].province})` };
             }
-            return { success: true, text: 'Novo CEP Válido (Formato correto).' };
+            return { success: true, text: t('unified_simulator.results.newCepValidFormat') };
           }
-          return { success: false, text: 'Novo Código Postal Inválido.' };
+          return { success: false, text: t('unified_simulator.results.newCepInvalid') };
         }
         case 'legacy_postal': {
           const valid = isValidPostalCode(inputValue);
           if (valid) {
-            return { success: true, text: `CEP Antigo Válido: ${getPostalCodeLocality(inputValue)} (${getPostalCodeProvince(inputValue)})` };
+            return { success: true, text: `${t('unified_simulator.results.legacyCepValid')} ${getPostalCodeLocality(inputValue)} (${getPostalCodeProvince(inputValue)})` };
           }
-          return { success: false, text: 'CEP Antigo Inválido.' };
+          return { success: false, text: t('unified_simulator.results.legacyCepInvalid') };
         }
         case 'migration': {
           const suggestions = suggestCEPs(inputValue);
           if (suggestions.length > 0) {
-            return { success: true, text: `Encontrados ${suggestions.length} locais:\n${suggestions.slice(0, 5).map(s => `${s.cep} - ${s.locality}`).join('\n')}${suggestions.length > 5 ? '\n...' : ''}` };
+            return { success: true, text: `${t('unified_simulator.results.migrationFound')} ${suggestions.length} locais:\n${suggestions.slice(0, 5).map(s => `${s.cep} - ${s.locality}`).join('\n')}${suggestions.length > 5 ? '\n...' : ''}` };
           }
-          return { success: false, text: 'Nenhum CEP encontrado para esta localidade.' };
+          return { success: false, text: t('unified_simulator.results.migrationNotFound') };
         }
         case 'province': {
           const districts = getDistrictsByProvince(inputValue);
           if (districts.length > 0) {
-            return { success: true, text: `Encontrados ${districts.length} distritos:\n${districts.slice(0, 10).join(', ')}${districts.length > 10 ? '...' : ''}` };
+            return { success: true, text: `${t('unified_simulator.results.provinceFound')} ${districts.length} distritos:\n${districts.slice(0, 10).join(', ')}${districts.length > 10 ? '...' : ''}` };
           }
-          return { success: false, text: 'Província não encontrada.' };
+          return { success: false, text: t('unified_simulator.results.provinceNotFound') };
         }
         case 'money': {
           const parsed = parseMZN(inputValue);
           if (parsed !== null) {
-            return { success: true, text: `Formatado: ${formatMZN(parsed)}` };
+            return { success: true, text: `${t('unified_simulator.results.moneyValid')} ${formatMZN(parsed)}` };
           }
-          return { success: false, text: 'Formato de valor inválido.' };
+          return { success: false, text: t('unified_simulator.results.moneyInvalid') };
         }
         case 'whatsapp': {
           if (isValidMozambicanPhone(inputValue)) {
-            return { success: true, text: `Link gerado:\n${buildWhatsAppUrl(inputValue, "Olá!")}` };
+            return { success: true, text: `${t('unified_simulator.results.whatsappValid')}\n${buildWhatsAppUrl(inputValue, "Olá!")}` };
           }
-          return { success: false, text: 'Insira um telefone válido primeiro.' };
+          return { success: false, text: t('unified_simulator.results.whatsappInvalid') };
         }
         default:
           return null;
       }
     } catch (e) {
-      return { success: false, text: 'Erro ao processar o valor inserido.' };
+      return { success: false, text: t('unified_simulator.error') };
     }
   };
 
@@ -110,7 +111,7 @@ export default function UnifiedSimulator() {
         
         {/* Left Side: Inputs */}
         <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column' }}>
-          <h3 style={{ fontSize: '1.2rem', marginBottom: '16px', color: 'var(--text-primary)' }}>Escolha o que validar:</h3>
+          <h3 style={{ fontSize: '1.2rem', marginBottom: '16px', color: 'var(--text-primary)' }}>{t('unified_simulator.choose')}</h3>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '12px', marginBottom: '24px' }}>
             {validators.map(v => (
@@ -140,7 +141,7 @@ export default function UnifiedSimulator() {
 
           <div style={{ marginTop: 'auto' }}>
             <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-secondary)', fontWeight: 'bold' }}>
-              Insira o valor para testar
+              {t('unified_simulator.insertValue')}
             </label>
             <input 
               type="text" 
@@ -174,7 +175,7 @@ export default function UnifiedSimulator() {
             {!inputValue ? (
               <div style={{ textAlign: 'center', opacity: 0.5 }}>
                 <Terminal size={48} color="var(--text-secondary)" style={{ margin: '0 auto 16px auto' }} />
-                <p style={{ color: 'var(--text-secondary)', fontFamily: 'monospace' }}>Aguardando input...</p>
+                <p style={{ color: 'var(--text-secondary)', fontFamily: 'monospace' }}>{t('unified_simulator.waitingInput')}</p>
               </div>
             ) : (
               <div className="animate-fade-up" style={{ 

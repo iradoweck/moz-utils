@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Terminal, CheckCircle2 } from 'lucide-react';
 
 const codeSnippets = {
@@ -36,6 +37,7 @@ fun main() {
 };
 
 export default function PolyglotShowcase() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('TypeScript');
 
   return (
@@ -43,9 +45,9 @@ export default function PolyglotShowcase() {
       <div className="container">
         
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>Escreve Uma Vez, <span className="text-neon">Usa em Todo o Lado</span></h2>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>{t('polyglot_showcase.title')}<span className="text-neon">{t('polyglot_showcase.titleHighlight')}</span></h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-            A mesma API limpa e previsível desenhada nativamente para as linguagens mais amadas pela comunidade.
+            {t('polyglot_showcase.desc')}
           </p>
         </div>
 
@@ -91,7 +93,7 @@ export default function PolyglotShowcase() {
           {/* Footer of snippet */}
           <div style={{ padding: '16px 24px', background: 'var(--overlay-1)', borderTop: '1px solid var(--panel-border)', display: 'flex', alignItems: 'center', gap: '12px' }}>
             <CheckCircle2 size={20} color="var(--neon-green)" />
-            <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>100% Cobertura de Testes Unitários em todas as Stacks</span>
+            <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>{t('polyglot_showcase.testCoverage')}</span>
           </div>
         </div>
 

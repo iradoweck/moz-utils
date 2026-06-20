@@ -1,27 +1,30 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ShieldCheck, Map, Zap, Database } from 'lucide-react';
 
 export default function FeaturesGrid() {
+  const { t } = useTranslation();
+
   const features = [
     {
       icon: <ShieldCheck size={32} color="var(--neon-green)" />,
-      title: "100% Cobertura de Testes",
-      description: "Testes unitários rigorosos em todas as linguagens suportadas para garantir precisão absoluta na validação de dados críticos."
+      title: t('features_grid.cards.0.title'),
+      description: t('features_grid.cards.0.description')
     },
     {
       icon: <Zap size={32} color="#ff9f0a" />,
-      title: "Zero Dependências",
-      description: "Pacotes extremamente leves que não poluem o seu projeto. Todo o código é nativo da linguagem escolhida."
+      title: t('features_grid.cards.1.title'),
+      description: t('features_grid.cards.1.description')
     },
     {
       icon: <Map size={32} color="#bf5af2" />,
-      title: "Dados Geográficos Embutidos",
-      description: "Validação completa de Códigos Postais (antigos e novos) e mapeamento offline de Províncias e Distritos de Moçambique."
+      title: t('features_grid.cards.2.title'),
+      description: t('features_grid.cards.2.description')
     },
     {
       icon: <Database size={32} color="#0a84ff" />,
-      title: "Tipagem Estrita",
-      description: "Totalmente compatível com TypeScript, Dart com null-safety e Kotlin, oferecendo autocompletar poderoso no seu IDE."
+      title: t('features_grid.cards.3.title'),
+      description: t('features_grid.cards.3.description')
     }
   ];
 
@@ -29,9 +32,9 @@ export default function FeaturesGrid() {
     <section style={{ padding: '80px 0', background: 'var(--body-bg-gradient)' }}>
       <div className="container animate-fade-up">
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>Porquê <span className="text-neon">moz-utils?</span></h2>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>{t('features_grid.title')}<span className="text-neon">{t('features_grid.titleHighlight')}</span></h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-            Desenhado para o mercado local com a engenharia e qualidade do mercado global.
+            {t('features_grid.desc')}
           </p>
         </div>
 

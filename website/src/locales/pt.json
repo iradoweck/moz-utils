@@ -5,26 +5,35 @@
     "insights": "Insights",
     "community": "Comunidade",
     "changelog": "Changelog",
-    "donate": "Doar"
+    "donate": "Doar",
+    "themeLight": "Mudar para Claro",
+    "themeDark": "Mudar para Escuro"
   },
   "hero": {
     "title1": "moz-",
     "title2": "utils",
-    "description": "A biblioteca open-source definitiva para software em Moçambique. Validações de NUIT, BI, parsing de telemóveis, novos CEPs e mais, disponível para TypeScript, PHP, Python, Kotlin e Dart.",
-    "cta": "Testar no Simulador"
+    "description": "A biblioteca de validação open-source definitiva. Validando NUIT, BI, CEPs e Telemóveis com precisão absoluta.",
+    "cta": "Testar no Simulador",
+    "title": "Mozambique Utilities",
+    "titleHighlight": "for Developers",
+    "btnDocs": "Explorar a Documentação",
+    "btnGithub": "Ver no GitHub",
+    "ecosystems": "Ecossistemas"
   },
   "footer": {
     "sponsoredBy": "Patrocinado e suportado por",
-    "developedByShort": "e Desenvolvido por Edmilson Muacigaro & Comunidade",
-    "developedBy": "Desenvolvido por Edmilson Muacigaro & Comunidade | Powered By ZEDECK's IT...",
-    "openSource": "Open Source sob Licença AGPL-3.0",
-    "donatePrimary": "Apoiar via GitHub Sponsors",
-    "donateSecondary": "Doação Única (PayPal)"
+    "developedByShort": "e Desenvolvido por Zedeck's IT & Comunidade",
+    "openSource": "Open Source sob a Licença AGPL-3.0",
+    "donatePrimary": "Patrocinar",
+    "donateSecondary": "PayPal"
   },
   "home": {
     "simulatorTitle": "Simulador",
     "simulatorTitleLive": "Live",
-    "simulatorDesc": "Testa todas as funcionalidades da biblioteca diretamente no teu browser."
+    "simulatorDesc": "Testa todas as funcionalidades da biblioteca diretamente no teu browser.",
+    "testCenterTitle": "Central de ",
+    "testCenterHighlight": "Testes Universais",
+    "testCenterDesc": "Valide NUITs, BIs, Códigos Postais e Números de Telemóvel em tempo real usando a nossa lógica matemática agnóstica. O que passa aqui, passa em qualquer stack."
   },
   "motionDemo": {
     "title": "Como Funciona",
@@ -34,11 +43,11 @@
     "invalid": "✗ NUIT Inválido (requer 9 dígitos)"
   },
   "installation": {
-    "title": "Instalação Rápida",
-    "desc": "Um projeto open-source disponível para os 5 principais ecossistemas.",
+    "title": "Pronto para qualquer Ecossistema.",
+    "desc": "Escolha a sua stack preferida e instale com um único comando.",
     "copy": "Copiar",
     "copied": "Copiado!",
-    "joinCommunity": "Junte-se à nossa Comunidade"
+    "joinCommunity": "Junte-se à Comunidade"
   },
   "simulator": {
     "catEntities": "Entidades",
@@ -100,81 +109,190 @@
     }
   },
   "changelog_page": {
-    "title": "Changelog",
-    "description": "Acompanha todas as novidades, correções e atualizações em cada versão da ",
-    "current_stacks": "Versões Atuais das Stacks",
-    "global_history": "Histórico Geral (Global)",
-    "view_less": "Ver menos",
-    "view_all": "Ver todas as versões"
+    "description": "Histórico de versões e notas de lançamento (release notes) do",
+    "current_stacks": "Ecossistemas Atuais",
+    "global_history": "Histórico Global",
+    "view_less": "Ver Menos",
+    "view_all": "Ver Todo o Histórico"
   },
   "insights_page": {
-    "description": "Estatísticas de uso em tempo real, transferências e o nosso ranking de contribuidores.",
-    "github_stars": "GitHub Stars",
+    "description": "Estatísticas de download em tempo real, atividade no GitHub, métricas de contribuidores e saúde do ecossistema no NPM, PyPI, Packagist e pub.dev.",
+    "loading_insights": "A carregar insights do ecossistema...",
+    "github_stars": "Estrelas no GitHub",
     "forks": "Forks",
-    "downloads_npm": "Downloads NPM",
-    "downloads_packagist": "Downloads Packagist",
-    "downloads_pypi": "Downloads PyPI",
-    "downloads_pub": "Downloads Pub.dev",
-    "top_contributors": "Top Contribuidores",
-    "commits": "commits",
-    "creator_maintainer": "Criador / Maintainer",
-    "loading_contributors": "A carregar contribuidores...",
-    "loading_insights": "A carregar dados de insights…",
     "open_closed_issues": "Issues Abertas / Fechadas",
-    "open_merged_prs": "PRs Abertos / Merged",
+    "open_merged_prs": "PRs Abertos / Fundidos",
     "total_downloads": "Total de Downloads",
     "downloads_by_ecosystem": "Downloads por Ecossistema",
-    "npm_weekly_trend": "Tendência Semanal NPM",
-    "last_8_weeks": "Últimas 8 semanas de downloads NPM",
-    "no_trend_data": "Nenhum dado de tendência disponível ainda.",
+    "npm_weekly_trend": "Tendência Semanal no NPM",
+    "last_8_weeks": "Últimas 8 semanas de downloads no NPM",
+    "no_trend_data": "Sem dados de tendência disponíveis",
     "leads_with": "lidera com",
     "of_all_downloads": "de todos os downloads",
     "ecosystem_health": "Saúde do Ecossistema",
     "recent_activity": "Atividade Recente",
-    "want_to_contribute": "Queres tornar-te num contribuidor?",
-    "contribute_desc": "Esta secção irá apresentar contribuidores assim que a comunidade começar a crescer. Sê o primeiro a contribuir e vê o teu nome destacado aqui!",
-    "read_contrib_guide": "Ler o Guia de Contribuição"
+    "top_contributors": "Principais Contribuidores",
+    "creator_maintainer": "Criador / Maintainer",
+    "commits": "commits",
+    "want_to_contribute": "Queres Contribuir?",
+    "contribute_desc": "O projeto moz-utils é 100% open-source e prospera com a ajuda da comunidade. Junta-te a nós!",
+    "read_contrib_guide": "Ler Guia de Contribuição",
+    "last_updated": "Última atualização:",
+    "online": "ONLINE",
+    "down": "INATIVO",
+    "unknown": "Desconhecido"
   },
   "docs_page": {
     "title": "Documentação",
-    "description": "Guia completo de como usar o moz-utils em todos os ecossistemas suportados.",
-    "on_this_page": "Nesta Página",
-    "pagination": {
-      "previous": "Anterior",
-      "next": "Próximo"
-    },
+    "description": "Guia abrangente sobre como usar moz-utils em todos os ecossistemas suportados.",
     "menu": {
-      "title": "Índice",
+      "title": "Conteúdos",
       "overview": "Visão Geral",
+      "requirements": "Requisitos",
       "installation": "Instalação",
       "phones": "Telefones & Mobile",
       "documents": "Documentos de Identidade",
       "currency": "Moeda (MZN)",
       "geography": "Geografia & Distritos",
-      "sanitization": "Saneamento",
       "postal": "Códigos Postais (CEP)",
-      "examples": "Casos de Uso",
-      "errors": "Guia de Erros",
-      "contributing": "Contribuição",
-      "faq": "FAQ"
-    }
+      "troubleshooting": "Resolução de Problemas"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Próximo"
+    },
+    "on_this_page": "Nesta página",
+    "not_found_markdown": "# Página Não Encontrada\nNão conseguimos carregar esta página da documentação."
   },
   "community_page": {
-    "title": "Comunidade",
-    "description": "Junte-se à discussão oficial. Tire dúvidas, proponha funcionalidades e ajude a construir a fundação digital moçambicana.",
-    "b2b_title": "Empresas & Parcerias",
-    "b2b_description": "É um gestor, empresa ou instituição interessada em integrar o moz-utils ou propor uma parceria? Não precisa de usar o fórum de programadores.",
-    "b2b_cta": "Contacto Comercial",
-    "giscus_loading": "A carregar o fórum de discussão...",
-    "topics_title": "Tópicos de Discussão",
+    "title": "Comunidade Moçambicana Open-Source",
+    "description": "Discute ideias, faz perguntas, partilha projetos criados com o moz-utils e mantém-te atualizado sobre as novidades do ecossistema.",
+    "topics_title": "Tópicos do Fórum",
+    "topics": {
+      "qa": {
+        "title": "Perguntas & Respostas",
+        "desc": "Tens dúvidas sobre como implementar validações no teu projeto? Pergunta aqui."
+      },
+      "ideas": {
+        "title": "Ideias & Funcionalidades",
+        "desc": "Sugere novas bibliotecas e validações para o ecossistema moçambicano."
+      },
+      "showcase": {
+        "title": "Show and Tell",
+        "desc": "Partilha aplicações, websites ou sistemas que construíste usando o moz-utils."
+      },
+      "announcements": {
+        "title": "Anúncios Oficiais",
+        "desc": "Novas versões, novos ecossistemas e atualizações cruciais da equipa core."
+      }
+    },
+    "b2b_title": "Implementação B2B e Suporte Enterprise",
+    "b2b_description": "Precisa de ajuda para integrar o moz-utils no software do seu Banco, Seguradora ou Instituição Pública? A Zedeck's IT oferece consultoria direta para implementações de larga escala, conformidade com dados moçambicanos e atualizações SLA.",
+    "b2b_cta": "Contactar para Suporte B2B",
     "general_discussion": "Discussão Geral",
     "topic": "Tópico",
-    "back_to_general": "Voltar ao Geral",
-    "topics": {
-      "qa": { "title": "Dúvidas (Q&A)", "desc": "Preso a validar um NUIT? Peça ajuda à comunidade." },
-      "ideas": { "title": "Ideias", "desc": "Sugira novas validações, bancos ou integrações de APIs." },
-      "showcase": { "title": "Projetos (Showcase)", "desc": "Mostre o que tem construído usando o moz-utils." },
-      "announcements": { "title": "Anúncios", "desc": "Atualizações oficiais e novidades do ecossistema." }
+    "back_to_general": "Voltar para Geral"
+  },
+  "what_it_does": {
+    "title": "O que faz e ",
+    "titleHighlight": "Como faz?",
+    "desc": "Não é mágica, é matemática pura. Veja os casos de uso reais que o moz-utils resolve para si.",
+    "cards": {
+      "nuit": {
+        "title": "Validação de NUIT",
+        "desc": "Algoritmo Módulo 11 da AT",
+        "details": "Não usamos apenas Expressões Regulares. A biblioteca aplica o algoritmo matemático oficial exigido pela Autoridade Tributária de Moçambique para calcular e validar o dígito de controlo do NUIT."
+      },
+      "bi": {
+        "title": "Validação de BI",
+        "desc": "Suporte a vários formatos",
+        "details": "Quer seja o BI antigo (12 números + 1 letra) ou as emissões mais modernas, a ferramenta verifica as estruturas e formatos estabelecidos pela DIC."
+      },
+      "phone": {
+        "title": "Telefones e Redes",
+        "desc": "Normalização e deteção de operadora",
+        "details": "Deteta automaticamente se um número pertence à Tmcel, Vodacom ou Movitel. Também lida com prefixos internacionais (+258) e números de telefone fixo."
+      },
+      "geo": {
+        "title": "Geografia Local",
+        "desc": "Mapas de Províncias e CEPs",
+        "details": "Contém uma base de dados integrada de alta performance (O(1)) para consultar códigos postais e cruzar províncias com distritos sem precisar de internet."
+      }
+    }
+  },
+  "polyglot_showcase": {
+    "title": "Escreve Uma Vez, ",
+    "titleHighlight": "Usa em Todo o Lado",
+    "desc": "A mesma API limpa e previsível desenhada nativamente para as linguagens mais amadas pela comunidade.",
+    "testCoverage": "100% Cobertura de Testes Unitários em todas as Stacks"
+  },
+  "community_cta": {
+    "title": "Junta-te ao ",
+    "titleHighlight": "Movimento",
+    "desc": "Seja parte do futuro do desenvolvimento moçambicano. Contribua com código, melhore a documentação ou ajude a divulgar a `moz-utils` pelo mundo.",
+    "loadingHeroes": "Carregando Heróis...",
+    "btnContribute": "Tornar-se Contribuidor",
+    "btnStar": "Deixar uma Star"
+  },
+  "features_grid": {
+    "title": "Porquê ",
+    "titleHighlight": "moz-utils?",
+    "desc": "Desenhado para o mercado local com a engenharia e qualidade do mercado global.",
+    "cards": [
+      {
+        "title": "100% Cobertura de Testes",
+        "description": "Testes unitários rigorosos em todas as linguagens suportadas para garantir precisão absoluta na validação de dados críticos."
+      },
+      {
+        "title": "Zero Dependências",
+        "description": "Pacotes extremamente leves que não poluem o seu projeto. Todo o código é nativo da linguagem escolhida."
+      },
+      {
+        "title": "Dados Geográficos Embutidos",
+        "description": "Validação completa de Códigos Postais (antigos e novos) e mapeamento offline de Províncias e Distritos de Moçambique."
+      },
+      {
+        "title": "Tipagem Estrita",
+        "description": "Totalmente compatível com TypeScript, Dart com null-safety e Kotlin, oferecendo autocompletar poderoso no seu IDE."
+      }
+    ]
+  },
+  "unified_simulator": {
+    "choose": "Escolha o que validar:",
+    "insertValue": "Insira o valor para testar",
+    "waitingInput": "Aguardando input...",
+    "error": "Erro ao processar o valor inserido.",
+    "labels": {
+      "nuit": "NUIT",
+      "bi": "B. Identidade",
+      "phone": "Telefone",
+      "new_cep": "Novo CEP",
+      "legacy_postal": "CEP Antigo",
+      "migration": "Migração CEP",
+      "province": "Distritos",
+      "money": "Dinheiro",
+      "whatsapp": "WhatsApp Link"
+    },
+    "results": {
+      "nuitValid": "NUIT Válido. Entidade:",
+      "nuitInvalid": "NUIT Inválido.",
+      "biValid": "BI Válido e estruturalmente correto.",
+      "biInvalid": "Formato de BI Inválido.",
+      "phoneValid": "Número Válido. Operadora:",
+      "phoneInvalid": "Número de telefone inválido.",
+      "newCepValid": "Novo CEP Válido:",
+      "newCepValidFormat": "Novo CEP Válido (Formato correto).",
+      "newCepInvalid": "Novo Código Postal Inválido.",
+      "legacyCepValid": "CEP Antigo Válido:",
+      "legacyCepInvalid": "CEP Antigo Inválido.",
+      "migrationFound": "Encontrados",
+      "migrationNotFound": "Nenhum CEP encontrado para esta localidade.",
+      "provinceFound": "Encontrados",
+      "provinceNotFound": "Província não encontrada.",
+      "moneyValid": "Formatado:",
+      "moneyInvalid": "Formato de valor inválido.",
+      "whatsappValid": "Link gerado:",
+      "whatsappInvalid": "Insira um telefone válido primeiro."
     }
   }
 }

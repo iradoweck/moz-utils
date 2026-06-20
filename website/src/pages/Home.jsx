@@ -37,9 +37,9 @@ export default function Home() {
       <section style={{ padding: '80px 0', background: 'var(--body-bg-gradient)' }}>
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>Central de <span className="text-neon">Testes Universais</span></h2>
+            <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>{t('home.testCenterTitle')}<span className="text-neon">{t('home.testCenterHighlight')}</span></h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-              Valide NUITs, BIs, Códigos Postais e Números de Telemóvel em tempo real usando a nossa lógica matemática agnóstica. O que passa aqui, passa em qualquer stack.
+              {t('home.testCenterDesc')}
             </p>
           </div>
           <UnifiedSimulator />

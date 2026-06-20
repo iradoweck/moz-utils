@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   isValidNUIT, getNUITEntityType, 
   isValidBI, 
@@ -12,6 +13,7 @@ import {
 import { CheckCircle2, XCircle } from 'lucide-react';
 
 export default function Simulator() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('nuit');
   const [inputValue, setInputValue] = useState('');
 
@@ -24,30 +26,30 @@ export default function Simulator() {
       isValid = isValidNUIT(inputValue);
       if (isValid) {
         const type = getNUITEntityType(inputValue);
-        resultText = `NUIT Válido. Entidade: ${type}`;
+        resultText = `${t('simulator.results.nuitValid')} ${type}`;
       } else {
-        resultText = 'NUIT Inválido';
+        resultText = t('simulator.results.nuitInvalid');
       }
     } else if (activeTab === 'bi') {
       isValid = isValidBI(inputValue);
-      resultText = isValid ? 'BI Válido' : 'BI Inválido';
+      resultText = isValid ? t('simulator.results.biValid') : t('simulator.results.biInvalid');
     } else if (activeTab === 'dire') {
       isValid = isValidDIRE(inputValue);
-      resultText = isValid ? 'DIRE Válido' : 'DIRE Inválido';
+      resultText = isValid ? t('simulator.results.direValid') : t('simulator.results.direInvalid');
     } else if (activeTab === 'passport') {
       isValid = isValidPassport(inputValue);
-      resultText = isValid ? 'Passaporte Válido' : 'Passaporte Inválido';
+      resultText = isValid ? t('simulator.results.passportValid') : t('simulator.results.passportInvalid');
     } else if (activeTab === 'license') {
       isValid = isValidDrivingLicense(inputValue);
-      resultText = isValid ? 'Carta de Condução Válida' : 'Carta de Condução Inválida';
+      resultText = isValid ? t('simulator.results.licenseValid') : t('simulator.results.licenseInvalid');
     } else if (activeTab === 'phone') {
       isValid = isValidMozambicanPhone(inputValue);
       if (isValid) {
         const operator = getMobileOperator(inputValue);
         const wallet = getMobileWallet(inputValue);
-        resultText = `Telefone Válido. Operadora: ${operator} (${wallet})`;
+        resultText = `${t('simulator.results.phoneValid', 'Telefone Válido.')} Operadora: ${operator} (${wallet})`;
       } else {
-        resultText = 'Telefone Inválido';
+        resultText = t('simulator.results.phoneInvalid');
       }
     } else if (activeTab === 'money') {
       const numValue = parseFloat(inputValue);
@@ -56,13 +58,13 @@ export default function Simulator() {
         resultText = `Formatado: ${formatMZN(numValue)}`;
       } else {
         isValid = false;
-        resultText = 'Valor Inválido (digita um número)';
+        resultText = t('simulator.results.moneyInvalid');
       }
     } else if (activeTab === 'whatsapp') {
       if (isValidMozambicanPhone(inputValue)) {
         isValid = true;
         const url = buildWhatsAppUrl(inputValue, "Olá da biblioteca moz-utils!");
-        resultText = `URL Gerado: ${url}`;
+        resultText = `URL: ${url}`;
       } else {
         isValid = false;
         resultText = 'Insere um telefone válido para gerar o URL';
@@ -86,33 +88,26 @@ export default function Simulator() {
     <section id="simulator" style={{ padding: '60px 0' }}>
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>Simulador <span className="text-neon">Live</span></h2>
-          <p style={{ color: 'var(--text-secondary)' }}>Testa o poder da biblioteca diretamente no teu browser.</p>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>{t('home.simulatorTitleLive')} <span className="text-neon">{t('home.simulatorTitle')}</span></h2>
+          <p style={{ color: 'var(--text-secondary)' }}>{t('home.simulatorDesc')}</p>
         </div>
 
         <div className={`glass-panel ${inputValue ? (isValid ? 'feedback-success' : 'feedback-error') : ''}`} style={{ maxWidth: '600px', margin: '0 auto' }}>
           
           <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
-            <button onClick={() => handleTabChange('nuit')} className="btn-primary" style={getTabStyle('nuit')}>NUIT</button>
-            <button onClick={() => handleTabChange('bi')} className="btn-primary" style={getTabStyle('bi')}>BI Nacional</button>
-            <button onClick={() => handleTabChange('dire')} className="btn-primary" style={getTabStyle('dire')}>DIRE</button>
-            <button onClick={() => handleTabChange('passport')} className="btn-primary" style={getTabStyle('passport')}>Passaporte</button>
-            <button onClick={() => handleTabChange('license')} className="btn-primary" style={getTabStyle('license')}>Carta de Condução</button>
-            <button onClick={() => handleTabChange('phone')} className="btn-primary" style={getTabStyle('phone')}>Telefone</button>
-            <button onClick={() => handleTabChange('whatsapp')} className="btn-primary" style={getTabStyle('whatsapp')}>Link WhatsApp</button>
-            <button onClick={() => handleTabChange('money')} className="btn-primary" style={getTabStyle('money')}>Moeda (MZN)</button>
+            <button onClick={() => handleTabChange('nuit')} className="btn-primary" style={getTabStyle('nuit')}>{t('simulator.tabs.nuit')}</button>
+            <button onClick={() => handleTabChange('bi')} className="btn-primary" style={getTabStyle('bi')}>{t('simulator.tabs.bi')}</button>
+            <button onClick={() => handleTabChange('dire')} className="btn-primary" style={getTabStyle('dire')}>{t('simulator.tabs.dire')}</button>
+            <button onClick={() => handleTabChange('passport')} className="btn-primary" style={getTabStyle('passport')}>{t('simulator.tabs.passport')}</button>
+            <button onClick={() => handleTabChange('license')} className="btn-primary" style={getTabStyle('license')}>{t('simulator.tabs.license')}</button>
+            <button onClick={() => handleTabChange('phone')} className="btn-primary" style={getTabStyle('phone')}>{t('simulator.tabs.phone')}</button>
+            <button onClick={() => handleTabChange('whatsapp')} className="btn-primary" style={getTabStyle('whatsapp')}>{t('simulator.tabs.whatsapp')}</button>
+            <button onClick={() => handleTabChange('money')} className="btn-primary" style={getTabStyle('money')}>{t('simulator.tabs.money')}</button>
           </div>
 
           <div>
             <label className="input-label">
-              {activeTab === 'nuit' && 'Digita um NUIT (ex: 100000008)'}
-              {activeTab === 'bi' && 'Digita um BI (ex: 110101234567A)'}
-              {activeTab === 'dire' && 'Digita um DIRE (ex: 120345678A)'}
-              {activeTab === 'passport' && 'Digita um Passaporte (ex: AB123456)'}
-              {activeTab === 'license' && 'Digita uma Carta de Condução (ex: MP1234567)'}
-              {activeTab === 'phone' && 'Digita um nº de telemóvel (ex: 841234567)'}
-              {activeTab === 'whatsapp' && 'Digita um nº de telemóvel para gerar link WA'}
-              {activeTab === 'money' && 'Digita um valor numérico (ex: 1500.50)'}
+              {t(`simulator.placeholders.${activeTab}`)}
             </label>
             <input 
               type="text" 

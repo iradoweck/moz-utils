@@ -19,7 +19,22 @@ export default function Navbar() {
   }, [theme]);
 
   const toggleLanguage = () => {
-    i18n.changeLanguage(i18n.language === 'pt' ? 'en' : 'pt');
+    // Fluid transition to hide layout shifts and make it feel instantaneous
+    document.body.style.transition = 'opacity 0.2s ease';
+    document.body.style.opacity = '0';
+    
+    setTimeout(() => {
+      const newLang = i18n.language === 'pt' ? 'en' : 'pt';
+      document.documentElement.lang = newLang;
+      i18n.changeLanguage(newLang);
+      
+      setTimeout(() => {
+        document.body.style.opacity = '1';
+        setTimeout(() => {
+          document.body.style.transition = 'background 0.5s ease, color 0.5s ease';
+        }, 200);
+      }, 50);
+    }, 200);
   };
 
   const toggleTheme = () => {
@@ -54,7 +69,7 @@ export default function Navbar() {
         
         <button 
           onClick={toggleTheme}
-          title={theme === 'dark' ? 'Mudar para Claro' : 'Mudar para Escuro'}
+          title={theme === 'dark' ? t('nav.themeLight', 'Mudar para Claro') : t('nav.themeDark', 'Mudar para Escuro')}
           style={{ 
             background: 'transparent', 
             border: 'none', 

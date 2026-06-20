@@ -56,17 +56,17 @@ export default function CommunityCTA() {
             <Users size={48} color="var(--neon-green)" style={{ margin: '0 auto 24px auto' }} />
             
             <h2 style={{ fontSize: '3rem', marginBottom: '16px', letterSpacing: '-1px' }}>
-              Join the <span className="text-neon">Movement</span>
+              {t('community_cta.title')}<span className="text-neon">{t('community_cta.titleHighlight')}</span>
             </h2>
             
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto 40px auto' }}>
-              Seja parte do futuro do desenvolvimento moçambicano. Contribua com código, melhore a documentação ou ajude a divulgar a `moz-utils` pelo mundo.
+              {t('community_cta.desc')}
             </p>
 
             {/* Contributor Avatars */}
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '40px' }}>
               {loading ? (
-                <div style={{ color: 'var(--text-secondary)' }}>Carregando Heróis...</div>
+                <div style={{ color: 'var(--text-secondary)' }}>{t('community_cta.loadingHeroes')}</div>
               ) : (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   {contributors.map((c, i) => (
@@ -111,10 +111,10 @@ export default function CommunityCTA() {
 
             <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
               <a href="https://github.com/iradoweck/moz-utils/blob/main/CONTRIBUTING.md" target="_blank" rel="noreferrer" className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '16px 32px' }}>
-                Tornar-se Contribuidor
+                {t('community_cta.btnContribute')}
               </a>
               <a href="https://github.com/iradoweck/moz-utils" target="_blank" rel="noreferrer" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '16px 32px' }}>
-                <Star size={20} /> Deixar uma Star
+                <Star size={20} /> {t('community_cta.btnStar')}
               </a>
             </div>
           </div>

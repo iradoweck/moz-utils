@@ -7,7 +7,6 @@ import {
 } from 'lucide-react';
 import { useSEO } from '../hooks/useSEO';
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import WorldDownloadsMap from '../components/WorldDownloadsMap';
 
 // ─────────────────────────────────────────────
 // Mini bar chart rendered with pure CSS/HTML
@@ -54,6 +53,7 @@ function TrendChart({ data }) {
 // Ecosystem Health Badge
 // ─────────────────────────────────────────────
 function EcosystemBadge({ name, registry, healthy, url }) {
+  const { t } = useTranslation();
   return (
     <a
       href={url}
@@ -89,7 +89,7 @@ function EcosystemBadge({ name, registry, healthy, url }) {
           color: healthy ? 'var(--neon-green)' : 'var(--error-text)',
           fontWeight: 'bold',
         }}>
-          {healthy ? 'ONLINE' : 'DOWN'}
+          {healthy ? t('insights_page.online', 'ONLINE') : t('insights_page.down', 'DOWN')}
         </div>
       </div>
     </a>
@@ -230,7 +230,7 @@ export default function Insights() {
         {stats?.generated_at && (
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', marginTop: '12px', opacity: 0.6 }}>
             <Clock size={12} style={{ verticalAlign: 'middle', marginRight: '4px' }} />
-            Last updated: {new Date(stats.generated_at).toLocaleString()}
+            {t('insights_page.last_updated', 'Last updated:')} {new Date(stats.generated_at).toLocaleString()}
           </p>
         )}
       </div>
@@ -340,10 +340,7 @@ export default function Insights() {
         </div>
       </div>
 
-      {/* ── Section 2.5: Live Global Downloads ── */}
-      <div style={{ marginBottom: '48px' }}>
-        <WorldDownloadsMap />
-      </div>
+      {/* ── Section 2.5: Removed Live Global Downloads Map ── */}
 
       {/* ── Section 3: Ecosystem Health ── */}
       {ecoBadges.length > 0 && (
@@ -371,7 +368,7 @@ export default function Insights() {
               const msg = c.message || (c.commit?.message?.split('\n')[0]);
               
               // Handle author which can be an object in live API or string in stats.json
-              let authorName = 'Unknown';
+              let authorName = t('insights_page.unknown', 'Unknown');
               if (c.commit?.author?.name) {
                 authorName = c.commit.author.name;
               } else if (typeof c.author === 'string') {

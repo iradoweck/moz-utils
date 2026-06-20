@@ -1,60 +1,56 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CreditCard, Fingerprint, Phone, MapPin } from 'lucide-react';
 
-const capabilities = [
-  {
-    id: 'nuit',
-    icon: <CreditCard size={24} />,
-    title: 'Validação de NUIT',
-    desc: 'Algoritmo Módulo 11 da AT',
-    details: 'Não usamos apenas Expressões Regulares. A biblioteca aplica o algoritmo matemático oficial exigido pela Autoridade Tributária de Moçambique para calcular e validar o dígito de controlo do NUIT.',
-    code: `import { isValidNUIT } from 'moz-utils';
-
-// Validação de NUIT Singular (Pessoa Física)
-const valid = isValidNUIT('100000008'); 
-console.log(valid); // true`
-  },
-  {
-    id: 'bi',
-    icon: <Fingerprint size={24} />,
-    title: 'Validação de BI',
-    desc: 'Suporte a vários formatos',
-    details: 'Quer seja o BI antigo (12 números + 1 letra) ou as emissões mais modernas, a ferramenta verifica as estruturas e formatos estabelecidos pela DIC.',
-    code: `import { isValidBI } from 'moz-utils';
-
-// Verificação estrutural e de check-digit
-const check = isValidBI('110101234567A'); 
-console.log(check); // true`
-  },
-  {
-    id: 'phone',
-    icon: <Phone size={24} />,
-    title: 'Telefones e Redes',
-    desc: 'Normalização e deteção de operadora',
-    details: 'Deteta automaticamente se um número pertence à Tmcel, Vodacom ou Movitel. Também lida com prefixos internacionais (+258) e números de telefone fixo.',
-    code: `import { getPhoneOperator } from 'moz-utils';\n\nconst details = getPhoneOperator('841234567');\n/* Retorna:\n{\n  isValid: true,\n  operator: 'Vodacom',\n  formatted: '+258 84 123 4567'\n}\n*/`
-  },
-  {
-    id: 'geo',
-    icon: <MapPin size={24} />,
-    title: 'Geografia Local',
-    desc: 'Mapas de Províncias e CEPs',
-    details: 'Contém uma base de dados integrada de alta performance (O(1)) para consultar códigos postais e cruzar províncias com distritos sem precisar de internet.',
-    code: `import { getProvinceByCEP } from 'moz-utils';\n\nconst prov = getProvinceByCEP('1100');\nconsole.log(prov); // 'Maputo Cidade'`
-  }
-];
-
 export default function WhatItDoes() {
-  const [activeCap, setActiveCap] = useState(capabilities[0]);
+  const { t } = useTranslation();
+
+  const capabilities = [
+    {
+      id: 'nuit',
+      icon: <CreditCard size={24} />,
+      title: t('what_it_does.cards.nuit.title'),
+      desc: t('what_it_does.cards.nuit.desc'),
+      details: t('what_it_does.cards.nuit.details'),
+      code: `import { isValidNUIT } from 'moz-utils';\n\n// Validação de NUIT Singular (Pessoa Física)\nconst valid = isValidNUIT('100000008'); \nconsole.log(valid); // true`
+    },
+    {
+      id: 'bi',
+      icon: <Fingerprint size={24} />,
+      title: t('what_it_does.cards.bi.title'),
+      desc: t('what_it_does.cards.bi.desc'),
+      details: t('what_it_does.cards.bi.details'),
+      code: `import { isValidBI } from 'moz-utils';\n\n// Verificação estrutural e de check-digit\nconst check = isValidBI('110101234567A'); \nconsole.log(check); // true`
+    },
+    {
+      id: 'phone',
+      icon: <Phone size={24} />,
+      title: t('what_it_does.cards.phone.title'),
+      desc: t('what_it_does.cards.phone.desc'),
+      details: t('what_it_does.cards.phone.details'),
+      code: `import { getPhoneOperator } from 'moz-utils';\n\nconst details = getPhoneOperator('841234567');\n/* Retorna:\n{\n  isValid: true,\n  operator: 'Vodacom',\n  formatted: '+258 84 123 4567'\n}\n*/`
+    },
+    {
+      id: 'geo',
+      icon: <MapPin size={24} />,
+      title: t('what_it_does.cards.geo.title'),
+      desc: t('what_it_does.cards.geo.desc'),
+      details: t('what_it_does.cards.geo.details'),
+      code: `import { getProvinceByCEP } from 'moz-utils';\n\nconst prov = getProvinceByCEP('1100');\nconsole.log(prov); // 'Maputo Cidade'`
+    }
+  ];
+
+  const [activeId, setActiveId] = useState('nuit');
+  const activeCap = capabilities.find(c => c.id === activeId) || capabilities[0];
 
   return (
     <section style={{ padding: '80px 0', background: 'var(--body-bg-gradient)' }}>
       <div className="container animate-fade-up">
         
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>O que faz e <span className="text-neon">Como faz</span>?</h2>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px' }}>{t('what_it_does.title')}<span className="text-neon">{t('what_it_does.titleHighlight')}</span></h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-            Não é mágica, é matemática pura. Veja os casos de uso reais que o moz-utils resolve para si.
+            {t('what_it_does.desc')}
           </p>
         </div>
 
@@ -65,7 +61,7 @@ export default function WhatItDoes() {
             {capabilities.map(cap => (
               <div 
                 key={cap.id} 
-                onClick={() => setActiveCap(cap)}
+                onClick={() => setActiveId(cap.id)}
                 style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
@@ -73,16 +69,16 @@ export default function WhatItDoes() {
                   padding: '16px', 
                   borderRadius: '16px', 
                   cursor: 'pointer',
-                  background: activeCap.id === cap.id ? 'var(--overlay-2)' : 'transparent',
-                  border: activeCap.id === cap.id ? '1px solid var(--panel-border)' : '1px solid transparent',
+                  background: activeId === cap.id ? 'var(--overlay-2)' : 'transparent',
+                  border: activeId === cap.id ? '1px solid var(--panel-border)' : '1px solid transparent',
                   transition: 'all 0.2s ease'
                 }}
               >
-                <div style={{ color: activeCap.id === cap.id ? 'var(--neon-green)' : 'var(--text-secondary)' }}>
+                <div style={{ color: activeId === cap.id ? 'var(--neon-green)' : 'var(--text-secondary)' }}>
                   {cap.icon}
                 </div>
                 <div>
-                  <h4 style={{ margin: 0, fontSize: '1.1rem', color: activeCap.id === cap.id ? 'var(--text-primary)' : 'var(--text-secondary)' }}>{cap.title}</h4>
+                  <h4 style={{ margin: 0, fontSize: '1.1rem', color: activeId === cap.id ? 'var(--text-primary)' : 'var(--text-secondary)' }}>{cap.title}</h4>
                   <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{cap.desc}</span>
                 </div>
               </div>
