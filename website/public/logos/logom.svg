@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComponentTransfer in="blur" result="glow1">
+        <feFuncA type="linear" slope="0.8"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode in="glow1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <clipPath id="inner-core-clip">
+      <rect x="40.5" y="40.5" width="19" height="19" rx="4.5"/>
+    </clipPath>
+  </defs>
+
+  <!-- Quase Imperceptível: Bandeira de Moçambique no núcleo -->
+  <g clip-path="url(#inner-core-clip)" opacity="0.15">
+    <rect x="40" y="40" width="20" height="6.6" fill="#009739" />
+    <rect x="40" y="46.6" width="20" height="0.6" fill="#ffffff" />
+    <rect x="40" y="47.2" width="20" height="5.6" fill="#000000" />
+    <rect x="40" y="52.8" width="20" height="0.6" fill="#ffffff" />
+    <rect x="40" y="53.4" width="20" height="6.6" fill="#FFD100" />
+    
+    <polygon points="40,40 50,50 40,60" fill="#D21034" />
+    <polygon points="43,47.5 43.6,49 45.2,49 43.9,50 44.4,51.5 43,50.6 41.6,51.5 42.1,50 40.8,49 42.4,49" fill="#FFD100" />
+  </g>
+
+  <g filter="url(#glow)" stroke="#00ff88" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Outer Body -->
+    <rect x="25" y="25" width="50" height="50" rx="10"/>
+    
+    <!-- Inner Core -->
+    <rect x="40" y="40" width="20" height="20" rx="5"/>
+    
+    <!-- Top Pins -->
+    <line x1="34" y1="13" x2="34" y2="25"/>
+    <line x1="50" y1="13" x2="50" y2="25"/>
+    <line x1="66" y1="13" x2="66" y2="25"/>
+    
+    <!-- Bottom Pins -->
+    <line x1="34" y1="75" x2="34" y2="87"/>
+    <line x1="50" y1="75" x2="50" y2="87"/>
+    <line x1="66" y1="75" x2="66" y2="87"/>
+    
+    <!-- Left Pins -->
+    <line x1="13" y1="34" x2="25" y2="34"/>
+    <line x1="13" y1="50" x2="25" y2="50"/>
+    <line x1="13" y1="66" x2="25" y2="66"/>
+    
+    <!-- Right Pins -->
+    <line x1="75" y1="34" x2="87" y2="34"/>
+    <line x1="75" y1="50" x2="87" y2="50"/>
+    <line x1="75" y1="66" x2="87" y2="66"/>
+  </g>
+</svg>
