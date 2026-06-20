@@ -62,14 +62,14 @@
       "money": "Moeda (MZN)"
     },
     "placeholders": {
-      "nuit": "Digita um NUIT (ex: 400000008)",
-      "bi": "Digita um BI Nacional (ex: 123456789123A)",
+      "nuit": "Digita um NUIT (ex: 400000001)",
+      "bi": "Digita um BI Nacional (ex: 110100000000B)",
       "dire": "Digita um DIRE (ex: 120345678A)",
       "passport": "Digita um Passaporte (ex: AO1234567)",
       "license": "Digita uma Carta de Condução (ex: MP1234567)",
       "province": "ID Província (ex: npl (Nampula))",
       "legacy_postal": "Código antigo (ex: 3100)",
-      "new_cep": "Novo CEP (ex: 0909-09)",
+      "new_cep": "Novo CEP (ex: 1100-01)",
       "migration": "Localidade ou código (ex: Namutequeliua, 3100)",
       "phone": "Nº telemóvel (ex: 841234567)",
       "whatsapp": "Nº telemóvel para link WA",

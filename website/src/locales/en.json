@@ -62,18 +62,18 @@
       "money": "Currency (MZN)"
     },
     "placeholders": {
-      "nuit": "Type a NUIT (e.g. 400000008)",
-      "bi": "Type a National ID (e.g. 123456789123A)",
+      "nuit": "Type a NUIT (e.g. 400000001)",
+      "bi": "Type a National ID (e.g. 110100000000B)",
       "dire": "Type a DIRE (e.g. 120345678A)",
       "passport": "Type a Passport (e.g. AO1234567)",
-      "license": "Type a Driving License (e.g. MP1234567)",
+      "license": "Type a Driver's License (e.g. MP1234567)",
       "province": "Province ID (e.g. npl (Nampula))",
-      "legacy_postal": "Legacy postal code (e.g. 3100)",
-      "new_cep": "New CEP (e.g. 0909-09)",
+      "legacy_postal": "Legacy code (e.g. 3100)",
+      "new_cep": "New CEP (e.g. 1100-01)",
       "migration": "Locality or code (e.g. Namutequeliua, 3100)",
-      "phone": "Mobile number (e.g. 841234567)",
-      "whatsapp": "Mobile number for WA link",
-      "money": "Monetary value (e.g. 1500.50)"
+      "phone": "Phone number (e.g. 841234567)",
+      "whatsapp": "Phone number for WA link",
+      "money": "Monetary amount (e.g. 1500.50)"
     },
     "results": {
       "nuitValid": "Valid NUIT. Entity:",
