@@ -12,9 +12,9 @@ const validators = [
   { id: 'nuit', label: 'NUIT', icon: <CreditCard size={18} />, placeholder: 'Ex: 400000000' },
   { id: 'bi', label: 'B. Identidade', icon: <Fingerprint size={18} />, placeholder: 'Ex: 110100000000B' },
   { id: 'phone', label: 'Telefone', icon: <Phone size={18} />, placeholder: 'Ex: 841234567' },
-  { id: 'cep', label: 'Novo CEP', icon: <Map size={18} />, placeholder: 'Ex: 1100' },
-  { id: 'legacy_cep', label: 'CEP Antigo', icon: <MapPin size={18} />, placeholder: 'Ex: 1100' },
-  { id: 'cep_migration', label: 'Migração CEP', icon: <ArrowRightLeft size={18} />, placeholder: 'Ex: Maputo' },
+  { id: 'new_cep', label: 'Novo CEP', icon: <Map size={18} />, placeholder: 'Ex: 1100' },
+  { id: 'legacy_postal', label: 'CEP Antigo', icon: <MapPin size={18} />, placeholder: 'Ex: 1100' },
+  { id: 'migration', label: 'Migração CEP', icon: <ArrowRightLeft size={18} />, placeholder: 'Ex: Maputo' },
   { id: 'province', label: 'Distritos', icon: <MapPin size={18} />, placeholder: 'Ex: Maputo' },
   { id: 'money', label: 'Dinheiro', icon: <Coins size={18} />, placeholder: 'Ex: 1500.50' },
   { id: 'whatsapp', label: 'WhatsApp Link', icon: <MessageCircle size={18} />, placeholder: 'Ex: 841234567' }
@@ -49,7 +49,7 @@ export default function UnifiedSimulator() {
           }
           return { success: false, text: 'Número de telefone inválido.' };
         }
-        case 'cep': {
+        case 'new_cep': {
           const valid = isValidNewCEP(inputValue);
           if (valid) {
             const suggestions = suggestCEPs(inputValue);
@@ -60,14 +60,14 @@ export default function UnifiedSimulator() {
           }
           return { success: false, text: 'Novo Código Postal Inválido.' };
         }
-        case 'legacy_cep': {
+        case 'legacy_postal': {
           const valid = isValidPostalCode(inputValue);
           if (valid) {
             return { success: true, text: `CEP Antigo Válido: ${getPostalCodeLocality(inputValue)} (${getPostalCodeProvince(inputValue)})` };
           }
           return { success: false, text: 'CEP Antigo Inválido.' };
         }
-        case 'cep_migration': {
+        case 'migration': {
           const suggestions = suggestCEPs(inputValue);
           if (suggestions.length > 0) {
             return { success: true, text: `Encontrados ${suggestions.length} locais:\n${suggestions.slice(0, 5).map(s => `${s.cep} - ${s.locality}`).join('\n')}${suggestions.length > 5 ? '\n...' : ''}` };
@@ -147,7 +147,7 @@ export default function UnifiedSimulator() {
               className="input-field" 
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder={activeValidator.placeholder}
+              placeholder={t(`simulator.placeholders.${activeValidator.id}`)}
               style={{ width: '100%', padding: '16px', fontSize: '1.2rem', borderRadius: '12px' }}
             />
           </div>
