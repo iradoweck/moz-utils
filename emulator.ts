@@ -20,7 +20,7 @@ function clearScreen() {
     console.log('===============================================================');
     console.log('         CENTRAL DE TESTES ABSTRATA - MOZ-UTILS');
     console.log('   (Validação Universal usando a core library moz-utils)');
-    console.log(' Desenvolvido por Contribuidores Open Source & suportado por Formiga Antonio');
+    console.log(' Desenvolvido e suportado por Zedecks IT & Comunidade');
     console.log('===============================================================\n');
 }
 
