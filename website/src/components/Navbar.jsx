@@ -39,9 +39,10 @@ export default function Navbar() {
       backdropFilter: 'blur(10px)',
       zIndex: 1000
     }}>
-      <div style={{ fontWeight: 'bold', fontSize: '1.2rem', letterSpacing: '-0.5px' }}>
-        <Link to="/" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>
-          moz-<span className="text-neon">utils</span>
+      <div style={{ fontWeight: 'bold', fontSize: '1.2rem', letterSpacing: '-0.5px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <Link to="/" style={{ color: 'var(--text-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <img src="/logo.svg" alt="moz-utils logo" style={{ width: '28px', height: '28px' }} />
+          <span>moz-<span className="text-neon">utils</span></span>
         </Link>
       </div>
       
