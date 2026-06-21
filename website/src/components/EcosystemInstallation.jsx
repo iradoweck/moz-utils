@@ -13,7 +13,7 @@ export default function EcosystemInstallation() {
     { name: 'PHP', cmd: 'composer require iradoweck/moz-utils' },
     { name: 'Python', cmd: 'pip install moz-utils' },
     { name: 'Dart', cmd: 'dart pub add moz-utils' },
-    { name: 'Kotlin', cmd: 'implementation("com.github.iradoweck:moz-utils:0.3.0")' }
+    { name: 'Kotlin', cmd: 'implementation("com.github.iradoweck:moz-utils:0.3.9")' }
   ];
 
   const handleCopy = () => {

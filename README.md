@@ -119,7 +119,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
     ```yaml
     # Add to your pubspec.yaml
     dependencies:
-      moz_utils: ^0.3.8
+      moz_utils: ^0.3.9
     ```
 
 === "Kotlin"
@@ -129,7 +129,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
         maven { url = uri("https://jitpack.io") }
     }
     dependencies {
-        implementation("com.github.iradoweck:moz-utils:v0.3.8")
+        implementation("com.github.iradoweck:moz-utils:v0.3.9")
     }
     ```
 
