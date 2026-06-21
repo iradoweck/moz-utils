@@ -16,6 +16,15 @@ The core principle of `moz-utils` is **consistency**. This means that regardless
 
 ---
 
+## 📝 Enforce-English & Documentation Dogmas
+
+1. **Language Enforcement:** All source code, variables, docstrings, technical documentation, and `README.md` files **MUST** be written strictly in **English**. (Discussions and issues may be conducted in Portuguese).
+2. **Commits:** We strictly adhere to *Conventional Commits* (e.g., `feat(website): ...`). All commit messages must be in English, and the commit body must not exceed 100 characters per line (enforced by `husky` and `commitlint`).
+3. **License Consistency:** The entire repository and all its ecosystem packages operate under the **Apache License 2.0**. Never mix badges or references to AGPL-3.0, MIT, or other licenses to preserve enterprise (B2B) compatibility.
+4. **Frontend Routing (Website):** The documentation website is a Single Page Application (SPA) using `HashRouter`. Never use native `<a>` tags with `href` for internal navigation; always use React Router's `<Link to="...">`. All asynchronous fetching or language swaps (i18n) must be covered by smooth visual transitions to prevent layout shifts.
+
+---
+
 ## 🧮 Official Validation Rules
 
 ### 1. NUIT Algorithm (Modulo 11)

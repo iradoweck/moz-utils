@@ -49,3 +49,15 @@ Once the LTS lifespan expires, or when a 3rd LTS is pushed (breaching the maximu
 2. **0.3.x** is the primary `LTS` version (receiving backported security fixes).
 3. **0.2.x** is the secondary `LTS` version (in its final 5% lifespan, triggering warnings).
 4. **0.1.x** is `EOL` (obsolete).
+
+---
+
+## 4. Decoupled Versioning Architecture (Monorepo)
+
+Due to the polyglot nature of the `moz-utils` ecosystem, versioning is strictly decoupled into three autonomous layers:
+
+* **The Stacks (Libraries):** The functional code across TypeScript, Python, PHP, Dart, and Kotlin evolves together in a **unified version** (e.g., `0.3.9`) to ensure feature parity.
+* **The Website / Documentation Portal:** Operates on its own independent lifecycle (e.g., `0.1.6`). UI or translation updates do not alter the stack versions.
+* **The Global Ecosystem:** Managed at the root `package.json` and formally documented in the `CHANGELOG.md` (e.g., `0.3.2`). The CHANGELOG exclusively tracks major Global releases, not the micromanagement of stack patches.
+
+> **CRITICAL RULE - Synchronization of Examples:** Whenever the Stacks' unified version is bumped, you **MUST** update all `README.md` files (in the root and within each language folder) and the Website's visual showcases (e.g., `EcosystemInstallation.jsx`) to reflect the new version. Example dependencies must always point to the active Stack version so developers can safely copy-paste.
