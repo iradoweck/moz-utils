@@ -97,7 +97,7 @@ export default function CommunityPage() {
               {t('community_page.b2b_description')}
             </p>
             <a 
-              href="mailto:hello@edmilsonmuacigarro.com" 
+              href="mailto:mozutils@zedecks.com" 
               className="btn-primary" 
               style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', fontSize: '0.95rem' }}
             >

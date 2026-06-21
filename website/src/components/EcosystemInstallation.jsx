@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { Terminal, Copy, Check } from 'lucide-react';
 
 export default function EcosystemInstallation() {
@@ -112,9 +113,9 @@ export default function EcosystemInstallation() {
         </div>
         
         <div style={{ textAlign: 'center', marginTop: '40px' }}>
-          <a href="/moz-utils/community" className="btn-secondary" style={{ padding: '12px 32px' }}>
+          <Link to="/community" className="btn-secondary" style={{ padding: '12px 32px' }}>
             {t('installation.joinCommunity')}
-          </a>
+          </Link>
         </div>
       </div>
     </section>

@@ -7,7 +7,7 @@ The definitive open-source utility library for software built in or for **Mozamb
 [![pub.dev](https://img.shields.io/pub/v/moz_utils?label=pub.dev&color=0175C2)](https://pub.dev/packages/moz_utils)
 [![Packagist](https://img.shields.io/packagist/v/iradoweck/moz-utils?label=Packagist&color=F28D1A)](https://packagist.org/packages/iradoweck/moz-utils)
 [![JitPack](https://img.shields.io/jitpack/v/github/iradoweck/moz-utils?label=JitPack&color=B07219)](https://jitpack.io/#iradoweck/moz-utils)
-[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](https://github.com/iradoweck/moz-utils/blob/main/LICENSE)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2\.0-green)](https://github.com/iradoweck/moz-utils/blob/main/LICENSE)
 
 ---
 

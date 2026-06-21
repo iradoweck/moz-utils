@@ -28,4 +28,4 @@ The website is automatically deployed to GitHub Pages via the `.github/workflows
 
 ## License
 
-AGPL-3.0-or-later.
+Apache-2.0.

@@ -3,7 +3,7 @@
 The definitive, zero-dependency, offline-first open-source library for software built in or for **Mozambique**.
 
 [![pub.dev](https://img.shields.io/pub/v/moz_utils?label=pub.dev&color=0175C2)](https://pub.dev/packages/moz_utils)
-[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](https://github.com/iradoweck/moz-utils/blob/main/LICENSE)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2\.0-green)](https://github.com/iradoweck/moz-utils/blob/main/LICENSE)
 [![Website](https://img.shields.io/badge/Docs-Website-blue)](https://iradoweck.github.io/moz-utils/)
 
 > **Author:** Edmilson Muacigarro (@iradoweck)  
@@ -177,4 +177,4 @@ The New Postal Addressing Code (CEP) abandons the old 4-digit system in favor of
 
 ## 📜 License
 
-This project is licensed under the **AGPL-3.0 License** - see the LICENSE file for details.
+This project is licensed under the **Apache-2.0 License** - see the LICENSE file for details.

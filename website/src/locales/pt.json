@@ -23,7 +23,7 @@
   "footer": {
     "sponsoredBy": "Patrocinado e suportado por",
     "developedByShort": "e Desenvolvido por Zedeck's IT & Comunidade",
-    "openSource": "Open Source sob a Licença AGPL-3.0",
+    "openSource": "Open Source sob a Licença Apache 2.0",
     "donatePrimary": "Patrocinar",
     "donateSecondary": "PayPal"
   },
@@ -165,7 +165,7 @@
     "not_found_markdown": "# Página Não Encontrada\nNão conseguimos carregar esta página da documentação."
   },
   "community_page": {
-    "title": "Comunidade Moçambicana Open-Source",
+    "title": "Comunidade Moz-Utils Open-Source",
     "description": "Discute ideias, faz perguntas, partilha projetos criados com o moz-utils e mantém-te atualizado sobre as novidades do ecossistema.",
     "topics_title": "Tópicos do Fórum",
     "topics": {
