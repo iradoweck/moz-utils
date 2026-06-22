@@ -11,7 +11,7 @@ export default function Footer() {
       <footer style={{ 
         padding: '24px 40px', 
         borderTop: '1px solid var(--panel-border)',
-        marginTop: '60px',
+        marginTop: '0px',
         backgroundColor: 'var(--panel-bg)',
         color: 'var(--text-secondary)',
         display: 'flex',
