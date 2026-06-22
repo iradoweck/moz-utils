@@ -64,12 +64,12 @@ export default function Footer() {
               src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Flag_of_Mozambique.svg" 
               alt="Moçambique" 
               title="Moçambique" 
-              style={{ height: '16px', borderRadius: '2px', objectFit: 'cover' }} 
+              style={{ height: '20px', borderRadius: '2px', objectFit: 'cover', boxShadow: '0 0 0 1px rgba(255,255,255,0.1)' }} 
             />
             <img 
               src="/moz-utils/zedecks-it-logo.png" 
               alt="Zedeck's IT" 
-              style={{ height: '18px', objectFit: 'contain' }} 
+              style={{ height: '24px', objectFit: 'contain' }} 
               onError={(e) => { e.target.src = '/zedecks-it-logo.png'; }} 
             />
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }} title="GitHub">
