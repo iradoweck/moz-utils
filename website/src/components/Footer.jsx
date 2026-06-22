@@ -9,14 +9,16 @@ export default function Footer() {
   return (
     <>
       <footer style={{ 
-        padding: '40px 20px', 
+        padding: '24px 40px', 
         borderTop: '1px solid var(--panel-border)',
         marginTop: '60px',
         backgroundColor: 'var(--panel-bg)',
         color: 'var(--text-secondary)',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
         alignItems: 'center',
+        justifyContent: 'space-between',
         gap: '24px',
         fontSize: '0.9rem'
       }}>
@@ -46,11 +48,11 @@ export default function Footer() {
         </div>
 
         {/* Section 3: Open Source Row + Donate */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
           <div style={{ 
             display: 'flex', 
             alignItems: 'center', 
-            gap: '16px', 
+            gap: '12px', 
             flexWrap: 'wrap',
             justifyContent: 'center',
             color: 'var(--text-secondary)'
@@ -58,7 +60,12 @@ export default function Footer() {
             <span style={{ fontWeight: '600', color: 'var(--text-primary)', textTransform: 'uppercase', fontSize: '0.8rem', letterSpacing: '1px' }}>
               Open Source
             </span>
-            <span title="Moçambique" style={{ fontSize: '1.3rem' }}>🇲🇿</span>
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Flag_of_Mozambique.svg" 
+              alt="Moçambique" 
+              title="Moçambique" 
+              style={{ height: '16px', borderRadius: '2px', objectFit: 'cover' }} 
+            />
             <img 
               src="/moz-utils/zedecks-it-logo.png" 
               alt="Zedeck's IT" 
@@ -82,7 +89,7 @@ export default function Footer() {
           <button 
             onClick={() => setIsDonateOpen(true)}
             className="btn-primary" 
-            style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 32px', fontSize: '0.95rem', fontWeight: 'bold', marginTop: '8px' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 24px', fontSize: '0.95rem', fontWeight: 'bold' }}
           >
             <Heart size={18} fill="currentColor" /> {t('nav.donate', 'Doar')}
           </button>
