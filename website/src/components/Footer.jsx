@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Heart, CreditCard, Github, ShieldCheck, X } from 'lucide-react';
+import { Heart, CreditCard, GitBranch, ShieldCheck, X } from 'lucide-react';
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -66,7 +66,7 @@ export default function Footer() {
               onError={(e) => { e.target.src = '/zedecks-it-logo.png'; }} 
             />
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }} title="GitHub">
-              <Github size={18} />
+              <GitBranch size={18} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--neon-green)', background: 'rgba(0, 255, 170, 0.05)', padding: '4px 8px', borderRadius: '4px', border: '1px solid rgba(0, 255, 170, 0.1)' }} title="Apache 2.0 License">
               <ShieldCheck size={16} /> <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>Apache 2.0</span>
@@ -136,7 +136,7 @@ export default function Footer() {
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <a href="https://github.com/sponsors/iradoweck" target="_blank" rel="noreferrer" className="btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', textDecoration: 'none', padding: '14px' }}>
-                <Github size={20} /> {t('footer.donatePrimary', 'Patrocinar no GitHub')}
+                <GitBranch size={20} /> {t('footer.donatePrimary', 'Patrocinar no GitHub')}
               </a>
               <a href="https://paypal.me/iradoweck" target="_blank" rel="noreferrer" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', border: '1px solid var(--text-secondary)', textDecoration: 'none', padding: '14px' }}>
                 <CreditCard size={20} /> {t('footer.donateSecondary', 'Doar via PayPal')}
