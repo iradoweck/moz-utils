@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Add Contributor to README
         uses: actions/github-script@v9

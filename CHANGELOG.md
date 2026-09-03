@@ -6,6 +6,7 @@ Change history for all versions of the **moz-utils** project.
 
 ## [0.3.8] - 2026-06-18
 - chore(release): Bump to 0.3.8 to surpass registry lock and enforce Base 10 Absolute Parity logic.
+- docs: Transition and update to Apache License 2.0 with proper copyrights.
 
 ## [0.3.7] - 2026-06-18
 - refactor: Implementation of the Enterprise Release Cycle (Stable, LTS, EOL).
