@@ -8,7 +8,8 @@ The library fully supports **Vodacom**, **Tmcel**, and **Movitel**.
 
 The `isValidMozambicanPhone` function checks if the number belongs to one of the official telecom operators. It intelligently strips out spaces, dashes, and country codes (`+258` ou `00258`).
 
-### TypeScript / Node.js
+<div className="code-tabs" data-labels="TypeScript / Node.js,Python,PHP,Dart,Kotlin">
+
 ```ts
 import { isValidMozambicanPhone } from 'moz-utils';
 
@@ -18,38 +19,37 @@ console.log(isValidMozambicanPhone("+258 82 123 4567")); // true
 console.log(isValidMozambicanPhone("811234567")); // false (No operator uses 81)
 ```
 
-### Python
 ```python
 from moz_utils import is_valid_mozambican_phone
 
 print(is_valid_mozambican_phone("841234567")) # True
 ```
 
-### PHP
 ```php
 use MozUtils\MozUtils;
 
 echo MozUtils::isValidMozambicanPhone("841234567"); // 1 (true)
 ```
 
-### Dart
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
 print(isValidMozambicanPhone('841234567')); // true
 ```
 
-### Kotlin
 ```kotlin
 import io.github.iradoweck.moz_utils.MozUtils
 
 println(MozUtils.isValidMozambicanPhone("841234567")) // true
 ```
 
+</div>
+
 ## Extracting the Operator
 You can discover which network a number belongs to. This is especially useful for targeting promotions in specific regions like **Nampula**.
 
-### TypeScript
+<div className="code-tabs" data-labels="TypeScript,Python">
+
 ```ts
 import { getMobileOperator } from 'moz-utils';
 
@@ -58,12 +58,40 @@ console.log(getMobileOperator("821234567")); // "Tmcel"
 console.log(getMobileOperator("861234567")); // "Movitel"
 ```
 
-### Python
 ```python
 from moz_utils import get_mobile_operator
 
 print(get_mobile_operator("841234567")) # "Vodacom"
 ```
+
+</div>
+
+## Identifying Mobile Wallets
+A number can also be mapped to its corresponding mobile money platform (M-Pesa, e-Mola, mKesh).
+
+### TypeScript
+```ts
+import { getMobileWallet } from 'moz-utils';
+
+console.log(getMobileWallet("841234567")); // "M-Pesa"
+console.log(getMobileWallet("861234567")); // "e-Mola"
+```
+
+## Formatting to International Standard
+To store the number safely in your database, always format it to the international standard.
+
+### TypeScript
+```ts
+import { formatMozambicanPhone } from 'moz-utils';
+
+console.log(formatMozambicanPhone("84 123 4567")); // "+258841234567"
+```
+
+## Generating WhatsApp Links
+Want to redirect your users to WhatsApp directly?
+
+### TypeScript
+</div>
 
 ## Identifying Mobile Wallets
 A number can also be mapped to its corresponding mobile money platform (M-Pesa, e-Mola, mKesh).
@@ -98,3 +126,13 @@ const url = buildWhatsAppUrl("841234567", "Olá, estou em Nampula e quero compra
 console.log(url); 
 // "https://wa.me/258841234567?text=Ol%C3%A1%2C%20estou%20em%20Nampula%20e%20quero%20comprar%21"
 ```
+
+## ⚙️ Under the Hood: Operator Prefixes
+
+Telecommunication operators in Mozambique acquire specific number blocks through the INCM (National Institute of Communications of Mozambique). `moz-utils` maps operators using the following offline logic:
+
+- **Vodacom**: Starts with `84` or `85` (M-Pesa Wallet is associated with these numbers).
+- **Tmcel**: Starts with `82` or `83` (mKesh Wallet is associated with these numbers).
+- **Movitel**: Starts with `86` or `87` (e-Mola Wallet is associated with these numbers).
+
+When validation or operator extraction is executed, the string is cleaned of spaces and international prefixes (`+258`, `00258`), and a regular expression verifies if the remaining number has exactly 9 digits and if the prefix matches an officially allocated block.

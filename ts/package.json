@@ -3,7 +3,7 @@
   "version": "0.3.9",
   "description": "Utility functions for Mozambique — validation of NUIT, BI, documents, and phone number formatting",
   "type": "module",
-  "author": "Edmilson Muacigarro <contacto@edmilsonmuacigarro.com> (https://edmilsonmuacigarro.com)",
+  "author": "Edmilson Muacigarro (@iradoweck) <contacto@edmilsonmuacigarro.com> (https://edmilsonmuacigarro.com)",
   "contributors": [
     "Zedecks IT (https://github.com/zedecks)"
   ],

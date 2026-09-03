@@ -5,6 +5,43 @@ import rehypeRaw from 'rehype-raw';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/atom-one-dark.css'; // Good dark theme for code blocks
 
+const CodeTabsWidget = ({ labels, children }) => {
+  const [active, setActive] = React.useState(0);
+  
+  return (
+    <div className="code-tabs-widget" style={{ marginBottom: '24px', marginTop: '16px', border: '1px solid var(--panel-border)', borderRadius: '8px', overflow: 'hidden' }}>
+      <div className="tab-buttons" style={{ display: 'flex', background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid var(--panel-border)', overflowX: 'auto' }}>
+        {labels.map((label, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            style={{
+              padding: '12px 24px',
+              background: active === i ? 'rgba(0,255,136,0.1)' : 'transparent',
+              border: 'none',
+              borderBottom: active === i ? '2px solid var(--neon-green)' : '2px solid transparent',
+              color: active === i ? 'var(--neon-green)' : 'var(--text-secondary)',
+              cursor: 'pointer',
+              fontWeight: active === i ? '600' : 'normal',
+              fontSize: '0.9rem',
+              transition: 'all 0.2s',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      <div className="tab-content">
+        {/* We strip out the margins of the inner <pre> block that we defined in our renderer */}
+        <div style={{ marginTop: '-16px', marginBottom: '-24px' }}>
+           {children[active]}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Extensão personalizada do renderer
 export default function MarkdownRenderer({ content }) {
   // Track occurrence counts to make duplicate heading IDs unique within this render
@@ -78,7 +115,17 @@ export default function MarkdownRenderer({ content }) {
               margin: '24px 0',
               background: 'rgba(0,255,136,0.05)'
             }}>{children}</blockquote>
-          )
+          ),
+          div: ({node, className, children, ...props}) => {
+            if (className && className.includes('code-tabs')) {
+              const labels = (props['data-labels'] || '').split(',');
+              // filter out text nodes (newlines) to get only the <pre> blocks
+              const blocks = React.Children.toArray(children).filter(child => child && typeof child !== 'string' && child.props);
+              
+              return <CodeTabsWidget labels={labels}>{blocks}</CodeTabsWidget>;
+            }
+            return <div className={className} {...props}>{children}</div>;
+          }
         }}
       >
         {content}

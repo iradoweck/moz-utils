@@ -1,61 +1,77 @@
 # Installation
 
-Installing `moz-utils` is quick and straightforward, no matter what ecosystem you are working in. Choose your preferred language below to see the installation command.
+`moz-utils` is natively available on the 5 major development ecosystems. Choose the one that matches your project.
 
-## TypeScript / Node.js
-If you are using Node.js, Next.js, React, or any JS environment:
+<div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
 
 ```bash
 npm install moz-utils
-# or
-yarn add moz-utils
-# or
-pnpm add moz-utils
 ```
-
-## Python
-Available directly from PyPI. Ideal for Django, Flask, FastAPI or Data Science scripts.
 
 ```bash
 pip install moz-utils
 ```
 
-## PHP
-Available on Packagist for your Laravel, Symfony, or native PHP applications.
-
 ```bash
 composer require iradoweck/moz-utils
 ```
 
-## Dart & Flutter
-Available on pub.dev. Perfect for cross-platform mobile apps.
-
 ```bash
 flutter pub add moz_utils
-# or for pure Dart projects
-dart pub add moz_utils
 ```
 
-## Kotlin & Java
-Distributed via JitPack for your Android apps or Spring Boot backends.
-
-Add the JitPack repository to your `settings.gradle.kts` or `build.gradle`:
-
 ```kotlin
+// settings.gradle.kts
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
-        mavenCentral()
-        maven(url = "https://jitpack.io")
+        maven { url = uri("https://jitpack.io") }
     }
 }
-```
-
-Then add the dependency in your `build.gradle.kts`:
-
-```kotlin
+// build.gradle.kts
 dependencies {
-    implementation("com.github.iradoweck:moz-utils:0.3.3")
+    implementation("com.github.iradoweck:moz-utils:0.3.9")
 }
 ```
+
+</div>
+
+## Basic Usage
+
+<div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
+
+```ts
+import { isValidNUIT, formatMozambicanPhone } from 'moz-utils';
+
+console.log(isValidNUIT("400000008")); // true
+console.log(formatMozambicanPhone("841234567")); // "+258 84 123 4567"
+```
+
+```python
+from moz_utils import is_valid_nuit, format_mozambican_phone
+
+print(is_valid_nuit("400000008"))        # True
+print(format_mozambican_phone("841234567"))  # "+258 84 123 4567"
+```
+
+```php
+use MozUtils\MozUtils;
+
+var_dump(MozUtils::isValidNUIT("400000008"));          // bool(true)
+echo MozUtils::formatMozambicanPhone("841234567");     // "+258 84 123 4567"
+```
+
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+print(isValidNUIT('400000008'));          // true
+print(formatMozambicanPhone('841234567')); // '+258 84 123 4567'
+```
+
+```kotlin
+import io.github.iradowect.moz_utils.MozUtils
+
+println(MozUtils.isValidNUIT("400000008"))            // true
+println(MozUtils.formatMozambicanPhone("841234567"))  // "+258 84 123 4567"
+```
+
+</div>

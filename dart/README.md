@@ -1,199 +1,180 @@
-<h1 align="center">moz-utils</h1>
+# moz_utils (Dart & Flutter)
 
-<p align="center">
-  <b>Dart & Flutter</b>
-</p>
+The definitive, zero-dependency, offline-first open-source library for software built in or for **Mozambique**.
 
-<p align="center">
-  <a href="https://pub.dev/packages/moz_utils">
-    <img src="https://img.shields.io/pub/v/moz_utils?color=0175c2&logo=dart&logoColor=white" alt="Pub Version" />
-  </a>
-  <a href="https://pub.dev/packages/moz_utils">
-    <img src="https://img.shields.io/pub/points/moz_utils" alt="Pub Points" />
-  </a>
-</p>
+[![pub.dev](https://img.shields.io/pub/v/moz_utils?label=pub.dev&color=0175C2)](https://pub.dev/packages/moz_utils)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](https://github.com/iradoweck/moz-utils/blob/main/LICENSE)
+[![Website](https://img.shields.io/badge/Docs-Website-blue)](https://iradoweck.github.io/moz-utils/)
 
-<p align="center">
-  <i>The digital foundation of Mozambican identity. The definitive Swiss army knife for validations, postal codes, and financial ecosystems in Mozambique, natively ported to the Dart ecosystem.</i>
-</p>
+> **Author:** Edmilson Muacigarro (@iradoweck)  
+> **Official Documentation:** [iradoweck.github.io/moz-utils](https://iradoweck.github.io/moz-utils/)  
+> **GitHub Repository:** [iradoweck/moz-utils](https://github.com/iradoweck/moz-utils)
 
 ---
 
-## 📜 The Vision
+## 🌍 The Vision
 
-In Mozambique, digital accuracy is the foundation of the future. From the pulse of mobile wallets in the squares to the rigorous structure of the National ID (BI), **moz-utils** exists to ensure that every piece of data that crosses your mobile application (Flutter) or backend (Dart Server) is validated, structured, and authentic.
+When developing applications for Mozambique, engineers constantly solve the exact same problems from scratch:
+- 🔎 **Is this NUIT valid?** — The Tax Authority uses a Modulo 11 algorithm. A single wrong digit and your backend fails silently.
+- 📱 **Is this number Vodacom, Tmcel or Movitel?** — The prefix rules are operator-specific and rarely documented publicly.
+- 🗺️ **What is the new CEP for Namutequeliua, Nampula?** — The new 6-digit postal system has low adoption. We built the first offline database for it.
+- 🪪 **Is this BI / DIRE / Passport valid?** — Every identity document has a strict format.
 
-Built impeccably for the Dart ecosystem, this package is more than a library — it is the open-source validation infrastructure our country deserves. Clean code, tested, and poetically engineered for Mozambique.
+`moz_utils` solves all of this **out-of-the-box**, with **zero runtime dependencies**, **offline-first algorithms**, and **strict privacy** (we don't send data anywhere).
+
+---
+
+## 💻 System Requirements
+
+- **Dart SDK**: `>= 3.5.0 < 4.0.0`
+- **Ecosystem**: Fully compatible with AOT (Ahead-of-Time) compilers for native compilation on Android, iOS, Windows, macOS, and Linux via Flutter.
 
 ---
 
 ## 📦 Installation
 
-Add the dependency to your `pubspec.yaml`:
+Install via Flutter or Dart CLI:
 
+```bash
+flutter pub add moz_utils
+```
+
+Or by adding manually to `pubspec.yaml`:
 ```yaml
 dependencies:
-  moz_utils: ^0.3.8
+  moz_utils: ^0.3.9
 ```
 
 ---
 
-## 🚀 API Reference Guide
+## 🚀 Comprehensive Usage Guide
 
-### 1. Identity & Documents
+### 📱 Phones & Mobile
+
+Validating and extracting information from Mozambican mobile numbers. Fully supports Vodacom, Tmcel, and Movitel.
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-// National ID (12 digits + 1 letter)
-MozUtils.isValidBI('110101234567A');  // true
+// Validation
+print(isValidMozambicanPhone("841234567"));       // true
+print(isValidMozambicanPhone("+258 82 123 4567")); // true
+print(isValidMozambicanPhone("811234567"));        // false
 
-// NUIT - Unique Tax Identification Number (Per AT Decree n. 28/2012)
-MozUtils.isValidNUIT('401626638');    // true
-MozUtils.getNUITEntityType('400000006');  // "Pessoas Colectivas"
-MozUtils.getNUITEntityType('100000008');  // "Pessoas Singulares"
+// Operator & Wallet Extraction
+print(getMobileOperator("841234567")); // "Vodacom"
+print(getMobileWallet("861234567"));   // "e-Mola"
 
-// DIRE - Foreign Resident Identification Document
-MozUtils.isValidDIRE('00008312C');    // true
+// Formatting
+print(formatMozambicanPhone("84 123 4567")); // "+258841234567"
 
-// Passport and Driving License
-MozUtils.isValidPassport('AO1234567');       // true
-MozUtils.isValidDrivingLicense('M123456');   // true
+// WhatsApp Links
+final url = buildWhatsAppUrl("841234567", "Hello!");
+print(url); // "https://wa.me/258841234567?text=Hello%21"
 ```
+
+#### ⚙️ Under the Hood: Operator Prefixes
+Telecommunication operators in Mozambique acquire specific number blocks through the INCM. We map operators using this offline logic:
+- **Vodacom**: Starts with `84` or `85`.
+- **Tmcel**: Starts with `82` or `83`.
+- **Movitel**: Starts with `86` or `87` or `88`.
 
 ---
 
-### 2. Name & String Sanitization
+### 🪪 Identity Documents
 
-Clean up dirty user input from forms before saving to your database:
+Validating documents prevents fraudulent registrations in systems deployed in Maputo, Nampula, or any other province.
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-MozUtils.isValidName("Edmilson O'Brian-Muacigarro"); // true
-MozUtils.isValidName("Edmilson 123");                // false
+// NUIT (Tax ID)
+print(isValidNUIT("400000008")); // true
+print(getNUITEntityType("400000008")); // "Singular" (Individual)
 
-MozUtils.sanitizeName("  EDMILSON  muacigarro ");    // "Edmilson Muacigarro"
-MozUtils.sanitizeName("João", allCaps: true);        // "JOÃO"
+// BI (Identity Card)
+print(isValidBI("123456789123A")); // true
 
-MozUtils.sanitizeDocumentField("123 456-789");       // "123456789"
-MozUtils.sanitizeAlphanumericField("110 101 a");     // "110101A"
+// Passports, DIRE & Driving License
+print(isValidPassport("AO1234567")); // true
+print(isValidDIRE("120345678A"));   // true
+print(isValidDrivingLicense("MP1234567")); // true
 ```
+
+#### ⚙️ Under the Hood: The NUIT Algorithm
+Unlike other tax numbers that use descending multipliers, the Mozambican Tax Authority uses a specific fixed matrix of weights `[8, 9, 4, 5, 6, 7, 8, 9]` to calculate the Modulo 11 for the NUIT. `moz_utils` replicates this exact mathematical equation offline.
 
 ---
 
-### 3. Financial Toolkit (Metical)
+### 💰 Currency (MZN)
+
+Format numbers into the official Metical standard.
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-// Format database floats into official AT formats
-MozUtils.formatMZN(1500);          // "1 500,00 MT"
-MozUtils.formatMZN(50000, 'MZN');  // "50 000,00 MZN"
-
-// Parse dirty strings back into database floats
-MozUtils.parseMZN("1.500,00 MT");  // 1500.00
-MozUtils.parseMZN("1 500,00MZN");  // 1500.00
+print(formatMZN(1500)); // "1 500,00 MT"
+print(formatMZN(2500000.5)); // "2 500 000,50 MT"
 ```
 
 ---
 
-### 4. Financial Ecosystem and Telecommunications
+### 🗺️ Geography & Districts
 
-Deep mapping of the Mozambican digital circulatory system — identifies operators and the pulse of associated mobile wallets.
+An offline database containing all 11 provinces and 161 districts of Mozambique.
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-// Validation and Formatting
-MozUtils.isValidMozambicanPhone('841234567');  // true
-MozUtils.formatMozambicanPhone('841234567');   // "+258 84 123 4567"
+// Loop through provinces
+for (var p in mozambiqueProvinces) {
+    print(p.name);
+}
 
-// Telecom and Financial Intelligence
-MozUtils.getMobileOperator('841234567');  // "Vodacom"
-MozUtils.getMobileWallet('841234567');    // "M-Pesa"
-MozUtils.getMobileWallet('821234567');    // "mKesh"
-MozUtils.getMobileWallet('861234567');    // "e-Mola"
+// Get districts for a specific province
+final maputoDistricts = getDistrictsByProvince("Maputo");
+print(maputoDistricts); // ["Boane", "Magude", "Manhiça", "Marracuene", ...]
 
-// Social Connections
-MozUtils.buildWhatsAppUrl('841234567', 'Hello, Mozambique!'); 
-// "https://wa.me/258841234567?text=Hello%2C%20Mozambique%21"
+// Get all 161 districts in a flat list
+final allDistricts = getAllDistricts();
 ```
 
 ---
 
-### 3. Postal Codes (Legacy and New CEP)
+### 📬 Postal Codes (CEP)
 
-A graceful transition between the past and the future: from the old post office stations to the geo-referenced New CEP.
+Mozambique recently transitioned from the classic 4-digit code to a modern 6-digit CEP (`XXXX-XX`). `moz_utils` supports both!
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-// The Future (New CEP: Province, District, and Locality)
-MozUtils.isValidNewCEP('0101-01');  // true
+// Modern CEP
+print(isValidNewCEP("3100-05")); // true
 
-// Intelligent Suggestion Engine (Supports Legacy -> New Transition)
-// Search by the old code "3100" (Nampula) or by a neighborhood
-MozUtils.suggestCEPs('3100');
-MozUtils.suggestCEPs('Namutequeliua');
+// Autocomplete / Suggestion Engine
+final results = suggestCEPs("namutequeliua");
+print(results[0].cep); // "3100-05"
 
-// The Legacy
-MozUtils.isValidPostalCode('3100');            // true
-MozUtils.getPostalCodeLocality('3100');        // "Nampula"
+// Legacy Postal Codes
+print(isValidPostalCode("3100")); // true
+print(getPostalCodeLocality("3100")); // "Nampula"
 ```
 
----
-
-### 4. National Geography and Finances
-
-```dart
-import 'package:moz_utils/moz_utils.dart';
-
-// Monumental Value
-MozUtils.formatMZN(1250.5);         // "1 250,50 MT"
-
-// Full Geography
-final provinces = MozUtils.getMozambiqueProvinces();
-final nampulaDistricts = MozUtils.getDistrictsByProvince('npl');
-```
+#### ⚙️ Under the Hood: The New CEP
+The New Postal Addressing Code (CEP) abandons the old 4-digit system in favor of a geospatial alphanumeric format (`XXXX-XX`). We ported the entire official geographic mapping tree to provide instant autocomplete.
 
 ---
 
-## 🤝 Rules of Conduct and Contribution
+## 🛠️ Troubleshooting
 
-This is not just any project. It is a project of national pride. We ask for excellence in code, compassion with colleagues, and the ambition to make the Mozambican web world-class. Read our `CODE_OF_CONDUCT.md` in the project root.
-
-## 📄 License
-
-The code lives and breathes the freedom of Open Source. Licensed under **AGPL-3.0-or-later**.
-
----
-
-<p align="center">
-  Developed by <b>Open Source Contributors</b> & supported by <b>Edmilson Muacigarro</b>
-</p>
-
+- **My NUIT fails validation, but the user swears it's real!**
+  *Cause:* The Mozambican NUIT uses a Check Digit generated through a Modulo 11 algorithm. `moz_utils` does not make exceptions to the mathematical algorithm. If your system accepts mathematically invalid NUITs, your company might face integration issues with the government's e-Tributação systems.
+  
+- **Names Returning Empty to the Database (Sanitize)**
+  *Cause:* The `sanitizeName()` function aggressively strips mathematical characters and numbers. Always run `isValidName()` **before** sanitizing and saving to the database to ensure the string contains actual alphabetical characters.
 
 ---
 
-## 🧮 O Algoritmo NUIT (A Verdadeira Fórmula Moçambicana)
+## 📜 License
 
-Ao contrário do NIF de Portugal (que usa multiplicadores de 9 a 2), a Autoridade Tributária de Moçambique utiliza a seguinte matriz de pesos para calcular o Módulo 11 do NUIT.
-
-**A Fórmula e os Pesos Oficiais:**
-```text
-NUIT a Validar: 401626638
-
-Posição:   1   2   3   4   5   6   7   8
-Dígitos:   4   0   1   6   2   6   6   3
-Pesos:     8   9   4   5   6   7   8   9
-           |   |   |   |   |   |   |   |
-Mult:     32 + 0 + 4 +30 +12 +42 +48 +27 = 195 (Soma)
-
-Cálculo do Módulo 11:
-1. Resto = Soma % 11
-   195 % 11 = 8
-2. O "Resto" é o Índice (Posição 0 a 10) na string de controlo "01234567891".
-3. A 8ª posição de "01234567891" é '8'.
-4. Como o 9º dígito do NUIT (Dígito de Controlo) é '8', o NUIT é Válido!
-```
+This project is licensed under the **AGPL-3.0 License** - see the LICENSE file for details.
