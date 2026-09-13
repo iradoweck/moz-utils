@@ -4,7 +4,7 @@
  * Utility functions for Mozambique.
  * Validation of NUIT, BI, documents, and phone formatting.
  *
- * @license AGPL-3.0-or-later
+ * @license Apache-2.0
  */
 
 /**

@@ -2,7 +2,7 @@
     "name": "iradoweck/moz-utils",
     "description": "Funções de utilidade para Moçambique. Validação de NUIT, documentos e formatação de telefones.",
     "type": "library",
-    "version": "0.3.9",
+    "version": "0.3.9.1",
     "license": "Apache-2.0",
     "keywords": [
         "mozambique",
@@ -41,7 +41,7 @@
         "source": "https://github.com/iradoweck/moz-utils"
     },
     "require": {
-        "php": ">=8.3"
+        "php": ">=8.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.0"
