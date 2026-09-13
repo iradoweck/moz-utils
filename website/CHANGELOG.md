@@ -2,7 +2,10 @@
 
 Change history for all versions of the **moz-utils** project.
 
----
+## [0.3.9.1] - 2026-09-14
+- chore(deps): Upgrade core website dependencies (React 19.3, Vite 8.3, ESLint 10.10, Lucide React 1.45).
+- feat(dev): Standardize local development port to `1803` with strictPort.
+- docs: Standardize license badges and documentation to Apache License 2.0.
 
 ## [0.3.8] - 2026-06-18
 - chore(release): Bump to 0.3.8 to surpass registry lock and enforce Base 10 Absolute Parity logic.

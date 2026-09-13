@@ -35,7 +35,7 @@ print(isValidNUIT('400000008')); // true
 ```
 
 ```kotlin
-import io.github.iradowect.moz_utils.MozUtils
+import com.edmilsonmuacigarro.mozutils.MozUtils
 
 println(MozUtils.isValidNUIT("400000008")) // true
 ```

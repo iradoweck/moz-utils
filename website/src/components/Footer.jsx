@@ -29,7 +29,7 @@ export default function Footer() {
         </div>
 
         <div style={{ fontSize: '0.9rem', color: 'var(--neon-green)' }}>
-          {t('footer.openSource', 'Open Source under AGPL-3.0 License')}
+          {t('footer.openSource', 'Open Source under Apache-2.0 License')}
         </div>
         
       </div>
