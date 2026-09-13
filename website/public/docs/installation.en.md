@@ -29,7 +29,7 @@ dependencyResolutionManagement {
 }
 // build.gradle.kts
 dependencies {
-    implementation("com.github.iradoweck:moz-utils:0.3.9.1")
+    implementation("com.github.iradoweck:moz-utils:v0.3.10")
 }
 ```
 

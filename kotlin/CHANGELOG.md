@@ -2,8 +2,8 @@
 
 Change history for all versions of the **moz-utils** project.
 
-## [0.3.9.1] - 2026-09-14
-- chore(release): Bump version to `0.3.9.1`.
+## [0.3.10] - 2026-09-14
+- chore(release): Bump version to `0.3.10`.
 - chore(deps): Update Kotlin to `2.3.21` and Gradle wrapper to `9.7.1`.
 - docs: Standardize license badges and documentation to Apache License 2.0.
 

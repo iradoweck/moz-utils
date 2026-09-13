@@ -42,7 +42,7 @@ flutter pub add moz_utils
 Or by adding manually to `pubspec.yaml`:
 ```yaml
 dependencies:
-  moz_utils: ^0.3.9
+  moz_utils: ^0.3.10
 ```
 
 ---
