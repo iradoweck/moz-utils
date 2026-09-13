@@ -3,7 +3,7 @@
 The definitive, zero-dependency, offline-first open-source library for software built in or for **Mozambique**.
 
 [![JitPack](https://img.shields.io/jitpack/v/github/iradoweck/moz-utils?label=JitPack&color=B07219)](https://jitpack.io/#iradoweck/moz-utils)
-[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](https://github.com/iradoweck/moz-utils/blob/main/LICENSE)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/iradoweck/moz-utils/blob/main/LICENSE)
 [![Website](https://img.shields.io/badge/Docs-Website-blue)](https://iradoweck.github.io/moz-utils/)
 
 > **Author:** Edmilson Muacigarro (@iradoweck)  
@@ -48,7 +48,7 @@ Then add the dependency to your `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.github.iradoweck:moz-utils:0.3.9")
+    implementation("com.github.iradoweck:moz-utils:0.3.9.1")
 }
 ```
 
@@ -182,4 +182,4 @@ The New Postal Addressing Code (CEP) abandons the old 4-digit system in favor of
 
 ## 📜 License
 
-This project is licensed under the **AGPL-3.0 License** - see the LICENSE file for details.
+This project is licensed under the **Apache-2.0 License** - see the LICENSE file for details.

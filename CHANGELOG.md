@@ -2,7 +2,12 @@
 
 Change history for all versions of the **moz-utils** project.
 
----
+## [0.3.9.1] - 2026-09-14
+- chore(release): Bump packages to `0.3.9.1` across TS, Python, PHP, Dart, and Kotlin (and `1.1.0` on root tooling).
+- chore(deps): Update core dependencies across all stacks (React 19.3.0, Vite 8.3.0, Vitest 5.0.0, ESLint 10.10.0, Lucide-React 1.45.0, Test 1.32.0).
+- chore(php): Elevate PHP runtime requirement to `>=8.4` across root and PHP manifests.
+- chore(python): Elevate Python runtime requirement to `>=3.9`.
+- docs(license): Standardize license identifiers and headers to Apache License 2.0.
 
 ## [0.3.8] - 2026-06-18
 - chore(release): Bump to 0.3.8 to surpass registry lock and enforce Base 10 Absolute Parity logic.

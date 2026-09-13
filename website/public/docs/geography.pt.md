@@ -55,7 +55,7 @@ print(distritos);
 ```
 
 ```kotlin
-import io.github.iradowect.moz_utils.MozUtils
+import com.edmilsonmuacigarro.mozutils.MozUtils
 
 val distritos = MozUtils.getDistrictsByProvince("npl")
 println(distritos)

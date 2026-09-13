@@ -29,7 +29,7 @@ dependencyResolutionManagement {
 }
 // build.gradle.kts
 dependencies {
-    implementation("com.github.iradoweck:moz-utils:0.3.9")
+    implementation("com.github.iradoweck:moz-utils:0.3.9.1")
 }
 ```
 
@@ -68,7 +68,7 @@ print(formatMozambicanPhone('841234567')); // '+258 84 123 4567'
 ```
 
 ```kotlin
-import io.github.iradowect.moz_utils.MozUtils
+import com.edmilsonmuacigarro.mozutils.MozUtils
 
 println(MozUtils.isValidNUIT("400000008"))            // true
 println(MozUtils.formatMozambicanPhone("841234567"))  // "+258 84 123 4567"
