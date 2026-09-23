@@ -48,7 +48,7 @@ Then add the dependency to your `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.github.iradoweck:moz-utils:0.3.9.1")
+    implementation("com.github.iradoweck:moz-utils:v0.3.10")
 }
 ```
 

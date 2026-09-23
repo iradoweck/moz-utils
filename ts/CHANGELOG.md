@@ -2,8 +2,8 @@
 
 Change history for all versions of the **moz-utils** project.
 
-## [0.3.9.1] - 2026-09-14
-- chore(release): Bump version to `0.3.9.1`.
+## [0.3.10] - 2026-09-14
+- chore(release): Bump version to `0.3.10`.
 - chore(deps): Update vitest to `^5.0.0` and typescript to `^7.0.2`.
 - docs: Standardize license badges and documentation to Apache License 2.0.
 
