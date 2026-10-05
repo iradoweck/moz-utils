@@ -35,7 +35,7 @@ print(formatMZN(15000.5)); // "15 000,50 MT"
 ```
 
 ```kotlin
-import io.github.iradowect.moz_utils.MozUtils
+import com.edmilsonmuacigarro.mozutils.MozUtils
 
 println(MozUtils.formatMZN(15000.5)) // "15 000,50 MT"
 ```

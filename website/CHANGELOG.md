@@ -2,7 +2,10 @@
 
 Change history for the **Website & Documentation Portal** of the `moz-utils` project.
 
----
+## [0.3.10] - 2026-09-14
+- chore(deps): Upgrade core website dependencies (React 19.3, Vite 8.3, ESLint 10.10, Lucide React 1.45).
+- feat(dev): Standardize local development port to `1803` with strictPort.
+- docs: Standardize license badges and documentation to Apache License 2.0.
 
 ## [0.1.6] - 2026-06-19
 - feat: Elite homepage redesign highlighting Mozambican origins with a dynamic SVG world map (`WorldMapNodes`).

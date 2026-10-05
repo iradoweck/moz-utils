@@ -52,7 +52,7 @@ print(resultados[0].cep);
 ```
 
 ```kotlin
-import io.github.iradowect.moz_utils.MozUtils
+import com.edmilsonmuacigarro.mozutils.MozUtils
 
 val resultados = MozUtils.suggestCEPs("namutequeliua")
 println(resultados[0].cep)

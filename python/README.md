@@ -3,7 +3,7 @@
 The definitive, zero-dependency, offline-first open-source library for software built in or for **Mozambique**.
 
 [![PyPI](https://img.shields.io/pypi/v/moz-utils?label=PyPI&color=3776ab)](https://pypi.org/project/moz-utils/)
-[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2\.0-green)](https://github.com/iradoweck/moz-utils/blob/main/LICENSE)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/iradoweck/moz-utils/blob/main/LICENSE)
 [![Website](https://img.shields.io/badge/Docs-Website-blue)](https://iradoweck.github.io/moz-utils/)
 
 > **Author:** Edmilson Muacigarro (@iradoweck)  
