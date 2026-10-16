@@ -23,8 +23,8 @@ export default function GeoSimulator() {
       try {
         districts = getDistrictsByProvince(inputValue);
         found = true;
-      } catch (e) {
-        found = false;
+      } catch {
+        // invalid province query
       }
       
       if (found) {

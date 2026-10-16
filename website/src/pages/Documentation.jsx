@@ -59,7 +59,7 @@ export default function Documentation() {
           const match = line.match(/^(#{2,3})\s+(.*)/);
           if (match) {
             const level = match[1].length;
-            const textContent = match[2].replace(/[\[\]]/g, '').replace(/\(.*\)/g, '');
+            const textContent = match[2].replace(/[[\]]/g, '').replace(/\(.*\)/g, '');
             const rawId = textContent.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
             seenIds[rawId] = (seenIds[rawId] || 0) + 1;
             const id = seenIds[rawId] === 1 ? rawId : `${rawId}-${seenIds[rawId] - 1}`;

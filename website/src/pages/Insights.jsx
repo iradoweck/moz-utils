@@ -118,7 +118,9 @@ export default function Insights() {
         try {
           const res = await fetch('/stats.json');
           if (res.ok) data = await res.json();
-        } catch (e) {}
+        } catch {
+          // ignore local fallback failure and try remote
+        }
 
         if (!data) {
           const res = await fetch('https://iradoweck.github.io/moz-utils/stats.json');
@@ -139,7 +141,7 @@ export default function Insights() {
 
         setStats(data);
         setLoading(false);
-      } catch (err) {
+      } catch {
         setLoading(false);
       }
     };
