@@ -14,6 +14,9 @@
   <a href="#">
     <img src="https://img.shields.io/badge/Made%20in-Mozambique-red?labelColor=black&color=009639" alt="Mozambique" />
   </a>
+  <a href="https://ko-fi.com/edmilsonmuacigarro" target="_blank">
+    <img src="https://img.shields.io/badge/Ko--fi-Support-FF5E5B?style=flat-square&logo=kofi&logoColor=white" alt="Support on Ko-fi" />
+  </a>
 </p>
 
 <p align="center">
@@ -240,6 +243,12 @@ This project is licensed under the **Apache License 2.0**. See the [LICENSE](LIC
 
 <p align="justify">
   If this library has saved you hours of parsing obscure algorithms and geographic data, consider supporting its continuous development! 
+</p>
+
+<p align="center">
+  <a href="https://ko-fi.com/edmilsonmuacigarro" target="_blank">
+    <img src="https://storage.ko-fi.com/cdn/kofi3.png?v=3" height="40" style="border:0px;height:40px;" alt="Buy Me a Coffee at ko-fi.com" />
+  </a>
 </p>
 
 ---

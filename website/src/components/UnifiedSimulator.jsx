@@ -60,8 +60,8 @@ export default function UnifiedSimulator() {
       try {
         districts = getDistrictsByProvince(inputValue);
         found = true;
-      } catch (e) {
-        found = false;
+      } catch {
+        // invalid province query
       }
 
       if (found) {
