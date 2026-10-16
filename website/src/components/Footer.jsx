@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Heart, CreditCard } from 'lucide-react';
+import { Heart, CreditCard, Coffee } from 'lucide-react';
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -35,6 +35,9 @@ export default function Footer() {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
+        <a href="https://ko-fi.com/edmilsonmuacigarro" target="_blank" rel="noreferrer" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid #FF5E5B', padding: '12px 24px', borderRadius: '4px', color: '#FF5E5B', textDecoration: 'none', background: 'rgba(255, 94, 91, 0.08)' }}>
+          <Coffee size={16} /> Ko-fi
+        </a>
         <a href="https://github.com/sponsors/iradoweck" target="_blank" rel="noreferrer" className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Heart size={16} fill="currentColor" /> {t('footer.donatePrimary', 'Sponsor')}
         </a>
