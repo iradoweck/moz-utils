@@ -14,7 +14,7 @@
   "dependencies": {
     "@giscus/react": "^3.1.0",
     "i18next": "^26.4.7",
-    "lucide-react": "^1.58.0",
+    "lucide-react": "^1.61.0",
     "moz-utils": "file:../ts",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
