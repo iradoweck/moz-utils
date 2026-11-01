@@ -26,7 +26,7 @@ When developing applications for Mozambique, engineers constantly solve the exac
 
 ## 💻 System Requirements
 
-- **Dart SDK**: `>= 3.5.0 < 4.0.0`
+- **Dart SDK**: `>= 3.13.0 < 4.0.0`
 - **Ecosystem**: Fully compatible with AOT (Ahead-of-Time) compilers for native compilation on Android, iOS, Windows, macOS, and Linux via Flutter.
 
 ---
@@ -42,7 +42,7 @@ flutter pub add moz_utils
 Or by adding manually to `pubspec.yaml`:
 ```yaml
 dependencies:
-  moz_utils: ^0.3.10
+  moz_utils: ^0.4.0
 ```
 
 ---

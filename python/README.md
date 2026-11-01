@@ -26,7 +26,7 @@ When developing applications for Mozambique, engineers constantly solve the exac
 
 ## 💻 System Requirements
 
-- **Python**: `>= 3.8`
+- **Python**: `>= 3.9` (verified with Python 3.12 & 3.13)
 - **Ecosystem**: Natively tested on Django, FastAPI, Flask, and raw Data Science scripts (Jupyter/Pandas).
 
 ---

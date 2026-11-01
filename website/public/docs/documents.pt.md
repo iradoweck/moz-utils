@@ -1,17 +1,36 @@
 # Documentos de Identidade
 
-Os cidadãos moçambicanos usam vários documentos legais de identificação. Os mais comuns são o BI (Bilhete de Identidade) e o NUIT (Número Único de Identificação Tributária). Validar estes dados de forma rigorosa previne registos fraudulentos em sistemas implementados em **Maputo, Nampula** ou qualquer outra província.
+Os cidadãos e empresas em Moçambique utilizam diversos documentos oficiais de identificação. Os mais comuns são o **NUIT** (Número Único de Identificação Tributária) e o **BI** (Bilhete de Identidade). Validar estes documentos com precisão matemática evita cadastros corrompidos e falhas de faturamento.
+
+---
+
+## ⚙️ Arquitetura e Cálculo do NUIT (Módulo 11 da AT)
+
+Ao contrário de sistemas como o NIF português, a Autoridade Tributária de Moçambique (AT) implementa pesos específicos `[8, 9, 4, 5, 6, 7, 8, 9]` e uma tabela mapeadora `"01234567891"`.
+
+```mermaid
+flowchart TD
+    A["NUIT de Entrada (ex: 401626638)"] --> B["Multiplicação dos 8 primeiros dígitos pelos pesos:<br/>[8, 9, 4, 5, 6, 7, 8, 9]"]
+    B --> C["Soma dos Produtos = 195"]
+    C --> D["Resto = 195 % 11 = 8"]
+    D --> E["Buscar índice 8 na string '01234567891'"]
+    E --> F["Dígito Esperado = '8'"]
+    F --> G{"Dígito bate com o 9º caractere?"}
+    G -- Sim --> H["Válido ✅"]
+    G -- Não --> I["Inválido ❌"]
+```
+
+---
 
 ## Validar o NUIT
 
-O NUIT usa um dígito de controlo baseado no Módulo 11. A biblioteca valida o algoritmo matemático exato usado pela Autoridade Tributária (AT).
+A validação do NUIT está disponível com assinaturas idênticas em todos os ecossistemas:
 
 <div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
 
 ```ts
 import { isValidNUIT } from 'moz-utils';
 
-// Validar o NUIT de uma empresa registada na Beira
 console.log(isValidNUIT("400000008")); // true
 console.log(isValidNUIT("400000009")); // false
 ```
@@ -20,12 +39,13 @@ console.log(isValidNUIT("400000009")); // false
 from moz_utils import is_valid_nuit
 
 print(is_valid_nuit("400000008")) # True
+print(is_valid_nuit("400000009")) # False
 ```
 
 ```php
 use MozUtils\MozUtils;
 
-echo MozUtils::isValidNUIT("400000008"); // 1 (true)
+echo MozUtils::isValidNUIT("400000008"); // true
 ```
 
 ```dart
@@ -42,93 +62,175 @@ println(MozUtils.isValidNUIT("400000008")) // true
 
 </div>
 
-## Identificar o Tipo de Entidade
+---
 
-Determine que tipo de entidade um NUIT representa, com base no seu primeiro dígito.
+## Identificar o Tipo de Entidade pelo NUIT
 
-### TypeScript
+O primeiro dígito do NUIT classifica o tipo fiscal da entidade:
+
+<div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
+
 ```ts
 import { getNUITEntityType } from 'moz-utils';
 
-console.log(getNUITEntityType("400000008")); // "Singular (Cidadãos nacionais/estrangeiros e ENI)"
+console.log(getNUITEntityType("100000000")); // "Singular (Cidadãos nacionais/estrangeiros e ENI)"
+console.log(getNUITEntityType("400000008")); // "Colectiva (Sociedades por Quotas, SA, etc.)"
 console.log(getNUITEntityType("500000008")); // "Público (Instituições do Estado e Ministérios)"
 ```
 
+```python
+from moz_utils import get_nuit_entity_type
+
+print(get_nuit_entity_type("400000008")) # "Colectiva (Sociedades por Quotas, SA, etc.)"
+```
+
+```php
+use MozUtils\MozUtils;
+
+echo MozUtils::getNUITEntityType("400000008");
+```
+
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+print(getNUITEntityType('400000008'));
+```
+
+```kotlin
+import com.edmilsonmuacigarro.mozutils.MozUtils
+
+println(MozUtils.getNUITEntityType("400000008"))
+```
+
+</div>
+
+---
+
 ## Validar o Bilhete de Identidade (BI)
 
-Um BI deve ter exatamente 12 dígitos seguidos de uma única letra maiúscula.
+O BI moçambicano é composto por 12 dígitos seguidos de uma única letra maiúscula (ex: `110100000000A`).
 
-<div className="code-tabs" data-labels="TypeScript,Python">
+<div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
 
 ```ts
 import { isValidBI } from 'moz-utils';
 
-// Utilizador de Nampula a registar com o BI
-console.log(isValidBI("123456789123A")); // true
-console.log(isValidBI("12345A6789123")); // false
+console.log(isValidBI("110100000000A")); // true
+console.log(isValidBI("1101000000001")); // false (último caractere deve ser letra)
 ```
 
 ```python
 from moz_utils import is_valid_bi
 
-print(is_valid_bi("123456789123A")) # True
+print(is_valid_bi("110100000000A")) # True
+```
+
+```php
+use MozUtils\MozUtils;
+
+echo MozUtils::isValidBI("110100000000A"); // true
+```
+
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+print(isValidBI('110100000000A')); // true
+```
+
+```kotlin
+import com.edmilsonmuacigarro.mozutils.MozUtils
+
+println(MozUtils.isValidBI("110100000000A")) // true
 ```
 
 </div>
 
+---
+
 ## Passaporte, DIRE e Carta de Condução
 
-Outros documentos como Passaportes, DIRE (Documento de Identificação de Residente Estrangeiro) e a Carta de Condução também podem ser validados. A biblioteca suporta a retrocompatibilidade dos formatos.
+Validação de documentos adicionais com retrocompatibilidade entre formatos legados e modernos:
 
-Para o **DIRE**, é suportado o formato legado (ex: `00008312C` ou `12C00008312C`) e o novo formato do SENAMI (9 dígitos e 1 letra, ex: `120345678A`).
-Para a **Carta de Condução**, é suportado o formato legado (ex: `M123456` ou `123456789123A`) e o novo formato biométrico do INATRO (2 letras e 7 dígitos, ex: `MP1234567`).
+<div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
 
-### TypeScript
 ```ts
 import { isValidPassport, isValidDIRE, isValidDrivingLicense } from 'moz-utils';
+
+// Passaporte
+isValidPassport("AO1234567"); // true
+
+// DIRE (Legado e Biométrico SENAMI)
+isValidDIRE("00008312C");    // true
+isValidDIRE("120345678A");   // true
+
+// Carta de Condução (Legado e Biométrico INATRO)
+isValidDrivingLicense("M123456");   // true
+isValidDrivingLicense("MP1234567"); // true
+```
+
+```python
+from moz_utils import is_valid_passport, is_valid_dire, is_valid_driving_license
+
+print(is_valid_passport("AO1234567"))
+print(is_valid_dire("120345678A"))
+print(is_valid_driving_license("MP1234567"))
+```
+
+```php
+use MozUtils\MozUtils;
+
+echo MozUtils::isValidPassport("AO1234567");
+echo MozUtils::isValidDIRE("120345678A");
+echo MozUtils::isValidDrivingLicense("MP1234567");
+```
+
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+print(isValidPassport('AO1234567'));
+print(isValidDIRE('120345678A'));
+print(isValidDrivingLicense('MP1234567'));
+```
+
+```kotlin
+import com.edmilsonmuacigarro.mozutils.MozUtils
+
+println(MozUtils.isValidPassport("AO1234567"))
+println(MozUtils.isValidDIRE("120345678A"))
+println(MozUtils.isValidDrivingLicense("MP1234567"))
+```
 
 </div>
 
-## Passaporte, DIRE e Carta de Condução
+---
 
-Outros documentos como Passaportes, DIRE (Documento de Identificação de Residente Estrangeiro) e a Carta de Condução também podem ser validados. A biblioteca suporta a retrocompatibilidade dos formatos.
+## Exemplo Real: Sanitização e Validação de Formulário
 
-Para o **DIRE**, é suportado o formato legado (ex: `00008312C` ou `12C00008312C`) e o novo formato do SENAMI (9 dígitos e 1 letra, ex: `120345678A`).
-Para a **Carta de Condução**, é suportado o formato legado (ex: `M123456` ou `123456789123A`) e o novo formato biométrico do INATRO (2 letras e 7 dígitos, ex: `MP1234567`).
+Veja como estruturar uma validação completa de entrada do utilizador:
 
-### TypeScript
 ```ts
-import { isValidPassport, isValidDIRE, isValidDrivingLicense } from 'moz-utils';
+import { isValidNUIT, isValidBI, formatMozambicanPhone } from 'moz-utils';
 
-console.log(isValidPassport("AO1234567")); // true
+export function validateCustomerRegistration(payload: {
+  nuit: string;
+  bi: string;
+  phone: string;
+}) {
+  const cleanNUIT = payload.nuit.replace(/\D/g, '');
+  const cleanBI = payload.bi.trim().toUpperCase();
 
-// Validação de DIRE (Legado e Moderno)
-console.log(isValidDIRE("00008312C"));    // true
-console.log(isValidDIRE("120345678A"));   // true
+  if (!isValidNUIT(cleanNUIT)) {
+    throw new Error('NUIT inválido conforme as diretrizes da Autoridade Tributária.');
+  }
 
-// Validação da Carta de Condução (Legado e Moderno)
-console.log(isValidDrivingLicense("M123456")); // true
-console.log(isValidDrivingLicense("MP1234567")); // true
-```
+  if (!isValidBI(cleanBI)) {
+    throw new Error('Formato de Bilhete de Identidade (BI) inválido.');
+  }
 
-## ⚙️ A Mecânica Interna: O Algoritmo NUIT
-
-Ao contrário do NIF de Portugal (que usa multiplicadores de 9 a 2 em ordem decrescente), a Autoridade Tributária de Moçambique utiliza uma matriz de pesos fixa e específica para calcular o Módulo 11 do NUIT.
-
-**A Fórmula e os Pesos Oficiais:**
-```text
-NUIT a Validar: 401626638
-
-Posição:   1   2   3   4   5   6   7   8
-Dígitos:   4   0   1   6   2   6   6   3
-Pesos:     8   9   4   5   6   7   8   9
-           |   |   |   |   |   |   |   |
-Mult:     32 + 0 + 4 +30 +12 +42 +48 +27 = 195 (Soma)
-
-Cálculo do Módulo 11:
-1. Resto = Soma % 11
-   195 % 11 = 8
-2. O "Resto" é o Índice (Posição 0 a 10) na string de controlo "01234567891".
-3. A 8ª posição de "01234567891" é '8'.
-4. Como o 9º dígito do NUIT (Dígito de Controlo) é '8', o NUIT é Válido!
+  return {
+    nuit: cleanNUIT,
+    bi: cleanBI,
+    phone: formatMozambicanPhone(payload.phone),
+  };
+}
 ```

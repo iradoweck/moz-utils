@@ -48,7 +48,8 @@ The **moz-utils** ecosystem follows a rigorous **Stable/LTS/EOL** policy to ensu
 
 | Version | Status | Release Date | End of Life (EOL) |
 | :--- | :--- | :--- | :--- |
-| **0.3.x** | 🟢 **Stable** | May 27, 2026 | Until 0.4.0 is released |
+| **0.4.x** | 🟢 **Stable** | Nov 01, 2026 | Active Stable Line |
+| **0.3.x** | 🟡 **Maintenance** | May 27, 2026 | Transitioning to EOL |
 | **0.2.x** | 🔴 **EOL** | May 26, 2026 | Immediate (Replaced rapidly) |
 | **0.1.x** | 🔴 **EOL** | May 20, 2026 | Immediate (Replaced rapidly) |
 
@@ -122,7 +123,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
     ```yaml
     # Add to your pubspec.yaml
     dependencies:
-      moz_utils: ^0.3.10
+      moz_utils: ^0.4.0
     ```
 
 === "Kotlin"
@@ -132,7 +133,7 @@ This will launch an interactive menu where you can type NUITs, phones, BIs, or C
         maven { url = uri("https://jitpack.io") }
     }
     dependencies {
-        implementation("com.github.iradoweck:moz-utils:v0.3.10")
+        implementation("com.github.iradoweck:moz-utils:v0.4.0")
     }
     ```
 

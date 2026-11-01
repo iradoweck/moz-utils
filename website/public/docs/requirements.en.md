@@ -1,36 +1,32 @@
 # System Requirements
 
-`moz-utils` is a polyglot library rigorously designed to run standalone, exclusively leveraging the standard library of each respective language.
+`moz-utils` is a polyglot utility library strictly designed to operate autonomously using exclusively the Standard Library of each supported language.
 
 ## The Zero-Dependency Promise
-A core pillar of `moz-utils` is having **zero external dependencies** in runtime. Installing this package will not drag a cascade of unknown third-party modules into your infrastructure. Our code is minimalist, easy to security-audit, and incredibly lightweight.
+A core dogma of `moz-utils` is having **zero external runtime dependencies**. Installing this package will never drag transitive dependencies or supply-chain security risks into your applications. The code is minimal, easily auditable, and ultra-fast.
 
-## Minimum Supported Versions
+## Supported Runtimes & Versions
 
-To guarantee peak performance and utilize modern strong typing, the following minimum versions are strictly required:
+To ensure high performance, security, and modern type safety:
 
 ### TypeScript & Node.js
-- **Node.js**: `>= 24.0.0`
-- **TypeScript**: `>= 6.0` (For development/compilation)
-- **Ecosystem**: Fully compatible with Browsers (ESM), Edge Runtimes (Cloudflare Workers, Vercel Edge), and traditional Node.js.
+- **Node.js**: `>= 20.0.0` (developed and tested on Node 24)
+- **TypeScript**: `>= 5.0` (compiled to pure ESM)
+- **Runtimes**: Modern Browsers (native ESM), Edge Runtimes (Cloudflare Workers, Vercel Edge, Deno, Bun), and Node.js.
 
 ### Python
-- **Python**: `>= 3.8`
-- **Ecosystem**: Natively tested on Django, FastAPI, Flask, and raw Data Science scripts (Jupyter/Pandas).
+- **Python**: `>= 3.9` (developed and verified on Python 3.12 & 3.13)
+- **Ecosystem**: Tested with Django, FastAPI, Flask, and standard data pipelines.
 
 ### PHP
-- **PHP**: `>= 8.3`
-- **Ecosystem**: Laravel, Symfony, WordPress, or raw scripts. Takes full advantage of the strict Type Hinting system introduced in PHP 8.3.
+- **PHP**: `>= 8.3` (developed on PHP 8.4+, strictly tested with backward compatibility for PHP 8.3)
+- **Ecosystem**: Laravel, Symfony, WordPress, Spiral, or vanilla PHP with strict typing.
 
 ### Dart & Flutter
-- **Dart SDK**: `>= 3.5.0 < 4.0.0`
-- **Ecosystem**: Fully compatible with AOT (Ahead-of-Time) compilers for native compilation on Android, iOS, Windows, macOS, and Linux via Flutter.
+- **Dart SDK**: `>= 3.13.0 < 4.0.0`
+- **Platforms**: 6/6 platforms supported (Android, iOS, Web/WASM, Windows, macOS, Linux).
 
 ### Kotlin & JVM
-- **Kotlin**: `>= 2.3.21` (and `2.4.0`)
-- **JVM Target**: Preferably tested with Java 17+.
-- **Ecosystem**: Spring Boot, Ktor, and Native Android. Full interoperability with legacy Java code.
-
----
-> [!WARNING]
-> If your project uses older versions than the ones listed above, we cannot guarantee 100% compatibility, as we rely on modern language features (e.g. Enums in PHP 8, Null-Safety in Dart 3). We highly recommend upgrading your stack for security reasons.
+- **Kotlin**: `>= 2.3.0` (optimized on Kotlin 2.4.21 with Gradle 9.8.2)
+- **JVM Target**: Java 17+ (Java 21 LTS recommended).
+- **Ecosystem**: Android Native, Spring Boot, Ktor, and Quarkus.

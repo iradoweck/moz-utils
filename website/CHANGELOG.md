@@ -2,6 +2,10 @@
 
 Change history for all versions of the **moz-utils** project.
 
+## [0.4.0] - 2026-11-01
+- chore(release): Bump version to `0.4.0` across all ecosystems under Base 10 Parity.
+- docs: Enhanced polyglot documentation, Mermaid architecture diagrams, and usage examples.
+
 ## [0.3.10] - 2026-09-14
 - chore(deps): Upgrade core website dependencies (React 19.3, Vite 8.3, ESLint 10.10, Lucide React 1.45).
 - feat(dev): Standardize local development port to `1803` with strictPort.

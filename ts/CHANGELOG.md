@@ -2,6 +2,10 @@
 
 Change history for all versions of the **moz-utils** project.
 
+## [0.4.0] - 2026-11-01
+- chore(release): Bump version to `0.4.0` across all ecosystems under Base 10 Parity.
+- docs: Enhanced polyglot documentation, Mermaid architecture diagrams, and usage examples.
+
 ## [0.3.10] - 2026-09-14
 - chore(release): Bump version to `0.3.10`.
 - chore(deps): Update vitest to `^5.0.0` and typescript to `^7.0.2`.
