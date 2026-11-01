@@ -26,7 +26,7 @@ When developing applications for Mozambique, engineers constantly solve the exac
 
 ## 💻 System Requirements
 
-- **Kotlin**: `>= 2.4.0`
+- **Kotlin**: `>= 2.3.0` (optimized with Kotlin 2.4.21 & Gradle 9.8.2)
 - **JVM Target**: Preferably tested with Java 17+.
 - **Ecosystem**: Spring Boot, Ktor, and Native Android. Full interoperability with legacy Java code.
 
@@ -48,7 +48,7 @@ Then add the dependency to your `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.github.iradoweck:moz-utils:v0.3.10")
+    implementation("com.github.iradoweck:moz-utils:v0.4.0")
 }
 ```
 

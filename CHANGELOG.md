@@ -2,6 +2,18 @@
 
 Change history for all versions of the **moz-utils** project.
 
+## [0.4.0] - 2026-11-01
+- chore(release): Bump ecosystem version to `0.4.0` across all stacks (`ts`, `python`, `php`, `dart`, `kotlin`).
+- feat: Add Ko-fi sponsorship integration.
+- feat(website): Implement route-level code-splitting to optimize bundle size and page load speed.
+- feat(website): Synchronize local dev server and E2E test suite configurations.
+- chore(ci): Upgrade CI and maintenance workflows to Python `3.13`.
+- chore(ci): Upgrade Kotlin/Gradle build chain to Gradle `9.8.2` and Kotlin JVM `2.4.21`.
+- chore(php): Expand PHP compatibility to `>=8.3` across manifests with PHP `8.4+` support.
+- chore(dart): Add strict compiler analysis options (`strict-casts`, `strict-inference`, `strict-raw-types`) and update SDK range.
+- chore(ci): Harmonize automated dependency maintenance schedules.
+- docs: Enhance documentation with architecture diagrams, framework integration guides, and troubleshooting recipes.
+
 ## [0.3.10] - 2026-09-14
 - chore(release): Bump packages to `0.3.10` across TS, Python, PHP, Dart, and Kotlin (and `1.1.0` on root tooling).
 - chore(deps): Update core dependencies across all stacks (React 19.3.0, Vite 8.3.0, Vitest 5.0.0, ESLint 10.10.0, Lucide-React 1.45.0, Test 1.32.0).
@@ -58,16 +70,3 @@ Change history for all versions of the **moz-utils** project.
 ## [0.1.2] - 2026-05-23
 - chore: Synchronized package versions to 0.1.2.
 - chore: Removed `@iradoweck/` scope from NPM package to simplify usage as `moz-utils`.
-
-## [0.1.1] - 2026-05-22
-- chore: Added `composer.json` for Packagist support.
-- test: Added native unit tests for Python, PHP, Dart, and Kotlin.
-- chore: Prepared publication metadata across NPM, PyPI, Packagist, Pub.dev, and JitPack.
-
-## [0.1.0] - 2026-05-20
-- feat: Initial Release.
-- feat: NUIT validation (Modulo 11).
-- feat: Mozambican BI validation.
-- feat: Mobile operator validation and phone number formatting.
-- feat: Currency formatting in Meticais (MZN).
-- feat: Complete offline geographic database.

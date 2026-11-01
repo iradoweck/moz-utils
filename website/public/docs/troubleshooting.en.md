@@ -1,26 +1,58 @@
 # Troubleshooting
 
-This guide covers the most common technical and business logic issues developers face when integrating `moz-utils`.
+Practical solutions for common integration challenges when using `moz-utils` in Mozambican enterprise software.
 
-## My NUIT fails validation, but the user swears it's real!
-**Problem:** `isValidNUIT()` returns `false` for a NUIT the user claims is theirs.
-**Mathematical Cause:** The Mozambican NUIT is not just a random 9-digit sequence; the last digit is a **Check Digit** generated through a Modulo 11 algorithm (applied with specific weights defined by the Tax Authority). If one digit is mistyped, the equation fails.
-**Solution:** Ask the user to double-check their physical card. `moz-utils` does not make exceptions to the mathematical algorithm (as per Decree n. 28/2012). If your system accepts mathematically invalid NUITs, your company might face integration issues with the government's e-Tributação systems.
+---
 
-## TypeScript Module Conflicts (ESM)
-**Problem:** `Error: require() of ES Module moz-utils is not supported.` or `Cannot find module 'moz-utils'`.
-**Cause:** The TypeScript library is modernly compiled strictly as **ES Modules (`import`)** and does not support legacy CommonJS (`require`).
-**Solution:** 
-1. Use `import { isValidBI } from 'moz-utils';`
-2. Add `"type": "module"` to your `package.json`.
-3. Ensure your `tsconfig.json` uses `"moduleResolution": "Node16"` or `"Bundler"`.
+## 1. NUIT Validation Fails on Real Customer Data
+**Symptom:** `isValidNUIT()` returns `false` on a taxpayer ID submitted by a real user.  
+**Root Cause:** Mozambican NUIT numbers (under Decree n.º 28/2012) use a strict Modulo 11 check digit algorithm with specific weights `[8, 9, 4, 5, 6, 7, 8, 9]`.
+```mermaid
+flowchart LR
+    A["Input: 9 digits"] --> B["Validate length and format"]
+    B --> C["Compute weighted sum (weights 8,9,4,5,6,7,8,9)"]
+    C --> D["Modulo 11 remainder"]
+    D --> E{"Check digit matches AT lookup table?"}
+    E -- Yes --> F["VALID (true)"]
+    E -- No --> G["INVALID (false)"]
+```
+**Solution:**
+- Always sanitize whitespace and punctuation before validating:
+  ```ts
+  const cleanNUIT = rawInput.replace(/\D/g, "");
+  const isValid = isValidNUIT(cleanNUIT);
+  ```
+- Mozambican tax authorities (e-Tributação) strictly enforce this check digit; do not bypass validation.
 
-## Names Returning Empty to the Database (Sanitize)
-**Problem:** `sanitizeName("12345")` is returning an empty string.
-**Cause:** The `sanitizeName()` function aggressively strips mathematical characters and numbers because a human name does not contain digits. If the input consists purely of numbers, the cleaned result will be empty.
-**Solution:** Always run `isValidName()` **before** sanitizing and saving to the database to ensure the string contains actual alphabetical characters.
+---
 
-## Postal Code (CEP) Not Found
-**Problem:** I'm trying to search the locality for CEP `1100` and it returns null, or I try to validate `0101-01` and it fails.
-**Cause:** Mozambique is in a transition period for Postal Codes. The legacy format (4 digits, e.g., 1100 - Maputo) is covered by the `isValidPostalCode()` function. The new geo-referenced 6-digit model (e.g., 0101-01) is validated by the `isValidNewCEP()` function.
-**Solution:** Ensure you are invoking the correct function depending on whether your UI form asks for "Postal Code" (legacy) or "New CEP".
+## 2. Phone Formats: `+258` vs Local Input
+**Symptom:** Inconsistent phone formats across web forms and mobile apps.  
+**Solution:**
+- Normalize all input with `formatMozambicanPhone()`:
+  ```ts
+  formatMozambicanPhone("841234567");      // "+258 84 123 4567"
+  formatMozambicanPhone("+258841234567");   // "+258 84 123 4567"
+  ```
+- Determine mobile wallets for checkout routing:
+  ```ts
+  getMobileOperator("841234567"); // "Vodacom"
+  getMobileWallet("841234567");   // "M-Pesa"
+  ```
+
+---
+
+## 3. National ID (BI): Character Casing
+**Symptom:** Valid BI fails validation.  
+**Solution:**
+- Mozambican BIs consist of 12 digits followed by a single uppercase letter (e.g., `110100000000A`). Always normalize:
+  ```ts
+  isValidBI(input.trim().toUpperCase());
+  ```
+
+---
+
+## 4. Postal Codes: Legacy 4-digit vs New 6-digit CEP
+**Solution:**
+- **Legacy (4 digits):** Use `isValidPostalCode()` and `getPostalCodeLocality()`.
+- **New Postal Code (6 digits):** Use `isValidNewCEP()` and `suggestCEPs()`.

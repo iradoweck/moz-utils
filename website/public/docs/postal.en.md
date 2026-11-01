@@ -1,18 +1,32 @@
 # Postal Codes (CEP)
 
-Mozambique recently transitioned from the classic 4-digit code (Correios de Moçambique) to a modern 6-digit CEP (Código de Endereçamento Postal). `moz-utils` supports both!
+Mozambique transitions from the classic 4-digit post codes to the modern 6-digit **Postal Addressing Code (CEP)** (`XXXX-XX`). `moz-utils` provides an embedded offline geographical database for both systems.
 
-## Validating New CEP
-The new format looks like `XXXX-XX`.
+---
 
-<div className="code-tabs" data-labels="TypeScript,Python,PHP">
+## 🏛️ Modern 6-Digit CEP Architecture
+
+```mermaid
+flowchart LR
+    CEP["CEP: '0101-01'"]
+    CEP --> P["'01': Province (e.g. Maputo City)"]
+    CEP --> D["'01': District / Suburb (e.g. KaMpfumo)"]
+    CEP --> L["'01': Locality / Specific Zone"]
+```
+
+---
+
+## Validate Modern CEP (`isValidNewCEP`)
+
+Requires 4 digits, a hyphen, and 2 digits (`XXXX-XX`):
+
+<div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
 
 ```ts
 import { isValidNewCEP } from 'moz-utils';
 
-// E.g.: CEP for Namutequeliua, Nampula
-console.log(isValidNewCEP("3100-05")); // true
-console.log(isValidNewCEP("310005")); // false
+console.log(isValidNewCEP("3100-05")); // true (Namutequeliua, Nampula)
+console.log(isValidNewCEP("310005"));  // false (missing hyphen)
 ```
 
 ```python
@@ -24,22 +38,49 @@ print(is_valid_new_cep("3100-05")) # True
 ```php
 use MozUtils\MozUtils;
 
-echo MozUtils::isValidNewCEP("3100-05"); // 1 (true)
+echo MozUtils::isValidNewCEP("3100-05"); // true
+```
+
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+print(isValidNewCEP('3100-05')); // true
+```
+
+```kotlin
+import com.edmilsonmuacigarro.mozutils.MozUtils
+
+println(MozUtils.isValidNewCEP("3100-05")) // true
 ```
 
 </div>
 
-## Searching and Suggesting CEPs
-You can query the internal database using a partial CEP or locality name. This is extremely useful for building autocomplete address fields.
+---
 
-<div className="code-tabs" data-labels="TypeScript,Dart,Kotlin">
+## Search & Autocomplete CEPs (`suggestCEPs`)
+
+<div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
 
 ```ts
 import { suggestCEPs } from 'moz-utils';
 
 const results = suggestCEPs("namutequeliua");
-console.log(results[0]); 
+console.log(results[0]);
 // { cep: "3100-05", province: "Nampula", district: "Nampula", locality: "Namutequeliua" }
+```
+
+```python
+from moz_utils import suggest_ceps
+
+results = suggest_ceps("namutequeliua")
+print(results[0])
+```
+
+```php
+use MozUtils\MozUtils;
+
+$results = MozUtils::suggestCEPs("namutequeliua");
+print_r($results[0]);
 ```
 
 ```dart
@@ -58,26 +99,45 @@ println(results[0].cep)
 
 </div>
 
-## Legacy Postal Codes
-If you still use the 4-digit codes, you can validate and extract information from them.
+---
 
-### TypeScript
+## Legacy 4-Digit Postal Codes
+
+<div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
+
 ```ts
 import { isValidPostalCode, getPostalCodeLocality } from 'moz-utils';
 
-console.log(isValidPostalCode("3100")); // true
-console.log(getPostalCodeLocality("3100")); // "Nampula"
+console.log(isValidPostalCode("3100"));     // true
+console.log(getPostalCodeLocality("3100")); // "Nampula ECP"
 ```
 
-## ⚙️ Under the Hood: The New CEP
+```python
+from moz_utils import is_valid_postal_code, get_postal_code_locality
 
-The New Postal Addressing Code (CEP) of Mozambique abandons the old 4-digit system in favor of a geospatial alphanumeric format (`XXXX-XX`).
-`moz-utils` doesn't just do Regex validation. We ported the entire official geographic mapping tree.
+print(is_valid_postal_code("3100"))     # True
+print(get_postal_code_locality("3100")) # "Nampula ECP"
+```
 
-**How the Format is Read:**
-Example: `0101-01`
-- `01` (First 2 digits): **Province** (Maputo Cidade)
-- `01` (Middle digits): **District / Neighborhood** (KaMpfumo)
-- `01` (Last 2 digits after the hyphen): **Locality / Specific Zone**
+```php
+use MozUtils\MozUtils;
 
-The library validates whether the province prefix corresponds to a real province and whether the overall format matches the syntax from the official decree by Correios de Moçambique.
+echo MozUtils::isValidPostalCode("3100");     // true
+echo MozUtils::getPostalCodeLocality("3100"); // "Nampula ECP"
+```
+
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+print(isValidPostalCode('3100'));     // true
+print(getPostalCodeLocality('3100')); // 'Nampula ECP'
+```
+
+```kotlin
+import com.edmilsonmuacigarro.mozutils.MozUtils
+
+println(MozUtils.isValidPostalCode("3100"))     // true
+println(MozUtils.getPostalCodeLocality("3100")) // "Nampula ECP"
+```
+
+</div>
