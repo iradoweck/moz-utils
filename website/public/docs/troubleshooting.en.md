@@ -53,6 +53,23 @@ flowchart LR
 ---
 
 ## 4. Postal Codes: Legacy 4-digit vs New 6-digit CEP
+**Symptom:** Querying `1100` in modern CEP searches yields no results.  
+**Root Cause:** Mozambique operates two parallel postal numbering systems:
+1. **Legacy (4 digits):** E.g., `1100` (Maputo City), `3100` (Nampula), `2300` (Tete). Use `isValidPostalCode()` and `getPostalCodeLocality()`.
+2. **New CEP (6 digits):** E.g., `0101-01` (geo-addressed by province, district, and locality). Use `isValidNewCEP()` and `suggestCEPs()`.
+
+---
+
+## 5. Modules in Node.js and TypeScript (ESM)
+**Symptom:** `Error: require() of ES Module moz-utils is not supported`.  
+**Root Cause:** The `moz-utils` package is distributed as modern pure ECMAScript Modules (ESM) for lightweight execution across browsers, edge workers, and modern runtimes.  
 **Solution:**
-- **Legacy (4 digits):** Use `isValidPostalCode()` and `getPostalCodeLocality()`.
-- **New Postal Code (6 digits):** Use `isValidNewCEP()` and `suggestCEPs()`.
+1. Ensure your `package.json` specifies module type:
+   ```json
+   { "type": "module" }
+   ```
+2. In your code, always use standard `import` syntax:
+   ```ts
+   import { isValidNUIT, formatMZN } from 'moz-utils';
+   ```
+

@@ -3,8 +3,11 @@
 Change history for all versions of the **moz-utils** project.
 
 ## [0.4.0] - 2026-11-01
-- chore(release): Bump version to `0.4.0` across all ecosystems under Base 10 Parity.
-- docs: Enhanced polyglot documentation, Mermaid architecture diagrams, and usage examples.
+- chore(release): Bump version to `0.4.0` in `pubspec.yaml` under Base 10 Absolute Parity.
+- feat(analysis): Enforce strict Dart compiler analysis (`strict-casts`, `strict-inference`, `strict-raw-types`) in `analysis_options.yaml`.
+- feat(sdk): Standardize Dart SDK requirement to `>=3.0.0 <4.0.0` with full Flutter AOT and web support.
+- docs: Expand comprehensive README with Flutter mobile widgets, state management, and pub.dev setup instructions.
+- docs: Standardize pub.dev badges and official documentation links.
 
 ## [0.3.10] - 2026-09-14
 - chore(release): Bump version to `0.3.10`.

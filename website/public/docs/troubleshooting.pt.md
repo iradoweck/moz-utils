@@ -59,7 +59,7 @@ flowchart LR
 ## 4. Códigos Postais: CEP Legado (4 dígitos) vs Novo CEP (6 dígitos)
 **Sintoma:** Consultar `1100` na busca do novo CEP não retorna dados.  
 **Causa Técnica:** Moçambique possui dois sistemas em coexistência:
-1. **Legado (4 dígitos):** Ex: `1100` (Maputo Cidade), `3100` (Tete). Use `isValidPostalCode()` e `getPostalCodeLocality()`.
+1. **Legado (4 dígitos):** Ex: `1100` (Maputo Cidade), `3100` (Nampula), `2300` (Tete). Use `isValidPostalCode()` e `getPostalCodeLocality()`.
 2. **Novo CEP (6 dígitos):** Ex: `0101-01` (geo-endereçado por província, distrito e localidade). Use `isValidNewCEP()` e `suggestCEPs()`.
 
 ---

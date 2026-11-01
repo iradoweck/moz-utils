@@ -31,32 +31,32 @@ The validation API is uniform across all supported languages:
 ```ts
 import { isValidNUIT } from 'moz-utils';
 
-console.log(isValidNUIT("400000008")); // true
+console.log(isValidNUIT("401626638")); // true
 console.log(isValidNUIT("400000009")); // false
 ```
 
 ```python
 from moz_utils import is_valid_nuit
 
-print(is_valid_nuit("400000008")) # True
+print(is_valid_nuit("401626638")) # True
 ```
 
 ```php
 use MozUtils\MozUtils;
 
-echo MozUtils::isValidNUIT("400000008"); // true
+echo MozUtils::isValidNUIT("401626638"); // true
 ```
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-print(isValidNUIT('400000008')); // true
+print(isValidNUIT('401626638')); // true
 ```
 
 ```kotlin
 import com.edmilsonmuacigarro.mozutils.MozUtils
 
-println(MozUtils.isValidNUIT("400000008")) // true
+println(MozUtils.isValidNUIT("401626638")) // true
 ```
 
 </div>
@@ -72,32 +72,32 @@ The leading digit of a NUIT identifies the entity class:
 ```ts
 import { getNUITEntityType } from 'moz-utils';
 
-console.log(getNUITEntityType("400000008")); // "Colectiva (Sociedades por Quotas, SA, etc.)"
-console.log(getNUITEntityType("500000008")); // "Público (Instituições do Estado e Ministérios)"
+console.log(getNUITEntityType("401626638")); // "Colectiva (Sociedades por Quotas, SA, etc.)"
+console.log(getNUITEntityType("500000007")); // "Público (Instituições do Estado e Ministérios)"
 ```
 
 ```python
 from moz_utils import get_nuit_entity_type
 
-print(get_nuit_entity_type("400000008"))
+print(get_nuit_entity_type("401626638"))
 ```
 
 ```php
 use MozUtils\MozUtils;
 
-echo MozUtils::getNUITEntityType("400000008");
+echo MozUtils::getNUITEntityType("401626638");
 ```
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-print(getNUITEntityType('400000008'));
+print(getNUITEntityType('401626638'));
 ```
 
 ```kotlin
 import com.edmilsonmuacigarro.mozutils.MozUtils
 
-println(MozUtils.getNUITEntityType("400000008"))
+println(MozUtils.getNUITEntityType("401626638"))
 ```
 
 </div>

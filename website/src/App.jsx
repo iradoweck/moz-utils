@@ -12,7 +12,7 @@ const Changelog = lazy(() => import('./pages/Changelog'));
 
 function App() {
   const location = useLocation();
-  const isDocsPage = location.pathname === '/docs';
+  const isDocsPage = location.pathname.startsWith('/docs');
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -39,6 +39,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/docs" element={<Documentation />} />
+            <Route path="/docs/:docId" element={<Documentation />} />
             <Route path="/insights" element={<Insights />} />
             <Route path="/community" element={<CommunityPage />} />
             <Route path="/changelog" element={<Changelog />} />

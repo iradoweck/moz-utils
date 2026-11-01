@@ -27,34 +27,34 @@ O novo formato exige rigorosamente 4 dígitos, um hífen e 2 dígitos (`XXXX-XX`
 ```ts
 import { isValidNewCEP } from 'moz-utils';
 
-console.log(isValidNewCEP("3100-05")); // true (Namutequeliua, Nampula)
-console.log(isValidNewCEP("310005"));  // false (ausência obrigatória de hífen)
-console.log(isValidNewCEP("9999-99")); // false (prefixo de província inexistente)
+console.log(isValidNewCEP("0909-09")); // true (Namutequeliua, Nampula)
+console.log(isValidNewCEP("090909"));  // false (ausência obrigatória de hífen)
+console.log(isValidNewCEP("9999-99")); // true (formato estruturalmente válido ^\d{4}-\d{2}$)
 ```
 
 ```python
 from moz_utils import is_valid_new_cep
 
-print(is_valid_new_cep("3100-05")) # True
-print(is_valid_new_cep("310005"))  # False
+print(is_valid_new_cep("0909-09")) # True
+print(is_valid_new_cep("090909"))  # False
 ```
 
 ```php
 use MozUtils\MozUtils;
 
-echo MozUtils::isValidNewCEP("3100-05"); // true
+echo MozUtils::isValidNewCEP("0909-09"); // true
 ```
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-print(isValidNewCEP('3100-05')); // true
+print(isValidNewCEP('0909-09')); // true
 ```
 
 ```kotlin
 import com.edmilsonmuacigarro.mozutils.MozUtils
 
-println(MozUtils.isValidNewCEP("3100-05")) // true
+println(MozUtils.isValidNewCEP("0909-09")) // true
 ```
 
 </div>
@@ -73,7 +73,7 @@ import { suggestCEPs } from 'moz-utils';
 const resultados = suggestCEPs("namutequeliua");
 console.log(resultados[0]);
 // {
-//   cep: "3100-05",
+//   cep: "0909-09",
 //   province: "Nampula",
 //   district: "Nampula",
 //   locality: "Namutequeliua"
@@ -98,14 +98,14 @@ print_r($resultados[0]);
 import 'package:moz_utils/moz_utils.dart';
 
 final resultados = suggestCEPs('namutequeliua');
-print(resultados[0].cep); // "3100-05"
+print(resultados[0].cep); // "0909-09"
 ```
 
 ```kotlin
 import com.edmilsonmuacigarro.mozutils.MozUtils
 
 val resultados = MozUtils.suggestCEPs("namutequeliua")
-println(resultados[0].cep) // "3100-05"
+println(resultados[0].cep) // "0909-09"
 ```
 
 </div>

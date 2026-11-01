@@ -3,8 +3,12 @@
 Change history for all versions of the **moz-utils** project.
 
 ## [0.4.0] - 2026-11-01
-- chore(release): Bump version to `0.4.0` across all ecosystems under Base 10 Parity.
-- docs: Enhanced polyglot documentation, Mermaid architecture diagrams, and usage examples.
+- chore(release): Bump version to `0.4.0` in `build.gradle.kts` under Base 10 Absolute Parity.
+- feat(toolchain): Upgrade Gradle wrapper chain to Gradle 9.8.2 and Kotlin JVM plugin to 2.4.21.
+- feat(build): Add root `settings.gradle.kts` for standardized standalone and monorepo builds.
+- feat(interop): Maintain full Java 17+ and Spring Boot / Android interoperability.
+- docs: Expand comprehensive README with Gradle KTS, Groovy, and Maven JitPack dependency guides.
+- docs: Standardize JitPack badges and official documentation links.
 
 ## [0.3.10] - 2026-09-14
 - chore(release): Bump version to `0.3.10`.

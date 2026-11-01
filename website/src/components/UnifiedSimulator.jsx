@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { 
   isValidNUIT, getNUITEntityType, isValidBI, isValidDIRE, isValidPassport, isValidDrivingLicense,
   getDistrictsByProvince, isValidPostalCode, getPostalCodeLocality, getPostalCodeProvince, isValidNewCEP, suggestCEPs,
-  isValidMozambicanPhone, getMobileOperator, getMobileWallet, formatMZN, parseMZN, buildWhatsAppUrl
+  isValidMozambicanPhone, getMobileOperator, getMobileWallet, formatMZN, parseMZN, buildWhatsAppUrl,
+  isValidNIB, formatNIB, getBankFromNIB
 } from 'moz-utils';
 import { CheckCircle2, XCircle, Users, Map, Settings } from 'lucide-react';
 
@@ -38,6 +39,14 @@ export default function UnifiedSimulator() {
     } else if (activeTabEntities === 'bi') {
       entitiesValid = isValidBI(inputValue);
       entitiesResult = entitiesValid ? t('simulator.results.biValid') : t('simulator.results.biInvalid');
+    } else if (activeTabEntities === 'nib') {
+      entitiesValid = isValidNIB(inputValue);
+      if (entitiesValid) {
+        const bank = getBankFromNIB(inputValue);
+        entitiesResult = `${t('simulator.results.nibValid')} ${formatNIB(inputValue)} (${bank ? bank.shortName : ''})`;
+      } else {
+        entitiesResult = t('simulator.results.nibInvalid');
+      }
     } else if (activeTabEntities === 'dire') {
       entitiesValid = isValidDIRE(inputValue);
       entitiesResult = entitiesValid ? t('simulator.results.direValid') : t('simulator.results.direInvalid');
@@ -219,6 +228,7 @@ export default function UnifiedSimulator() {
               <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
                 <button onClick={() => { setActiveTabEntities('nuit'); setInputValue(''); }} className="btn-primary" style={getTabStyle(activeTabEntities, 'nuit')}>{t('simulator.tabs.nuit')}</button>
                 <button onClick={() => { setActiveTabEntities('bi'); setInputValue(''); }} className="btn-primary" style={getTabStyle(activeTabEntities, 'bi')}>{t('simulator.tabs.bi')}</button>
+                <button onClick={() => { setActiveTabEntities('nib'); setInputValue(''); }} className="btn-primary" style={getTabStyle(activeTabEntities, 'nib')}>{t('simulator.tabs.nib')}</button>
                 <button onClick={() => { setActiveTabEntities('dire'); setInputValue(''); }} className="btn-primary" style={getTabStyle(activeTabEntities, 'dire')}>{t('simulator.tabs.dire')}</button>
                 <button onClick={() => { setActiveTabEntities('passport'); setInputValue(''); }} className="btn-primary" style={getTabStyle(activeTabEntities, 'passport')}>{t('simulator.tabs.passport')}</button>
                 <button onClick={() => { setActiveTabEntities('license'); setInputValue(''); }} className="btn-primary" style={getTabStyle(activeTabEntities, 'license')}>{t('simulator.tabs.license')}</button>
@@ -228,6 +238,7 @@ export default function UnifiedSimulator() {
                 <label className="input-label">
                   {activeTabEntities === 'nuit' && t('simulator.placeholders.nuit')}
                   {activeTabEntities === 'bi' && t('simulator.placeholders.bi')}
+                  {activeTabEntities === 'nib' && t('simulator.placeholders.nib')}
                   {activeTabEntities === 'dire' && t('simulator.placeholders.dire')}
                   {activeTabEntities === 'passport' && t('simulator.placeholders.passport')}
                   {activeTabEntities === 'license' && t('simulator.placeholders.license')}

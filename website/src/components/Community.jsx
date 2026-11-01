@@ -7,7 +7,7 @@ export default function Community() {
     php: 'composer require iradoweck/moz-utils',
     python: 'pip install moz-utils',
     dart: 'dart pub add moz_utils',
-    kotlin: 'implementation("com.github.iradoweck:moz-utils:0.3.1")'
+    kotlin: 'implementation("com.github.iradoweck:moz-utils:v0.4.0")'
   };
 
   return (

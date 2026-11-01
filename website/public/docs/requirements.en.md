@@ -1,16 +1,16 @@
-# System Requirements
+# System Requirements (v0.4.0)
 
 `moz-utils` is a polyglot utility library strictly designed to operate autonomously using exclusively the Standard Library of each supported language.
 
 ## The Zero-Dependency Promise
 A core dogma of `moz-utils` is having **zero external runtime dependencies**. Installing this package will never drag transitive dependencies or supply-chain security risks into your applications. The code is minimal, easily auditable, and ultra-fast.
 
-## Supported Runtimes & Versions
+## Supported Runtimes & Versions (v0.4.0)
 
 To ensure high performance, security, and modern type safety:
 
 ### TypeScript & Node.js
-- **Node.js**: `>= 20.0.0` (developed and tested on Node 24)
+- **Node.js**: `>= 20.0.0` (certified and optimized on Node 24 LTS)
 - **TypeScript**: `>= 5.0` (compiled to pure ESM)
 - **Runtimes**: Modern Browsers (native ESM), Edge Runtimes (Cloudflare Workers, Vercel Edge, Deno, Bun), and Node.js.
 
@@ -23,7 +23,7 @@ To ensure high performance, security, and modern type safety:
 - **Ecosystem**: Laravel, Symfony, WordPress, Spiral, or vanilla PHP with strict typing.
 
 ### Dart & Flutter
-- **Dart SDK**: `>= 3.13.0 < 4.0.0`
+- **Dart SDK**: `>= 3.0.0 < 4.0.0`
 - **Platforms**: 6/6 platforms supported (Android, iOS, Web/WASM, Windows, macOS, Linux).
 
 ### Kotlin & JVM

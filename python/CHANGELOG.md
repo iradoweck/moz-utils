@@ -3,8 +3,11 @@
 Change history for all versions of the **moz-utils** project.
 
 ## [0.4.0] - 2026-11-01
-- chore(release): Bump version to `0.4.0` across all ecosystems under Base 10 Parity.
-- docs: Enhanced polyglot documentation, Mermaid architecture diagrams, and usage examples.
+- chore(release): Bump version to `0.4.0` in `pyproject.toml` under Base 10 Absolute Parity.
+- feat(runtime): Fully verify compatibility with Python 3.12 and 3.13 while maintaining `>=3.9` support.
+- feat(typing): Enforce strict PEP 484 and PEP 585 type annotations across phone, document, currency, and postal modules.
+- docs: Expand comprehensive README with native Django, FastAPI, and Pandas usage examples.
+- docs: Standardize PyPI version badges and official documentation links.
 
 ## [0.3.10] - 2026-09-14
 - chore(release): Bump version to `0.3.10`.

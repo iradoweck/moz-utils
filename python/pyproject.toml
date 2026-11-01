@@ -41,3 +41,7 @@ ignore = [
     "**/*.md",
     "**/*.mdx"
 ]
+
+[tool.setuptools.package-data]
+moz_utils = ["py.typed"]
+

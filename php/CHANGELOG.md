@@ -3,8 +3,11 @@
 Change history for all versions of the **moz-utils** project.
 
 ## [0.4.0] - 2026-11-01
-- chore(release): Bump version to `0.4.0` across all ecosystems under Base 10 Parity.
-- docs: Enhanced polyglot documentation, Mermaid architecture diagrams, and usage examples.
+- chore(release): Bump version to `0.4.0` in `composer.json` under Base 10 Absolute Parity.
+- feat(runtime): Expand runtime compatibility to PHP `>=8.3` across manifests while fully supporting PHP `8.4+`.
+- feat(types): Refine strict type declarations and union types across document and phone validation methods.
+- docs: Expand comprehensive README with Laravel, Symfony, and raw script integration examples.
+- docs: Standardize Packagist badges and official documentation links.
 
 ## [0.3.10] - 2026-09-14
 - chore(release): Bump version to `0.3.10`.

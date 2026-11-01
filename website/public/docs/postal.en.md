@@ -25,32 +25,32 @@ Requires 4 digits, a hyphen, and 2 digits (`XXXX-XX`):
 ```ts
 import { isValidNewCEP } from 'moz-utils';
 
-console.log(isValidNewCEP("3100-05")); // true (Namutequeliua, Nampula)
-console.log(isValidNewCEP("310005"));  // false (missing hyphen)
+console.log(isValidNewCEP("0909-09")); // true (Namutequeliua, Nampula)
+console.log(isValidNewCEP("090909"));  // false (missing hyphen)
 ```
 
 ```python
 from moz_utils import is_valid_new_cep
 
-print(is_valid_new_cep("3100-05")) # True
+print(is_valid_new_cep("0909-09")) # True
 ```
 
 ```php
 use MozUtils\MozUtils;
 
-echo MozUtils::isValidNewCEP("3100-05"); // true
+echo MozUtils::isValidNewCEP("0909-09"); // true
 ```
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-print(isValidNewCEP('3100-05')); // true
+print(isValidNewCEP('0909-09')); // true
 ```
 
 ```kotlin
 import com.edmilsonmuacigarro.mozutils.MozUtils
 
-println(MozUtils.isValidNewCEP("3100-05")) // true
+println(MozUtils.isValidNewCEP("0909-09")) // true
 ```
 
 </div>
@@ -66,7 +66,7 @@ import { suggestCEPs } from 'moz-utils';
 
 const results = suggestCEPs("namutequeliua");
 console.log(results[0]);
-// { cep: "3100-05", province: "Nampula", district: "Nampula", locality: "Namutequeliua" }
+// { cep: "0909-09", province: "Nampula", district: "Nampula", locality: "Namutequeliua" }
 ```
 
 ```python

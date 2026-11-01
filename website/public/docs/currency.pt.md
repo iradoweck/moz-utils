@@ -25,10 +25,9 @@ A função `formatMZN` converte valores numéricos em strings monetárias oficia
 ```ts
 import { formatMZN } from 'moz-utils';
 
-console.log(formatMZN(15000.5));        // "15 000,50 MT"
-console.log(formatMZN(1234567.89));     // "1 234 567,89 MT"
-console.log(formatMZN(1500, 'MZN'));     // "1 500,00 MZN"
-console.log(formatMZN(250, 'MT', true)); // "MT 250,00" (símbolo à esquerda)
+console.log(formatMZN(15000.5));    // "15 000,50 MT"
+console.log(formatMZN(1234567.89)); // "1 234 567,89 MT"
+console.log(formatMZN(1500, 'MZN')); // "1 500,00 MZN"
 ```
 
 ```python

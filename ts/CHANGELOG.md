@@ -3,8 +3,11 @@
 Change history for all versions of the **moz-utils** project.
 
 ## [0.4.0] - 2026-11-01
-- chore(release): Bump version to `0.4.0` across all ecosystems under Base 10 Parity.
-- docs: Enhanced polyglot documentation, Mermaid architecture diagrams, and usage examples.
+- chore(release): Bump version to `0.4.0` in package manifests under Base 10 Absolute Parity.
+- feat(build): Validate full compatibility with Node.js 24+ and modern ESM edge runtimes (Cloudflare Workers, Vercel Edge).
+- feat(types): Harmonize strict TypeScript definitions, exports, and offline dataset typings.
+- docs: Expand comprehensive README with detailed usage recipes, import paths, and API references.
+- docs: Standardize official registry badges and links.
 
 ## [0.3.10] - 2026-09-14
 - chore(release): Bump version to `0.3.10`.
