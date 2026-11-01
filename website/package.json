@@ -4,7 +4,7 @@
   "version": "0.1.5",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 1803 --strictPort",
+    "dev": "vite --port 2803 --strictPort",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",

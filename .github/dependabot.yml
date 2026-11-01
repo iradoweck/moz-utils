@@ -51,6 +51,16 @@ updates:
     commit-message:
       prefix: "chore(deps)"
 
+  # PHP (Root - Packagist manifest)
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+
   # Kotlin / Java
   - package-ecosystem: "gradle"
     directory: "/kotlin"
