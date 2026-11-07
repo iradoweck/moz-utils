@@ -1,8 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSEO } from '../hooks/useSEO';
 import MarkdownRenderer from '../components/docs/MarkdownRenderer';
-import { Book, Compass, Download, Phone, CreditCard, Landmark, Mail, ChevronRight, ChevronLeft, Cpu, AlertTriangle } from 'lucide-react';
+import { 
+  Book, 
+  Compass, 
+  Download, 
+  Phone, 
+  CreditCard, 
+  Landmark, 
+  Mail, 
+  ChevronRight, 
+  ChevronLeft, 
+  Cpu, 
+  AlertTriangle,
+  Building2,
+  Sparkles,
+  Layers,
+  ArrowRightLeft
+} from 'lucide-react';
 
 const DOCS_PAGES = [
   { id: 'overview', icon: <Compass size={16} />, label: 'Overview' },
@@ -10,10 +27,14 @@ const DOCS_PAGES = [
   { id: 'installation', icon: <Download size={16} />, label: 'Installation' },
   { id: 'phones', icon: <Phone size={16} />, label: 'Phones & Mobile' },
   { id: 'documents', icon: <CreditCard size={16} />, label: 'Identity Documents' },
+  { id: 'banking', icon: <Building2 size={16} />, label: 'Banking & NIB' },
   { id: 'currency', icon: <Landmark size={16} />, label: 'Currency (MZN)' },
   { id: 'geography', icon: <Book size={16} />, label: 'Geography & Districts' },
   { id: 'postal', icon: <Mail size={16} />, label: 'Postal Codes (CEP)' },
+  { id: 'sanitization', icon: <Sparkles size={16} />, label: 'Data Sanitization' },
+  { id: 'web-frameworks', icon: <Layers size={16} />, label: 'Web Frameworks' },
   { id: 'troubleshooting', icon: <AlertTriangle size={16} />, label: 'Troubleshooting' },
+  { id: 'migration-v040', icon: <ArrowRightLeft size={16} />, label: 'Migration to v0.4.0' },
 ];
 
 export default function Documentation() {
@@ -21,7 +42,13 @@ export default function Documentation() {
   const lang = i18n.language?.startsWith('pt') ? 'pt' : 'en';
   useSEO(t('docs_page.title', 'Documentation'), t('docs_page.description', 'Comprehensive guide on how to use moz-utils across all supported ecosystems.'));
 
-  const [activeDoc, setActiveDoc] = useState('overview');
+  const { docId } = useParams();
+  const navigate = useNavigate();
+  const activeDoc = (docId && DOCS_PAGES.some(p => p.id === docId)) ? docId : 'overview';
+
+  const handleSelectDoc = (id) => {
+    navigate(`/docs/${id}`);
+  };
   const [content, setContent] = useState('');
   const [headings, setHeadings] = useState([]);
   const [activeHeading, setActiveHeading] = useState('');
@@ -121,7 +148,7 @@ export default function Documentation() {
           {DOCS_PAGES.map((item) => (
             <li key={item.id}>
               <button
-                onClick={() => setActiveDoc(item.id)}
+                onClick={() => handleSelectDoc(item.id)}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -167,7 +194,7 @@ export default function Documentation() {
           {/* Previous */}
           {prevPage ? (
             <button
-              onClick={() => setActiveDoc(prevPage.id)}
+              onClick={() => handleSelectDoc(prevPage.id)}
               style={{
                 flex: 1,
                 display: 'flex',
@@ -202,7 +229,7 @@ export default function Documentation() {
           {/* Next */}
           {nextPage ? (
             <button
-              onClick={() => setActiveDoc(nextPage.id)}
+              onClick={() => handleSelectDoc(nextPage.id)}
               style={{
                 flex: 1,
                 display: 'flex',

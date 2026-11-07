@@ -11,8 +11,8 @@ export default function EcosystemInstallation() {
     { name: 'Node.js', cmd: 'npm install moz-utils' },
     { name: 'PHP', cmd: 'composer require iradoweck/moz-utils' },
     { name: 'Python', cmd: 'pip install moz-utils' },
-    { name: 'Dart', cmd: 'dart pub add moz-utils' },
-    { name: 'Kotlin', cmd: 'implementation("com.github.iradoweck:moz-utils:0.3.0")' }
+    { name: 'Dart', cmd: 'dart pub add moz_utils' },
+    { name: 'Kotlin', cmd: 'implementation("com.github.iradoweck:moz-utils:v0.4.0")' }
   ];
 
   const handleCopy = () => {
@@ -82,7 +82,8 @@ export default function EcosystemInstallation() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', overflowX: 'auto' }}>
                 <Terminal size={20} color="var(--neon-green)" style={{ flexShrink: 0 }} />
                 <code style={{ color: 'var(--text-primary)', fontSize: '1.1rem', fontFamily: 'monospace' }}>
-                  <span style={{ color: '#ff3366' }}>$</span> {getActiveCommand()}
+                  {activeTab !== 'Kotlin' && <span style={{ color: '#ff3366', marginRight: '8px' }}>$</span>}
+                  {getActiveCommand()}
                 </code>
               </div>
               

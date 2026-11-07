@@ -2,6 +2,19 @@
 
 Change history for all versions of the **moz-utils** project.
 
+## [0.4.0] - 2026-11-01
+- chore(release): Synchronize website documentation portal with `0.4.0` ecosystem release.
+- feat(banking): Add comprehensive Mozambican Banking documentation (`/docs/banking`), covering 21-digit NIB (ISO 7064 Modulo 97-10), MZ59 IBAN, and the official catalog of 18 commercial banks.
+- feat(docs): Add Enterprise Web & Mobile Framework integration guides (`/docs/web-frameworks`) covering Zod, Express, NestJS, React, FastAPI, Django, Laravel, Flutter, and Jetpack Compose.
+- feat(docs): Add Data Sanitization & Normalization documentation (`/docs/sanitization`) for `isValidName`, `sanitizeName`, `sanitizeDocumentField`, and `sanitizeAlphanumericField`.
+- feat(docs): Add v0.4.0 Migration Guide (`/docs/migration-v040`) detailing new features and breaking changes.
+- fix(simulators): Enhance `UnifiedSimulator` and `GeoSimulator` with flexible province lookup by ID, Acronym, or Name, correct help text (`mpp` instead of `mpt`), and add NIB validation tab.
+- fix(dx): Remove CLI prompt `$` from Kotlin Gradle installation tab in `EcosystemInstallation`.
+- fix(docs): Correct Namutequeliua postal code to `0909-09` across documentation and remove fictitious parameters in `formatMZN`.
+- feat(perf): Implement route-level code-splitting with `React.lazy()` and `Suspense` for faster initial page loads.
+- feat(routes): Add dynamic deep-linking route `/docs/:docId` with URL synchronization.
+- feat(dx): Standardize local development server to port `2803` with strictPort compliance.
+
 ## [0.3.10] - 2026-09-14
 - chore(deps): Upgrade core website dependencies (React 19.3, Vite 8.3, ESLint 10.10, Lucide React 1.45).
 - feat(dev): Standardize local development port to `1803` with strictPort.

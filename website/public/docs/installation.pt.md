@@ -29,7 +29,7 @@ dependencyResolutionManagement {
 }
 // build.gradle.kts
 dependencies {
-    implementation("com.github.iradoweck:moz-utils:v0.3.10")
+    implementation("com.github.iradoweck:moz-utils:v0.4.0")
 }
 ```
 
@@ -42,35 +42,35 @@ dependencies {
 ```ts
 import { isValidNUIT, formatMozambicanPhone } from 'moz-utils';
 
-console.log(isValidNUIT("400000008")); // true
+console.log(isValidNUIT("401626638")); // true
 console.log(formatMozambicanPhone("841234567")); // "+258 84 123 4567"
 ```
 
 ```python
 from moz_utils import is_valid_nuit, format_mozambican_phone
 
-print(is_valid_nuit("400000008"))        # True
+print(is_valid_nuit("401626638"))        # True
 print(format_mozambican_phone("841234567"))  # "+258 84 123 4567"
 ```
 
 ```php
 use MozUtils\MozUtils;
 
-var_dump(MozUtils::isValidNUIT("400000008"));          // bool(true)
+var_dump(MozUtils::isValidNUIT("401626638"));          // bool(true)
 echo MozUtils::formatMozambicanPhone("841234567");     // "+258 84 123 4567"
 ```
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-print(isValidNUIT('400000008'));          // true
+print(isValidNUIT('401626638'));          // true
 print(formatMozambicanPhone('841234567')); // '+258 84 123 4567'
 ```
 
 ```kotlin
 import com.edmilsonmuacigarro.mozutils.MozUtils
 
-println(MozUtils.isValidNUIT("400000008"))            // true
+println(MozUtils.isValidNUIT("401626638"))            // true
 println(MozUtils.formatMozambicanPhone("841234567"))  // "+258 84 123 4567"
 ```
 

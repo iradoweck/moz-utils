@@ -6,8 +6,64 @@ Validation of NUIT, BI, documents, and phone formatting.
 """
 
 import re
-from typing import Optional, List, Dict, Any, Union
+import unicodedata
 import urllib.parse
+from typing import Optional, List, Dict, Any, Union
+
+from .bank import (
+    BankInfo,
+    MOZAMBIQUE_BANKS,
+    is_valid_nib,
+    format_nib,
+    get_bank_by_nib,
+    nib_to_iban,
+    is_valid_iban,
+)
+
+__all__ = [
+    # Telecom
+    "is_valid_mozambican_phone",
+    "format_mozambican_phone",
+    "get_mobile_operator",
+    "get_mobile_wallet",
+    "build_whatsapp_url",
+    # Identificação Civil e Fiscal
+    "is_valid_nuit",
+    "get_nuit_entity_type",
+    "is_valid_bi",
+    "is_valid_dire",
+    "is_valid_passport",
+    "is_valid_driving_license",
+    # Moeda
+    "format_mzn",
+    "parse_mzn",
+    # Divisão Territorial
+    "MOZAMBIQUE_PROVINCES",
+    "get_mozambique_provinces",
+    "get_districts_by_province",
+    "get_all_districts",
+    # Saneamento de Dados
+    "is_valid_name",
+    "sanitize_name",
+    "sanitize_document_field",
+    "sanitize_alphanumeric_field",
+    # Sistema Postal
+    "LEGACY_POSTAL_CODES",
+    "is_valid_postal_code",
+    "get_postal_code_locality",
+    "get_postal_code_province",
+    "is_valid_new_cep",
+    "suggest_ceps",
+    # Módulo Bancário
+    "BankInfo",
+    "MOZAMBIQUE_BANKS",
+    "is_valid_nib",
+    "format_nib",
+    "get_bank_by_nib",
+    "nib_to_iban",
+    "is_valid_iban",
+]
+
 
 def is_valid_mozambican_phone(phone: str) -> bool:
     """
@@ -169,9 +225,7 @@ def build_whatsapp_url(phone: str, message: str = "") -> str:
     encoded_message = f"?text={urllib.parse.quote(message)}" if message else ""
     return f"https://wa.me/{international}{encoded_message}"
 
-def get_mozambique_provinces() -> List[Dict[str, Any]]:
-    """Official list of Mozambique Provinces and their districts."""
-    return [
+MOZAMBIQUE_PROVINCES: List[Dict[str, Any]] = [
         {
             'id': 'cab',
             'name': 'Cabo Delgado',
@@ -1083,13 +1137,49 @@ def get_mozambique_provinces() -> List[Dict[str, Any]]:
         }
     ]
 
-def get_districts_by_province(province_id: str) -> List[str]:
-    """Returns the list of districts belonging to a given province."""
-    clean_id = province_id.strip().lower()
-    for province in get_mozambique_provinces():
-        if province['id'] == clean_id:
+
+
+def get_mozambique_provinces() -> List[Dict[str, Any]]:
+    """Official list of Mozambique Provinces and their districts."""
+    return MOZAMBIQUE_PROVINCES
+
+
+def _normalize_str(text: str) -> str:
+    nfkd = unicodedata.normalize('NFKD', text)
+    return "".join(c for c in nfkd if not unicodedata.combining(c)).strip().lower()
+
+
+def get_districts_by_province(province_identifier: str) -> List[str]:
+    """
+    Returns the list of districts belonging to a given province.
+    Accepts ID ('mpp', 'mpc', 'cab'), sigla ('CBD', 'MPT', 'MC'), or name ('Maputo', 'Cabo Delgado', 'Nampula').
+    """
+    raw = province_identifier.strip()
+    clean = raw.lower()
+    norm = _normalize_str(raw)
+
+    # Special case for generic "Maputo" -> defaults to Maputo Província
+    if norm == "maputo":
+        for province in MOZAMBIQUE_PROVINCES:
+            if province['id'] == 'mpp':
+                return [d['name'] for d in province['districts']]
+
+    for province in MOZAMBIQUE_PROVINCES:
+        p_norm_name = _normalize_str(province['name'])
+        p_sigla = province['sigla'].lower()
+        p_id = province['id'].lower()
+
+        norm_no_parens = norm.replace('(', '').replace(')', '').strip()
+        p_norm_no_parens = p_norm_name.replace('(', '').replace(')', '').strip()
+
+        if (clean == p_id or
+            clean == p_sigla or
+            norm == p_norm_name or
+            norm_no_parens == p_norm_no_parens or
+            norm == _normalize_str(province['name'].replace('(Província)', '').replace('(Cidade)', '').strip())):
             return [d['name'] for d in province['districts']]
-    raise ValueError(f"Província inválida: {province_id}")
+
+    raise ValueError(f"Província inválida: {province_identifier}")
 
 def get_all_districts() -> List[Dict[str, Any]]:
     """Returns a flat list of all 161 districts and their respective province IDs."""
@@ -1114,6 +1204,7 @@ def is_valid_name(name: str) -> bool:
     """
     Checks whether a string is a valid personal name.
     Accepts letters (including accented), spaces, hyphens, and apostrophes.
+    Requires at least 2 alphabetic characters and rejects isolated punctuation (e.g. '---').
     Rejects digits and most special characters.
 
     Examples:
@@ -1121,10 +1212,13 @@ def is_valid_name(name: str) -> bool:
         is_valid_name('João O\'Brian')         # True
         is_valid_name('Jean-Pierre')           # True
         is_valid_name('ABC123')                # False
+        is_valid_name('---')                   # False
     """
-    import unicodedata
     stripped = name.strip()
     if not stripped:
+        return False
+    letter_count = sum(1 for char in stripped if unicodedata.category(char).startswith('L'))
+    if letter_count < 2:
         return False
     for char in stripped:
         cat = unicodedata.category(char)
@@ -1137,7 +1231,7 @@ def sanitize_name(name: str, all_caps: bool = False) -> str:
     """
     Sanitizes a personal name field.
 
-    By default converts to Title Case (each word starts with a capital letter).
+    By default converts to Title Case preserving lowercase prepositions (de, da, do, dos, das, e).
     Pass all_caps=True to force ALL UPPERCASE.
 
     Strips digits and most special characters, keeping only letters,
@@ -1154,28 +1248,30 @@ def sanitize_name(name: str, all_caps: bool = False) -> str:
         sanitize_name('  edmilson   muacigarro  ')    # 'Edmilson Muacigarro'
         sanitize_name('JOÃO', all_caps=True)          # 'JOÃO'
         sanitize_name('jean-pierre dupont')            # 'Jean-Pierre Dupont'
+        sanitize_name('maria da silva e sousa')       # 'Maria da Silva e Sousa'
     """
-    import unicodedata
-    # Keep only letters, spaces, hyphens, apostrophes
     cleaned_chars = [c for c in name if unicodedata.category(c).startswith('L') or c in " '-"]
-    cleaned = ' '.join(''.join(cleaned_chars).split())  # collapse whitespace
+    cleaned = ' '.join(''.join(cleaned_chars).split())
+    if not cleaned:
+        return ""
 
     if all_caps:
         return cleaned.upper()
 
-    # Title Case: capitalise first letter after space or hyphen
-    result = []
-    capitalise_next = True
-    for char in cleaned:
-        if char in ' -':
-            result.append(char)
-            capitalise_next = True
-        elif capitalise_next:
-            result.append(char.upper())
-            capitalise_next = False
-        else:
-            result.append(char)
-    return ''.join(result)
+    lowercase_particles = {'de', 'da', 'do', 'dos', 'das', 'e'}
+    words = cleaned.split(' ')
+    formatted_words = []
+    for idx, word in enumerate(words):
+        subparts = word.split('-')
+        formatted_subparts = []
+        for s_idx, part in enumerate(subparts):
+            lower_part = part.lower()
+            if lower_part in lowercase_particles and (idx > 0 or s_idx > 0):
+                formatted_subparts.append(lower_part)
+            else:
+                formatted_subparts.append(lower_part.capitalize())
+        formatted_words.append('-'.join(formatted_subparts))
+    return ' '.join(formatted_words)
 
 
 def sanitize_document_field(value: str) -> str:
@@ -1204,125 +1300,6 @@ def sanitize_alphanumeric_field(value: str) -> str:
         sanitize_alphanumeric_field('abc-123-XYZ!')     # 'ABC123XYZ'
     """
     return re.sub(r'[^A-Za-z0-9]', '', value).upper()
-
-
-LEGACY_POSTAL_CODES = {
-    # Região Sul
-    # Maputo
-    '1100': {'locality': 'Maputo ECP (Sede)', 'province': 'Maputo'},
-    '1101': {'locality': 'Polana', 'province': 'Maputo'},
-    '1102': {'locality': 'Sommerchild', 'province': 'Maputo'},
-    '1103': {'locality': 'Malhangalene', 'province': 'Maputo'},
-    '1104': {'locality': 'Alto-Maé', 'province': 'Maputo'},
-    '1106': {'locality': 'Bairro Central', 'province': 'Maputo'},
-    '1107': {'locality': 'Bairro do Aeroporto', 'province': 'Maputo'},
-    '1108': {'locality': 'Bairro do Mavalane', 'province': 'Maputo'},
-    '1109': {'locality': 'Bairro do Jardim', 'province': 'Maputo'},
-    '1110': {'locality': 'Bairro do Xipamanine', 'province': 'Maputo'},
-    '1111': {'locality': 'Bairro George Dimitrov', 'province': 'Maputo'},
-    '1112': {'locality': 'Machava', 'province': 'Maputo'},
-    '1113': {'locality': 'Fomento', 'province': 'Maputo'},
-    '1114': {'locality': 'Matola', 'province': 'Maputo'},
-    '1115': {'locality': 'Boane', 'province': 'Maputo'},
-    '1116': {'locality': 'Namaacha', 'province': 'Maputo'},
-    '1117': {'locality': 'Katembe', 'province': 'Maputo'},
-    '1118': {'locality': 'Bela-Vista', 'province': 'Maputo'},
-    '1119': {'locality': 'Inhaca', 'province': 'Maputo'},
-    '1120': {'locality': 'Marracuene', 'province': 'Maputo'},
-    '1121': {'locality': 'Manhiça', 'province': 'Maputo'},
-    '1122': {'locality': 'Xinavane', 'province': 'Maputo'},
-    '1123': {'locality': 'Magude', 'province': 'Maputo'},
-    '1124': {'locality': 'Moamba', 'province': 'Maputo'},
-    '1125': {'locality': 'Ressano Garcia', 'province': 'Maputo'},
-    # Gaza
-    '1200': {'locality': 'Xai-Xai ECP', 'province': 'Gaza'},
-    '1201': {'locality': 'Praia de Xai-Xai', 'province': 'Gaza'},
-    '1202': {'locality': 'Macia', 'province': 'Gaza'},
-    '1203': {'locality': 'Praia de Bilene', 'province': 'Gaza'},
-    '1204': {'locality': 'Chokwé', 'province': 'Gaza'},
-    '1205': {'locality': 'Chilembene / Magoanine', 'province': 'Gaza'},
-    '1206': {'locality': 'Mabalane', 'province': 'Gaza'},
-    '1207': {'locality': 'Massingir', 'province': 'Gaza'},
-    '1208': {'locality': 'Chibuto', 'province': 'Gaza'},
-    '1209': {'locality': 'Manjacaze', 'province': 'Gaza'},
-    '1210': {'locality': 'Chidenguele', 'province': 'Gaza'},
-    '1211': {'locality': 'Chicualacuala', 'province': 'Gaza'},
-    # Inhambane
-    '1300': {'locality': 'Inhambane ECP', 'province': 'Inhambane'},
-    '1301': {'locality': 'Maxixe', 'province': 'Inhambane'},
-    '1302': {'locality': 'Morrumbene', 'province': 'Inhambane'},
-    '1303': {'locality': 'Massinga', 'province': 'Inhambane'},
-    '1304': {'locality': 'Vilanculos', 'province': 'Inhambane'},
-    '1305': {'locality': 'Inhassoro', 'province': 'Inhambane'},
-    '1306': {'locality': 'Nova-Mambone', 'province': 'Inhambane'},
-    '1307': {'locality': 'Jangamo', 'province': 'Inhambane'},
-    '1308': {'locality': 'Cumbane', 'province': 'Inhambane'},
-    '1309': {'locality': 'Homoine', 'province': 'Inhambane'},
-    '1310': {'locality': 'Panda', 'province': 'Inhambane'},
-    '1311': {'locality': 'Inharrime', 'province': 'Inhambane'},
-    '1312': {'locality': 'Quissico', 'province': 'Inhambane'},
-    '1313': {'locality': 'Funhalouro', 'province': 'Inhambane'},
-    '1314': {'locality': 'Mabote', 'province': 'Inhambane'},
-
-    # Região Centro
-    # Sofala
-    '2100': {'locality': 'Beira ECP', 'province': 'Sofala'},
-    '2101': {'locality': 'Macúti', 'province': 'Sofala'},
-    '2102': {'locality': 'Beira Aeroporto', 'province': 'Sofala'},
-    '2103': {'locality': 'Manga', 'province': 'Sofala'},
-    '2104': {'locality': 'Dondo', 'province': 'Sofala'},
-    '2105': {'locality': 'Mafambisse', 'province': 'Sofala'},
-    '2106': {'locality': 'Nhamatanda', 'province': 'Sofala'},
-    '2107': {'locality': 'Buzi', 'province': 'Sofala'},
-    '2110': {'locality': 'Gorongoza', 'province': 'Sofala'},
-    # Manica
-    '2200': {'locality': 'Chimoio ECP', 'province': 'Manica'},
-    '2201': {'locality': 'Catandica', 'province': 'Manica'},
-    '2202': {'locality': 'Vila de Manica', 'province': 'Manica'},
-    '2203': {'locality': 'Gondola', 'province': 'Manica'},
-    '2204': {'locality': 'Guro', 'province': 'Manica'},
-    '2205': {'locality': 'Machaze', 'province': 'Manica'},
-    '2206': {'locality': 'Macossa', 'province': 'Manica'},
-    '2207': {'locality': 'Sussundenga', 'province': 'Manica'},
-    '2208': {'locality': 'Tambara', 'province': 'Manica'},
-    # Tete
-    '2300': {'locality': 'Tete ECP', 'province': 'Tete'},
-    '2301': {'locality': 'Tete Aeroporto', 'province': 'Tete'},
-    '2302': {'locality': 'Moatize', 'province': 'Tete'},
-    '2304': {'locality': 'Songo', 'province': 'Tete'},
-    '2307': {'locality': 'Mutarara', 'province': 'Tete'},
-    '2312': {'locality': 'Zumbo', 'province': 'Tete'},
-    # Zambézia
-    '2400': {'locality': 'Quelimane ECP', 'province': 'Zambézia'},
-    '2401': {'locality': 'Nicoadala', 'province': 'Zambézia'},
-    '2403': {'locality': 'Mocuba', 'province': 'Zambézia'},
-    '2405': {'locality': 'Pebane', 'province': 'Zambézia'},
-    '2407': {'locality': 'Gurué', 'province': 'Zambézia'},
-    '2412': {'locality': 'Chinde', 'province': 'Zambézia'},
-
-    # Região Norte
-    # Nampula
-    '3100': {'locality': 'Nampula ECP', 'province': 'Nampula'},
-    '3101': {'locality': 'Angoche', 'province': 'Nampula'},
-    '3102': {'locality': 'Monapo', 'province': 'Nampula'},
-    '3105': {'locality': 'Ilha de Moçambique', 'province': 'Nampula'},
-    '3108': {'locality': 'Moma', 'province': 'Nampula'},
-    '3112': {'locality': 'Nacala', 'province': 'Nampula'},
-    '3115': {'locality': 'Namapa', 'province': 'Nampula'},
-    '3119': {'locality': 'Ribaue', 'province': 'Nampula'},
-    # Cabo Delgado
-    '3200': {'locality': 'Pemba ECP', 'province': 'Cabo Delgado'},
-    '3201': {'locality': 'Pemba-2', 'province': 'Cabo Delgado'},
-    '3208': {'locality': 'Montepuez', 'province': 'Cabo Delgado'},
-    '3216': {'locality': 'Mueda', 'province': 'Cabo Delgado'},
-    '3219': {'locality': 'Palma', 'province': 'Cabo Delgado'},
-    # Niassa
-    '3300': {'locality': 'Lichinga ECP', 'province': 'Niassa'},
-    '3301': {'locality': 'Macanhelas', 'province': 'Niassa'},
-    '3304': {'locality': 'Mandimba', 'province': 'Niassa'},
-    '3305': {'locality': 'Cuamba', 'province': 'Niassa'},
-    '3311': {'locality': 'Muembe', 'province': 'Niassa'}
-}
 
 
 from .cep_data import LEGACY_POSTAL_CODES

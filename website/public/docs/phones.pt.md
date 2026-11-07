@@ -1,34 +1,49 @@
 # Telefones & Mobile
 
-Validar e extrair informação de números de telemóvel moçambicanos é uma das necessidades mais comuns em aplicações locais, seja numa app de entregas em **Nampula**, numa loja de e-commerce na **Beira**, ou numa fintech em **Maputo**.
+Validar, normalizar e identificar operadoras de telemóvel e carteiras financeiras moçambicanas é vital para qualquer aplicação de comércio eletrónico, fintech ou sistemas de mensageria em Moçambique.
 
-A biblioteca suporta completamente a **Vodacom**, a **Tmcel** e a **Movitel**.
+---
 
-## Validar um Número de Telemóvel
+## 🗺️ Mapa de Prefixos e Carteiras Móveis (INCM)
 
-A função `isValidMozambicanPhone` verifica se o número pertence a uma das operadoras oficiais. Remove inteligentemente espaços, traços e indicativos de país (`+258` ou `00258`).
+O Instituto Nacional das Comunicações de Moçambique (INCM) regula a alocação de blocos numéricos de 9 dígitos com o código de país `+258`:
+
+```mermaid
+flowchart TD
+    Phone["Número Moçambicano (+258 / 9 dígitos)"] --> CheckPrefix{"Prefixo (2 primeiros dígitos)"}
+    CheckPrefix -- "84 ou 85" --> Vodacom["Operadora: Vodacom 🔴<br/>Carteira: M-Pesa"]
+    CheckPrefix -- "82 ou 83" --> Tmcel["Operadora: Tmcel 🟡<br/>Carteira: mKesh"]
+    CheckPrefix -- "86 ou 87" --> Movitel["Operadora: Movitel 🟠<br/>Carteira: e-Mola"]
+    CheckPrefix -- "Outros (ex: 81)" --> Invalid["Inválido ❌"]
+```
+
+---
+
+## Validar Número de Telemóvel
+
+A função `isValidMozambicanPhone` aceita variantes com espaços, traços, parênteses e indicativos (`+258`, `00258`):
 
 <div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
 
 ```ts
 import { isValidMozambicanPhone } from 'moz-utils';
 
-// Validar um cliente de Namutequeliua (Nampula)
-console.log(isValidMozambicanPhone("841234567"));       // true
-console.log(isValidMozambicanPhone("+258 82 123 4567")); // true
-console.log(isValidMozambicanPhone("811234567"));        // false (Nenhuma operadora usa 81)
+console.log(isValidMozambicanPhone("841234567"));          // true
+console.log(isValidMozambicanPhone("+258 82 123 4567"));    // true
+console.log(isValidMozambicanPhone("811234567"));           // false (prefixo não alocado)
 ```
 
 ```python
 from moz_utils import is_valid_mozambican_phone
 
-print(is_valid_mozambican_phone("841234567")) # True
+print(is_valid_mozambican_phone("841234567"))          # True
+print(is_valid_mozambican_phone("+258 82 123 4567"))    # True
 ```
 
 ```php
 use MozUtils\MozUtils;
 
-echo MozUtils::isValidMozambicanPhone("841234567"); // 1 (true)
+echo MozUtils::isValidMozambicanPhone("841234567"); // true
 ```
 
 ```dart
@@ -45,101 +60,111 @@ println(MozUtils.isValidMozambicanPhone("841234567")) // true
 
 </div>
 
-## Identificar a Operadora
+---
 
-Descubra a que rede pertence um número. Muito útil para segmentar promoções por operadora em regiões como **Nampula**.
+## Identificar Operadora e Carteira Móvel
 
-<div className="code-tabs" data-labels="TypeScript,Python">
+Descubra a qual rede e provedor de pagamento móvel pertence o número para rotear cobranças via API:
+
+<div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
 
 ```ts
-import { getMobileOperator } from 'moz-utils';
+import { getMobileOperator, getMobileWallet } from 'moz-utils';
 
 console.log(getMobileOperator("841234567")); // "Vodacom"
-console.log(getMobileOperator("821234567")); // "Tmcel"
+console.log(getMobileWallet("841234567"));   // "M-Pesa"
+
 console.log(getMobileOperator("861234567")); // "Movitel"
+console.log(getMobileWallet("861234567"));   // "e-Mola"
+
+console.log(getMobileOperator("821234567")); // "Tmcel"
+console.log(getMobileWallet("821234567"));   // "mKesh"
 ```
 
 ```python
-from moz_utils import get_mobile_operator
+from moz_utils import get_mobile_operator, get_mobile_wallet
 
 print(get_mobile_operator("841234567")) # "Vodacom"
+print(get_mobile_wallet("841234567"))   # "M-Pesa"
+```
+
+```php
+use MozUtils\MozUtils;
+
+echo MozUtils::getMobileOperator("841234567"); // "Vodacom"
+echo MozUtils::getMobileWallet("841234567");   // "M-Pesa"
+```
+
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+print(getMobileOperator('841234567')); // 'Vodacom'
+print(getMobileWallet('841234567'));   // 'M-Pesa'
+```
+
+```kotlin
+import com.edmilsonmuacigarro.mozutils.MozUtils
+
+println(MozUtils.getMobileOperator("841234567")) // "Vodacom"
+println(MozUtils.getMobileWallet("841234567"))   // "M-Pesa"
 ```
 
 </div>
 
-## Identificar a Carteira Móvel
+---
 
-Um número também pode ser mapeado para a sua plataforma de dinheiro móvel correspondente (M-Pesa, e-Mola, mKesh).
+## Formatação Internacional
 
-### TypeScript
-```ts
-import { getMobileWallet } from 'moz-utils';
+Padronize números antes de salvar em bancos de dados ou disparar SMS:
 
-console.log(getMobileWallet("841234567")); // "M-Pesa"
-console.log(getMobileWallet("861234567")); // "e-Mola"
-```
+<div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
 
-## Formatar para o Padrão Internacional
-
-Para guardar o número de forma segura na sua base de dados, formate-o sempre para o padrão internacional.
-
-### TypeScript
 ```ts
 import { formatMozambicanPhone } from 'moz-utils';
 
-console.log(formatMozambicanPhone("84 123 4567")); // "+258841234567"
+console.log(formatMozambicanPhone("84 123 4567")); // "+258 84 123 4567"
 ```
 
-## Gerar Links WhatsApp
+```python
+from moz_utils import format_mozambican_phone
 
-Redirecione os seus utilizadores para o WhatsApp diretamente!
+print(format_mozambican_phone("84 123 4567")) # "+258 84 123 4567"
+```
 
-### TypeScript
+```php
+use MozUtils\MozUtils;
+
+echo MozUtils::formatMozambicanPhone("84 123 4567");
+```
+
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+print(formatMozambicanPhone('84 123 4567'));
+```
+
+```kotlin
+import com.edmilsonmuacigarro.mozutils.MozUtils
+
+println(MozUtils.formatMozambicanPhone("84 123 4567"))
+```
+
 </div>
 
-## Identificar a Carteira Móvel
+---
 
-Um número também pode ser mapeado para a sua plataforma de dinheiro móvel correspondente (M-Pesa, e-Mola, mKesh).
+## Gerador de Links para WhatsApp
 
-### TypeScript
-```ts
-import { getMobileWallet } from 'moz-utils';
+Crie URLs do WhatsApp (`wa.me`) prontas para atendimento e conversão:
 
-console.log(getMobileWallet("841234567")); // "M-Pesa"
-console.log(getMobileWallet("861234567")); // "e-Mola"
-```
-
-## Formatar para o Padrão Internacional
-
-Para guardar o número de forma segura na sua base de dados, formate-o sempre para o padrão internacional.
-
-### TypeScript
-```ts
-import { formatMozambicanPhone } from 'moz-utils';
-
-console.log(formatMozambicanPhone("84 123 4567")); // "+258841234567"
-```
-
-## Gerar Links WhatsApp
-
-Redirecione os seus utilizadores para o WhatsApp diretamente!
-
-### TypeScript
 ```ts
 import { buildWhatsAppUrl } from 'moz-utils';
 
-// Ex.: Um comprador de Namutequeliua, Nampula
-const url = buildWhatsAppUrl("841234567", "Olá, estou em Nampula e quero comprar!");
+const url = buildWhatsAppUrl(
+  "841234567",
+  "Olá! Gostaria de confirmar a encomenda para Maputo."
+);
+
 console.log(url);
-// "https://wa.me/258841234567?text=Ol%C3%A1%2C%20estou%20em%20Nampula%20e%20quero%20comprar%21"
+// "https://wa.me/258841234567?text=Ol%C3%A1%21%20Gostaria%20de%20confirmar%20a%20encomenda%20para%20Maputo."
 ```
-
-## ⚙️ A Mecânica Interna: Prefixos das Operadoras
-
-As operadoras de telecomunicações em Moçambique adquirem blocos numéricos específicos através do INCM (Instituto Nacional das Comunicações de Moçambique). O `moz-utils` mapeia as operadoras usando a seguinte lógica offline:
-
-- **Vodacom**: Começa por `84` ou `85` (A Carteira M-Pesa está associada a estes números).
-- **Tmcel**: Começa por `82` ou `83` (A Carteira mKesh está associada a estes números).
-- **Movitel**: Começa por `86` ou `87` (A Carteira e-Mola está associada a estes números).
-
-Quando a validação ou a extração da operadora é executada, a string é limpa de espaços e prefixos internacionais (`+258`, `00258`), e a expressão regular verifica se o número restante possui exatamente 9 dígitos e se o prefixo coincide com um bloco oficialmente alocado.

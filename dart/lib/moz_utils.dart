@@ -1091,16 +1091,47 @@ class MozUtils {
     ];
   }
 
-  /// Returns the list of districts belonging to a given province.
-  static List<String> getDistrictsByProvince(String provinceId) {
-    final cleanId = provinceId.trim().toLowerCase();
+  /// Remove acentos, parênteses e caracteres especiais para buscas insensíveis a diacríticos e formatação.
+  static String _normalizeProvinceName(String input) {
+    var normalized = input.trim().toLowerCase();
+    const accents = {
+      'á': 'a', 'à': 'a', 'ã': 'a', 'â': 'a', 'ä': 'a',
+      'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
+      'í': 'i', 'ì': 'i', 'î': 'i', 'ï': 'i',
+      'ó': 'o', 'ò': 'o', 'õ': 'o', 'ô': 'o', 'ö': 'o',
+      'ú': 'u', 'ù': 'u', 'û': 'u', 'ü': 'u',
+      'ç': 'c',
+    };
+    accents.forEach((key, value) {
+      normalized = normalized.replaceAll(key, value);
+    });
+    return normalized.replaceAll(RegExp(r'[^a-z0-9]'), '');
+  }
+
+  /// Retorna a lista de distritos pertencentes a uma determinada província.
+  /// Aceita ID ('mpp', 'mpc', 'cab'), Sigla ('MPT', 'MC', 'CBD') ou Nome por extenso ('Maputo', 'Nampula', 'Cabo Delgado').
+  static List<String> getDistrictsByProvince(String provinceIdentifier) {
+    final cleanInput = _normalizeProvinceName(provinceIdentifier);
+
+    // Tratamento especial para "maputo" isolado: mapeia para Maputo Província por convenção
+    final targetId = cleanInput == 'maputo' ? 'mpp' : null;
+
     for (final province in getMozambiqueProvinces()) {
-      if (province['id'] == cleanId) {
+      final pId = (province['id'] as String).toLowerCase();
+      final pSigla = ((province['sigla'] as String?) ?? '').toLowerCase();
+      final pNameNorm = _normalizeProvinceName(province['name'] as String);
+
+      if (targetId != null && pId == targetId) {
+        final districts = province['districts'] as List;
+        return districts.map((d) => (d as Map)['name'] as String).toList();
+      }
+
+      if (pId == cleanInput || pSigla == cleanInput || pNameNorm == cleanInput) {
         final districts = province['districts'] as List;
         return districts.map((d) => (d as Map)['name'] as String).toList();
       }
     }
-    throw ArgumentError('Província inválida: $provinceId');
+    throw ArgumentError('Província inválida: $provinceIdentifier');
   }
 
   /// Returns a flat list of all 161 districts and their respective province IDs.
@@ -1169,7 +1200,7 @@ class MozUtils {
     '1301': {'locality': 'Maxixe', 'province': 'Inhambane'},
     '1302': {'locality': 'Morrumbene', 'province': 'Inhambane'},
     '1303': {'locality': 'Massinga', 'province': 'Inhambane'},
-    '1304': {'locality': 'Vilanculos', 'province:': 'Inhambane'},
+    '1304': {'locality': 'Vilanculos', 'province': 'Inhambane'},
     '1305': {'locality': 'Inhassoro', 'province': 'Inhambane'},
     '1306': {'locality': 'Nova-Mambone', 'province': 'Inhambane'},
     '1307': {'locality': 'Jangamo', 'province': 'Inhambane'},
@@ -1257,8 +1288,7 @@ class MozUtils {
   /// Retorna a província correspondente a um código postal legado de Moçambique.
   static String? getPostalCodeProvince(String code) {
     final cleaned = code.replaceAll(RegExp(r'\D'), '');
-    // Handle the typo in Vilankulos key if present, though we should make sure province is always written exactly
-    return legacyPostalCodes[cleaned]?['province'] ?? legacyPostalCodes[cleaned]?['province:'];
+    return legacyPostalCodes[cleaned]?['province'];
   }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1273,11 +1303,13 @@ class MozUtils {
 /// isValidName('Jean-Pierre')         // true
 /// isValidName('ABC123')              // false
 /// ```
-static bool isValidName(String name) {
-  final trimmed = name.trim();
-  if (trimmed.isEmpty) return false;
-  return RegExp(r"^[\p{L}\s'\-]+$", unicode: true).hasMatch(trimmed);
-}
+  static bool isValidName(String name) {
+    final trimmed = name.trim();
+    if (trimmed.length < 2) return false;
+    final letters = RegExp(r'\p{L}', unicode: true).allMatches(trimmed);
+    if (letters.length < 2) return false;
+    return RegExp(r"^[\p{L}\s'\-]+$", unicode: true).hasMatch(trimmed);
+  }
 
 /// Sanitizes a personal name field.
 ///
@@ -1291,29 +1323,48 @@ static bool isValidName(String name) {
 /// sanitizeName('jean-pierre dupont')               // 'Jean-Pierre Dupont'
 /// ```
 static String sanitizeName(String name, {bool allCaps = false}) {
-  // Remove anything that is not a letter, space, hyphen, or apostrophe
+  // Remove qualquer caractere que não seja letra Unicode, espaço, hífen ou apóstrofo
   final cleaned = name
       .replaceAll(RegExp(r"[^\p{L}\s'\-]", unicode: true), '')
       .replaceAll(RegExp(r'\s+'), ' ')
       .trim();
 
+  if (cleaned.isEmpty) return '';
   if (allCaps) return cleaned.toUpperCase();
 
-  // Title Case: capitalise after start, space, or hyphen
-  final buffer = StringBuffer();
-  bool capitaliseNext = true;
-  for (final char in cleaned.split('')) {
-    if (char == ' ' || char == '-') {
-      buffer.write(char);
-      capitaliseNext = true;
-    } else if (capitaliseNext) {
-      buffer.write(char.toUpperCase());
-      capitaliseNext = false;
-    } else {
-      buffer.write(char);
+  // Partículas de ligação em português mantidas em minúsculas quando não forem a primeira palavra
+  const particles = {'de', 'da', 'do', 'dos', 'das', 'e'};
+  final words = cleaned.toLowerCase().split(' ');
+  final formattedWords = <String>[];
+
+  for (var i = 0; i < words.length; i++) {
+    final word = words[i];
+    if (word.isEmpty) continue;
+
+    if (i > 0 && particles.contains(word)) {
+      formattedWords.add(word);
+      continue;
     }
+
+    // Capitaliza a primeira letra e qualquer letra após hífen ou apóstrofo
+    final buffer = StringBuffer();
+    bool capNext = true;
+    for (var c = 0; c < word.length; c++) {
+      final char = word[c];
+      if (char == '-' || char == "'") {
+        buffer.write(char);
+        capNext = true;
+      } else if (capNext) {
+        buffer.write(char.toUpperCase());
+        capNext = false;
+      } else {
+        buffer.write(char);
+      }
+    }
+    formattedWords.add(buffer.toString());
   }
-  return buffer.toString();
+
+  return formattedWords.join(' ');
 }
 
 /// Sanitizes a document number field that contains only digits.
@@ -1418,5 +1469,97 @@ static String sanitizeAlphanumericField(String value) {
       }
     }
     return results;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // MÓDULO BANCÁRIO DE MOÇAMBIQUE (NIB & IBAN)
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /// Catálogo oficial das principais instituições bancárias comerciais de Moçambique (22 códigos BM e SIMO).
+  static const List<Map<String, String>> mozambiqueBanks = [
+    {'code': '0001', 'name': 'Banco Internacional de Moçambique, S.A.', 'shortName': 'Millennium BIM'},
+    {'code': '0003', 'name': 'Standard Bank Moçambique, S.A.', 'shortName': 'Standard Bank'},
+    {'code': '0006', 'name': 'Absa Bank Moçambique, S.A.', 'shortName': 'Absa'},
+    {'code': '0007', 'name': 'Nedbank Moçambique, S.A.', 'shortName': 'Nedbank'},
+    {'code': '0008', 'name': 'Banco Comercial e de Investimentos, S.A.', 'shortName': 'BCI'},
+    {'code': '0014', 'name': 'First National Bank Moçambique, S.A.', 'shortName': 'FNB'},
+    {'code': '0016', 'name': 'Moza Banco, S.A.', 'shortName': 'Moza Banco'},
+    {'code': '0021', 'name': 'Access Bank Moçambique, S.A.', 'shortName': 'Access Bank'},
+    {'code': '0024', 'name': 'Ecobank Moçambique, S.A.', 'shortName': 'Ecobank'},
+    {'code': '0025', 'name': 'Banco Nacional de Investimento, S.A.', 'shortName': 'BNI'},
+    {'code': '0030', 'name': 'Société Générale Moçambique, S.A.', 'shortName': 'Société Générale'},
+    {'code': '0034', 'name': 'Moza Banco, S.A.', 'shortName': 'Moza Banco'},
+    {'code': '0038', 'name': 'First Capital Bank Moçambique, S.A.', 'shortName': 'First Capital Bank'},
+    {'code': '0041', 'name': 'Banco Letshego, S.A.', 'shortName': 'Letshego'},
+    {'code': '0043', 'name': 'First Capital Bank Moçambique, S.A.', 'shortName': 'First Capital Bank'},
+    {'code': '0044', 'name': 'MyBucks Banking Corporation, S.A.', 'shortName': 'MyBucks'},
+    {'code': '0045', 'name': 'Banco de Desenvolvimento de Moçambique, S.A.', 'shortName': 'BDM'},
+    {'code': '0048', 'name': 'Banco Mais, S.A.', 'shortName': 'Banco Mais'},
+    {'code': '0050', 'name': 'Standard Chartered Bank Moçambique, S.A.', 'shortName': 'Standard Chartered'},
+    {'code': '0052', 'name': 'Banco Big Moçambique, S.A.', 'shortName': 'Banco Big'},
+    {'code': '0056', 'name': 'Banco Letshego, S.A.', 'shortName': 'Letshego'},
+    {'code': '0057', 'name': 'Banco Nacional de Investimento, S.A.', 'shortName': 'BNI'},
+  ];
+
+  /// Valida o Número de Identificação Bancária (NIB) moçambicano de 21 dígitos.
+  /// Aplica a regra ISO 7064 Módulo 97-10 e valida o código do banco perante o catálogo nacional.
+  static bool isValidNIB(String nib) {
+    final cleaned = nib.replaceAll(RegExp(r'\D'), '');
+    if (cleaned.length != 21) return false;
+
+    final bankCode = cleaned.substring(0, 4);
+    final bankExists = mozambiqueBanks.any((b) => b['code'] == bankCode);
+    if (!bankExists) return false;
+
+    try {
+      final bigNum = BigInt.parse(cleaned);
+      return (bigNum % BigInt.from(97)) == BigInt.one;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Formata um NIB moçambicano de 21 dígitos no padrão BBBB AAAA CCCCCCCCCCC KK.
+  /// Lança [ArgumentError] se o NIB for inválido.
+  static String formatNIB(String nib) {
+    final cleaned = nib.replaceAll(RegExp(r'\D'), '');
+    if (!isValidNIB(cleaned)) {
+      throw ArgumentError('NIB inválido: $nib');
+    }
+    return '${cleaned.substring(0, 4)} ${cleaned.substring(4, 8)} ${cleaned.substring(8, 19)} ${cleaned.substring(19, 21)}';
+  }
+
+  /// Retorna as informações do banco correspondente aos primeiros 4 dígitos do NIB.
+  /// Retorna null se o banco não for encontrado ou se o NIB tiver menos de 4 dígitos.
+  static Map<String, String>? getBankByNIB(String nib) {
+    final cleaned = nib.replaceAll(RegExp(r'\D'), '');
+    if (cleaned.length < 4) return null;
+    final bankCode = cleaned.substring(0, 4);
+    for (final bank in mozambiqueBanks) {
+      if (bank['code'] == bankCode) {
+        return bank;
+      }
+    }
+    return null;
+  }
+
+  /// Converte um NIB válido de 21 dígitos no respectivo código IBAN moçambicano (MZ59 + 21 dígitos).
+  /// Lança [ArgumentError] se o NIB fornecido for inválido.
+  static String nibToIBAN(String nib) {
+    final cleaned = nib.replaceAll(RegExp(r'\D'), '');
+    if (!isValidNIB(cleaned)) {
+      throw ArgumentError('NIB inválido para conversão em IBAN: $nib');
+    }
+    return 'MZ59$cleaned';
+  }
+
+  /// Valida se uma string representa um IBAN moçambicano válido.
+  /// O formato oficial consiste em 'MZ59' seguido por 21 dígitos de um NIB válido.
+  static bool isValidIBAN(String iban) {
+    final cleaned = iban.replaceAll(RegExp(r'\s'), '').toUpperCase();
+    if (cleaned.length != 25) return false;
+    if (!cleaned.startsWith('MZ59')) return false;
+    final nib = cleaned.substring(4);
+    return isValidNIB(nib);
   }
 }
