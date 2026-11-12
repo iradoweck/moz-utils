@@ -13,7 +13,7 @@ flowchart TD
     Phone["Número Moçambicano (+258 / 9 dígitos)"] --> CheckPrefix{"Prefixo (2 primeiros dígitos)"}
     CheckPrefix -- "84 ou 85" --> Vodacom["Operadora: Vodacom 🔴<br/>Carteira: M-Pesa"]
     CheckPrefix -- "82 ou 83" --> Tmcel["Operadora: Tmcel 🟡<br/>Carteira: mKesh"]
-    CheckPrefix -- "86 ou 87" --> Movitel["Operadora: Movitel 🟠<br/>Carteira: e-Mola"]
+    CheckPrefix -- "86, 87 ou 88" --> Movitel["Operadora: Movitel 🟠<br/>Carteira: e-Mola"]
     CheckPrefix -- "Outros (ex: 81)" --> Invalid["Inválido ❌"]
 ```
 
