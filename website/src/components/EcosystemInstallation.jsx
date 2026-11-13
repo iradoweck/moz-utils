@@ -192,7 +192,7 @@ export default function EcosystemInstallation() {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: '#ffffff'
+            backgroundColor: 'rgba(0, 0, 0, 0.35)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontFamily: 'monospace', fontSize: '0.95rem' }}>
               <span style={{ color: 'var(--moz-green)', fontWeight: 'bold' }}>$</span>
@@ -210,7 +210,7 @@ export default function EcosystemInstallation() {
           </div>
 
           {/* Snippet de Código */}
-          <div style={{ padding: '24px', backgroundColor: '#0f172a' }}>
+          <div style={{ padding: '24px', backgroundColor: '#050608' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
               <span style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Exemplo de Integração

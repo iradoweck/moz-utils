@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Copy, Check, ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Copy, Check, ArrowRight, Sparkles, CheckCircle2, Cpu } from 'lucide-react';
 
 export default function Hero() {
+  const { i18n } = useTranslation();
+  const isPt = i18n.language?.startsWith('pt');
   const [copied, setCopied] = useState(false);
   const [activeStack, setActiveStack] = useState('npm');
 
@@ -28,14 +31,31 @@ export default function Hero() {
     }}>
       <div className="container" style={{ maxWidth: '960px' }}>
         
+        {/* Original Glowing Cpu Icon */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+          <div style={{
+            width: '60px',
+            height: '60px',
+            borderRadius: '16px',
+            background: 'rgba(0, 255, 136, 0.08)',
+            border: '1px solid var(--moz-green-border)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 0 32px rgba(0, 255, 136, 0.25)'
+          }}>
+            <Cpu size={32} color="var(--moz-green)" />
+          </div>
+        </div>
+
         {/* Release Pill Badge */}
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '24px', flexWrap: 'wrap', justifyContent: 'center' }}>
           <span className="badge-moz">
             <Sparkles size={13} />
-            <span>Versão 0.4.0 Pronta para Produção</span>
+            <span>{isPt ? 'Versão 0.4.0 Pronta para Produção' : 'Version 0.4.0 Production Ready'}</span>
           </span>
           <span className="badge-yellow">
-            <span>Paridade em 5 Stacks</span>
+            <span>{isPt ? 'Paridade em 5 Stacks' : '5-Stack Parity'}</span>
           </span>
           <span className="badge-red">
             <span>Zero Runtime Dependencies</span>
@@ -51,38 +71,44 @@ export default function Hero() {
           color: 'var(--text-primary)',
           letterSpacing: '-0.04em'
         }}>
-          A Biblioteca Definitiva de <br />
+          {isPt ? 'Feita para Moçambique.' : 'Built for Mozambique.'} <br />
           <span style={{ 
             background: 'linear-gradient(135deg, #00ff88 0%, #38bdf8 60%, #facc15 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             textShadow: '0 0 40px rgba(0, 255, 136, 0.2)'
           }}>
-            Software para Moçambique
+            {isPt ? 'Usada por Devs no Mundo Todo.' : 'Used by Devs Worldwide.'}
           </span>
         </h1>
 
         {/* Subtitle */}
         <p style={{ 
-          fontSize: '1.25rem', 
+          fontSize: '1.2rem', 
           color: 'var(--text-secondary)', 
-          maxWidth: '720px', 
+          maxWidth: '740px', 
           margin: '0 auto 36px auto',
           lineHeight: '1.6'
         }}>
-          Validação oficial de NUIT com Módulo 11, Bilhetes de Identidade, novo sistema bancário 
-          NIB/IBAN, roteamento de carteiras móveis (M-Pesa, e-Mola, mKesh) e Código de Endereçamento Postal (CEP).
+          {isPt
+            ? 'Integre dados e regras oficiais de Moçambique em qualquer sistema global — validação de NUIT (Módulo 11), Bilhete de Identidade, NIB/IBAN bancário, carteiras móveis (M-Pesa, e-Mola, mKesh) e Novo CEP offline em 5 linguagens.'
+            : 'Integrate official Mozambican rules and data into any global system — NUIT (Mod 11), National ID (BI), NIB/IBAN banking, mobile wallets (M-Pesa, e-Mola, mKesh), and offline Postal Codes (CEP) across 5 languages.'}
         </p>
 
         {/* Action Buttons */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '40px' }}>
-          <a href="#playground" className="btn-primary-moz" style={{ textDecoration: 'none', padding: '12px 24px', fontSize: '1rem' }}>
-            <span>Testar no Playground ao Vivo</span>
+          <button
+            type="button"
+            onClick={() => document.getElementById('playground')?.scrollIntoView({ behavior: 'smooth' })}
+            className="btn-primary-moz"
+            style={{ padding: '12px 24px', fontSize: '1rem' }}
+          >
+            <span>{isPt ? 'Testar no Playground ao Vivo' : 'Try Live Playground'}</span>
             <ArrowRight size={18} />
-          </a>
+          </button>
 
           <Link to="/docs" className="btn-secondary-clean" style={{ textDecoration: 'none', padding: '12px 24px', fontSize: '1rem' }}>
-            <span>Explorar Documentação Completa</span>
+            <span>{isPt ? 'Explorar Documentação Completa' : 'Explore Full Documentation'}</span>
           </Link>
         </div>
 

@@ -1,28 +1,33 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Globe, Bot, BookOpen, BarChart3, Users, History, PlayCircle, Heart, GitBranch } from 'lucide-react';
+import { Globe, Bot, BookOpen, BarChart3, Users, History, PlayCircle, Heart, GitBranch, Cpu } from 'lucide-react';
 import FloatingPlaygroundModal from './FloatingPlaygroundModal';
-
-const MozambiqueFlagSVG = () => (
-  <svg width="28" height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ borderRadius: '3px', flexShrink: 0, boxShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
-    <rect width="30" height="6.3" fill="#007168" />
-    <rect y="6.3" width="30" height="0.6" fill="#FFFFFF" />
-    <rect y="6.9" width="30" height="6.2" fill="#000000" />
-    <rect y="13.1" width="30" height="0.6" fill="#FFFFFF" />
-    <rect y="13.7" width="30" height="6.3" fill="#FCE100" />
-    <polygon points="0,0 13,10 0,20" fill="#D21034" />
-    <polygon points="4.2,7.2 4.9,9.2 7,9.2 5.3,10.4 5.9,12.4 4.2,11.2 2.5,12.4 3.1,10.4 1.4,9.2 3.5,9.2" fill="#FCE100" />
-  </svg>
-);
 
 export default function Navbar() {
   const { t, i18n } = useTranslation();
   const location = useLocation();
   const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false);
+  const [copiedLlms, setCopiedLlms] = useState(false);
+
+  const isPt = i18n.language?.startsWith('pt');
 
   const toggleLanguage = () => {
-    i18n.changeLanguage(i18n.language === 'pt' ? 'en' : 'pt');
+    i18n.changeLanguage(isPt ? 'en' : 'pt');
+  };
+
+  const handleLlmsAction = (e) => {
+    e.preventDefault();
+    fetch('/llms.txt')
+      .then((res) => (res.ok ? res.text() : Promise.reject()))
+      .then((text) => {
+        navigator.clipboard.writeText(text);
+        setCopiedLlms(true);
+        setTimeout(() => setCopiedLlms(false), 2200);
+      })
+      .catch(() => {
+        window.open('/llms.txt', '_blank');
+      });
   };
 
   const isActive = (path) => {
@@ -46,10 +51,10 @@ export default function Navbar() {
         WebkitBackdropFilter: 'blur(16px)',
         zIndex: 1000
       }}>
-        {/* Brand & Mozambique Flag SVG */}
+        {/* Brand & Original Cpu Icon */}
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-            <MozambiqueFlagSVG />
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
+            <Cpu size={24} color="var(--moz-green)" style={{ filter: 'drop-shadow(0 0 8px rgba(0, 255, 136, 0.55))' }} />
             <span style={{ fontWeight: '800', fontSize: '1.25rem', letterSpacing: '-0.03em', color: 'var(--text-primary)', display: 'inline-flex', alignItems: 'flex-start' }}>
               moz<span style={{ color: 'var(--moz-green)' }}>-utils</span>
               <sup style={{
@@ -175,11 +180,10 @@ export default function Navbar() {
           <div style={{ width: '1px', height: '20px', backgroundColor: 'var(--border-subtle)', margin: '0 4px' }} />
 
           {/* Botão Contexto para IA */}
-          <a 
-            href="/llms.txt" 
-            target="_blank" 
-            rel="noreferrer"
-            title="Ver especificação para Agentes de IA (llms.txt)"
+          <button
+            type="button"
+            onClick={handleLlmsAction}
+            title={isPt ? 'Copiar contexto atualizado para Agentes de IA (llms.txt)' : 'Copy updated AI Agent context (llms.txt)'}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -189,17 +193,18 @@ export default function Navbar() {
               fontSize: '0.85rem',
               fontWeight: '600',
               color: 'var(--moz-green)',
-              backgroundColor: 'var(--moz-green-subtle)',
+              backgroundColor: copiedLlms ? 'rgba(0, 255, 136, 0.22)' : 'var(--moz-green-subtle)',
               border: '1px solid var(--moz-green-border)',
-              textDecoration: 'none'
+              cursor: 'pointer'
             }}
           >
             <Bot size={15} />
-            <span>llms.txt</span>
-          </a>
+            <span>{copiedLlms ? (isPt ? 'Copiado!' : 'Copied!') : 'llms.txt'}</span>
+          </button>
 
           {/* Idioma Switcher */}
           <button 
+            type="button"
             onClick={toggleLanguage} 
             style={{ 
               background: 'var(--bg-muted)', 
@@ -216,7 +221,7 @@ export default function Navbar() {
             }}
           >
             <Globe size={14} />
-            {i18n.language.toUpperCase()}
+            {isPt ? 'PT' : 'EN'}
           </button>
 
           {/* GitHub da Biblioteca */}

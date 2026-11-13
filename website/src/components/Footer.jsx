@@ -164,7 +164,7 @@ export default function Footer() {
 
           {/* PayPal */}
           <a 
-            href="https://paypal.me/iradoweck" 
+            href="https://www.paypal.com/ncp/payment/X8KZL529HB3ZN" 
             target="_blank" 
             rel="noreferrer"
             title="Doar via PayPal"

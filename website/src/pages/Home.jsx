@@ -4,11 +4,10 @@ import Hero from '../components/Hero';
 import MetricsShowcase from '../components/MetricsShowcase';
 import DogfoodingShowcase from '../components/DogfoodingShowcase';
 import BeforeAfterShowcase from '../components/BeforeAfterShowcase';
-import UnifiedSimulator from '../components/UnifiedSimulator';
 import EcosystemInstallation from '../components/EcosystemInstallation';
 import { 
   Building2, Phone, CreditCard, 
-  MapPin, Coins, Sparkles, ArrowRight, Bot 
+  MapPin, Coins, ArrowRight, Bot 
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -78,31 +77,6 @@ export default function Home() {
 
       {/* 4. Showcase Antes vs Depois */}
       <BeforeAfterShowcase />
-
-      {/* 4. Playground Integrado ao Vivo na Home */}
-      <section id="playground" style={{ 
-        padding: '60px 20px 70px 20px', 
-        backgroundColor: 'rgba(0,0,0,0.2)',
-        borderTop: '1px solid var(--border-subtle)',
-        borderBottom: '1px solid var(--border-subtle)'
-      }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-            <span className="badge-moz" style={{ marginBottom: '10px' }}>
-              <Sparkles size={14} />
-              Laboratório Interativo
-            </span>
-            <h2 style={{ fontSize: '2.3rem', fontWeight: '800', letterSpacing: '-0.03em', marginTop: '6px' }}>
-              Experimente Todas as Validações ao Vivo
-            </h2>
-            <p style={{ color: 'var(--text-secondary)', maxWidth: '640px', margin: '0 auto', fontSize: '1.05rem' }}>
-              Digite ou cole qualquer identificador moçambicano para ver o motor de validação e sanitização responder em tempo real no seu navegador.
-            </p>
-          </div>
-
-          <UnifiedSimulator />
-        </div>
-      </section>
 
       {/* 5. Grid de Funcionalidades & Apresentação */}
       <section style={{ padding: '80px 20px' }}>
@@ -181,6 +155,38 @@ export default function Home() {
 
       {/* 6. Instalação e Tabs Poliglotas das 5 Stacks */}
       <EcosystemInstallation />
+
+      {/* 7. Convite discreto para contribuição */}
+      <section style={{ padding: '24px 20px 10px 20px' }}>
+        <div className="container" style={{ maxWidth: '960px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '16px',
+            padding: '18px 24px',
+            borderRadius: '12px',
+            border: '1px solid var(--border-subtle)',
+            background: 'rgba(255, 255, 255, 0.02)'
+          }}>
+            <div style={{ fontSize: '0.92rem', color: 'var(--text-secondary)' }}>
+              <strong style={{ color: 'var(--text-primary)' }}>Open-source feito para evoluir.</strong>{' '}
+              Encontrou uma nova regra regional ou quer melhorar alguma stack?
+            </div>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <a
+                href="https://github.com/iradoweck/moz-utils/pulls"
+                target="_blank"
+                rel="noreferrer"
+                style={{ fontSize: '0.86rem', fontWeight: '600', color: 'var(--moz-green)', textDecoration: 'none' }}
+              >
+                Abrir um PR →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
     </div>
   );
