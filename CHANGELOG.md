@@ -2,6 +2,20 @@
 
 Change history for all versions of the **moz-utils** project.
 
+## [0.4.0] - 2026-11-01
+- chore(release): Bump ecosystem version to `0.4.0` across all stacks (`ts`, `python`, `php`, `dart`, `kotlin`).
+- feat(banking): Implement Mozambican Banking Module (21-digit NIB with ISO 7064 Modulo 97-10, MZ59 IBAN, and catalog of 22 commercial bank codes) across all 5 languages.
+- feat(geo): Implement flexible province lookup (`getDistrictsByProvince`) by ID, Acronym, or Name (case-insensitive and diacritic-tolerant) in all stacks.
+- fix(sanitization): Enforce strict Title Case and lowercase particle preservation (`de`, `da`, `do`, `dos`, `das`, `e`) in `sanitizeName`, and require >= 2 letters in `isValidName`.
+- fix(kotlin): Correct NUIT regex from `^[1-5]` to `^[1-9]` to properly accept all Mozambican entity classes.
+- fix(dart): Relax Dart SDK constraint to `>=3.0.0 <4.0.0` and fix province typo in Vilanculos postal data.
+- refactor: Eliminate circular dependencies in TypeScript (`ts/src/types.ts`) and remove 116 lines of duplicated postal dead code in Python and PHP.
+- feat(website): Add 4 new documentation sections (`/docs/banking`, `/docs/web-frameworks`, `/docs/sanitization`, `/docs/migration-v040`) in Portuguese and English.
+- feat(website): Enhance `UnifiedSimulator` with NIB validation tab and flexible province lookup.
+- feat(website): Implement route-level code-splitting with `React.lazy()` and `Suspense`.
+- docs: Fully translate all 5 language READMEs into Portuguese with production framework integration guides (Express, NestJS, Next.js, Zod, FastAPI, Django, Laravel, Flutter, Jetpack Compose).
+- test: Expand unit test coverage to 100% across all 5 ecosystems (TS 37 tests, Python 29 tests, PHP 23 tests, Dart 122 tests, Kotlin 13 suites).
+
 ## [0.3.10] - 2026-09-14
 - chore(release): Bump packages to `0.3.10` across TS, Python, PHP, Dart, and Kotlin (and `1.1.0` on root tooling).
 - chore(deps): Update core dependencies across all stacks (React 19.3.0, Vite 8.3.0, Vitest 5.0.0, ESLint 10.10.0, Lucide-React 1.45.0, Test 1.32.0).
@@ -58,9 +72,8 @@ Change history for all versions of the **moz-utils** project.
 ## [0.1.2] - 2026-05-23
 - chore: Synchronized package versions to 0.1.2.
 - chore: Removed `@iradoweck/` scope from NPM package to simplify usage as `moz-utils`.
-
 ## [0.1.1] - 2026-05-22
-- chore: Added `composer.json` for Packagist support.
+- chore: Added composer.json for Packagist support.
 - test: Added native unit tests for Python, PHP, Dart, and Kotlin.
 - chore: Prepared publication metadata across NPM, PyPI, Packagist, Pub.dev, and JitPack.
 

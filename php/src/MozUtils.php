@@ -1,15 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Iradoweck\MozUtils;
 
 /**
  * MozUtils
  * 
  * Utility functions for Mozambique.
- * Validation of NUIT, BI, documents, and phone formatting.
+ * Validation of NUIT, BI, documents, phone formatting, and banking.
  */
 class MozUtils
 {
+    /**
+     * Catálogo oficial dos 18 bancos comerciais registados no Banco de Moçambique.
+     */
+    public const array BANKS = Bank::BANKS;
+
     /**
      * Validates a Mozambican phone number.
      * Valid operators: Vodacom (84/85), Tmcel (82/83), Movitel (86/87/88)
@@ -135,11 +142,11 @@ class MozUtils
      * - Decimal separator: comma
      * - Symbol after the value, separated by a space
      *
-     * @param float $value Valor numérico
+     * @param float|int $value Valor numérico
      * @param string $currency 'MT' (nacional) ou 'MZN' (ISO 4217)
      * @return string E.g.: "1 500,00 MT"
      */
-    public static function formatMZN(float $value, string $currency = 'MT'): string
+    public static function formatMZN(float|int $value, string $currency = 'MT'): string
     {
         $sign = $value < 0 ? '-' : '';
         $absolute = abs($value);
@@ -1118,21 +1125,59 @@ class MozUtils
     }
 
     /**
-     * Returns the list of districts belonging to a given province.
+     * Retorna a lista de nomes dos distritos pertencentes a uma província.
+     * Aceita ID ('mpp', 'mpc', 'cab'), sigla ('CBD', 'MPT', 'MC') ou nome ('Maputo', 'Cabo Delgado', 'Nampula').
+     *
+     * @param string $provinceIdentifier
+     * @return array
+     * @throws \InvalidArgumentException Se a província não for encontrada.
      */
-    public static function getDistrictsByProvince(string $provinceId): array
+    public static function getDistrictsByProvince(string $provinceIdentifier): array
     {
-        $provinceIdClean = trim(strtolower($provinceId));
-        foreach (self::getMozambiqueProvinces() as $province) {
-            if ($province['id'] === $provinceIdClean) {
-                $names = [];
-                foreach ($province['districts'] as $district) {
-                    $names[] = $district['name'];
+        $raw = trim($provinceIdentifier);
+        $clean = mb_strtolower($raw, 'UTF-8');
+
+        $normalize = function (string $text): string {
+            $accents = [
+                'á' => 'a', 'à' => 'a', 'â' => 'a', 'ã' => 'a',
+                'é' => 'e', 'ê' => 'e',
+                'í' => 'i',
+                'ó' => 'o', 'ô' => 'o', 'õ' => 'o',
+                'ú' => 'u',
+                'ç' => 'c',
+            ];
+            $lower = mb_strtolower(trim($text), 'UTF-8');
+            $cleanText = strtr($lower, $accents);
+            return trim(str_replace(['(', ')'], '', $cleanText));
+        };
+
+        $norm = $normalize($raw);
+
+        // Caso especial Maputo genérico -> assume Maputo Província por padrão
+        if ($norm === 'maputo') {
+            foreach (self::getMozambiqueProvinces() as $province) {
+                if ($province['id'] === 'mpp') {
+                    return array_column($province['districts'], 'name');
                 }
-                return $names;
             }
         }
-        throw new \InvalidArgumentException("Província inválida: {$provinceId}");
+
+        foreach (self::getMozambiqueProvinces() as $province) {
+            $pId = strtolower($province['id']);
+            $pSigla = strtolower($province['sigla']);
+            $pNorm = $normalize($province['name']);
+
+            if (
+                $clean === $pId ||
+                $clean === $pSigla ||
+                $norm === $pNorm ||
+                $norm === $normalize(str_replace(['(Província)', '(Cidade)'], '', $province['name']))
+            ) {
+                return array_column($province['districts'], 'name');
+            }
+        }
+
+        throw new \InvalidArgumentException("Província inválida: {$provinceIdentifier}");
     }
 
     /**
@@ -1169,13 +1214,19 @@ class MozUtils
     {
         $trimmed = trim($name);
         if ($trimmed === '') return false;
+        // Exige pelo menos 2 caracteres alfabéticos
+        preg_match_all('/\p{L}/u', $trimmed, $matches);
+        if (count($matches[0] ?? []) < 2) {
+            return false;
+        }
         return (bool) preg_match('/^[\p{L}\s\'\-]+$/u', $trimmed);
     }
 
     /**
      * Sanitizes a personal name field.
      *
-     * By default converts to Title Case. Pass $allCaps = true to force UPPERCASE.
+     * By default converts to Title Case preserving lowercase prepositions (de, da, do, dos, das, e).
+     * Pass $allCaps = true to force UPPERCASE.
      * Strips digits and most special characters.
      *
      * @param string $name
@@ -1185,19 +1236,40 @@ class MozUtils
      * @example MozUtils::sanitizeName('edmilson muacigarro')       // 'Edmilson Muacigarro'
      * @example MozUtils::sanitizeName('JOÃO', true)               // 'JOÃO'
      * @example MozUtils::sanitizeName('jean-pierre dupont')       // 'Jean-Pierre Dupont'
+     * @example MozUtils::sanitizeName('maria da silva e santos')  // 'Maria da Silva e Santos'
      */
     public static function sanitizeName(string $name, bool $allCaps = false): string
     {
         // Keep only letters, spaces, hyphens, apostrophes
         $cleaned = preg_replace('/[^\p{L}\s\'\-]/u', '', $name);
-        $cleaned = trim(preg_replace('/\s+/', ' ', $cleaned));
+        $cleaned = trim((string)preg_replace('/\s+/', ' ', (string)$cleaned));
+        if ($cleaned === '') {
+            return '';
+        }
 
         if ($allCaps) {
             return mb_strtoupper($cleaned, 'UTF-8');
         }
 
-        // Title Case using mb_convert_case
-        return mb_convert_case($cleaned, MB_CASE_TITLE, 'UTF-8');
+        $particles = ['de', 'da', 'do', 'dos', 'das', 'e'];
+        $words = explode(' ', $cleaned);
+        $formattedWords = [];
+
+        foreach ($words as $wIdx => $word) {
+            $subparts = explode('-', $word);
+            $formattedSubparts = [];
+            foreach ($subparts as $sIdx => $part) {
+                $lower = mb_strtolower($part, 'UTF-8');
+                if (in_array($lower, $particles, true) && ($wIdx > 0 || $sIdx > 0)) {
+                    $formattedSubparts[] = $lower;
+                } else {
+                    $formattedSubparts[] = mb_convert_case($lower, MB_CASE_TITLE, 'UTF-8');
+                }
+            }
+            $formattedWords[] = implode('-', $formattedSubparts);
+        }
+
+        return implode(' ', $formattedWords);
     }
 
     /**
@@ -1223,140 +1295,10 @@ class MozUtils
      *
      * @example MozUtils::sanitizeAlphanumericField('110 101 234567a')  // '110101234567A'
      */
-    /**
-     * Sanitizes an alphanumeric document field, forcing letters to UPPERCASE.
-     * Useful for BI, passports, and other mixed-format documents.
-     *
-     * @param string $value
-     * @return string
-     *
-     * @example MozUtils::sanitizeAlphanumericField('110 101 234567a')  // '110101234567A'
-     */
     public static function sanitizeAlphanumericField(string $value): string
     {
         return strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $value));
     }
-
-    /**
-     * Mapa de Códigos Postais Legados de Moçambique.
-     */
-    private static array $legacyPostalCodes = [
-        // Região Sul
-        // Maputo
-        '1100' => ['locality' => 'Maputo ECP (Sede)', 'province' => 'Maputo'],
-        '1101' => ['locality' => 'Polana', 'province' => 'Maputo'],
-        '1102' => ['locality' => 'Sommerchild', 'province' => 'Maputo'],
-        '1103' => ['locality' => 'Malhangalene', 'province' => 'Maputo'],
-        '1104' => ['locality' => 'Alto-Maé', 'province' => 'Maputo'],
-        '1106' => ['locality' => 'Bairro Central', 'province' => 'Maputo'],
-        '1107' => ['locality' => 'Bairro do Aeroporto', 'province' => 'Maputo'],
-        '1108' => ['locality' => 'Bairro do Mavalane', 'province' => 'Maputo'],
-        '1109' => ['locality' => 'Bairro do Jardim', 'province' => 'Maputo'],
-        '1110' => ['locality' => 'Bairro do Xipamanine', 'province' => 'Maputo'],
-        '1111' => ['locality' => 'Bairro George Dimitrov', 'province' => 'Maputo'],
-        '1112' => ['locality' => 'Machava', 'province' => 'Maputo'],
-        '1113' => ['locality' => 'Fomento', 'province' => 'Maputo'],
-        '1114' => ['locality' => 'Matola', 'province' => 'Maputo'],
-        '1115' => ['locality' => 'Boane', 'province' => 'Maputo'],
-        '1116' => ['locality' => 'Namaacha', 'province' => 'Maputo'],
-        '1117' => ['locality' => 'Katembe', 'province' => 'Maputo'],
-        '1118' => ['locality' => 'Bela-Vista', 'province' => 'Maputo'],
-        '1119' => ['locality' => 'Inhaca', 'province' => 'Maputo'],
-        '1120' => ['locality' => 'Marracuene', 'province' => 'Maputo'],
-        '1121' => ['locality' => 'Manhiça', 'province' => 'Maputo'],
-        '1122' => ['locality' => 'Xinavane', 'province' => 'Maputo'],
-        '1123' => ['locality' => 'Magude', 'province' => 'Maputo'],
-        '1124' => ['locality' => 'Moamba', 'province' => 'Maputo'],
-        '1125' => ['locality' => 'Ressano Garcia', 'province' => 'Maputo'],
-        // Gaza
-        '1200' => ['locality' => 'Xai-Xai ECP', 'province' => 'Gaza'],
-        '1201' => ['locality' => 'Praia de Xai-Xai', 'province' => 'Gaza'],
-        '1202' => ['locality' => 'Macia', 'province' => 'Gaza'],
-        '1203' => ['locality' => 'Praia de Bilene', 'province' => 'Gaza'],
-        '1204' => ['locality' => 'Chokwé', 'province' => 'Gaza'],
-        '1205' => ['locality' => 'Chilembene / Magoanine', 'province' => 'Gaza'],
-        '1206' => ['locality' => 'Mabalane', 'province' => 'Gaza'],
-        '1207' => ['locality' => 'Massingir', 'province' => 'Gaza'],
-        '1208' => ['locality' => 'Chibuto', 'province' => 'Gaza'],
-        '1209' => ['locality' => 'Manjacaze', 'province' => 'Gaza'],
-        '1210' => ['locality' => 'Chidenguele', 'province' => 'Gaza'],
-        '1211' => ['locality' => 'Chicualacuala', 'province' => 'Gaza'],
-        // Inhambane
-        '1300' => ['locality' => 'Inhambane ECP', 'province' => 'Inhambane'],
-        '1301' => ['locality' => 'Maxixe', 'province' => 'Inhambane'],
-        '1302' => ['locality' => 'Morrumbene', 'province' => 'Inhambane'],
-        '1303' => ['locality' => 'Massinga', 'province' => 'Inhambane'],
-        '1304' => ['locality' => 'Vilanculos', 'province' => 'Inhambane'],
-        '1305' => ['locality' => 'Inhassoro', 'province' => 'Inhambane'],
-        '1306' => ['locality' => 'Nova-Mambone', 'province' => 'Inhambane'],
-        '1307' => ['locality' => 'Jangamo', 'province' => 'Inhambane'],
-        '1308' => ['locality' => 'Cumbane', 'province' => 'Inhambane'],
-        '1309' => ['locality' => 'Homoine', 'province' => 'Inhambane'],
-        '1310' => ['locality' => 'Panda', 'province' => 'Inhambane'],
-        '1311' => ['locality' => 'Inharrime', 'province' => 'Inhambane'],
-        '1312' => ['locality' => 'Quissico', 'province' => 'Inhambane'],
-        '1313' => ['locality' => 'Funhalouro', 'province' => 'Inhambane'],
-        '1314' => ['locality' => 'Mabote', 'province' => 'Inhambane'],
-
-        // Região Centro
-        // Sofala
-        '2100' => ['locality' => 'Beira ECP', 'province' => 'Sofala'],
-        '2101' => ['locality' => 'Macúti', 'province' => 'Sofala'],
-        '2102' => ['locality' => 'Beira Aeroporto', 'province' => 'Sofala'],
-        '2103' => ['locality' => 'Manga', 'province' => 'Sofala'],
-        '2104' => ['locality' => 'Dondo', 'province' => 'Sofala'],
-        '2105' => ['locality' => 'Mafambisse', 'province' => 'Sofala'],
-        '2106' => ['locality' => 'Nhamatanda', 'province' => 'Sofala'],
-        '2107' => ['locality' => 'Buzi', 'province' => 'Sofala'],
-        '2110' => ['locality' => 'Gorongoza', 'province' => 'Sofala'],
-        // Manica
-        '2200' => ['locality' => 'Chimoio ECP', 'province' => 'Manica'],
-        '2201' => ['locality' => 'Catandica', 'province' => 'Manica'],
-        '2202' => ['locality' => 'Vila de Manica', 'province' => 'Manica'],
-        '2203' => ['locality' => 'Gondola', 'province' => 'Manica'],
-        '2204' => ['locality' => 'Guro', 'province' => 'Manica'],
-        '2205' => ['locality' => 'Machaze', 'province' => 'Manica'],
-        '2206' => ['locality' => 'Macossa', 'province' => 'Manica'],
-        '2207' => ['locality' => 'Sussundenga', 'province' => 'Manica'],
-        '2208' => ['locality' => 'Tambara', 'province' => 'Manica'],
-        // Tete
-        '2300' => ['locality' => 'Tete ECP', 'province' => 'Tete'],
-        '2301' => ['locality' => 'Tete Aeroporto', 'province' => 'Tete'],
-        '2302' => ['locality' => 'Moatize', 'province' => 'Tete'],
-        '2304' => ['locality' => 'Songo', 'province' => 'Tete'],
-        '2307' => ['locality' => 'Mutarara', 'province' => 'Tete'],
-        '2312' => ['locality' => 'Zumbo', 'province' => 'Tete'],
-        // Zambézia
-        '2400' => ['locality' => 'Quelimane ECP', 'province' => 'Zambézia'],
-        '2401' => ['locality' => 'Nicoadala', 'province' => 'Zambézia'],
-        '2403' => ['locality' => 'Mocuba', 'province' => 'Zambézia'],
-        '2405' => ['locality' => 'Pebane', 'province' => 'Zambézia'],
-        '2407' => ['locality' => 'Gurué', 'province' => 'Zambézia'],
-        '2412' => ['locality' => 'Chinde', 'province' => 'Zambézia'],
-
-        // Região Norte
-        // Nampula
-        '3100' => ['locality' => 'Nampula ECP', 'province' => 'Nampula'],
-        '3101' => ['locality' => 'Angoche', 'province' => 'Nampula'],
-        '3102' => ['locality' => 'Monapo', 'province' => 'Nampula'],
-        '3105' => ['locality' => 'Ilha de Moçambique', 'province' => 'Nampula'],
-        '3108' => ['locality' => 'Moma', 'province' => 'Nampula'],
-        '3112' => ['locality' => 'Nacala', 'province' => 'Nampula'],
-        '3115' => ['locality' => 'Namapa', 'province' => 'Nampula'],
-        '3119' => ['locality' => 'Ribaue', 'province' => 'Nampula'],
-        // Cabo Delgado
-        '3200' => ['locality' => 'Pemba ECP', 'province' => 'Cabo Delgado'],
-        '3201' => ['locality' => 'Pemba-2', 'province' => 'Cabo Delgado'],
-        '3208' => ['locality' => 'Montepuez', 'province' => 'Cabo Delgado'],
-        '3216' => ['locality' => 'Mueda', 'province' => 'Cabo Delgado'],
-        '3219' => ['locality' => 'Palma', 'province' => 'Cabo Delgado'],
-        // Niassa
-        '3300' => ['locality' => 'Lichinga ECP', 'province' => 'Niassa'],
-        '3301' => ['locality' => 'Macanhelas', 'province' => 'Niassa'],
-        '3304' => ['locality' => 'Mandimba', 'province' => 'Niassa'],
-        '3305' => ['locality' => 'Cuamba', 'province' => 'Niassa'],
-        '3311' => ['locality' => 'Muembe', 'province' => 'Niassa']
-    ];
 
     /**
      * Valida se um código postal legado de Moçambique é válido.
@@ -1460,22 +1402,22 @@ class MozUtils
         }
 
         $results = [];
-        $cleanedLower = strtolower($cleaned);
+        $cleanedLower = mb_strtolower($cleaned, 'UTF-8');
 
         foreach (CepData::$newCEPData as $item) {
             if (!empty($searchPrefixes)) {
                 foreach ($searchPrefixes as $prefix) {
-                    if (strpos($item['cep'], $prefix) === 0) {
+                    if (str_starts_with($item['cep'], $prefix)) {
                         $results[] = $item;
                         break;
                     }
                 }
             } else {
                 if (
-                    strpos(strtolower($item['cep']), $cleanedLower) !== false ||
-                    strpos(strtolower($item['province']), $cleanedLower) !== false ||
-                    strpos(strtolower($item['district']), $cleanedLower) !== false ||
-                    strpos(strtolower($item['locality']), $cleanedLower) !== false
+                    str_contains(mb_strtolower($item['cep'], 'UTF-8'), $cleanedLower) ||
+                    str_contains(mb_strtolower($item['province'], 'UTF-8'), $cleanedLower) ||
+                    str_contains(mb_strtolower($item['district'], 'UTF-8'), $cleanedLower) ||
+                    str_contains(mb_strtolower($item['locality'], 'UTF-8'), $cleanedLower)
                 ) {
                     $results[] = $item;
                 }
@@ -1483,4 +1425,52 @@ class MozUtils
         }
         return $results;
     }
-}
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // MÓDULO BANCÁRIO (NIB & IBAN)
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /**
+     * Valida o Número de Identificação Bancária (NIB) de Moçambique (21 dígitos, Módulo 97 ISO 7064).
+     */
+    public static function isValidNIB(string $nib): bool
+    {
+        return Bank::isValidNIB($nib);
+    }
+
+    /**
+     * Formata o NIB moçambicano no padrão BBBB.AAAA.CCCCCCCCCCC.KK.
+     *
+     * @throws \InvalidArgumentException Se o NIB for inválido.
+     */
+    public static function formatNIB(string $nib): string
+    {
+        return Bank::formatNIB($nib);
+    }
+
+    /**
+     * Retorna os dados do banco associado ao NIB, ou null se não encontrado.
+     */
+    public static function getBankByNIB(string $nib): ?array
+    {
+        return Bank::getBankByNIB($nib);
+    }
+
+    /**
+     * Converte um NIB moçambicano válido em IBAN (MZ59 + 21 dígitos).
+     *
+     * @throws \InvalidArgumentException Se o NIB for inválido.
+     */
+    public static function nibToIBAN(string $nib): string
+    {
+        return Bank::nibToIBAN($nib);
+    }
+
+    /**
+     * Valida um IBAN de Moçambique (25 caracteres: prefixo MZ59 seguido de NIB válido).
+     */
+    public static function isValidIBAN(string $iban): bool
+    {
+        return Bank::isValidIBAN($iban);
+    }
+}

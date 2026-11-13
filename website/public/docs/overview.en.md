@@ -2,10 +2,11 @@
 
 The definitive open-source utility library for software built in or for **Mozambique**.
 
-[![npm](https://img.shields.io/npm/v/moz-utils?label=npm&color=00ff88)](https://www.npmjs.com/package/moz-utils)
-[![PyPI](https://img.shields.io/pypi/v/moz-utils?label=PyPI&color=3776ab)](https://pypi.org/project/moz-utils/)
-[![pub.dev](https://img.shields.io/pub/v/moz_utils?label=pub.dev&color=0175C2)](https://pub.dev/packages/moz_utils)
-[![Packagist](https://img.shields.io/packagist/v/iradoweck/moz-utils?label=Packagist&color=F28D1A)](https://packagist.org/packages/iradoweck/moz-utils)
+[![npm](https://img.shields.io/npm/v/moz-utils?label=npm&color=00ff88&logo=npm)](https://www.npmjs.com/package/moz-utils)
+[![PyPI](https://img.shields.io/pypi/v/moz-utils?label=PyPI&color=3776ab&logo=pypi&logoColor=white)](https://pypi.org/project/moz-utils/)
+[![Packagist](https://img.shields.io/packagist/v/iradoweck/moz-utils?label=Packagist&color=F28D1A&logo=packagist&logoColor=white)](https://packagist.org/packages/iradoweck/moz-utils)
+[![pub.dev](https://img.shields.io/pub/v/moz_utils?label=pub.dev&color=0175C2&logo=dart&logoColor=white)](https://pub.dev/packages/moz_utils)
+[![JitPack](https://img.shields.io/badge/JitPack-0.4.0-B07219?logo=gradle&logoColor=white)](https://jitpack.io/#iradoweck/moz-utils)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/iradoweck/moz-utils/blob/main/LICENSE)
 
 ---

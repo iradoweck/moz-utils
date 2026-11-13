@@ -1,53 +1,99 @@
 /**
  * moz-utils
  *
- * Utility functions for Mozambique.
- * Validation of NUIT, BI, documents, and phone formatting.
+ * Biblioteca de utilitários para Moçambique: telecomunicações, identificação civil e fiscal,
+ * divisão administrativa territorial, códigos postais e sistema bancário (NIB/IBAN).
  *
  * @license Apache-2.0
  */
 
+import { mozambiqueProvinces } from './data/provinces.js';
+import { legacyPostalCodes, legacyToNewCEPPrefix } from './data/postalCodes.js';
+import { newCEPData } from './cep_data.js';
+
+// Reexportação de contratos de tipos desacoplados
+export * from './types.js';
+import type {
+  CEPInfo,
+  District,
+  Province,
+  MobileOperator,
+  MobileWallet,
+  NUITEntityType,
+  BankInfo,
+  PhoneFormatOptions,
+} from './types.js';
+
+export { mozambiqueProvinces, legacyPostalCodes, legacyToNewCEPPrefix, newCEPData };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TELECOMUNICAÇÕES E NÚMEROS DE TELEFONE (+258)
+// ─────────────────────────────────────────────────────────────────────────────
+
 /**
- * Validates a Mozambican phone number.
- * Accepts formats: 84XXXXXXX, +258 84XXXXXXX, 258-84-XXX-XXXX, etc.
- * Valid operators: Vodacom (84/85), Tmcel (82/83), Movitel (86/87/88)
+ * Valida se um número de telefone é um contacto móvel válido em Moçambique.
+ * Suporta formatos: 84XXXXXXX, +258 84XXXXXXX, 258-84-XXX-XXXX, etc.
+ * Operadoras válidas: Vodacom (84/85), Tmcel (82/83), Movitel (86/87/88).
  */
 export function isValidMozambicanPhone(phone: string): boolean {
-  const cleaned = phone.replace(/[\s\-\(\)\+]/g, '')
-  const withoutCountryCode = cleaned.startsWith('258') ? cleaned.slice(3) : cleaned
-  return /^8[2-8]\d{7}$/.test(withoutCountryCode)
+  if (typeof phone !== 'string') return false;
+  const cleaned = phone.replace(/[\s\-\(\)\+]/g, '');
+  const withoutCountryCode = cleaned.startsWith('258') ? cleaned.slice(3) : cleaned;
+  return /^8[2-8]\d{7}$/.test(withoutCountryCode);
 }
 
 /**
- * Formats a Mozambican phone number to the international standard.
- * E.g.: "841234567" → "+258 84 123 4567"
+ * Formata um número de telefone moçambicano de acordo com as opções especificadas.
+ * Padrão: formato internacional "+258 84 123 4567".
+ *
+ * @param phone - O número de telefone a formatar
+ * @param options - Opções de formato ('international' | 'e164' | 'national' | 'dashed')
+ * @returns Número de telefone formatado
  */
-export function formatMozambicanPhone(phone: string): string {
-  const cleaned = phone.replace(/[\s\-\(\)\+]/g, '')
-  const withoutCountryCode = cleaned.startsWith('258') ? cleaned.slice(3) : cleaned
-
-  if (!isValidMozambicanPhone(withoutCountryCode)) {
-    throw new Error(`Invalid phone number: ${phone}`)
+export function formatMozambicanPhone(phone: string, options?: PhoneFormatOptions): string {
+  if (typeof phone !== 'string') {
+    throw new Error(`Número de telefone inválido: ${phone}`);
   }
 
-  const prefix = withoutCountryCode.slice(0, 2)
-  const part1 = withoutCountryCode.slice(2, 5)
-  const part2 = withoutCountryCode.slice(5)
+  const cleaned = phone.replace(/[\s\-\(\)\+]/g, '');
+  const withoutCountryCode = cleaned.startsWith('258') ? cleaned.slice(3) : cleaned;
 
-  return `+258 ${prefix} ${part1} ${part2}`
+  if (!isValidMozambicanPhone(withoutCountryCode)) {
+    throw new Error(`Número de telefone inválido: ${phone}`);
+  }
+
+  const prefix = withoutCountryCode.slice(0, 2);
+  const part1 = withoutCountryCode.slice(2, 5);
+  const part2 = withoutCountryCode.slice(5);
+
+  const format = options?.format ?? 'international';
+
+  switch (format) {
+    case 'e164':
+      return `+258${withoutCountryCode}`;
+    case 'national':
+      return `${prefix} ${part1} ${part2}`;
+    case 'dashed':
+      return `${prefix}-${part1}-${part2}`;
+    case 'international':
+    default:
+      return `+258 ${prefix} ${part1} ${part2}`;
+  }
 }
 
 /**
- * Identifies the operator of a Mozambican phone number.
+ * Identifica a operadora de telefonia móvel associada a um número moçambicano.
  */
-export function getMobileOperator(phone: string): 'Vodacom' | 'Tmcel' | 'Movitel' | null {
-  const cleaned = phone.replace(/[\s\-\(\)\+]/g, '')
-  const withoutCountryCode = cleaned.startsWith('258') ? cleaned.slice(3) : cleaned
+export function getMobileOperator(phone: string): MobileOperator | null {
+  if (typeof phone !== 'string') return null;
 
-  if (!isValidMozambicanPhone(withoutCountryCode)) return null
+  const cleaned = phone.replace(/[\s\-\(\)\+]/g, '');
+  const withoutCountryCode = cleaned.startsWith('258') ? cleaned.slice(3) : cleaned;
 
-  const prefix = withoutCountryCode.slice(0, 2)
-  const operators: Record<string, 'Vodacom' | 'Tmcel' | 'Movitel'> = {
+  if (!isValidMozambicanPhone(withoutCountryCode)) return null;
+
+  const prefix = withoutCountryCode.slice(0, 2);
+  const operators: Record<string, MobileOperator> = {
     '84': 'Vodacom',
     '85': 'Vodacom',
     '82': 'Tmcel',
@@ -55,70 +101,105 @@ export function getMobileOperator(phone: string): 'Vodacom' | 'Tmcel' | 'Movitel
     '86': 'Movitel',
     '87': 'Movitel',
     '88': 'Movitel',
-  }
+  };
 
-  return operators[prefix] ?? null
+  return operators[prefix] ?? null;
 }
 
 /**
- * Identifica a carteira móvel (Mobile Wallet) associada a um número moçambicano.
+ * Identifica a carteira móvel (Mobile Wallet) associada ao número moçambicano.
  */
-export function getMobileWallet(phone: string): 'M-Pesa' | 'mKesh' | 'e-Mola' | null {
+export function getMobileWallet(phone: string): MobileWallet | null {
   const operator = getMobileOperator(phone);
   if (!operator) return null;
-  
-  const wallets: Record<string, 'M-Pesa' | 'mKesh' | 'e-Mola'> = {
-    'Vodacom': 'M-Pesa',
-    'Tmcel': 'mKesh',
-    'Movitel': 'e-Mola'
+
+  const wallets: Record<MobileOperator, MobileWallet> = {
+    Vodacom: 'M-Pesa',
+    Tmcel: 'mKesh',
+    Movitel: 'e-Mola',
   };
-  
+
   return wallets[operator] ?? null;
 }
 
 /**
- * Valida o NUIT (Número Único de Identificação Tributária) de Moçambique.
- * 
- * Regras da AT (Autoridade Tributária):
- * - Composed of 9 digits.
- * - Primeiro dígito: 1 a 5 (Classificação da Entidade).
- * - Nono dígito: Dígito de Controlo (Módulo 11).
+ * Gera um link de contacto direto para o WhatsApp com mensagem opcional pré-formatada.
  */
-export function isValidNUIT(nuit: string | number): boolean {
-  const cleaned = String(nuit).replace(/\D/g, '')
-
-  if (cleaned.length !== 9) return false
-  if (/^(\d)\1{8}$/.test(cleaned)) return false
-
-  // Validação do Primeiro Dígito (1 a 9)
-  if (!/^[1-9]/.test(cleaned)) return false
-
-  // Validação do Dígito de Controlo (Módulo 11) - Algoritmo Moçambicano (Pesos: 8, 9, 4, 5, 6, 7, 8, 9)
-  const weights = [8, 9, 4, 5, 6, 7, 8, 9]
-  let sum = 0
-  for (let i = 0; i < 8; i++) {
-    sum += parseInt(cleaned.charAt(i), 10) * weights[i]
+export function buildWhatsAppUrl(phone: string, message?: string): string {
+  if (typeof phone !== 'string') {
+    throw new Error(`Número de telefone inválido: ${phone}`);
   }
 
-  const checkIdx = sum % 11
-  const checkMap = "01234567891"
-  
-  return cleaned.charAt(8) === checkMap[checkIdx]
+  const cleaned = phone.replace(/[\s\-\(\)\+]/g, '');
+  const international = cleaned.startsWith('258') ? cleaned : `258${cleaned}`;
+  const encodedMessage = message ? `?text=${encodeURIComponent(message)}` : '';
+  return `https://wa.me/${international}${encodedMessage}`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// IDENTIFICAÇÃO CIVIL E FISCAL
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Valida o NUIT (Número Único de Identificação Tributária) de Moçambique.
+ *
+ * Regras da Autoridade Tributária (AT):
+ * - Composto por 9 dígitos numéricos.
+ * - Primeiro dígito: 1 a 9 (Classificação da Entidade).
+ * - Nono dígito: Dígito de Controlo calculado pelo algoritmo oficial Módulo 11
+ *   com pesos fixos [8, 9, 4, 5, 6, 7, 8, 9] e tabela de substituição "01234567891".
+ */
+export function isValidNUIT(nuit: string | number): boolean {
+  if (nuit === null || nuit === undefined) return false;
+  if (typeof nuit !== 'string' && typeof nuit !== 'number') return false;
+
+  const cleaned = String(nuit).replace(/\D/g, '');
+
+  if (cleaned.length !== 9) return false;
+  if (/^(\d)\1{8}$/.test(cleaned)) return false;
+
+  // O primeiro dígito deve estar entre 1 e 9
+  if (!/^[1-9]/.test(cleaned)) return false;
+
+  // Validação do Dígito de Controlo (Módulo 11 da AT Moçambique)
+  const weights = [8, 9, 4, 5, 6, 7, 8, 9];
+  let sum = 0;
+  for (let i = 0; i < 8; i++) {
+    sum += parseInt(cleaned.charAt(i), 10) * weights[i];
+  }
+
+  const checkIdx = sum % 11;
+  const checkMap = '01234567891';
+
+  return cleaned.charAt(8) === checkMap[checkIdx];
 }
 
 /**
- * Classifies the entity type based on the first digit of the NUIT.
- * - 1 or 2: Singular Persons
- * - 3: Equivalent Entities
- * - 4: Collective Persons
- * - 5: Public Organisms
+ * Formata um NUIT válido no padrão de 3 blocos (ex: "400 000 008").
  */
-export function getNUITEntityType(nuit: string | number): string | null {
-  const cleaned = String(nuit).replace(/\D/g, '')
-  if (!isValidNUIT(cleaned)) return null
+export function formatNUIT(nuit: string | number): string {
+  if (nuit === null || nuit === undefined) {
+    throw new Error(`NUIT inválido: ${nuit}`);
+  }
 
-  const firstDigit = cleaned.charAt(0)
-  const types: Record<string, string> = {
+  const cleaned = String(nuit).replace(/\D/g, '');
+  if (!isValidNUIT(cleaned)) {
+    throw new Error(`NUIT inválido: ${nuit}`);
+  }
+
+  return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 6)} ${cleaned.slice(6)}`;
+}
+
+/**
+ * Classifica a natureza da entidade com base no primeiro dígito do NUIT.
+ */
+export function getNUITEntityType(nuit: string | number): NUITEntityType | null {
+  if (nuit === null || nuit === undefined) return null;
+  const cleaned = String(nuit).replace(/\D/g, '');
+  if (!isValidNUIT(cleaned)) return null;
+
+  const firstDigit = cleaned.charAt(0);
+  const types: Record<string, NUITEntityType> = {
     '1': 'Pessoas Singulares',
     '2': 'Pessoas Singulares',
     '3': 'Pessoas Singulares',
@@ -127,90 +208,86 @@ export function getNUITEntityType(nuit: string | number): string | null {
     '6': 'Entidades Equiparadas',
     '7': 'Estado / Públicas',
     '8': 'Outras Entidades',
-    '9': 'Entidades Estrangeiras'
-  }
+    '9': 'Entidades Estrangeiras',
+  };
 
-  return types[firstDigit] ?? null
+  return types[firstDigit] ?? null;
 }
 
 /**
- * Validates the Mozambican National ID (BI).
- * Standard format: 12 digits followed by 1 letter (E.g.: 110101234567A)
+ * Valida o Bilhete de Identidade (B.I.) moçambicano.
+ * Padrão oficial: 12 dígitos seguidos de 1 letra maiúscula (ex: 110101234567A).
  */
 export function isValidBI(bi: string): boolean {
-  const cleaned = bi.replace(/[\s\-]/g, '').toUpperCase()
-  return /^\d{12}[A-Z]$/.test(cleaned)
+  if (typeof bi !== 'string') return false;
+  const cleaned = bi.replace(/[\s\-]/g, '').toUpperCase();
+  return /^\d{12}[A-Z]$/.test(cleaned);
 }
 
 /**
- * Validates the Mozambican DIRE (Documento de Identificação de Residente Estrangeiro).
- * Supports the modern SENAMI format (9 digits + 1 letter, e.g., 120345678A)
- * as well as legacy formats (e.g., 00008312C or 12C00008312C).
+ * Valida o DIRE (Documento de Identificação de Residente Estrangeiro).
+ * Suporta o formato moderno do SENAMI (9 dígitos + 1 letra) e formatos legados.
  */
 export function isValidDIRE(dire: string): boolean {
+  if (typeof dire !== 'string') return false;
   const cleaned = dire.replace(/[\s\-]/g, '').toUpperCase();
   return /^(?:\d{8}[A-Z]|\d{2}[A-Z]\d{8}[A-Z0-9]|\d{9}[A-Z])$/.test(cleaned);
 }
 
 /**
- * Validates the Mozambican Passport.
- * Official format: Exactly 2 letters followed by 7 numeric digits (E.g.: AO1234567).
+ * Valida o Passaporte moçambicano.
+ * Padrão oficial: Exatamente 2 letras seguidas de 7 dígitos numéricos (ex: AO1234567).
  */
 export function isValidPassport(passport: string): boolean {
+  if (typeof passport !== 'string') return false;
   const cleaned = passport.replace(/[\s\-]/g, '').toUpperCase();
   return /^[A-Z]{2}\d{7}$/.test(cleaned);
 }
 
 /**
- * Validates the Mozambican Driving License (Carta de Condução).
- * Supports the modern INATRO biometric format (2 letters + 7 digits, e.g., MP1234567)
- * as well as legacy formats (e.g., M123456).
+ * Valida a Carta de Condução moçambicana.
+ * Suporta o formato biométrico INATRO (2 letras + 7 dígitos) e modelos anteriores.
  */
 export function isValidDrivingLicense(license: string): boolean {
+  if (typeof license !== 'string') return false;
   const cleaned = license.replace(/[\s\-]/g, '').toUpperCase();
   return /^(?:[A-Z]\d{5,7}|\d{12}[A-Z]|[A-Z]{2}\d{7})$/.test(cleaned);
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// VALORES MONETÁRIOS (MZN / MT)
+// ─────────────────────────────────────────────────────────────────────────────
+
 /**
- * Formats a monetary value in Meticais following the official standard of Mozambique.
+ * Formata um valor monetário em Meticais de acordo com o padrão oficial de Moçambique.
+ * Separador de milhares: espaço; separador decimal: vírgula; símbolo após o valor.
  *
- * Padrão oficial (SI + AT):
- * - Thousands separator: space ( )
- * - Decimal separator: comma (,)
- * - Symbol after the value, separated by a space
- *
- * @param value - Numeric value to format
- * @param currency - 'MT' para uso nacional (padrão) ou 'MZN' para uso internacional (ISO 4217)
- * @returns Formatted value (ex: "1 500,00 MT")
- *
- * @example
- * formatMZN(1500)           // "1 500,00 MT"
- * formatMZN(1500, 'MZN')   // "1 500,00 MZN"
- * formatMZN(0.5)            // "0,50 MT"
+ * @param value - Valor numérico a formatar
+ * @param currency - 'MT' para padrão nacional ou 'MZN' para ISO 4217
+ * @returns String formatada (ex: "1 500,00 MT")
  */
 export function formatMZN(value: number, currency: 'MT' | 'MZN' = 'MT'): string {
-  // Format to standard: "1 500,00 MT"
+  if (typeof value !== 'number' || !Number.isFinite(value)) {
+    throw new Error(`Valor monetário inválido: ${value}`);
+  }
+
   const formattedNumber = new Intl.NumberFormat('pt-MZ', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
     useGrouping: true,
-  }).format(value)
+  }).format(value);
 
-  // O Intl no JS substitui às vezes o grouping separator por No-Break Space ou espaço regular.
-  // Vamos assegurar que é um espaço regular para evitar problemas de comparação em alguns testes.
-  const cleanFormatted = formattedNumber.replace(/\u00A0|\u202F/g, ' ')
-  
-  return `${cleanFormatted} ${currency}`
+  const cleanFormatted = formattedNumber.replace(/\u00A0|\u202F/g, ' ');
+  return `${cleanFormatted} ${currency}`;
 }
 
 /**
- * Parses a Mozambican currency string into a raw float number for the database.
- * Handles inputs like "1.500,00 MT", "1 500,00MZN", "1,500.00", etc.
- *
- * @param value The dirty currency string
- * @returns The parsed float number, or null if invalid
+ * Converte uma representação textual de valor monetário em número float.
+ * Aceita entradas como "1.500,00 MT", "1 500,00MZN", "1,500.00", etc.
  */
 export function parseMZN(value: string): number | null {
+  if (typeof value !== 'string') return null;
+
   let clean = value.replace(/[^\d.,\-]/g, '');
   if (!clean || clean === '-') return null;
 
@@ -243,38 +320,93 @@ export function parseMZN(value: string): number | null {
   return isNaN(result) ? null : result;
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// DIVISÃO ADMINISTRATIVA TERRITORIAL (PROVÍNCIAS E DISTRITOS)
+// ─────────────────────────────────────────────────────────────────────────────
+
 /**
- * Generates a WhatsApp contact URL with a pre-formatted message.
+ * Normaliza um texto para buscas tolerantes a acentuação e maiúsculas.
  */
-export function buildWhatsAppUrl(phone: string, message?: string): string {
-  const cleaned = phone.replace(/[\s\-\(\)\+]/g, '')
-  const international = cleaned.startsWith('258') ? cleaned : `258${cleaned}`
-  const encodedMessage = message ? `?text=${encodeURIComponent(message)}` : ''
-  return `https://wa.me/${international}${encodedMessage}`
+function normalizeSearchText(text: string): string {
+  return text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toLowerCase();
 }
 
 /**
- * Official list of Mozambique Provinces and their districts.
- * Fonte: Divisão administrativa oficial da República de Moçambique.
- * Inclui sigla oficial de cada província.
+ * Retorna a lista oficial de províncias de Moçambique e seus respectivos distritos.
  */
-import { mozambiqueProvinces, District } from './data/provinces.js';
-export { mozambiqueProvinces, District };
+export function getMozambiqueProvinces() {
+  return mozambiqueProvinces;
+}
 
 /**
- * Returns the list of districts belonging to a given province.
- * @param provinceId - O identificador da província (ex: 'cab', 'npl', 'mpc')
+ * Retorna os nomes dos distritos de uma dada província moçambicana.
+ * Aceita identificador flexível: ID ('mpp', 'mpc', 'cab'), Sigla ('MPT', 'MC', 'CBD')
+ * ou nome completo ('Maputo', 'Nampula', 'Cabo Delgado', tolerante a acentos e caixa).
+ *
+ * @param provinceIdentifier - ID, sigla ou nome da província
+ * @returns Lista de nomes dos distritos
  */
-export function getDistrictsByProvince(provinceId: string): string[] {
-  const province = mozambiqueProvinces.find(p => p.id === provinceId.trim().toLowerCase());
-  if (!province) {
-    throw new Error(`Província inválida: ${provinceId}`);
+export function getDistrictsByProvince(provinceIdentifier: string): string[] {
+  if (typeof provinceIdentifier !== 'string') {
+    throw new Error(`Província inválida: ${provinceIdentifier}`);
   }
-  return province.districts.map(d => d.name);
+
+  const norm = normalizeSearchText(provinceIdentifier);
+  if (!norm) {
+    throw new Error(`Província inválida: ${provinceIdentifier}`);
+  }
+
+  // 1. Casos específicos para Maputo Província vs Maputo Cidade
+  if (
+    norm === 'maputo' ||
+    norm === 'maputo provincia' ||
+    norm === 'provincia de maputo' ||
+    norm === 'mpp' ||
+    norm === 'mpt'
+  ) {
+    const prov = mozambiqueProvinces.find(p => p.id === 'mpp');
+    if (prov) return prov.districts.map(d => d.name);
+  }
+
+  if (
+    norm === 'maputo cidade' ||
+    norm === 'cidade de maputo' ||
+    norm === 'maputo (cidade)' ||
+    norm === 'mpc' ||
+    norm === 'mc'
+  ) {
+    const prov = mozambiqueProvinces.find(p => p.id === 'mpc');
+    if (prov) return prov.districts.map(d => d.name);
+  }
+
+  // 2. Busca exata por ID ou Sigla
+  let matched = mozambiqueProvinces.find(
+    p => p.id.toLowerCase() === norm || p.sigla.toLowerCase() === norm
+  );
+
+  // 3. Busca por nome normalizado (tolerante a diacríticos e parênteses)
+  if (!matched) {
+    matched = mozambiqueProvinces.find(p => {
+      const pNorm = normalizeSearchText(p.name);
+      if (pNorm === norm) return true;
+      const stripped = normalizeSearchText(p.name.replace(/\s*\([^)]*\)/g, ''));
+      return stripped === norm;
+    });
+  }
+
+  if (!matched) {
+    throw new Error(`Província inválida: ${provinceIdentifier}`);
+  }
+
+  return matched.districts.map(d => d.name);
 }
 
 /**
- * Returns a flat list of all 161 districts and their respective province IDs.
+ * Retorna uma lista plana de todos os 161 distritos oficiais de Moçambique.
  */
 export function getAllDistricts(): District[] {
   const list: District[] = [];
@@ -284,7 +416,7 @@ export function getAllDistricts(): District[] {
         name: district.name,
         provinceId: province.id,
         administrative_posts: district.administrative_posts,
-        neighborhoods: district.neighborhoods
+        neighborhoods: district.neighborhoods,
       });
     }
   }
@@ -292,171 +424,302 @@ export function getAllDistricts(): District[] {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// NAME & DOCUMENT FIELD SANITIZATION
+// SANEAMENTO E VALIDAÇÃO DE NOMES E DOCUMENTOS
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Checks whether a string is a valid personal name.
- * Accepts letters (including accented), spaces, hyphens, and apostrophes.
- * Rejects digits and most special characters.
- *
- * @example
- * isValidName('Edmilson Muacigarro') // true
- * isValidName('João O\'Brian')       // true
- * isValidName('Jean-Pierre')         // true
- * isValidName('ABC123')              // false
+ * Conjunto de partículas de ligação da língua portuguesa que devem permanecer em minúsculas
+ * ao formatar nomes pessoais em Title Case.
+ */
+const LOWERCASE_PARTICLES = new Set(['de', 'da', 'do', 'dos', 'das', 'e']);
+
+/**
+ * Verifica se uma string representa um nome pessoal válido.
+ * Requer ao menos 2 caracteres alfabéticos Unicode e rejeita caracteres inválidos ou símbolos isolados.
  */
 export function isValidName(name: string): boolean {
-  return /^[\p{L}\s'\-]+$/u.test(name.trim())
+  if (typeof name !== 'string') return false;
+  const trimmed = name.trim();
+  if (!trimmed) return false;
+
+  // Apenas letras Unicode, espaços, apóstrofos e hífens
+  if (!/^[\p{L}\s'\-]+$/u.test(trimmed)) return false;
+
+  // Exigir pelo menos 2 caracteres alfabéticos
+  const letterCount = (trimmed.match(/\p{L}/gu) || []).length;
+  return letterCount >= 2;
 }
 
 /**
- * Sanitizes a personal name field.
+ * Saneia um campo de nome pessoal, convertendo para Title Case por padrão
+ * ou para caixa alta completa se especificado `{ allCaps: true }`.
+ * Preserva partículas de ligação em minúsculas ('de', 'da', 'do', 'dos', 'das', 'e').
  *
- * By default converts to Title Case (each word starts with a capital letter).
- * Pass `{ allCaps: true }` to force ALL UPPERCASE.
- *
- * Strips digits and most special characters, keeping only letters,
- * spaces, hyphens, and apostrophes.
- *
- * @param name - The raw name string to sanitize
- * @param options.allCaps - If true, returns the name in ALL UPPERCASE
- * @returns Sanitized name string
- *
- * @example
- * sanitizeName('  edmilson   muacigarro  ')         // 'Edmilson Muacigarro'
- * sanitizeName('JOÃO o\'BRIAN', { allCaps: true })  // 'JOÃO O\'BRIAN'
- * sanitizeName('jean-pierre dupont')                 // 'Jean-Pierre Dupont'
+ * @param name - O nome a ser saneado
+ * @param options.allCaps - Se verdadeiro, formata tudo em LETRAS MAIÚSCULAS
+ * @returns Nome saneado
  */
 export function sanitizeName(name: string, options?: { allCaps?: boolean }): string {
-  // Remove anything that is not a letter, space, hyphen, or apostrophe
-  const cleaned = name.replace(/[^\p{L}\s'\-]/gu, '').replace(/\s+/g, ' ').trim()
+  if (typeof name !== 'string') return '';
+
+  // Remove qualquer caractere que não seja letra, espaço, hífen ou apóstrofo
+  const cleaned = name.replace(/[^\p{L}\s'\-]/gu, '').replace(/\s+/g, ' ').trim();
+  if (!cleaned) return '';
 
   if (options?.allCaps) {
-    return cleaned.toUpperCase()
+    return cleaned.toUpperCase();
   }
 
-  // Title Case: capitalise first letter of each word (including after hyphens)
-  return cleaned.replace(/(^|[\s\-])([\p{L}])/gu, (_, sep, letter) => sep + letter.toUpperCase())
+  // Converte primeiro para minúsculas para corrigir entradas em caixa alta prévia
+  const lower = cleaned.toLowerCase();
+  const words = lower.split(' ');
+
+  const capitalizedWords = words.map((word, index) => {
+    if (!word) return '';
+
+    // Se não for a primeira palavra e for uma partícula de ligação, mantém em minúsculas
+    if (index > 0 && LOWERCASE_PARTICLES.has(word)) {
+      return word;
+    }
+
+    // Capitaliza a primeira letra e letras após hífen ou apóstrofo
+    return word.replace(/(^|[\s\-'])([\p{L}])/gu, (_, sep, letter) => sep + letter.toUpperCase());
+  });
+
+  return capitalizedWords.join(' ');
 }
 
 /**
- * Sanitizes a document number field that contains only digits.
- * Strips all non-numeric characters.
- *
- * Useful for NUIT, BI number part, phone numbers before validation, etc.
- *
- * @example
- * sanitizeDocumentField('123 456 789')   // '123456789'
- * sanitizeDocumentField('123-456-789')   // '123456789'
- * sanitizeDocumentField(' 4 0 0 ')       // '400'
+ * Saneia um campo de documento puramente numérico, removendo qualquer caractere não dígito.
  */
 export function sanitizeDocumentField(value: string): string {
-  return value.replace(/\D/g, '')
+  if (typeof value !== 'string') return '';
+  return value.replace(/\D/g, '');
 }
 
 /**
- * Sanitizes an alphanumeric document field (digits + letters), forcing
- * all letters to UPPERCASE.
- *
- * Useful for BI (e.g. '110101234567a' → '110101234567A'),
- * passports, and other mixed-format documents.
- *
- * @example
- * sanitizeAlphanumericField('110 101 234567a')  // '110101234567A'
- * sanitizeAlphanumericField('abc-123-XYZ!')     // 'ABC123XYZ'
+ * Saneia um campo de documento alfanumérico, removendo caracteres especiais e forçando MAIÚSCULAS.
  */
 export function sanitizeAlphanumericField(value: string): string {
-  return value.replace(/[^A-Za-z0-9]/g, '').toUpperCase()
+  if (typeof value !== 'string') return '';
+  return value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
 }
 
-/**
- * Mapa de Códigos Postais Legados de Moçambique.
- */
-import { legacyPostalCodes, legacyToNewCEPPrefix } from './data/postalCodes.js';
-export { legacyPostalCodes, legacyToNewCEPPrefix };
+// ─────────────────────────────────────────────────────────────────────────────
+// CÓDIGOS POSTAIS (LEGADOS E NOVOS CEPS)
+// ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Valida se um código postal legado de Moçambique é válido.
- * Deve conter 4 dígitos numéricos pertencentes ao sistema clássico dos Correios de Moçambique.
+ * Valida se um código postal legado moçambicano de 4 dígitos existe na base histórica.
  */
 export function isValidPostalCode(code: string): boolean {
-  const cleaned = code.replace(/\D/g, '')
-  return cleaned in legacyPostalCodes
+  if (typeof code !== 'string') return false;
+  const trimmed = code.trim();
+  if (!/^[\d\s\-]+$/.test(trimmed)) return false;
+  const cleaned = trimmed.replace(/\D/g, '');
+  return cleaned.length === 4 && Object.prototype.hasOwnProperty.call(legacyPostalCodes, cleaned);
 }
 
 /**
  * Retorna a localidade correspondente a um código postal legado de Moçambique.
  */
 export function getPostalCodeLocality(code: string): string | null {
-  const cleaned = code.replace(/\D/g, '')
-  return legacyPostalCodes[cleaned]?.locality ?? null
+  if (!isValidPostalCode(code)) return null;
+  const cleaned = code.replace(/\D/g, '');
+  return legacyPostalCodes[cleaned]?.locality ?? null;
 }
 
 /**
  * Retorna a província correspondente a um código postal legado de Moçambique.
  */
 export function getPostalCodeProvince(code: string): string | null {
-  const cleaned = code.replace(/\D/g, '')
-  return legacyPostalCodes[cleaned]?.province ?? null
+  if (!isValidPostalCode(code)) return null;
+  const cleaned = code.replace(/\D/g, '');
+  return legacyPostalCodes[cleaned]?.province ?? null;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// NOVO SISTEMA DE CÓDIGO DE ENDEREÇAMENTO POSTAL (CEP)
-// ─────────────────────────────────────────────────────────────────────────────
-
-export interface CEPInfo {
-  cep: string;
-  province: string;
-  district: string;
-  locality: string; // Administrative Post or Neighborhood
-}
-
-import { newCEPData } from './cep_data.js';
-export { newCEPData };
-
 /**
- * Mapping of Legacy Codes to District prefixes in the New CEP.
- * Example: 3100 (Nampula ECP) -> '0909' (Nampula district prefix in the new system)
- */
-/**
- * Valida o formato do Novo CEP (Formato: XXXX-XX)
+ * Valida o formato estrutural do Novo CEP de Moçambique (XXXX-XX).
  */
 export function isValidNewCEP(cep: string): boolean {
+  if (typeof cep !== 'string') return false;
   return /^\d{4}-\d{2}$/.test(cep.trim());
 }
 
 /**
- * Sugere uma lista de Novos CEPs baseados no input do utilizador.
- * Funcionalidade:
- * - Se o input for um código legado (ex: "3100"), retorna todos os novos CEPs equivalentes.
- * - Se for um CEP novo parcial ou total, pode sugerir (neste ensaio valida a string inteira).
+ * Sugere uma lista de Novos CEPs com base no termo de busca fornecido.
+ * Suporta busca por CEP novo, código postal legado ou nome da localidade/distrito.
  */
 export function suggestCEPs(input: string): CEPInfo[] {
-  const cleaned = input.trim();
-  const lowerCleaned = cleaned.toLowerCase();
+  if (typeof input !== 'string') return [];
 
-  // 1. Se já for um formato de novo CEP, filtramos os que batem com o input
+  const cleaned = input.trim();
+  const lowerCleaned = normalizeSearchText(cleaned);
+  if (!lowerCleaned) return [];
+
+  // 1. Se já for formato de novo CEP completo
   if (isValidNewCEP(cleaned)) {
     return newCEPData.filter(c => c.cep === cleaned);
   }
 
-  // 2. Se for um código legado (ex: 3100), sugerimos as divisões do novo CEP
+  // 2. Se for código legado (4 dígitos)
   if (isValidPostalCode(cleaned)) {
-    const prefixes = legacyToNewCEPPrefix[cleaned];
+    const digits = cleaned.replace(/\D/g, '');
+    const prefixes = legacyToNewCEPPrefix[digits];
     if (prefixes && prefixes.length > 0) {
       return newCEPData.filter(c => prefixes.some(prefix => c.cep.startsWith(prefix)));
     }
   }
 
-  // 3. Pesquisa por nome da localidade (ex: "Namutequeliua")
-  if (lowerCleaned.length > 2) {
-    const byLocality = newCEPData.filter(c => c.locality.toLowerCase().includes(lowerCleaned));
-    if (byLocality.length > 0) {
-      return byLocality;
+  // 3. Pesquisa textual por localidade, distrito ou província
+  if (lowerCleaned.length >= 2) {
+    const matches = newCEPData.filter(c => {
+      const loc = normalizeSearchText(c.locality);
+      const dist = normalizeSearchText(c.district);
+      const prov = normalizeSearchText(c.province);
+      return loc.includes(lowerCleaned) || dist.includes(lowerCleaned) || prov.includes(lowerCleaned);
+    });
+
+    if (matches.length > 0) {
+      return matches;
     }
   }
 
-  // 4. Caso não encontre correspondência
   return [];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SISTEMA BANCÁRIO DE MOÇAMBIQUE (NIB & IBAN)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Catálogo oficial dos 18 bancos comerciais e instituições reguladas pelo Banco de Moçambique.
+ */
+export const MOZAMBIQUE_BANKS: Record<string, BankInfo> = {
+  '0001': { code: '0001', name: 'Banco Internacional de Moçambique', shortName: 'Millennium BIM' },
+  '0003': { code: '0003', name: 'Standard Bank Moçambique', shortName: 'Standard Bank' },
+  '0006': { code: '0006', name: 'Absa Bank Moçambique', shortName: 'Absa' },
+  '0007': { code: '0007', name: 'Nedbank Moçambique', shortName: 'Nedbank' },
+  '0008': { code: '0008', name: 'Banco Comercial e de Investimentos', shortName: 'BCI' },
+  '0014': { code: '0014', name: 'First National Bank Moçambique', shortName: 'FNB' },
+  '0016': { code: '0016', name: 'Moza Banco', shortName: 'Moza Banco' },
+  '0021': { code: '0021', name: 'Access Bank Moçambique', shortName: 'Access Bank' },
+  '0024': { code: '0024', name: 'Ecobank Moçambique', shortName: 'Ecobank' },
+  '0025': { code: '0025', name: 'Banco Nacional de Investimento', shortName: 'BNI' },
+  '0030': { code: '0030', name: 'Société Générale Moçambique', shortName: 'Société Générale' },
+  '0034': { code: '0034', name: 'Moza Banco', shortName: 'Moza Banco' },
+  '0038': { code: '0038', name: 'First Capital Bank Moçambique', shortName: 'First Capital Bank' },
+  '0041': { code: '0041', name: 'Banco Letshego', shortName: 'Letshego' },
+  '0043': { code: '0043', name: 'First Capital Bank Moçambique', shortName: 'First Capital Bank' },
+  '0044': { code: '0044', name: 'MyBucks Banking Corporation', shortName: 'MyBucks' },
+  '0045': { code: '0045', name: 'Banco de Desenvolvimento de Moçambique', shortName: 'BDM' },
+  '0048': { code: '0048', name: 'Banco Mais', shortName: 'Banco Mais' },
+  '0050': { code: '0050', name: 'Standard Chartered Bank Moçambique', shortName: 'Standard Chartered' },
+  '0052': { code: '0052', name: 'Banco Big Moçambique', shortName: 'Banco Big' },
+  '0056': { code: '0056', name: 'Banco Letshego', shortName: 'Letshego' },
+  '0057': { code: '0057', name: 'Banco Nacional de Investimento', shortName: 'BNI' },
+};
+
+/**
+ * Valida o NIB (Número de Identificação Bancária) de Moçambique.
+ *
+ * Estrutura do NIB moçambicano (21 dígitos):
+ * - 4 dígitos: Código da instituição bancária
+ * - 4 dígitos: Balcão / Agência
+ * - 11 dígitos: Número de conta bancária
+ * - 2 dígitos: Dígitos de controlo calculados pelo algoritmo ISO 7064 Módulo 97-10.
+ */
+export function isValidNIB(nib: string): boolean {
+  if (typeof nib !== 'string') return false;
+
+  const cleaned = nib.replace(/\D/g, '');
+  if (cleaned.length !== 21) return false;
+
+  const bankCode = cleaned.slice(0, 4);
+  if (!Object.prototype.hasOwnProperty.call(MOZAMBIQUE_BANKS, bankCode)) {
+    return false;
+  }
+
+  // Validação algorítmica ISO 7064 MOD 97-10
+  // Para qualquer NIB válido: BigInt(nib) % 97n === 1n
+  try {
+    return BigInt(cleaned) % 97n === 1n;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Formata um NIB moçambicano em 4 blocos padronizados.
+ * Exemplo: "0001 0000 12345678901 23" ou com ponto "0001.0000.12345678901.23".
+ *
+ * @param nib - O NIB a formatar
+ * @param separator - Separador entre os blocos (padrão: espaço ' ')
+ * @returns NIB formatado
+ */
+export function formatNIB(nib: string, separator: '.' | ' ' = ' '): string {
+  if (typeof nib !== 'string') {
+    throw new Error(`NIB moçambicano inválido: ${nib}`);
+  }
+
+  const cleaned = nib.replace(/\D/g, '');
+  if (!isValidNIB(cleaned)) {
+    throw new Error(`NIB moçambicano inválido: ${nib}`);
+  }
+
+  const bank = cleaned.slice(0, 4);
+  const branch = cleaned.slice(4, 8);
+  const account = cleaned.slice(8, 19);
+  const check = cleaned.slice(19, 21);
+
+  return `${bank}${separator}${branch}${separator}${account}${separator}${check}`;
+}
+
+/**
+ * Retorna os dados cadastrais da instituição bancária a partir de um NIB.
+ */
+export function getBankFromNIB(nib: string): BankInfo | null {
+  if (typeof nib !== 'string') return null;
+
+  const cleaned = nib.replace(/\D/g, '');
+  if (cleaned.length < 4) return null;
+
+  const bankCode = cleaned.slice(0, 4);
+  return MOZAMBIQUE_BANKS[bankCode] ?? null;
+}
+
+/**
+ * Alias de conveniência para paridade entre ecossistemas.
+ */
+export const getBankByNIB = getBankFromNIB;
+
+/**
+ * Converte um NIB válido no IBAN oficial de Moçambique.
+ * Moçambique adota o padrão internacional ISO 13616: "MZ59" + 21 dígitos do NIB.
+ */
+export function nibToIBAN(nib: string): string {
+  if (typeof nib !== 'string') {
+    throw new Error(`NIB moçambicano inválido: ${nib}`);
+  }
+
+  const cleaned = nib.replace(/\D/g, '');
+  if (!isValidNIB(cleaned)) {
+    throw new Error(`NIB moçambicano inválido: ${nib}`);
+  }
+
+  return `MZ59${cleaned}`;
+}
+
+/**
+ * Valida o IBAN oficial de Moçambique (25 caracteres: MZ59 seguido de 21 dígitos de NIB válido).
+ */
+export function isValidIBAN(iban: string): boolean {
+  if (typeof iban !== 'string') return false;
+
+  const cleaned = iban.replace(/[\s\-]/g, '').toUpperCase();
+  if (cleaned.length !== 25) return false;
+  if (!cleaned.startsWith('MZ59')) return false;
+
+  const nibPart = cleaned.slice(4);
+  return isValidNIB(nibPart);
 }

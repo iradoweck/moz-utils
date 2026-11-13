@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Iradoweck\MozUtils;
 
 class CepData
 {
-    public static $legacyPostalCodes = [
+    public static array $legacyPostalCodes = [
     "1100" => [
         "locality" => "Maputo ECP (Sede)",
         "province" => "Maputo"
@@ -407,7 +409,7 @@ class CepData
     ]
 ];
 
-    public static $legacyToNewCEPPrefix = [
+    public static array $legacyToNewCEPPrefix = [
     "1100" => [
         "0101",
         "0102",
@@ -642,7 +644,7 @@ class CepData
     ]
 ];
 
-    public static $newCEPData = [
+    public static array $newCEPData = [
     [
         "cep" => "0101-01",
         "province" => "Cidade de Maputo",
