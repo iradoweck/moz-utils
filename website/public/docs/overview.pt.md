@@ -41,18 +41,23 @@ O `moz-utils` resolve tudo isto **pronto a usar**, com **zero dependências em r
 
 | Função | Categoria | Descrição | TS | PY | PHP | Dart | Kotlin |
 |---|---|---|:---:|:---:|:---:|:---:|:---:|
-| `isValidMozambicanPhone` | Telefones | Valida um número moçambicano (82-88) | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `isValidMozambicanPhone` | Telefones | Valida um número moçambicano (82 a 88) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `formatMozambicanPhone` | Telefones | Formata para o padrão internacional `+258 XX XXX XXXX` | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `getMobileOperator` | Telefones | Retorna `Vodacom`, `Tmcel` ou `Movitel` | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `getMobileWallet` | Telefones | Retorna `M-Pesa`, `mKesh` ou `e-Mola` | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `buildWhatsAppUrl` | Telefones | Gera um link `wa.me` com mensagem pré-preenchida opcional | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `isValidNIB` | Bancos | Valida o NIB (21 dígitos sob ISO 7064 Mod 97-10) | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `formatNIB` | Bancos | Formata o NIB com separadores oficiais | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `getBankFromNIB` | Bancos | Identifica o banco emissor entre os 22 bancos regulados | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `nibToIBAN` | Bancos | Converte NIB para IBAN Moçambicano (`MZ59...`) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `isValidNUIT` | Documentos | Valida o NUIT usando o algoritmo Módulo 11 da AT | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `getNUITEntityType` | Documentos | Retorna o tipo de entidade pelo primeiro dígito do NUIT | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `isValidBI` | Documentos | Valida o BI moçambicano (12 dígitos + 1 letra) | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `isValidBI` | Documentos | Valida o BI moçambicano (12 dígitos + 1 letra com controlo) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `isValidDIRE` | Documentos | Valida o DIRE (8 dígitos + 1 letra) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `isValidPassport` | Documentos | Valida o Passaporte moçambicano (2 letras + 7 dígitos) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `isValidDrivingLicense` | Documentos | Valida a Carta de Condução (1 letra + 5-7 dígitos) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `formatMZN` | Moeda | Formata um número como Meticais (`1 500,00 MT`) | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `parseMZN` | Moeda | Converte strings com símbolos monetários para número flutuante | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `mozambiqueProvinces` | Geografia | Base de dados offline das 11 províncias e distritos | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `getDistrictsByProvince` | Geografia | Retorna os distritos de uma dada província | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `getAllDistricts` | Geografia | Retorna todos os 161 distritos num array plano | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -65,6 +70,83 @@ O `moz-utils` resolve tudo isto **pronto a usar**, com **zero dependências em r
 | `getPostalCodeProvince` | Postal | Retorna a província de um código legado | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `isValidNewCEP` | Postal | Valida o novo formato CEP de 6 dígitos (`XXXX-XX`) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `suggestCEPs` | Postal | Pesquisa na base de dados offline de CEPs por nome de localidade | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+---
+
+## 🎯 Casos de Uso Reais em Produção
+
+### 1. Checkout de E-commerce com Roteamento Automático de Pagamento Móvel
+Ao solicitar o número de telefone de um cliente para pagamento via carteira móvel, o sistema detecta se deve iniciar uma requisição para a API do **M-Pesa**, **e-Mola** ou **mKesh**:
+
+```ts
+import { isValidMozambicanPhone, getMobileWallet } from 'moz-utils';
+
+function initiateCheckout(phone: string, amount: number) {
+  if (!isValidMozambicanPhone(phone)) {
+    throw new Error('Número de telefone inválido para Moçambique.');
+  }
+
+  const wallet = getMobileWallet(phone);
+  console.log(`Roteando cobrança de ${amount} MT via ${wallet}...`);
+
+  switch (wallet) {
+    case 'M-Pesa':
+      // Chamada à API Vodacom M-Pesa C2B
+      break;
+    case 'e-Mola':
+      // Chamada à API Movitel e-Mola (prefixos 86, 87 e 88)
+      break;
+    case 'mKesh':
+      // Chamada à API Tmcel mKesh
+      break;
+  }
+}
+```
+
+### 2. Validação Cadastral & Emissão de Factura Eletrónica (NUIT / BI)
+Impeça cadastros com identificadores tributários fictícios antes de gravar no banco de dados:
+
+```ts
+import { isValidNUIT, getNUITEntityType, isValidBI } from 'moz-utils';
+
+function validateCustomerRegistration(payload: { nuit?: string; bi?: string }) {
+  if (payload.nuit && !isValidNUIT(payload.nuit)) {
+    return { valid: false, message: 'NUIT inválido pelo Módulo 11 da AT.' };
+  }
+
+  const entityType = payload.nuit ? getNUITEntityType(payload.nuit) : null;
+  // entityType: "Pessoa Singular" | "Pessoa Colectiva" | "Outro"
+
+  if (payload.bi && !isValidBI(payload.bi)) {
+    return { valid: false, message: 'Número de Bilhete de Identidade inválido.' };
+  }
+
+  return { valid: true, entityType };
+}
+```
+
+### 3. Validação de Ficheiro de Salários e Transferências Bancárias (NIB & IBAN)
+Elimine falhas de compensação no SIMO Rede validando o Módulo 97-10 antes do envio do lote:
+
+```ts
+import { isValidNIB, getBankFromNIB, nibToIBAN } from 'moz-utils';
+
+function processSalaryTransfer(accountNIB: string) {
+  if (!isValidNIB(accountNIB)) {
+    throw new Error('NIB inválido. Verifique o código do banco e os dígitos de controlo.');
+  }
+
+  const bank = getBankFromNIB(accountNIB);
+  const iban = nibToIBAN(accountNIB);
+
+  return {
+    bankName: bank?.name,
+    bankCode: bank?.code,
+    iban: iban, // Ex: MZ59000100000000000003345
+    status: 'READY_FOR_CLEARING'
+  };
+}
+```
 
 ---
 

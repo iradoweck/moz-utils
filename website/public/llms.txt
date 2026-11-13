@@ -1,0 +1,99 @@
+# moz-utils: Open Source Utility Library for Mozambique
+> Official specification and developer context for AI Agents and LLMs.
+> Website & Documentation: https://iradoweck.github.io/moz-utils/
+> Source Repository: https://github.com/iradoweck/moz-utils
+
+## Core Philosophy
+- Multi-ecosystem parity: Available with identical contracts across TypeScript, Python, PHP, Dart, and Kotlin.
+- Zero runtime dependencies: Relies solely on each language's standard libraries.
+- Offline-first: Full local validation for NUIT, BI, DIRE, Passports, NIB, IBAN, and Postal Codes (CEP).
+- Version: 0.4.0
+
+---
+
+## 1. Telecom & Mobile Wallets
+Prefixes:
+- Vodacom: 84, 85 -> Mobile Wallet: M-Pesa
+- Tmcel: 82, 83 -> Mobile Wallet: mKesh
+- Movitel: 86, 87, 88 -> Mobile Wallet: e-Mola
+
+Function Signatures:
+- isValidMozambicanPhone(phone: string): boolean
+- formatMozambicanPhone(phone: string, options?: { format: 'international' | 'e164' | 'national' | 'dashed' }): string
+- getMobileOperator(phone: string): 'Vodacom' | 'Tmcel' | 'Movitel' | null
+- getMobileWallet(phone: string): 'M-Pesa' | 'mKesh' | 'e-Mola' | null
+- buildWhatsAppUrl(phone: string, message?: string): string
+
+---
+
+## 2. Fiscal and Identity Documents
+NUIT (Taxpayer ID):
+- 9 numeric digits.
+- Official weighted algorithm (Weights: [8, 9, 4, 5, 6, 7, 8, 9] modulo 11).
+- Entity Types by 1st digit:
+  1, 2: Pessoas Singulares
+  4: Pessoas Colectivas (Companies)
+  5: Entidades Equiparadas
+  6: Estado / Instituições Públicas
+  7, 8: Outras Entidades
+  9: Entidades Estrangeiras / Não-Residentes
+
+BI (National ID):
+- 12 numeric digits followed by 1 uppercase control letter (e.g. 110100123456A).
+
+Function Signatures:
+- isValidNUIT(nuit: string | number): boolean
+- formatNUIT(nuit: string | number): string
+- getNUITEntityType(nuit: string | number): string | null
+- isValidBI(bi: string): boolean
+- isValidDIRE(dire: string): boolean
+- isValidPassport(passport: string): boolean
+- isValidDrivingLicense(license: string): boolean
+
+---
+
+## 3. Banking System (NIB & IBAN)
+NIB (Número de Identificação Bancária):
+- 21 numeric digits: 4 digits Bank Code + 4 digits Branch Code + 12 digits Account Number + 2 digits Checksum.
+- Checksum: ISO 7064 Modulo 97-10 (98 - ((19 digits * 100) % 97)).
+
+IBAN:
+- Format: "MZ59" + 21 digits NIB (total 25 characters).
+
+Major Bank Codes:
+- 0001: Millennium BIM
+- 0008: BCI (Banco Comercial e de Investimentos)
+- 0003: Standard Bank
+- 0004: Absa Bank Moçambique
+- 0007: Moza Banco
+- 0010: Nedbank Moçambique
+- 0021: FNB Moçambique
+
+Function Signatures:
+- isValidNIB(nib: string): boolean
+- formatNIB(nib: string, separator?: ' ' | '.'): string
+- getBankFromNIB(nib: string): { code: string, name: string, shortName: string } | null
+- nibToIBAN(nib: string): string
+- isValidIBAN(iban: string): boolean
+
+---
+
+## 4. Currency (MZN / Meticais)
+- formatMZN(value: number, currency?: 'MT' | 'MZN'): string -> Formats e.g. 1500 -> "1.500,00 MT"
+- parseMZN(value: string): number | null -> Parses strings like "1.500,00 MZN" to 1500.0
+
+---
+
+## 5. Geography & Postal Codes
+- 11 Provinces: Cabo Delgado, Gaza, Inhambane, Manica, Maputo Cidade, Maputo Província, Nampula, Niassa, Sofala, Tete, Zambézia.
+- getDistrictsByProvince(provinceIdentifier: string): string[] -> Accepts ID ("1"), Acronym ("NPL", "MPM"), or full name ("Nampula", case & accent insensitive).
+- isValidPostalCode(code: string): boolean -> Legacy 4 digits (e.g. "1100").
+- isValidNewCEP(cep: string): boolean -> Modern 6-digit CEP (format "XXXX-XX").
+- suggestCEPs(query: string): Array<{ cep: string, province: string, district: string, locality: string }> -> Offline search engine.
+
+---
+
+## 6. Sanitization
+- isValidName(name: string): boolean -> Requires >= 2 alphabetic characters.
+- sanitizeName(name: string, options?: { allCaps?: boolean }): string -> Enforces strict Title Case while keeping particles lowercase ('de', 'da', 'do', 'dos', 'das', 'e').
+- sanitizeDocumentField(value: string): string -> Strips special characters, keeps only uppercase alphanumeric.
