@@ -1,5 +1,4 @@
 import pytest
-import moz_utils
 from moz_utils import (
     is_valid_nuit,
     get_nuit_entity_type,
