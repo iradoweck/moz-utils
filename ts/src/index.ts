@@ -130,10 +130,18 @@ export function buildWhatsAppUrl(phone: string, message?: string): string {
     throw new Error(`Número de telefone inválido: ${phone}`);
   }
 
-  const cleaned = phone.replace(/[\s\-\(\)\+]/g, '');
-  const international = cleaned.startsWith('258') ? cleaned : `258${cleaned}`;
+  // Normaliza para conter apenas dígitos, evitando caracteres que possam alterar a URL.
+  const digitsOnly = phone.replace(/\D/g, '');
+  const local = digitsOnly.startsWith('258') ? digitsOnly.slice(3) : digitsOnly;
+
+  if (!isValidMozambicanPhone(local)) {
+    throw new Error(`Número de telefone inválido: ${phone}`);
+  }
+
+  const international = `258${local}`;
+  const encodedPhone = encodeURIComponent(international);
   const encodedMessage = message ? `?text=${encodeURIComponent(message)}` : '';
-  return `https://wa.me/${international}${encodedMessage}`;
+  return `https://wa.me/${encodedPhone}${encodedMessage}`;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
