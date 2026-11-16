@@ -3,7 +3,6 @@ Módulo Bancário de Moçambique: Catálogo de Bancos, NIB e IBAN.
 """
 
 from typing import Optional, TypedDict
-import re
 
 
 class BankInfo(TypedDict, total=False):
