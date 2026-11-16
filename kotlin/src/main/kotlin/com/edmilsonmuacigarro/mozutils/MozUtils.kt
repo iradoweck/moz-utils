@@ -79,7 +79,7 @@ object MozUtils {
 
         if (cleaned.length != 9) return false
         if (cleaned.matches(Regex("^(\\d)\\1{8}$"))) return false
-        if (!cleaned.matches(Regex("^[1-5].*"))) return false
+        if (!cleaned.matches(Regex("^[1-9].*"))) return false
 
         val weights = intArrayOf(8, 9, 4, 5, 6, 7, 8, 9)
         var sum = 0
@@ -94,7 +94,8 @@ object MozUtils {
     }
 
     /**
-     * Classifies the entity type based on the first digit of the NUIT.
+     * Classifica o tipo de entidade com base no primeiro dígito do NUIT.
+     * Retorna a descrição oficial da entidade em Português conforme a Autoridade Tributária.
      */
     fun getNUITEntityType(nuit: Any): String? {
         val cleaned = nuit.toString().replace(Regex("\\D"), "")
@@ -102,11 +103,15 @@ object MozUtils {
 
         val firstDigit = cleaned[0].toString()
         val types = mapOf(
-            "1" to "Singular (National/Foreign citizens and ENI)",
-            "2" to "Singular (National/Foreign citizens and ENI)",
-            "3" to "Equivalent (Inheritances, Consortiums)",
-            "4" to "Collective (Limited Companies, SA, Lda, Associations)",
-            "5" to "Public (State Institutions and Ministries)"
+            "1" to "Pessoas Singulares",
+            "2" to "Pessoas Singulares",
+            "3" to "Pessoas Singulares",
+            "4" to "Pessoas Colectivas",
+            "5" to "Pessoas Colectivas",
+            "6" to "Entidades Equiparadas",
+            "7" to "Estado / Públicas",
+            "8" to "Outras Entidades",
+            "9" to "Entidades Estrangeiras"
         )
 
         return types[firstDigit]
@@ -1101,18 +1106,52 @@ object MozUtils {
     }
 
     /**
-     * Returns the list of districts belonging to a given province.
+     * Remove acentos, parênteses e caracteres especiais para buscas insensíveis a diacríticos e formatação.
      */
-    fun getDistrictsByProvince(provinceId: String): List<String> {
-        val cleanId = provinceId.trim().lowercase()
+    private fun normalizeProvinceName(input: String): String {
+        var normalized = input.trim().lowercase()
+        val accents = mapOf(
+            "á" to "a", "à" to "a", "ã" to "a", "â" to "a", "ä" to "a",
+            "é" to "e", "è" to "e", "ê" to "e", "ë" to "e",
+            "í" to "i", "ì" to "i", "î" to "i", "ï" to "i",
+            "ó" to "o", "ò" to "o", "õ" to "o", "ô" to "o", "ö" to "o",
+            "ú" to "u", "ù" to "u", "û" to "u", "ü" to "u",
+            "ç" to "c"
+        )
+        for ((key, value) in accents) {
+            normalized = normalized.replace(key, value)
+        }
+        return normalized.replace(Regex("[^a-z0-9]"), "")
+    }
+
+    /**
+     * Retorna a lista de distritos pertencentes a uma determinada província.
+     * Aceita ID ('mpp', 'mpc', 'cab'), Sigla ('MPT', 'MC', 'CBD') ou Nome por extenso ('Maputo', 'Nampula', 'Cabo Delgado').
+     */
+    fun getDistrictsByProvince(provinceIdentifier: String): List<String> {
+        val cleanInput = normalizeProvinceName(provinceIdentifier)
+
+        // Tratamento especial para "maputo" isolado: mapeia para Maputo Província por convenção
+        val targetId = if (cleanInput == "maputo") "mpp" else null
+
         for (province in getMozambiqueProvinces()) {
-            if (province["id"] == cleanId) {
+            val pId = (province["id"] as String).lowercase()
+            val pSigla = ((province["sigla"] as? String) ?: "").lowercase()
+            val pNameNorm = normalizeProvinceName(province["name"] as String)
+
+            if (targetId != null && pId == targetId) {
+                @Suppress("UNCHECKED_CAST")
+                val districts = province["districts"] as List<Map<String, Any>>
+                return districts.map { it["name"] as String }
+            }
+
+            if (pId == cleanInput || pSigla == cleanInput || pNameNorm == cleanInput) {
                 @Suppress("UNCHECKED_CAST")
                 val districts = province["districts"] as List<Map<String, Any>>
                 return districts.map { it["name"] as String }
             }
         }
-        throw IllegalArgumentException("Província inválida: $provinceId")
+        throw IllegalArgumentException("Província inválida: $provinceIdentifier")
     }
 
     /**
@@ -1153,7 +1192,9 @@ object MozUtils {
      */
     fun isValidName(name: String): Boolean {
         val trimmed = name.trim()
-        if (trimmed.isEmpty()) return false
+        if (trimmed.length < 2) return false
+        val letterCount = trimmed.count { it.isLetter() }
+        if (letterCount < 2) return false
         return trimmed.all { it.isLetter() || it.isWhitespace() || it == '-' || it == '\'' }
     }
 
@@ -1168,25 +1209,43 @@ object MozUtils {
      * @sample sanitizeName("jean-pierre dupont")              // "Jean-Pierre Dupont"
      */
     fun sanitizeName(name: String, allCaps: Boolean = false): String {
-        // Keep only letters, spaces, hyphens, apostrophes; collapse whitespace
+        // Remove caracteres que não sejam letras, espaços, hífens ou apóstrofos
         val cleaned = name
             .filter { it.isLetter() || it.isWhitespace() || it == '-' || it == '\'' }
             .replace(Regex("\\s+"), " ")
             .trim()
 
+        if (cleaned.isEmpty()) return ""
         if (allCaps) return cleaned.uppercase()
 
-        // Title Case: capitalise after start, space, or hyphen
-        val sb = StringBuilder()
-        var capitaliseNext = true
-        for (char in cleaned) {
-            when {
-                char == ' ' || char == '-' -> { sb.append(char); capitaliseNext = true }
-                capitaliseNext -> { sb.append(char.uppercaseChar()); capitaliseNext = false }
-                else -> sb.append(char)
+        // Partículas em minúsculas quando não forem a primeira palavra
+        val particles = setOf("de", "da", "do", "dos", "das", "e")
+        val words = cleaned.lowercase().split(" ")
+        val formattedWords = mutableListOf<String>()
+
+        for ((index, word) in words.withIndex()) {
+            if (word.isEmpty()) continue
+            if (index > 0 && particles.contains(word)) {
+                formattedWords.add(word)
+                continue
             }
+
+            val sb = StringBuilder()
+            var capNext = true
+            for (char in word) {
+                if (char == '-' || char == '\'') {
+                    sb.append(char)
+                    capNext = true
+                } else if (capNext) {
+                    sb.append(char.uppercaseChar())
+                    capNext = false
+                } else {
+                    sb.append(char)
+                }
+            }
+            formattedWords.add(sb.toString())
         }
-        return sb.toString()
+        return formattedWords.joinToString(" ")
     }
 
     /**
@@ -1445,5 +1504,104 @@ object MozUtils {
             }
         }
         return results
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // MÓDULO BANCÁRIO DE MOÇAMBIQUE (NIB & IBAN)
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    /**
+     * Catálogo oficial das principais instituições bancárias comerciais de Moçambique (22 códigos BM e SIMO).
+     */
+    val BANKS: List<Map<String, String>> = listOf(
+        mapOf("code" to "0001", "name" to "Banco Internacional de Moçambique, S.A.", "shortName" to "Millennium BIM"),
+        mapOf("code" to "0003", "name" to "Standard Bank Moçambique, S.A.", "shortName" to "Standard Bank"),
+        mapOf("code" to "0006", "name" to "Absa Bank Moçambique, S.A.", "shortName" to "Absa"),
+        mapOf("code" to "0007", "name" to "Nedbank Moçambique, S.A.", "shortName" to "Nedbank"),
+        mapOf("code" to "0008", "name" to "Banco Comercial e de Investimentos, S.A.", "shortName" to "BCI"),
+        mapOf("code" to "0014", "name" to "First National Bank Moçambique, S.A.", "shortName" to "FNB"),
+        mapOf("code" to "0016", "name" to "Moza Banco, S.A.", "shortName" to "Moza Banco"),
+        mapOf("code" to "0021", "name" to "Access Bank Moçambique, S.A.", "shortName" to "Access Bank"),
+        mapOf("code" to "0024", "name" to "Ecobank Moçambique, S.A.", "shortName" to "Ecobank"),
+        mapOf("code" to "0025", "name" to "Banco Nacional de Investimento, S.A.", "shortName" to "BNI"),
+        mapOf("code" to "0030", "name" to "Société Générale Moçambique, S.A.", "shortName" to "Société Générale"),
+        mapOf("code" to "0034", "name" to "Moza Banco, S.A.", "shortName" to "Moza Banco"),
+        mapOf("code" to "0038", "name" to "First Capital Bank Moçambique, S.A.", "shortName" to "First Capital Bank"),
+        mapOf("code" to "0041", "name" to "Banco Letshego, S.A.", "shortName" to "Letshego"),
+        mapOf("code" to "0043", "name" to "First Capital Bank Moçambique, S.A.", "shortName" to "First Capital Bank"),
+        mapOf("code" to "0044", "name" to "MyBucks Banking Corporation, S.A.", "shortName" to "MyBucks"),
+        mapOf("code" to "0045", "name" to "Banco de Desenvolvimento de Moçambique, S.A.", "shortName" to "BDM"),
+        mapOf("code" to "0048", "name" to "Banco Mais, S.A.", "shortName" to "Banco Mais"),
+        mapOf("code" to "0050", "name" to "Standard Chartered Bank Moçambique, S.A.", "shortName" to "Standard Chartered"),
+        mapOf("code" to "0052", "name" to "Banco Big Moçambique, S.A.", "shortName" to "Banco Big"),
+        mapOf("code" to "0056", "name" to "Banco Letshego, S.A.", "shortName" to "Letshego"),
+        mapOf("code" to "0057", "name" to "Banco Nacional de Investimento, S.A.", "shortName" to "BNI")
+    )
+
+    /**
+     * Valida o Número de Identificação Bancária (NIB) moçambicano de 21 dígitos.
+     * Aplica a regra ISO 7064 Módulo 97-10 e valida o código do banco perante o catálogo nacional.
+     */
+    fun isValidNIB(nib: String): Boolean {
+        val cleaned = nib.replace(Regex("\\D"), "")
+        if (cleaned.length != 21) return false
+
+        val bankCode = cleaned.substring(0, 4)
+        val bankExists = BANKS.any { it["code"] == bankCode }
+        if (!bankExists) return false
+
+        return try {
+            val bigNum = java.math.BigInteger(cleaned)
+            bigNum.remainder(java.math.BigInteger.valueOf(97)) == java.math.BigInteger.ONE
+        } catch (_: Exception) {
+            false
+        }
+    }
+
+    /**
+     * Formata um NIB moçambicano de 21 dígitos no padrão BBBB AAAA CCCCCCCCCCC KK.
+     * Lança [IllegalArgumentException] se o NIB for inválido.
+     */
+    fun formatNIB(nib: String): String {
+        val cleaned = nib.replace(Regex("\\D"), "")
+        if (!isValidNIB(cleaned)) {
+            throw IllegalArgumentException("NIB inválido: $nib")
+        }
+        return "${cleaned.substring(0, 4)} ${cleaned.substring(4, 8)} ${cleaned.substring(8, 19)} ${cleaned.substring(19, 21)}"
+    }
+
+    /**
+     * Retorna as informações do banco correspondente aos primeiros 4 dígitos do NIB.
+     * Retorna null se o banco não for encontrado ou se o NIB tiver menos de 4 dígitos.
+     */
+    fun getBankByNIB(nib: String): Map<String, String>? {
+        val cleaned = nib.replace(Regex("\\D"), "")
+        if (cleaned.length < 4) return null
+        val bankCode = cleaned.substring(0, 4)
+        return BANKS.firstOrNull { it["code"] == bankCode }
+    }
+
+    /**
+     * Converte um NIB válido de 21 dígitos no respectivo código IBAN moçambicano (MZ59 + 21 dígitos).
+     * Lança [IllegalArgumentException] se o NIB fornecido for inválido.
+     */
+    fun nibToIBAN(nib: String): String {
+        val cleaned = nib.replace(Regex("\\D"), "")
+        if (!isValidNIB(cleaned)) {
+            throw IllegalArgumentException("NIB inválido para conversão em IBAN: $nib")
+        }
+        return "MZ59$cleaned"
+    }
+
+    /**
+     * Valida se uma string representa um IBAN moçambicano válido.
+     * O formato oficial consiste em 'MZ59' seguido por 21 dígitos de um NIB válido.
+     */
+    fun isValidIBAN(iban: String): Boolean {
+        val cleaned = iban.replace(Regex("\\s"), "").uppercase()
+        if (cleaned.length != 25) return false
+        if (!cleaned.startsWith("MZ59")) return false
+        val nib = cleaned.substring(4)
+        return isValidNIB(nib)
     }
 }

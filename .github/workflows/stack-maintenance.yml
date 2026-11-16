@@ -32,7 +32,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v7
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: Python - Safety Check (Malware & Injections)
         run: |
@@ -41,7 +41,7 @@ jobs:
           # safety check
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@main
         with:
           php-version: '8.4'
           
@@ -51,7 +51,7 @@ jobs:
           composer audit
 
       - name: Setup Dart
-        uses: dart-lang/setup-dart@v1
+        uses: dart-lang/setup-dart@main
       
       - name: Dart - Pub Outdated
         run: |

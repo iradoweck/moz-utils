@@ -41,7 +41,7 @@ export default function GeoSimulator() {
           </div>
         );
       } else {
-        resultJSX = <div className="text-error">Província não encontrada. Usa um ID válido (ex: mpt, mpc, npl).</div>;
+        resultJSX = <div className="text-error">Província não encontrada. Usa um ID (ex: mpp, mpc, npl), Sigla (MPT, MC, NPL) ou Nome completo (Maputo, Nampula, Cabo Delgado).</div>;
       }
     } else if (activeTab === 'legacy_postal') {
       const isValid = isValidPostalCode(inputValue);
@@ -121,7 +121,7 @@ export default function GeoSimulator() {
 
           <div>
             <label className="input-label">
-              {activeTab === 'province' && 'Digita o ID da Província (ex: mpt, mpc, npl, sof, zam, cab)'}
+              {activeTab === 'province' && 'Digita o ID, Sigla ou Nome da Província (ex: mpp, mpc, npl, MPT, Maputo, Nampula)'}
               {activeTab === 'legacy_postal' && 'Digita o Código Postal antigo (ex: 1100, 3100)'}
               {activeTab === 'new_cep' && 'Digita o Novo CEP (ex: 0909-01)'}
               {activeTab === 'migration' && 'Digita o Código Postal legado ou parcial (ex: 1100) para ver as novas zonas'}

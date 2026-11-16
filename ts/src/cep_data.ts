@@ -1,4 +1,4 @@
-import { CEPInfo } from './index';
+import { CEPInfo } from './types.js';
 
 /**
  * Base de dados completa dos Novos Códigos de Endereçamento Postal (CEP).

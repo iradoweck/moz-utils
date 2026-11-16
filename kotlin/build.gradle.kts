@@ -1,10 +1,10 @@
 plugins {
-    kotlin("jvm") version "2.3.21"
+    kotlin("jvm") version "2.4.21"
     id("maven-publish")
 }
 
 group = "com.edmilsonmuacigarro"
-version = "0.3.10"
+version = "0.4.0"
 
 repositories {
     mavenCentral()
@@ -21,6 +21,7 @@ tasks.test {
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
+            artifactId = "moz-utils"
             from(components["java"])
             pom {
                 name.set("moz-utils")

@@ -1,72 +1,98 @@
 # Geography & Districts
 
-The library comes embedded with an offline database containing all the provinces and districts of Mozambique.
+`moz-utils` embeds an offline database covering all 11 provinces and over 160 districts of Mozambique with zero API dependencies.
 
-## Fetching Provinces
+---
 
-You can access the full array of provinces directly. This helps you build robust dropdowns for users selecting their location (e.g. **Nampula**, **Zambézia**, **Sofala**).
+## 🗺️ Administrative Divisions
 
-<div className="code-tabs" data-labels="TypeScript,Python">
+```mermaid
+flowchart TD
+    MZ["Republic of Mozambique"]
+    MZ --> North["North: Cabo Delgado (cab), Niassa (nia), Nampula (npl)"]
+    MZ --> Center["Center: Zambézia (zam), Tete (tet), Manica (man), Sofala (sof)"]
+    MZ --> South["South: Inhambane (inh), Gaza (gaz), Maputo Province (mpp), Maputo City (mpc)"]
+```
+
+---
+
+## List Provinces (`mozambiqueProvinces`)
+
+<div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
 
 ```ts
 import { mozambiqueProvinces } from 'moz-utils';
 
 console.log(mozambiqueProvinces[0]);
-// { id: "cab", name: "Cabo Delgado", region: "Norte", ... }
+// { id: "cab", name: "Cabo Delgado", region: "Norte" }
+console.log(mozambiqueProvinces[2].name); // "Nampula"
 ```
 
 ```python
 from moz_utils import MOZAMBIQUE_PROVINCES
 
-print(MOZAMBIQUE_PROVINCES[2]) # Nampula
-```
-
-</div>
-
-## Fetching Districts by Province
-
-Pass a valid province ID (like `npl` for **Nampula** or `sof` for Sofala) to get its respective districts.
-
-<div className="code-tabs" data-labels="TypeScript,PHP,Dart,Kotlin">
-
-```ts
-import { getDistrictsByProvince } from 'moz-utils';
-
-const nampulaDistricts = getDistrictsByProvince('npl');
-console.log(nampulaDistricts);
-// ["Angoche", "Eráti", "Nampula (Cidade)", "Ribáuè", ...]
+print(MOZAMBIQUE_PROVINCES[0])
+print(MOZAMBIQUE_PROVINCES[2]['name']) // "Nampula"
 ```
 
 ```php
 use MozUtils\MozUtils;
 
-$nampulaDistricts = MozUtils::getDistrictsByProvince('npl');
-print_r($nampulaDistricts);
+print_r(MozUtils::getProvinces());
 ```
 
 ```dart
 import 'package:moz_utils/moz_utils.dart';
 
-final districts = getDistrictsByProvince('npl');
-print(districts);
+print(mozambiqueProvinces[0]);
+print(mozambiqueProvinces[2].name); // "Nampula"
 ```
 
 ```kotlin
-import io.github.iradoweck.moz_utils.MozUtils
+import com.edmilsonmuacigarro.mozutils.MozUtils
 
-val districts = MozUtils.getDistrictsByProvince("npl")
-println(districts)
+println(MozUtils.provinces[0])
+println(MozUtils.provinces[2].name) // "Nampula"
 ```
 
 </div>
 
-## Getting All Districts
+---
 
-If you need a flat array of all districts in the country (useful for global search inputs):
+## Get Districts by Province (`getDistrictsByProvince`)
 
-### TypeScript
+<div className="code-tabs" data-labels="TypeScript,Python,PHP,Dart,Kotlin">
+
 ```ts
-import { getAllDistricts } from 'moz-utils';
+import { getDistrictsByProvince } from 'moz-utils';
 
-console.log(getAllDistricts().length); // 161
+const districts = getDistrictsByProvince('npl');
+console.log(districts);
+// ["Angoche", "Eráti", "Nampula (Cidade)", "Ribáuè", ...]
 ```
+
+```python
+from moz_utils import get_districts_by_province
+
+print(get_districts_by_province('npl'))
+```
+
+```php
+use MozUtils\MozUtils;
+
+print_r(MozUtils::getDistrictsByProvince('npl'));
+```
+
+```dart
+import 'package:moz_utils/moz_utils.dart';
+
+print(getDistrictsByProvince('npl'));
+```
+
+```kotlin
+import com.edmilsonmuacigarro.mozutils.MozUtils
+
+println(MozUtils.getDistrictsByProvince("npl"))
+```
+
+</div>

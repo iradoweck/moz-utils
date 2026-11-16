@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "moz-utils"
-version = "0.3.10"
+version = "0.4.0"
 description = "Funções de utilidade para Moçambique. Validação de NUIT, documentos e formatação de telefones."
 readme = "README.md"
 license = "Apache-2.0"
@@ -28,7 +28,12 @@ Repository = "https://github.com/iradoweck/moz-utils.git"
 "Bug Tracker" = "https://github.com/iradoweck/moz-utils/issues"
 
 [project.optional-dependencies]
-dev = ["pytest"]
+dev = ["pytest>=8.0.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v"
 
 [tool.pyright]
 exclude = [
@@ -41,3 +46,7 @@ ignore = [
     "**/*.md",
     "**/*.mdx"
 ]
+
+[tool.setuptools.package-data]
+moz_utils = ["py.typed"]
+
